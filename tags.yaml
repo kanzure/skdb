@@ -1,0 +1,22 @@
+author: 'ben lipkowitz'
+license: 'GPL2+'
+urls: 
+- 'http://heybryan.org/mediawiki/index.php/Skdb'
+- 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=screw.yaml'
+- 'git://fennetic.net/git/skdb.git/'
+
+
+foo: 
+- &screw !!python/object:skdb.Screw
+ grade: '3'
+ length: 1in
+ thread: !!python/object:skdb.Thread {diameter: in/4, form: UN, pitch: 20/rev}
+- !!python/object:skdb.Screw
+ grade: '3'
+ length: 1in
+ thread: !!python/object:skdb.Thread
+    diameter: in/4
+    form: UN 
+    pitch: 20/rev
+
+
