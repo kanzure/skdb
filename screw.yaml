@@ -1,10 +1,17 @@
-#example file, showing what a minimal skdb project would look like
+author: 'ben lipkowitz'
+license: 'GPL2+'
+urls: 
+- 'http://heybryan.org/mediawiki/index.php/Skdb'
+- 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=screw.yaml'
+- 'git://fennetic.net/git/skdb.git/'
 
 screw:
-  thread: 1/4"-20UNC
-    class: 2A
-  length: 1"
-  head: socket head cap
-  material: AISI 1040 steel
-  finish:
-    coating: black oxide
+ !!python/object:skdb.Screw
+ grade: '3'
+ length: 1in
+ thread: !!python/object:skdb.Thread
+    diameter: in/4
+    form: UN 
+    pitch: 20/rev
+
+

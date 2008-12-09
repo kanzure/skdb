@@ -96,5 +96,11 @@ class Screw(Fastener):
   def __init__(self, thread, length, grade="3"):
     '''length is defined as the distance from bottom of the head for all screws but 
     flat head and set screws which use the top of the head instead'''
-    thread.__init__()
+    #thread.__init__()
+    self.thread, self.length, self.grade = thread, length, grade
 
+def main():
+  pass
+
+if __name__ == "__main__":
+  main()
