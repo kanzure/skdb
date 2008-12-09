@@ -1,0 +1,10 @@
+#example file, showing what a minimal skdb project would look like
+
+screw:
+  thread: 1/4"-20UNC
+    class: 2A
+  length: 1"
+  head: socket head cap
+  material: AISI 1040 steel
+  finish:
+    coating: black oxide
