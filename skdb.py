@@ -75,11 +75,24 @@ mm = Measurement('1mm')
 #inch = mm*25.4
 #print yaml.dump(inch)
 
+
+class Fastener:
+  '''could be a rivet, could be a bolt. duct tape? superglue? twine? hose clamp?
+  these methods are what actually get called by higher levels of abstraction'''
+  def __init__(self, force, rigidity, safety_factor=7):
+    pass
+
+
 class Thread:
+  '''examples: ballscrews, pipe threads, bolts - NOT any old helix'''
   def __init__(self, diameter, pitch, form="UN"):
     self.diameter, self.pitch, self.form = diameter, pitch, form
+  def clamping_force(self, torque, efficiency=0.1):
+    #units '(torque*ft*lbf/rev)*(pitch*rev/in)*efficiency' lbf
+    #return lbf
+    pass
 
-class Screw:
+class Screw(Fastener):
   def __init__(self, thread, length, grade="3"):
     '''length is defined as the distance from bottom of the head for all screws but 
     flat head and set screws which use the top of the head instead'''
