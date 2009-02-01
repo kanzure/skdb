@@ -1,334 +1,443 @@
-<html>
-<head>
-<title>FabLab versus TechShop: inventory showdown</title>
-</head>
-<body>
-<table>
-<tr>
-<td valign="top">
-<a href="http://fab.cba.mit.edu/"><img src="http://fab.cba.mit.edu/about/logos/th_gcsh.rgb.600.jpg"></a>
-<h2>FabLab</h2>
-<a href="http://fab.cba.mit.edu/about/fab/inv.html">inventory</a><br /><br />
-
-<B>Fab Lab Inventory</b><br />
-<B>12/19/08</b> <br />
-<br />
-laser cutter Mini 24" x 12" 35W <br />
-
-cnc router (96x48x8in) 4HP spindle (shopbot)<br />
-dust collector
-
-CNC milling machine 8"(X)x6"(Y)x2-3/8"(Z) 6500 rpm
-CNC vinyl cutter 2" - 27.5"(5.08cm - 69.85cm) 20 IPS 30gf - 250gf
-
-scroll saw 20" Variable Speed 
-vacuum 9.6-Volt Cyclonic DustBuster $29.99<br />
-oven Convection Toaster Oven/Broiler
-Heat Gun 750-800F
-TV/Monitor 10.2-Inch Widescreen LCD Color (videoconferencing)
-Function Generator, 10 MHz DDS with Counter
-Power Supply, Triple Output, DC, Digital, 30V, 3A
-Digital Storage Oscilloscope, 150 MHz, Color
-Magnifier Light, IFM,5 DIOPTER, 45" ARM, CLAMP-ON
-
-(1206 SOD-123 SSOT SOT23 unless stated otherwise)
-resistors 1/4W 0-10Mohm by 5's, 10's qty 1000 each 
-capacitor 1pF-0.1uF by 10's 50v qty 500 each
-capacitor 1uF 50V qty 250
-capacitor 3.3uF 16V qty 1000
-capacitor 10uF 35V qty 100
-capacitor radial 10F 2.7V qty 10
-
-choke coil 1-1000uH by 10's qty 25 each
-
-diode schottky 100V qty 500
-diode zener 3.3V qty 500
-diode zener 4.7V qty 500
-
-mosfet n-ch 30V 1.7A qty 250
-mosfet p-ch 30V 1.1A qty 250
-mosfet n-ch 30V 12.5A qty 50
-h-bridge 30V 2.3A qty 50 (sm8 package)
-
-regulators LDO 3.3-5V 100mA qty 250 each
-regulator LDO 5V 1A qty 100
-
-LED red green qty 250 each
-LED white rgb IR IR/flat qty 100 each
-
-phototransistor black opaque clear qty 100 each
-
-LCD module 16x2 qty 25
-speaker 16x35mm 8ohm 0.5W qty 25
-microphone condenser -40dB qty 50
-
-thermistor 10kohm qty 25
-opamp qty 100
-
-microcontoller attiny45V 4kB 10MHz 8pins qty 200
-microcontroller attiny44 4kB 20MHz 14pins qty 100
-microcontroller atmega88 8kB 20MHz 32pins qty 50
-
-resonator ceramic 20.00MHz qty 100
-
-switch slidng 12V 100mA qty 50
-switch tactile qty 100
-
-magnets 0.25" and 0.5"dia by 0.125"thick qty 100 each
-
-header and socket 64pin qty 10 each
- 
-jack power 2.1mm, 2.35mm, 2.75mm qty 100 each
-jack phono qty 10
-plug stereo 2.5mm qty 100
-plug stereo 2.5mm qty 100 w/cover?
-plug rca qty 50
-
-connector db9 and db25 shell qty 25 each
-cable ribbon 9conductor 300 ft
 
-test clip smd qty 5
-
-bags antistatic 3x5-8x10 qty 100
-
-heatshrink tubing 1/16-1/2 by 1/8's x4ft black qty 5
-
-solder 0.020" 4lb
-solder fume absorber
-solder braid 0.050" 100ft
-solder station analog 50W
-soldering tips flat/0.015" qty 5
-
-tweezers curved tip qty 20
-wire stripper 30-20AWG qty 5
-plier diagonal cutting qty 5
-plier long nose qty 5
-magnifier loupe 10X 1" qty 10
-vise "panavise jr" qty 4
-screwdriver precision 6pc set qty 2
-
-battery snap 9v-style qty 100
-battery holder 9v-style qty 50
-battery holder AAA/N qty 100
-
-multimeter w/freq+capacitance qty 3
-connector ribbon cable 2,3,4,5 by rec/vert/RA qty 100 each
-
-
-transducer ultrasonic 40kHz 112dB qty 10
-motor step 7-16V by 4's 3.6-15deg qty 10 each
-motor dc 6-24V by 6's 1.4A qty 10 each
-motor dc 12v 110rpm gearhead qty 10
-
-transformer wall-wart 9V 1.5A, 24V 1.15A qty 10 each
-cable BNC minihook, microhook qty 10 each
-
-plug banana/bnc qty 10
-adapter tee BNC-mm/ff qty 10
-
-vise positioner "third hand" qty 5
-
-ruler 6" decimal inch qty 10
-scale digital 2000g max 0.1g resolution
-caliper dial 6"max 0.001" graduations
-measuring tape 50ft qty 6
-
-bins cardboard 2,3,4,6,8"W 12"D 4"H qty 20 each
-bins plastic small 2" qty 64
-bins plastic large 4" qty 24
-
-saw blades for scroll saw
-
-knife utility breakaway qty 10
-
-wax machinable 4.3l
-cups polypropylene qty 250
-stirrer 6" qty 500
-gloves nitrile qty 200
-dish weighing aluminum qty 1000
-foil aluminum 0.001"x1"x500ft
-
-zipties 6" reusable qty 500
-zipties 15" reusable qty 125
-
-screwdriver ratcheting philips slot torx sq pozi qty 5
-file needle set qty 3
-glue gun
-glue stick 1/2"x4" 2lbs
-
-cardboard havy duty 12000in^2
-acrylic 1/8" 1440in^2
-swab cotton qty 1000
-wire magnet 30AWG 3000ft
-vinyl tan garolite 1/32" 1440in^2
-rubber mat 3/32" 1728in^2
-clamps for shopbot
-
-plaster hydrostone 10gal
-plaster drystone 10gal
-urethane rubber for molding 20lbs
-instamold 7.5lbs
-flexwax 12.5lbs
-
-film adhesive transfer 6"x180ft
-tape masking 6"x180ft
-film epoxy 6"x300ft
-tape copper 6"x300ft
-
-vinyl yel red blue grn
-
-PCB stock FR1 .062 1/0 40"x48" machinable
-
-endmills carbide 0.01"-0.125" by 1/8"s qty 10 each
-endmills carbide 0.015"-0.125" by 1/8"s ballnose qty 10 each
-
-endmills carbide 1/8" 1/4" 1/2" by 1/2" 7/8" 1 1/8" by square ball qty 2 each
-
-collets ER25 by 1/8"s
-
-blades vinyl 45 degree qty 25
-
-tape double sided 1/2"x1000ft
-
-cups plastic 5oz qty 500
-cups plastic 10oz qty 250
-cups plastic 16oz qty 250
-wipes 9"x10.5" qty 1250
-broom qty 3
-dustpan qty 3
-scissors 8" qty 5
-pencil mechanical 0.7mm qty 60
-pencil lead 0.7mm qty 180
-pencil eraser qty 15
-paper pads 5"x8" qty 36
-tape scotch  qty 20
-dispenser for scotch tape
-tape packaging qty 1.89"x 900ft
-dispenser for packaging tape
-
-battery 9V alkaline qty 48
-
-printer label maker
-tape label 1/4"-3/4" qty 3 each
-
-laminator variable temperature laminator
-cd-rw qty 25
-pencil sharpener
-paper 2ream
-marker sharpie black qty 12
-laminator pouch small large qty 100 each
-ruler 12" stainless qty 10
-paper notebook qty 10
-pen ballpoint blue qty 120
-
-power supply UPS
-surge protector 7-outlets 12ft cord qty 5
-cord extension 10ft
-ethernet switch 8port qty 2
-router wireless
-ethernet cable 3ft 5ft 7ft 10ft 25ft qty 5 each
-printer scanner inkjet 
-printer inkjet
-printer inkjet cartridges black color qty 3 each
-adapter usb serial qty 10
-video conference device
-video projector
-
-books electronics and programming
-
-computer 2.3GHz 2GB RAM qty 5
-
-silicone PDMS "Sylgard 184" 5.5lbs
-mold compound "rub-r-mold" 5quarts
-resin low viscosity 2quarts
-resin hardener 2pints
-cloth fiberglass 38"x90 (yd? in?)
-silica colloidal 0.5gal
-filler phenolic micro-balloon 0.5gal
-filler wood flour 0.5gal
-filler cell-o-fill 0.5gal
-filler milled fibers 0.5gal
-filler graphite powder 12oz
-filler aluminum powder? 1lb
-resin coloring blue red 0.3lb qty 2 each
-mask dust qty 30
-
-earmuff qty 3
-endmill HSS 3/16" qty 3
-hose rubber compressed-air 1/4" 25ft
-wire welding 0.030" flux-core 4lbs
-grinding wheel dresser
-brush wire wheel 6"x3/4" 
-dremel tool 35000rpm and accessories
-router 1.75HP 23000rpm
-router bits HSS set of 6
-gloves welding pair medium large qty 3 each
-hex key set
-mask welding qty 3
-welder MIG 90A@19VDC gas-capable
-pneumatic coupler qty 3
-
-wrench set 1/4"-7/8"
-pliers locking 5" 6.5" 10" qty 1 each
-grinder bench 6" 1/3HP
-clamp bar 12" qty 6
-hammer welding
-screwdriver hex ball-end set 0.05"-3/8" 
-file set of 5
-apron qty 3
-ear-plugs
-
-CNC plasma cutter
-
-</td>
-
-<td valign="top">
-<a href="http://techshop.ws/"><img src="http://techshop.ws/_templates/images/techshop_logo.png"></a><br /><br />
-<a href="http://techshop.ws/tools_and_equipment.html">inventory</a><br /><br />
-
-bulk shape creation
-
-joining
-
-parting
-
-deformation
-
-material removal
-
-surface treatment
-
-
-
-
-
-<BR><B>Abrasives</B><HR>	Disk Sander, Large, Pedestal Mounted<BR>	Grinders, Pedestal Mounted<BR>	Sand Blasting Cabinet<BR>	 
-<BR><B>Arts and Crafts</B><HR>	Vinyl Cutter, Computer-Controlled<BR>	 
-<BR><B>Automotive</B><HR>	Floor Jack and Jack Stands<BR>	Motorcycle Lift<BR>	Transmission Jack<BR>	 
-<BR><B>Electronics</B><HR>	Multimeter<BR>	Oscilloscope<BR>	Soldering Iron<BR>	 
-<BR><B>Fabrication</B><HR>	Chop Saw<BR>	Drill Press<BR>	Horizontal Band Saw<BR>	Vertical Band Saw<BR>	 
-<BR><B>Fabrics and Sewing</B><HR>	Sewing Machine, Industrial<BR>	 
-<BR><B>Hand Tools</B><HR>	Open and Box End Wrenches, Inch and Metric<BR>	Socket Wrenches, Inch and Metric, and Ratchets<BR>	 
-<BR><B>Instruction</B><HR>	Video Camcorder, Digital, 3 CCD<BR>	 
-<BR><B>Layout</B><HR>	Granite Surface Plate<BR>	Height Gauges, Digital<BR>	 
-<BR><B>Machining</B><HR>	Lathe, Large Metal, with Tooling<BR>	Milling Machine, Large, with Digital Readout and Tooling<BR>	 
-<BR><B>Measurement</B><HR>	Calipers, Digital<BR>	Micrometer, Digital<BR>	 
-<BR><B>Plastics</B><HR>	Plastic Seam Welder, Floor Mounted<BR>	Plastic Welding Setup, Handheld<BR>	Vacuum Forming Station, 24" x 24"<BR>	 
-<BR><B>Prototyping</B><HR>	3D Printer (Dimension SST)<BR>	Laser Cutter, Epilog (Helix 45)<BR>	Milling Machine, Desktop, CNC<BR>	 
-<BR><B>Sheet Metal</B><HR>	Box and Pan Brake<BR>	English Wheel<BR>	Planishing Hammer, Air-Powered<BR>	Press Brake, 15-Ton Power<BR>	Rotary Turret Punch<BR>	Sheet Metal Shear, Power, 48" Wide<BR>	Slip Roll, Power, 48" Widel<BR>	Throatless Shear, Bench Mounted<BR>	 
-<BR><B>Surface and Finishing</B><HR>	Paint Booth, Table-Top (10' W x 5' T x 2' D)<BR>	Powder Coating Station and Oven<BR>	 
-<BR><B>Welding</B><HR>	Plasma Cutter, CNC, 4' x 8'<BR>	Welder, MIG<BR>	Welder, Oxygen Acetylene<BR>	Welder, Spot<BR>	Welder, Stick Arc<BR>	Welder, TIG<BR>
-
-</td>
-
-<td valign="top" align="right">
-
-
-<a href="http://emachineshop.com/"><img src="http://www.emachineshop.com/machine-shop/templates/emscss/images/site/block_logo.gif"></a><br /><br />
-
-fenn's best guesses about emachineshop's equipment inventory:
-
-bulk shape creation
+urls:
+- http://fab.cba.mit.edu/about/logos/th_gcsh.rgb.600.jpgin 
+- http://fab.cba.mit.edu/about/fab/inv.html
+
+
+creation:
+
+joining:
+
+parting:
+	CNC plasma cutter
+	CNC vinyl cutter 2in - 27.5in 20in/s 0.3-2.5 newton
+	laser cutter Mini 24in x 12in 35W 
+	
+deformation:
+
+removal:
+
+surface:
+
+safety:
+
+materials:
+
+components:
+
+hand tools:
+
+measuring:
+
+fixtures:
+
+information:
+
+storage:
+	
+	
+	cnc router (96x48x8in) 4HP spindle (shopbot)
+	dust collector
+	
+	CNC milling machine 8in (X)x6in (Y)x2-3/8in (Z) 6500 rpm
+
+
+	scroll saw 20in Variable Speed 
+	vacuum 9.6-Volt Cyclonic DustBuster 
+	oven Convection Toaster Oven/Broiler
+	Heat Gun 750-800F
+	TV/Monitor 10.2-Inch Widescreen LCD Color (videoconferencing)
+	Function Generator, 10 MHz DDS with Counter
+	Power Supply, Triple Output, DC, Digital, 30V, 3A
+	Digital Storage Oscilloscope, 150 MHz, Color
+	Magnifier Light, IFM,5 DIOPTER, 45in ARM, CLAMP-ON
+	
+	(1206 SOD-123 SSOT SOT23 unless stated otherwise)
+	resistors 1/4W 0-10Mohm by 5s, 10s qty 1000 each 
+	capacitor 1pF-0.1uF by 10s 50v qty 500 each
+	capacitor 1uF 50V qty 250
+	capacitor 3.3uF 16V qty 1000
+	capacitor 10uF 35V qty 100
+	capacitor radial 10F 2.7V qty 10
+	
+	choke coil 1-1000uH by 10s qty 25 each
+	
+	diode schottky 100V qty 500
+	diode zener 3.3V qty 500
+	diode zener 4.7V qty 500
+	
+	mosfet n-ch 30V 1.7A qty 250
+	mosfet p-ch 30V 1.1A qty 250
+	mosfet n-ch 30V 12.5A qty 50
+	h-bridge 30V 2.3A qty 50 (sm8 package)
+	
+	regulators LDO 3.3-5V 100mA qty 250 each
+	regulator LDO 5V 1A qty 100
+	
+	LED red green qty 250 each
+	LED white rgb IR IR/flat qty 100 each
+	
+	phototransistor black opaque clear qty 100 each
+	
+	LCD module 16x2 characters qty 25
+	speaker 16x35mm 8ohm 0.5W qty 25
+	microphone condenser -40dB qty 50
+	
+	thermistor 10kohm qty 25
+	opamp qty 100
+	
+	microcontoller attiny45V 4kB 10MHz 8pins qty 200
+	microcontroller attiny44 4kB 20MHz 14pins qty 100
+	microcontroller atmega88 8kB 20MHz 32pins qty 50
+	
+	resonator ceramic 20.00MHz qty 100
+	
+	switch slidng 12V 100mA qty 50
+	switch tactile qty 100
+	
+	magnets 0.25in and 0.5in dia by 0.125in thick qty 100 each
+	
+	header and socket 64pin qty 10 each
+	
+	jack power 2.1mm, 2.35mm, 2.75mm qty 100 each
+	jack phono qty 10
+	plug stereo 2.5mm qty 100
+	plug stereo 2.5mm qty 100 w/cover?
+	plug rca qty 50
+	
+	connector db9 and db25 shell qty 25 each
+	cable ribbon 9conductor 300 ft
+	
+	test clip smd qty 5
+	
+	bags antistatic 3x5-8x10 qty 100
+	
+	heatshrink tubing 1/16-1/2 by 1/8s x4ft black qty 5
+	
+	solder 0.020in 4lb
+	solder fume absorber
+	solder braid 0.050in 100ft
+	solder station analog 50W
+	soldering tips flat/0.015in qty 5
+	
+	tweezers curved tip qty 20
+	wire stripper 30-20AWG qty 5
+	plier diagonal cutting qty 5
+	plier long nose qty 5
+	magnifier loupe 10X 1in qty 10
+	vise in panavise jrin qty 4
+	screwdriver precision 6pc set qty 2
+	
+	battery snap 9v-style qty 100
+	battery holder 9v-style qty 50
+	battery holder AAA/N qty 100
+	
+	multimeter w/freq+capacitance qty 3
+	connector ribbon cable 2,3,4,5 by rec/vert/RA qty 100 each
+	
+	
+	transducer ultrasonic 40kHz 112dB qty 10
+	motor step 7-16V by 4s 3.6-15deg qty 10 each
+	motor dc 6-24V by 6s 1.4A qty 10 each
+	motor dc 12v 110rpm gearhead qty 10
+	
+	transformer wall-wart 9V 1.5A, 24V 1.15A qty 10 each
+	cable BNC minihook, microhook qty 10 each
+	
+	plug banana/bnc qty 10
+	adapter tee BNC-mm/ff qty 10
+	
+	vise positioner "third hand" qty 5
+	
+	ruler 6in decimal inch qty 10
+	scale digital 2000g max 0.1g resolution
+	caliper dial 6in max 0.001in graduations
+	measuring tape 50ft qty 6
+	
+	bins cardboard 2,3,4,6,8in W 12in D 4in H qty 20 each
+	bins plastic small 2in qty 64
+	bins plastic large 4in qty 24
+	
+	saw blades for scroll saw
+	
+	knife utility breakaway qty 10
+	
+	wax machinable 4.3l
+	cups polypropylene qty 250
+	stirrer 6in qty 500
+	gloves nitrile qty 200
+	dish weighing aluminum qty 1000
+	foil aluminum 0.001in x1in x500ft
+	
+	zipties 6in reusable qty 500
+	zipties 15in reusable qty 125
+	
+	screwdriver ratcheting philips slot torx sq pozi qty 5
+	file needle set qty 3
+	glue gun
+	glue stick 1/2in x4in 2lbs
+	
+	cardboard havy duty 12000in^2
+	acrylic 1/8in 1440in^2
+	swab cotton qty 1000
+	wire magnet 30AWG 3000ft
+	vinyl tan garolite 1/32in 1440in^2
+	rubber mat 3/32in 1728in^2
+	clamps for shopbot
+	
+	plaster hydrostone 10gal
+	plaster drystone 10gal
+	urethane rubber for molding 20lbs
+	instamold 7.5lbs
+	flexwax 12.5lbs
+	
+	film adhesive transfer 6in x180ft
+	tape masking 6in x180ft
+	film epoxy 6in x300ft
+	tape copper 6in x300ft
+	
+	vinyl yel red blue grn
+	
+	PCB stock FR1 .062 1/0 40in x48in machinable
+	
+	endmills carbide 0.01in -0.125in by 1/8in s qty 10 each
+	endmills carbide 0.015in -0.125in by 1/8in s ballnose qty 10 each
+	
+	endmills carbide 1/8in 1/4in 1/2in by 1/2in 7/8in 1 1/8in by square ball qty 2 each
+	
+	collets ER25 by 1/8in s
+	
+	blades vinyl 45 degree qty 25
+	
+	tape double sided 1/2in x1000ft
+	
+	cups plastic 5oz qty 500
+	cups plastic 10oz qty 250
+	cups plastic 16oz qty 250
+	wipes 9in x10.5in qty 1250
+	broom qty 3
+	dustpan qty 3
+	scissors 8in qty 5
+	pencil mechanical 0.7mm qty 60
+	pencil lead 0.7mm qty 180
+	pencil eraser qty 15
+	paper pads 5in x8in qty 36
+	tape scotch qty 20
+	dispenser for scotch tape
+	tape packaging qty 1.89in x 900ft
+	dispenser for packaging tape
+	
+	battery 9V alkaline qty 48
+	
+	printer label maker
+	tape label 1/4in -3/4in qty 3 each
+	
+	laminator variable temperature laminator
+	cd-rw qty 25
+	pencil sharpener
+	paper 2ream
+	marker sharpie black qty 12
+	laminator pouch small large qty 100 each
+	ruler 12in stainless qty 10
+	paper notebook qty 10
+	pen ballpoint blue qty 120
+	
+	power supply UPS
+	surge protector 7-outlets 12ft cord qty 5
+	cord extension 10ft
+	ethernet switch 8port qty 2
+	router wireless
+	ethernet cable 3ft 5ft 7ft 10ft 25ft qty 5 each
+	printer scanner inkjet 
+	printer inkjet
+	printer inkjet cartridges black color qty 3 each
+	adapter usb serial qty 10
+	video conference device
+	video projector
+	
+	books electronics and programming
+	
+	computer 2.3GHz 2GB RAM qty 5
+	
+	silicone PDMS in Sylgard 184in 5.5lbs
+	mold compound in rub-r-moldin 5quarts
+	resin low viscosity 2quarts
+	resin hardener 2pints
+	cloth fiberglass 38in x90 (yd? in?)
+	silica colloidal 0.5gal
+	filler phenolic micro-balloon 0.5gal
+	filler wood flour 0.5gal
+	filler cell-o-fill 0.5gal
+	filler milled fibers 0.5gal
+	filler graphite powder 12oz
+	filler aluminum powder? 1lb
+	resin coloring blue red 0.3lb qty 2 each
+	mask dust qty 30
+	
+	earmuff qty 3
+	endmill HSS 3/16in qty 3
+	hose rubber compressed-air 1/4in 25ft
+	wire welding 0.030in flux-core 4lbs
+	grinding wheel dresser
+	brush wire wheel 6in x 3/4in 
+	dremel tool 35000rpm and accessories
+	router 1.75HP 23000rpm
+	router bits HSS set of 6
+	gloves welding pair medium large qty 3 each
+	hex key set
+	mask welding qty 3
+	welder MIG 90A@19VDC gas-capable
+	pneumatic coupler qty 3
+	
+	wrench set 1/4in -7/8in 
+	pliers locking 5in 6.5in 10in qty 1 each
+	grinder bench 6in 1/3HP
+	clamp bar 12in qty 6
+	hammer welding
+	screwdriver hex ball-end set 0.05in -3/8in 
+	file set of 5
+	apron qty 3
+	ear-plugs
+	
+
+
+urls:
+- http://techshop.ws/
+- http://techshop.ws/_templates/images/techshop_logo.png
+- http://techshop.ws/tools_and_equipment.html
+
+
+creation:
+
+joining:
+
+parting:	
+	
+deformation:
+
+removal:
+
+surface:
+
+safety:
+
+materials:
+
+components:
+
+hand tools:
+
+measuring:
+
+fixtures:
+
+information:
+
+storage:
+
+
+
+techshop ontology
+
+
+Abrasives:
+	Disk Sander, Large, Pedestal Mounted
+	Grinders, Pedestal Mounted
+	Sand Blasting Cabinet
+
+Arts and Crafts:
+	CNC Vinyl Cutter
+
+Automotive:
+	Floor Jack and Jack Stands
+	Motorcycle Lift
+	Transmission Jack
+
+Electronics:
+	Multimeter
+	Oscilloscope
+	Soldering Iron
+
+Fabrication:
+	Chop Saw
+	Drill Press
+	Horizontal Band Saw
+	Vertical Band Saw
+
+Fabrics and Sewing:
+	Sewing Machine, Industrial
+
+Hand Tools:
+	Open and Box End Wrenches, Inch and Metric
+	Socket Wrenches, Inch and Metric, and Ratchets
+
+Instruction:
+	Video Camcorder, Digital, 3 CCD
+
+Layout:
+	Granite Surface Plate
+	Height Gauges, Digital
+
+Machining:
+	Lathe, Large Metal, with Tooling
+	Milling Machine, Large, with Digital Readout and Tooling
+
+Measurement:
+	Calipers, Digital
+	Micrometer, Digital
+
+Plastics:
+	Plastic Seam Welder, Floor Mounted
+	Plastic Welding Setup, Handheld
+	Vacuum Forming Station, 24in x 24in 
+
+Prototyping:
+	3D Printer (Dimension SST)
+	Laser Cutter, Epilog (Helix 45)
+	Milling Machine, Desktop, CNC
+
+Sheet Metal:
+	Box and Pan Brake
+	English Wheel
+	Planishing Hammer, Air-Powered
+	Press Brake, 15-Ton Power
+	Rotary Turret Punch
+	Sheet Metal Shear, Power, 48in Wide
+	Slip Roll, Power, 48in Widel
+	Throatless Shear, Bench Mounted
+
+Surface and Finishing:
+	Paint Booth, Table-Top (10ft W x 5ft T x 2ft D)
+	Powder Coating Station and Oven
+
+Welding:
+	Plasma Cutter, CNC, 4ft x 8ft
+	Welder, MIG
+	Welder, Oxygen Acetylene
+	Welder, Spot
+	Welder, Stick Arc
+	Welder, TIG
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+urls:
+- http://emachineshop.com/
+- http://www.emachineshop.com/machine-shop/templates/emscss/images/site/block_logo.gifin \
+
+"fenn's best guesses about emachineshop's equipment inventory"
+
+bulk shape creation:
 	die caster
 	investment caster
 	plastic extruder
@@ -338,12 +447,12 @@ bulk shape creation
 #	foundry
 #	sand compactor
 
-joining
+joining:
 	mig welder
 	tig welder
 	spot welder
 	
-parting
+parting:
 	blanking press
 	fine blanking press
 	die cutter	
@@ -357,7 +466,7 @@ parting
 	metal band saw
 	glass cutter
 
-deformation
+deformation:
 	drop forge
 	stamping/drawing press
 	vacuum former
@@ -365,7 +474,7 @@ deformation
 	CNC wire former
 	coil winder
 	
-material removal
+material removal:
 	surface grinder
 	jig borer
 	CNC lathe
@@ -374,7 +483,7 @@ material removal
 	sinker ECM
 	sinker EDM
 
-surface treatment
+surface treatment:
 	spray booth
 	sandblaster/beadblaster
 	vibratory finisher
@@ -383,12 +492,27 @@ surface treatment
 	powder coat oven
 	plating/anodizing tanks
 	silkscreen machine
-	
 
-</td>
-
-</tr>
-</table>
-
-</body>
-</html>
+materials:
+	Aluminum 
+	Stainless Steel 
+	Copper 
+	Sheet Metal 
+	Nylon 
+	Steel 
+	Acetal 
+	Polycarbonate 
+	Polystyrene 
+	Acrylic 
+	Plastic 
+	Fiberglass 
+	Brass 
+	Carbon Fiber 
+	Teflon 
+	Titanium 
+	ABS 
+	PVC 
+	Sterling Silver 
+	Spring Steel 
+	Bronze 
+	Rubber 
