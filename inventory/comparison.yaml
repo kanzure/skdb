@@ -6,7 +6,7 @@ urls:
 
 creation:
 - oven Convection Toaster Oven/Broiler
-  moldmaking:
+- moldmaking:
   -  silicone PDMS in Sylgard 184in 5.5lbs
   -  mold compound in rub-r-moldin 5quarts
   -  resin low viscosity 2quarts
@@ -112,7 +112,7 @@ consumables:
 -  marker sharpie black qty 12
 -  laminator pouch small large qty 100 each
 -  wire welding 0.030in flux-core 4lbs
--  tooling:
+- tooling: #wtf is wrong with yaml, 2 spaces is not good enough?
   -  saw blades for scroll saw
   -  endmills carbide 0.01in -0.125in by 1/8in s qty 10 each
   -  endmills carbide 0.015in -0.125in by 1/8in s ballnose qty 10 each
@@ -286,7 +286,7 @@ storage:
 
 
 
-techshop ontology
+- techshop ontology
 
 
 Abrasives:
@@ -384,7 +384,7 @@ urls:
 - http://emachineshop.com/
 - http://www.emachineshop.com/machine-shop/templates/emscss/images/site/block_logo.gifin \
 
-"fenn's best guesses about emachineshop's equipment inventory"
+- "fenn's best guesses about emachineshop's equipment inventory"
 
 bulk shape creation:
 -  die caster
