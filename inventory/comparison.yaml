@@ -245,11 +245,6 @@ electronic components:
 -  motor dc 6-24V by 6s 1.4A qty 10 each
 -  motor dc 12v 110rpm gearhead qty 10
 
-
-
-
-
-
 urls:
 - http://techshop.ws/
 - http://techshop.ws/_templates/images/techshop_logo.png
@@ -257,17 +252,50 @@ urls:
 
 
 creation:
+-  3D Printer (Dimension SST)
 
 joining:
-
+-  Soldering Iron
+-  Sewing Machine, Industrial
+-  Plastic Seam Welder, Floor Mounted
+-  Plastic Welding Setup, Handheld
+-  Welder, MIG
+-  Welder, Oxygen Acetylene
+-  Welder, Spot
+-  Welder, Stick Arc
+-  Welder, TIG
 parting:  
+-  CNC Vinyl Cutter
+-  Chop Saw
+-  Horizontal Band Saw
+-  Vertical Band Saw
+-  Laser Cutter, Epilog (Helix 45)
+-  Throatless Shear, Bench Mounted
+-  Sheet Metal Shear, Power, 48in Wide
+-  Plasma Cutter, CNC, 4ft x 8ft
 
 deformation:
+-  Vacuum Forming Station, 24in x 24in 
+-  Box and Pan Brake
+-  English Wheel
+-  Planishing Hammer, Air-Powered
+-  Press Brake, 15-Ton Power
+-  Slip Roll, Power, 48in Widel
 
 removal:
+-  Disk Sander, Large, Pedestal Mounted
+-  Grinders, Pedestal Mounted
+-  Drill Press
+-  Lathe, Large Metal, with Tooling
+-  Milling Machine, Large, with Digital Readout and Tooling
+-  Milling Machine, Desktop, CNC
+-  Rotary Turret Punch
+
 
 surface:
-
+-  Sand Blasting Cabinet
+-  Paint Booth, Table-Top (10ft W x 5ft T x 2ft D)
+-  Powder Coating Station and Oven
 safety:
 
 materials:
@@ -275,107 +303,39 @@ materials:
 components:
 
 hand tools:
-
-measuring:
-
-fixtures:
-
-information:
-
-storage:
-
-
-
-- techshop ontology
-
-
-Abrasives:
--  Disk Sander, Large, Pedestal Mounted
--  Grinders, Pedestal Mounted
--  Sand Blasting Cabinet
-
-Arts and Crafts:
--  CNC Vinyl Cutter
-
-Automotive:
--  Floor Jack and Jack Stands
--  Motorcycle Lift
--  Transmission Jack
-
-Electronics:
--  Multimeter
--  Oscilloscope
--  Soldering Iron
-
-Fabrication:
--  Chop Saw
--  Drill Press
--  Horizontal Band Saw
--  Vertical Band Saw
-
-Fabrics and Sewing:
--  Sewing Machine, Industrial
-
-Hand Tools:
 -  Open and Box End Wrenches, Inch and Metric
 -  Socket Wrenches, Inch and Metric, and Ratchets
 
-Instruction:
--  Video Camcorder, Digital, 3 CCD
-
-Layout:
+measuring:
+-  Multimeter
+-  Oscilloscope
 -  Granite Surface Plate
 -  Height Gauges, Digital
-
-Machining:
--  Lathe, Large Metal, with Tooling
--  Milling Machine, Large, with Digital Readout and Tooling
-
-Measurement:
 -  Calipers, Digital
 -  Micrometer, Digital
 
-Plastics:
--  Plastic Seam Welder, Floor Mounted
--  Plastic Welding Setup, Handheld
--  Vacuum Forming Station, 24in x 24in 
 
-Prototyping:
--  3D Printer (Dimension SST)
--  Laser Cutter, Epilog (Helix 45)
--  Milling Machine, Desktop, CNC
+fixtures:
+-  Floor Jack and Jack Stands
+-  Motorcycle Lift
+-  Transmission Jack
+information:
+-  Video Camcorder, Digital, 3 CCD
+
+storage:
+-  lockers?
+
+
+
+
 
 Sheet Metal:
--  Box and Pan Brake
--  English Wheel
--  Planishing Hammer, Air-Powered
--  Press Brake, 15-Ton Power
--  Rotary Turret Punch
--  Sheet Metal Shear, Power, 48in Wide
--  Slip Roll, Power, 48in Widel
--  Throatless Shear, Bench Mounted
+
 
 Surface and Finishing:
--  Paint Booth, Table-Top (10ft W x 5ft T x 2ft D)
--  Powder Coating Station and Oven
+
 
 Welding:
--  Plasma Cutter, CNC, 4ft x 8ft
--  Welder, MIG
--  Welder, Oxygen Acetylene
--  Welder, Spot
--  Welder, Stick Arc
--  Welder, TIG
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -404,7 +364,6 @@ parting:
 -  fine blanking press
 -  die cutter  
 -  CNC shear
--  CNC turret punch
 -  wire EDM
 -  laser cutter
 -  plasma cutter
@@ -429,6 +388,7 @@ material removal:
 -  drill press
 -  sinker ECM
 -  sinker EDM
+-  CNC turret punch
 
 surface treatment:
 -  spray booth
