@@ -4,7 +4,7 @@ urls:
 - http://fab.cba.mit.edu/about/fab/inv.html
 
 
-creation:
+bulk shape creation:
 - oven Convection Toaster Oven/Broiler
 - moldmaking:
   -  silicone PDMS in Sylgard 184in 5.5lbs
@@ -251,8 +251,8 @@ urls:
 - http://techshop.ws/tools_and_equipment.html
 
 
-creation:
--  3D Printer (Dimension SST)
+bulk shape creation:
+-  FDM goo squirter (Dimension SST)
 
 joining:
 -  Soldering Iron
@@ -324,20 +324,6 @@ information:
 
 storage:
 -  lockers?
-
-
-
-
-
-Sheet Metal:
-
-
-Surface and Finishing:
-
-
-Welding:
-
-
 
 
 urls:
