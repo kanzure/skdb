@@ -6,25 +6,24 @@
   inventory:
     bulk shape creation:
     - oven Convection Toaster Oven/Broiler
-    - moldmaking:
-      - silicone PDMS in Sylgard 184in 5.5lbs
-      - mold compound in rub-r-moldin 5quarts
-      - resin low viscosity 2quarts
-      - resin hardener 2pints
-      - cloth fiberglass 38in x90 (yd? in?)
-      - silica colloidal 0.5gal
-      - filler phenolic micro-balloon 0.5gal
-      - filler wood flour 0.5gal
-      - filler cell-o-fill 0.5gal
-      - filler milled fibers 0.5gal
-      - filler graphite powder 12oz
-      - filler aluminum powder? 1lb
-      - resin coloring blue red 0.3lb qty 2 each
-      - plaster hydrostone 10gal
-      - plaster drystone 10gal
-      - urethane rubber for molding 20lbs
-      - instamold 7.5lbs
-      - flexwax 12.5lbs
+    - silicone PDMS in Sylgard 184in 5.5lbs
+    - mold compound in rub-r-moldin 5quarts
+    - resin low viscosity 2quarts
+    - resin hardener 2pints
+    - cloth fiberglass 38in x90 (yd? in?)
+    - silica colloidal 0.5gal
+    - filler phenolic micro-balloon 0.5gal
+    - filler wood flour 0.5gal
+    - filler cell-o-fill 0.5gal
+    - filler milled fibers 0.5gal
+    - filler graphite powder 12oz
+    - filler aluminum powder? 1lb
+    - resin coloring blue red 0.3lb qty 2 each
+    - plaster hydrostone 10gal
+    - plaster drystone 10gal
+    - urethane rubber for molding 20lbs
+    - instamold 7.5lbs
+    - flexwax 12.5lbs
     
     joining:
     - solder station analog 50W
