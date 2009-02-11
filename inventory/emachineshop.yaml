@@ -1,0 +1,83 @@
+- lab:
+  name: emachineshop
+  link: http://emachineshop.com/
+  logo: http://www.emachineshop.com/machine-shop/templates/emscss/images/site/block_logo.gif
+  comments: "fenn's best guesses about emachineshop's equipment inventory"
+  inventory:
+    bulk shape creation:
+    - die caster
+    - investment caster
+    - plastic extruder
+    - compression molder
+    - injection molder
+    - FDM goo squirter (reprap equivalent)
+    
+    joining:
+    - mig welder
+    - tig welder
+    - spot welder
+    - 
+    parting:
+    - blanking press
+    - fine blanking press
+    - die cutter  
+    - CNC shear
+    - wire EDM
+    - laser cutter
+    - plasma cutter
+    - waterjet
+    - photochemical milling machine
+    - metal band saw
+    - glass cutter
+    
+    deformation:
+    - drop forge
+    - stamping/drawing press
+    - vacuum former
+    - CNC sheet metal brake      
+    - CNC wire former
+    - coil winder
+    - 
+    removal:
+    - surface grinder
+    - jig borer
+    - CNC lathe
+    - CNC milling machine
+    - drill press
+    - sinker ECM
+    - sinker EDM
+    - CNC turret punch
+    
+    surface:
+    - spray booth
+    - sandblaster/beadblaster
+    - vibratory finisher
+    - buffing/polishing wheel
+    - metal brusher?
+    - powder coat oven
+    - plating/anodizing tanks
+    - silkscreen machine
+    
+    materials:
+    - Aluminum 
+    - Stainless Steel 
+    - Copper 
+    - Sheet Metal 
+    - Nylon 
+    - Steel 
+    - Acetal 
+    - Polycarbonate 
+    - Polystyrene 
+    - Acrylic 
+    - Plastic 
+    - Fiberglass 
+    - Brass 
+    - Carbon Fiber 
+    - Teflon 
+    - Titanium 
+    - ABS 
+    - PVC 
+    - Sterling Silver 
+    - Spring Steel 
+    - Bronze 
+    - Rubber 

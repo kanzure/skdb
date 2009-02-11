@@ -1,0 +1,97 @@
+- lab:
+  name: techshop
+  logo: http://techshop.ws/_templates/images/techshop_logo.png
+  link: http://techshop.ws/tools_and_equipment.html
+  inventory:
+    bulk shape creation:
+    - FDM goo squirter (Dimension SST)
+    
+    joining:
+    - Soldering Iron
+    - Sewing Machine, Industrial qty ??
+    - sewing machine CNC
+    - Plastic Seam Welder, Floor Mounted
+    - Plastic Welding Setup, Handheld
+    - Welder, MIG
+    - Welder, Oxygen Acetylene
+    - Welder, Spot
+    - Welder, Stick Arc
+    - Welder, TIG
+    parting:  
+    - CNC Vinyl Cutter
+    - Chop Saw
+    - Horizontal Band Saw
+    - Vertical Band Saw
+    - Laser Cutter, Epilog 45W
+    - laser cutter, epilog 25W
+    - Throatless Shear, Bench Mounted
+    - Sheet Metal Shear, Power, 48in Wide
+    - Plasma Cutter, CNC, 4ft x 8ft
+    - scroll saw
+    - radial arm saw
+    
+    
+    deformation:
+    - Vacuum Forming Station, 24in x 24in 
+    - Box and Pan Brake
+    - English Wheel
+    - Planishing Hammer, Air-Powered
+    - Press Brake, 15-Ton Power
+    - Slip Roll, Power, 48in Widel
+    - shrinker stretcher
+    
+    removal:
+    - Disk Sander, Large, Pedestal Mounted
+    - Grinders, Pedestal Mounted
+    - Drill Press
+    - Lathe, Large Metal, with Tooling qty 5
+    - Milling Machine, Large, with Digital Readout and Tooling qty 5
+    - Milling Machine, Desktop, CNC qty 2?
+    - Rotary Turret Punch
+    
+    
+    surface:
+    - Sand Blasting Cabinet qty 3
+    - Paint Booth, Table-Top (10ft W x 5ft T x 2ft D)
+    - Powder Coating Station and Oven
+    - anodizing setup
+    safety:
+    
+    materials:
+    - '"bin wall" of parts and materials?'
+    
+    components:
+    - '"bin wall" of parts and materials?'
+    
+    hand tools:
+    - Open and Box End Wrenches, Inch and Metric
+    - Socket Wrenches, Inch and Metric, and Ratchets
+    - probably every power tool, ever
+    measuring:
+    - Multimeter
+    - Oscilloscope
+    - Granite Surface Plate
+    - Height Gauges, Digital
+    - Calipers, Digital
+    - Micrometer, Digital
+    
+    
+    fixtures:
+    - Floor Jack and Jack Stands
+    - Motorcycle Lift
+    - Transmission Jack
+    information:
+    - Video Camcorder, Digital, 3 CCD
+    - brainstorming lounge
+    - wifi high speed internet
+    - computers
+    
+    storage:
+    - lockers?
+    - refrigerator
+    
+    power distribution:
+    - compressed air at every table
+    - 115V outlets at every table
+    - coffee fresh-brewed
+  
