@@ -1,46 +1,60 @@
-item {
-  item-id
-  item-entered-by (person)
-  name
-  description
-  quantity +-%
-  dimensions +-% (length units i.e. 1"x0.01"xQty")
-  functional-units +-% (farad volt amp watt cfm liter)
-  mass +-% per unit
-  material (+-% confidence)
-  variable (color grit flavor tamano package)
-  related-items (spare-parts project set)
-  tags (category subcategory project)
-  location (storage bench loaned-to best-guess)
-  condition (scrap fixable rusty moldy dusty hacked used new assimilated waxed polished)
-  allocation-status (dependency project plz-ask for-grabs junk)
-  circulation-status (storage in-use loaned missing)
-  manufacturer-number
-  datasheet or manual or msds
-  photograph (actual representative stock)
-  cad-file
-}
+item:
+  item-id:
+  item-entered-by: (person)
+  name:
+  description:
+  quantity: +-% integer or units
+  dimensions:
+    length: +-%
+    width: 
+    height:
+    thickness:
+    diameter:
+    radius:
+    qty:
+  parameters: +-% (farad volt amp watt cfm liter)
+    - hmmm
+    - is this really any different from dimensions?
+    - maybe qty should be a length parameter
+  mass: +-% per unit
+  material: (+-% confidence)
+  variable: (color grit flavor tamano package)
+  related-items: (spare-parts project set)
+  tags: (category subcategory project)
+  location: (container-ID location-ID coordinates unknown)
+  condition: (scrap fixable rusty moldy dusty hacked used new assimilated waxed polished)
+  allocation-status: (dependency project plz-ask for-grabs junk)
+  circulation-status: (storage in-use loaned missing)
+  manufacturer-number:
+  datasheet or manual or msds:
+  photograph: (actual representative stock)
+  cad-file: filename or url
 
-(button add # to qty)
-(button subtract 1)
 
-order contains multiple purchases
+GUI:
+- (button add # to qty)
+- (button subtract 1)
 
-purchase {
-  item-id
-  purchase-id
-  place-purchased (vendor id)
-  price-purchased
-  date-purchased 
-  purchased-by (person)
-}
+order:
+- contains multiple purchases
 
-availability {
-  item-id
-  vendor-id
-  vendor-number
-  vendor-url phone snail etc
-  vendor-price ea.
-  vendor-min-qty
-} 
+purchase: 
+  item-id:
+  purchase-id:
+  place-purchased: (vendor id)
+  price-purchased:
+  date-purchased: 
+  purchased-by: (person)
+
+availability: 
+  item-id:
+  vendor-id:
+  vendor-number: (the catalog number)
+  vendor-address: 
+    - url 
+    - phone 
+    - snail etc
+  vendor-price: ea.
+  vendor-min-qty:
+ 
 
