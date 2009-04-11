@@ -1,0 +1,19 @@
+PCR can be carried out by hand or by machine.
+
+process is what happens to matter, energy, and information
+
+sequence is a set of steps that are performed by a machine in order to 
+carry out a process
+
+the intent of PCR is to amplify a section of DNA; this is the 
+functionality of the PCR process
+
+a different sequence of steps are performed by a thermocycler versus a 
+human with water baths, but they result in the same process, as long as 
+the process parameters are the same (temperatures, primers, dwell time)
+
+the parameters to the process are read by some computer aided 
+manufacturing software (CAM) and transformed into a protocol, which, 
+depending on the target (human assisted or pure automation) are written 
+as a sequence of steps in either natural language (english) or some 
+specific machine control language.
