@@ -110,5 +110,11 @@ What would a more formal API for specifying IO file format types? You would have
 
 So once we have the file format database, we can then start making up our specifications for each of the file formats plus let [[autogenix]] download new scripts to interpret new versions of the files whenever necessary. Then, we just throw up the packages on the wiki, with file format specifications at the top (kind of like the XHTML version specification number at the top of w3c valid HTML docs). The wiki does not need separate namespaces for different aspects of packages, just solid, explicit, meta-information on the relationship between two pages, i.e. the page [[file.pack]] might cite some reference information which can be downloaded at [[filepack-information.html]] -- and instead of just interpreting the file extension (the previous method), read the file version/format specs to go lookup software that can handle that sort of data. When we want to compress a package and all of its contents, we can just read the [[file.pack]] page and then scan its references and 'links' to other packages and download it all, so it's not like everything will be all over the place, as long as we do routine backups and mirroring etc. -- [[User:71.41.149.62|71.41.149.62]] 08:43, 9 April 2008 (CDT)
 
+
+
+= 2008-04-13: ikiwiki =
+
+For the wiki+versioning system, see [http://ikiwiki.info/ ikiwiki] and [http://ikiwiki.info/rcs/git/ git]. Now on to the package manager, [[autogenix]]. The linux package managers are usually broken into two main tools: dpkg for [http://debian.org/ debian] or emerge for [http://gentoo.org/ gentoo], which are the low-level packaging tools for dealing with packages on a client/user machine. Then, there are interfaces like apt, which connect to package repositories (as attained by sources.list) to get all of the metadata on all of the packages at once (it's not much data, so it's not that much of a load on the system - 10 MB compressed?).
+
 </textarea>
 
