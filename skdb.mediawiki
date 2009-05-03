@@ -92,6 +92,8 @@ tags tags tags! -fenn
 
 : Sure. -- [[User:71.41.149.62|71.41.149.62]] 08:43, 9 April 2008 (CDT)
 
+:: See [http://debtags.alioth.debian.org/ debtags] and a [http://wiki.debian.org/DebTags wiki page on debtags]. -- [[User:Kanzure|Kanzure]] 10:35, 13 April 2008 (CDT)
+
 
 
 = 2008-04-09: A pretty good bet on what the start can be =
