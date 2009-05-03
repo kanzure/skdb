@@ -3,12 +3,36 @@
 = Chasis / framework / platform =
 Let's say 10-by-10 feet or there-abouts. 2D platform. 
 
+assuming solar power as the primary energy source, we will need more than that for the collector if we want to do sintering of large ceramic pieces or lots of electricity (solar steam or stirling)   
+  
+= Behavior =   
+although one machine can do everything on its own, they will be more productive in groups, each adapting to run one single process in a continuous manner, trading products and refined materials. movement happens mainly to reduce population pressure and when resources become scarce.
+
 = Mechanical arm / manipulator =
+actuators take a supply of power and turn it into controlled motion:   
+*rotary actuators   
+#electric motors   
+##commutated field coil   
+##switched reluctance (requires iron)   
+##permanent magnets (requires other rare elements)   
+##homopolar motor (extremely poor efficiency)   
+##piezo ceramic motors [http://www.newscaletech.com/squiggle_overview.html]   
+#compressed air motors   
+#steam motors   
+ 
+*linear actuators   
+#piezo inchworm linear stepper[http://en.wikipedia.org/wiki/Inchworm_motor]   
+#hydraulic cylinders   
+#pneumatic cylinders   
+#air muscles   
+#fluid muscles
 
 = Resources =
 * direct sunlight
 * clay (aluminum magnesium silicate)
 * sand (silica)
+* salt (sodium chloride)
+
 = refined materials and their uses =
 *concentrated sunlight
 **moderate temperatures
@@ -18,8 +42,8 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 ***brazing, soldering
 **extremely high temperatures
 ***chemical decomposition
-****aerogels
-*****ultra high purity glass (requires silicone)
+****aerogels (requires silicone)
+*****ultra high purity glass
 ***sputtering
 ***welding
 
@@ -42,13 +66,19 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 * aluminum (requires hydrochloric acid, clay)
 **http://openfarmtech.org/index.php?title=Aluminum_Extraction_From_Clays
 **wiring, circuit board cladding
+**foil
+***gas storage bags
+***shims
+**electrolysis electrodes? (will aluminum degrade faster than we can make it?)
 ** mirrors
 **vacuum tube getter
 
 *chlorosilanes (requires: hydrochloric acid, silicon)
 **solvents
 
-* silicone rubber and silicone grease (requires: chlorosilanes, water)
+*sodium silicate 
+
+* silicone rubber and silicone grease (requires: chlorosilanes, water, carbon?)
 ** electrical insulation
 ** gaskets
 ** seals (silicone has high gas permeability)
@@ -65,12 +95,14 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 **instrument springs?
 
 *fiber glass
+**thermal insulation
 **paper - lightly sintered, stiff but not brittle
-**tough composite (silicone mash)
 ***circuit boards
+**lumber - pultruded sintered bundles
 **rope, string
 ***cloth
-****intermediate composite
+****electrical insulation
+****intermediate composite (requires: silicone resin)
 
 *ultrapure silicon (requires: chlorosilanes)
 
