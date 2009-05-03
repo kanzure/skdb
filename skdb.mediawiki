@@ -228,6 +228,10 @@ papercraft is generalizable and not limited to regular polyhedrons, although aut
 
 
 
+* 2008-12-08: Please also see the [http://groups.google.com/group/openmanufacturing open source manufacturing] mailing list posts on [http://groups.google.com/group/openmanufacturing/browse_thread/thread/aa37d3d4badd1bb6/0b326bd815e465f1?lnk=gst&amp;q=treemaker#0b326bd815e465f1 origami], and [http://groups.google.com/group/openvirgle/msg/99b9855310a9e00f the old openvirgle-origami post].
+
+
+
 = 2008-05-18: Formalizing the reuslts =
 
 So using [http://blender.org/ blender] anywhere in a todo list is generally a bad idea because of the well-known [http://www.google.com/search?client=opera&amp;rls=en&amp;q=blender+steep+learning+curve&amp;sourceid=opera&amp;ie=utf-8&amp;oe=utf-8 ridiculously steep learning curve]. So, ideally, just go find some [[3D models]] that you want to play with, then run the unfold.py script (possibly in blender's [http://geheim.blender.org/forum/viewtopic.php?t=6242&amp;view=next batch mode]). Then dump the 3D models, 2D unfolded meshes (SVG) into a [http://git.or.cz/ git repository], and throw in some [http://python.org/ python] to specify the class in a metadata file, like so (but modified to fit the needs of pepakura) (it's from [[2008-05-12]]):
