@@ -180,5 +180,11 @@ So once we have the file format database, we can then start making up our specif
 
 For the wiki+versioning system, see [http://ikiwiki.info/ ikiwiki] and [http://ikiwiki.info/rcs/git/ git]. Now on to the package manager, [[autogenix]]. The linux package managers are usually broken into two main tools: dpkg for [http://debian.org/ debian] or emerge for [http://gentoo.org/ gentoo], which are the low-level packaging tools for dealing with packages on a client/user machine. Then, there are interfaces like apt, which connect to package repositories (as attained by sources.list) to get all of the metadata on all of the packages at once (it's not much data, so it's not that much of a load on the system - 10 MB compressed?).
 
+
+
+= Integrating this with debtorrents =
+
+* [http://advogato.org/article/972.html Notes on debtorrent, revamping the meta-repository infrastructure]
+
 </textarea>
 
