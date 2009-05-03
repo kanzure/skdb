@@ -1,0 +1,18 @@
+2008-03-22
+
+= Chasis / framework / platform =
+Let's say 10-by-10 feet or there-abouts. 2D platform. 
+
+= Mechanical arm / manipulator =
+
+= Resources =
+* clay is aluminum magnesium silicate
+* aluminum
+* silicon
+* rubber
+
+= Components =
+* insulation
+* gaskets
+* seals
+* lubrication
