@@ -62,7 +62,7 @@ Part of the database may contain [[biobricks]]: genes that can be combined to do
 
 ** Advanced: [[airplane]], [[automobile]], [[spaceship]], [[computer]] ([[microprocessor]] -- see [http://opencores.org OpenCores]), ...
 
-* Connect the pieces together into functional configurations with &quot;circuit builders&quot; like [[BioBench]]
+* Connect the pieces together into functional configurations with &quot;circuit builders&quot; like [[BioBench]], [http://tinkercell.com tinkercell], [http://celldesigner.org celldesigner.org], etc.
 
 * '''Note''' that it would be ''nice'' to start with the [[elements]] and specify from the ground up where to go get them (such as the data on [http://mindat.org/ mindat.org]), and then how to process them with the materials around there, but we ''must'' avoid the infinite regress in trying to find everything back down to the source because there's a world of resources and materials already available (though poorly mapped) that can be used to boostrap various projects. So each project, component, part, tool is more like a node that aggregates information about that specific object/concept/idea, while also allowing an interface for simulation or 'making' a final project, or specifications on how to make it if it's generally not available; i.e., this is all 'blackboxed' but with information on what to do and what approaches to take if something is unavailable, not localized, etc.
 
