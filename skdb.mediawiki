@@ -90,6 +90,14 @@ Part of the database will contain [[biobricks]]: genes that can be combined to d
 
 ** agx-make - considering fablab facilities (/dev stuff), configuration, layout, orientations, inventory, number of humans available, etc., generate an overall recipe for the entire lab to execute and make the product ('go command' should be avoidable via passing a parameter)
 
+*** Generating the programming for the machinery will be somewhat high-level: this would not be an immediate compiling down to &quot;turn the servo&quot; sort of code, but rather something that each of the machines with their pre-installed firmware can understand. 
+
+*** Generating the programming in the first place: run through each of the (.skdb) files in the overall design (itself a .skdb), load up the modules geared towards interpreting these variations on (.skdb) (i.e., some have particular data formats that can only be parsed in certain ways), assemble a list of all code (within the packages) that is to be called/evaluated. The code within each of the packages should 'call a standard API' to make things happen. This API will abstract the actual, physical hardware away from the (.skdb) python scripts so that a variety of configurations can be used without having to go in by hand and making hundreds of versions of (.skdb) internal python scripts. 
+
+**** standard-API: all (.skdb) scripts will know how to call specific functions and actions of the machinery, and then the 'print server' will figure out the relationship between those functions and the actual drivers and /dev/ while also providing garbage collecting (so that wires aren't tripped over and so on).
+
+**** Alternative to the standard-API idea: what if the python scripts in (.skdb) files printed out code, and this code could then be compiled for the specific fablab config that the user has?
+
 * Note: whether or not a bug report is from agx-sim, agx-make, or autospec is irrelevant; all of this data should be fed back into skdb. Especially user-reports, bug reports, usecases, feedback, etc.
 
 
