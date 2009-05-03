@@ -10,12 +10,34 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 * clay is aluminum magnesium silicate
 
 = refined materials and their uses =
+
+*ceramic (AlMgSiO4)
+**circuit board
+**high grade mechanics
+
 * aluminum
 **http://openfarmtech.org/index.php?title=Aluminum_Extraction_From_Clays
-**wiring, mirrors
+**wiring, circuit board cladding
+** mirrors
 
 * silicone rubber and silicone grease
 ** insulation
 ** gaskets
 ** seals
 ** lubrication
+**springs
+
+*bulk glass
+**mirrors
+**low-grade mechanics
+
+*fiber glass
+**tough composite (silicone mash)
+***circuit boards
+**rope, string
+***cloth
+****intermediate composite
+
+*silicon
+
+(requires carbon)**high temperature ceramic (SiC)}}
