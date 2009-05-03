@@ -13,12 +13,15 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 
 *raw ceramic (AlMgSiO4)
 **circuit board
-**high grade mechanics
+**low toughness mechanics
 **medium temperature refractory
 
 *alumina ceramic
 **high temperature refractory
-**high grade mechanics (bearings)
+***glass molds
+***aluminum extrusion molds
+**high hardness and strength mechanics
+***bearings
 **abrasives, cutting tools
 
 * aluminum
