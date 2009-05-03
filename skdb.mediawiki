@@ -198,9 +198,15 @@ Current upper limit of the technology: http://www.bertsimons.nl/zenphoto/paperwo
 
 fenn's initial pepakura attempt:
 
+
+
 [[Image:25-hedron.png]]
 
 [[Image:DCP_0804.png]]
+
+
+
+In this case, the paper torus is the artifact, pepakura is the process used to make it, and a 2d printer, paper, scissors, tape, are the build-time requirements. Unfortunately a paper torus doesnt have much functionality without further modification, such as filling with foam, applying fiberglass, or embedding other functional components.
 
 </textarea>
 
