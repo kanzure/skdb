@@ -2,13 +2,21 @@ cols='80' >[[Image:Skdb.png]]
 
 
 
-The '''s'''ocietal engineering '''k'''nowledge '''d'''atabase ([[skdb]]) is kind of like aptitude, yum, [http://cpan.org/ CPAN], rpm, etc., in that it hosts modules ([[blackbox]]es) for projects, whether digital or physical. These project packages include simulation tools for tweaking, software packages to rewrite the package for a particular use, explicit well-documented links and dependencies to other projects, etc. Skdb started as a need for [[self-replication]]: the idea is to come up with as much social knowledge as possible (stuff that can't be derived from first principles on the spot) and then connect all of the components together and fish out the Hamiltonian paths.
+Engineering knowledge is learned information about how the world works and ways to make it do what you want. Social or societal knowledge is the set of all knowledge in a society. Therefore, societal engineering knowledge is the subset of a society's knowledge about how to make the world do what it wants. 
+
+
+
+Specialized social networks seem to be easier to create and gain momentum under amplifying effect of the internet. We can aggregate the collective effort of hundreds of individuals to build a large knowledge base, but making use of that knowledge is difficult because it has no structure or well-defined relation to other knowledge.
+
+
+
+The '''s'''ocietal engineering '''k'''nowledge '''d'''ata'''b'''ase ([[skdb]]) is a group of programs designed to aggregate, store, present, and process clusters of engineering knowledge, described as 'packages' in analogy to linux software management tools like [http://en.wikipedia.org/wiki/Advanced_Packaging_Tool APT], yum, [http://cpan.org/ CPAN], rpm, etc.. These project packages might include simulation and visualization tools for tweaking, development tools to rewrite data about the package, explicit well-documented links to other projects, etc. It is kind of like , in that it hosts modules ([[blackbox]]es) for engineering projects, whether digital or physical.  Skdb started as a method for finding a feasible [[self-replication]] process: the idea is to come up with as much social knowledge (facts that can't be derived from first principles) as possible, throw it in a pot, connect all of the possibilities together, and fish out the closed cycles. (Hamiltonian paths?)
 
 
 
 
 
-To continue: just as you cannot search for software based on functionality, you cannot search for other tools based on functionality, except in as much as the language and social context allows you to express similiar ideas that others have had before ([[natural languages]] have allowed this to some extent). The success of APT and friends comes not from any magical software search functionality, but rather in the wide-spread social diffusion and the easy accessibility to get new project components, to play with them, modify them and implement them on the spot. Implementation for physical projects will become much easier when we have [[self-replication]] and [[fabbers]] like RepRap, hextatic, etc., and in the mean time we have [[hu]]mans who can sufficiently track down materials and tools (by following specific instructions) to make the [[blackbox]] that they need for a project. 
+To continue: just as you cannot search for software based on functionality, you cannot search for other tools based on functionality, except in as much as the language and social context allows you to express similar ideas that others have had before ([[natural languages]] have allowed this to some extent). The success of APT and friends comes not from any magical software search functionality, but rather in the wide-spread social diffusion and the easy accessibility to get new project components, to play with them, modify them and implement them on the spot. Implementation for physical projects will become much easier when we have [[self-replication]] and [[fabbers]] like [http://reprap.org RepRap], [http://fennetic.net/machines/hextatic hextatic], etc., and in the mean time we have [[hu]]mans who can sufficiently track down materials and tools (by following specific instructions) to make the [[blackbox]] that they need for a project. 
 
 
 
