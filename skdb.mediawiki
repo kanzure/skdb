@@ -2,7 +2,7 @@ cols='80' >[[Image:Skdb.png]]
 
 
 
-''Distributed apt-get for real stuff!''
+''apt-get for real stuff!''
 
 
 
