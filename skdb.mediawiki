@@ -78,6 +78,8 @@ Part of the database will contain [[biobricks]]: genes that can be combined to d
 
 ** autospec - validates the units for the packages, validates the yaml, gets additional python plugins if necessary when the yaml specifies some weird class that is not yet installed.
 
+*** Are the 'python plugins' (that specify additional classes) to be provided in package (.skdb) files? tentatively: yes. Then why wouldn't this be specified in the metadata for the skdb file as a 'dependency'? 
+
 ** agx-get - gets packages from the database, gets all metadata (local user cache in ~/.skdb/mimedb/ or something), allows the user to search for packages, uses a sources.list type file to connect to skdb or other metarepo installations, torrent functionality would be nice, and must be able to process the metadata files and give the user options to download particular parts (or everything) related to a .skdb file -- this will typically involve downloading a new skdb package in the first place in order to understand the skdb file in its entirety (for example, different types of packages will most likely have different types of metadata specified, different types of resources, with data worth parsing on the user-end for options related to seeking out the package-contents).
 
 *** disambiguator - lets user specify what sort of file formats need to be processed, what the input/outputs have to be, and finds puzzle pieces that match these specs
