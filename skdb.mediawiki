@@ -2,6 +2,10 @@ cols='80' >[[Image:Skdb.png]]
 
 
 
+''Distributed apt-get for real stuff!''
+
+
+
 Engineering knowledge is learned information about how the world works and ways to make it do what you want. Social or societal knowledge is the set of all knowledge in a society. Therefore, societal engineering knowledge is a society's knowledge about how to make the world do what it wants. 
 
 
@@ -18,7 +22,7 @@ Physically building projects will become much easier when we have [[fabbers]] li
 
 
 
-Skdb started as a method for finding a feasible [[self-replication]] process: the idea is to come up with as much social knowledge (facts that can't be derived from first principles) as possible, throw it in a pot, connect all of the possibilities together, and fish out the closed cycles. (Hamiltonian paths?)
+Skdb started as a method for finding a feasible [[self-replication]] process: the idea is to come up with as much social knowledge (facts that can't be derived from first principles) as possible, throw it in a pot, connect all of the possibilities together, and fish out the closed cycles.
 
 
 
@@ -30,7 +34,7 @@ Imagine the possibilities for project design now: using a database, you can down
 
 
 
-Part of the database will contain [[biobricks]]: genes that can be combined to do a particular task. Although it is not computationally tractable to simulate or predict all possible interactions between components in an [[amorphous computing]] system, you can specify well understood mechanisms that have been shown to work, and use techniques that limit crosstalk to narrow the search space.
+Part of the database may contain [[biobricks]]: genes that can be combined to do a particular task. Although it is not computationally tractable to simulate or predict all possible interactions between components in an [[amorphous computing]] system, you can specify well understood mechanisms that have been shown to work, and use techniques that limit crosstalk to narrow the search space.
 
 
 
@@ -40,9 +44,9 @@ Part of the database will contain [[biobricks]]: genes that can be combined to d
 
 * General client (hack Debian APT?)
 
-** fenn's suggested name for the package manager: [[autogenix]].
+** fenn's suggested name for the technology distribution: [[autogenix]].
 
-* Server daemon process
+* Server daemon process, git presentation layer
 
 * Need to get a number of servers to start hosting copies of the database
 
@@ -120,7 +124,7 @@ All packages are required to have their own method of doing 'unit tests' to test
 
 
 
-
+''caution: massive bryan text block below''
 
 You generally cannot do a single program that can do everything. Same with file formats. You do not want OSCOMAK/skdb to become a giant object-oriented database of bureaucracy. Instead, you need to be able to take creative license at all of the different nodes/packages, and from there take things where you need it to go. Each package will be a wiki page, much like the CPAN pod entries for perl modules. These entries would specify where to get information and what packages of PDFs to read (or links and pages cached from the web, anything really). Then, there will also be a readout of common programs that are used with that package or relations to other programs. This would be like apt-cache-search, except a full ontology can be given, plus guides for understanding and interpreting the ontologies so that people can find the software that they need. It may be possible to one day have automated software interpret and parse the ontologies to get to the programs they need, but in the mean time we can just let people assemble the software packages together. This is much like &quot;coming to terms with the authors [of a paper]&quot; (a quote I found in a paper I was reading a few weeks ago re: how to read papers). Once a programmer has been sufficiently introduced into a topic, he can then proceed to immediately take advantage of the available software that is mentioned in the package file. Therefore, the file format is more like a way to organize information and knowledge and mention where it was discovered, references, links, ways to get ahold of the responsible individuals, as well as an easy way to query for related software, and then allowing the person to interpret the (and I emphasize) ''natural language'' descriptions of the software packages in order to find the component he needs. These software packages will do various things, depending on the package. For example, in [[computational fluid dynamics]] there are software packages that can do things like [[finite element analysis]] or [[fluid flows]] etc. Those would be examples of programs to add. Their relation to the subject is that they are given a [[mesh file]] and then they take this data and apply a set of specifications [there does not seem to be a standardized format for this yet, so this is perhaps a poor example, but whatever], and then do a simulation, and the simulation can be automatically interpreted if necessary (i.e., does it fall within the mission parameters for the use of the overall system that the programmer is designing?). 
 
@@ -172,13 +176,13 @@ What would a more formal API for specifying IO file format types? You would have
 
 
 
-So once we have the file format database, we can then start making up our specifications for each of the file formats plus let [[autogenix]] download new scripts to interpret new versions of the files whenever necessary. Then, we just throw up the packages on the wiki, with file format specifications at the top (kind of like the XHTML version specification number at the top of w3c valid HTML docs). The wiki does not need separate namespaces for different aspects of packages, just solid, explicit, meta-information on the relationship between two pages, i.e. the page [[file.pack]] might cite some reference information which can be downloaded at [[filepack-information.html]] -- and instead of just interpreting the file extension (the previous method), read the file version/format specs to go lookup software that can handle that sort of data. When we want to compress a package and all of its contents, we can just read the [[file.pack]] page and then scan its references and 'links' to other packages and download it all, so it's not like everything will be all over the place, as long as we do routine backups and mirroring etc. -- [[User:71.41.149.62|71.41.149.62]] 08:43, 9 April 2008 (CDT)
+So once we have the file format database, we can then start making up our specifications for each of the file formats plus let [[agx-get]] download new scripts to interpret new versions of the files whenever necessary. Then, we just throw up the packages on the wiki, with file format specifications at the top (kind of like the XHTML version specification number at the top of w3c valid HTML docs). The wiki does not need separate namespaces for different aspects of packages, just solid, explicit, meta-information on the relationship between two pages, i.e. the page [[file.pack]] might cite some reference information which can be downloaded at [[filepack-information.html]] -- and instead of just interpreting the file extension (the previous method), read the file version/format specs to go lookup software that can handle that sort of data. When we want to compress a package and all of its contents, we can just read the [[file.pack]] page and then scan its references and 'links' to other packages and download it all, so it's not like everything will be all over the place, as long as we do routine backups and mirroring etc. -- [[User:71.41.149.62|71.41.149.62]] 08:43, 9 April 2008 (CDT)
 
 
 
 = 2008-04-13: ikiwiki =
 
-For the wiki+versioning system, see [http://ikiwiki.info/ ikiwiki] and [http://ikiwiki.info/rcs/git/ git]. Now on to the package manager, [[autogenix]]. The linux package managers are usually broken into two main tools: dpkg for [http://debian.org/ debian] or emerge for [http://gentoo.org/ gentoo], which are the low-level packaging tools for dealing with packages on a client/user machine. Then, there are interfaces like apt, which connect to package repositories (as attained by sources.list) to get all of the metadata on all of the packages at once (it's not much data, so it's not that much of a load on the system - 10 MB compressed?).
+For the wiki+versioning system, see [http://ikiwiki.info/ ikiwiki] and [http://ikiwiki.info/rcs/git/ git]. Now on to the package manager, [[agx-pkg]]. The linux package managers are usually broken into two main tools: dpkg for [http://debian.org/ debian] or emerge for [http://gentoo.org/ gentoo], which are the low-level packaging tools for dealing with packages on a client/user machine. Then, there are interfaces like apt, which connect to package repositories (as attained by sources.list) to get all of the metadata on all of the packages at once (it's not much data, so it's not that much of a load on the system - 10 MB compressed?).
 
 
 
