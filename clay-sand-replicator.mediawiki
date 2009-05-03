@@ -89,6 +89,8 @@ actuators take a supply of power and turn it into controlled motion:
 **solvents
 
 *sodium silicate 
+**concrete
+**temporary molds
 
 * silicone rubber and silicone grease (requires: chlorosilanes, water, carbon?)
 ** electrical insulation
