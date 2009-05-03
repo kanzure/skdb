@@ -56,6 +56,34 @@ Part of the database will contain [[biobricks]]: genes that can be combined to d
 
 
 
+= todo? =
+
+* skdb
+
+** ikiwiki
+
+** git
+
+** later: torrent distribution services
+
+* metarepo website
+
+** This is simply where we describe the overall system architecture; might be doable in a meta namespace on the ikiwiki installation.
+
+* userspace
+
+** autospec - validates the units for the packages
+
+** agx-get - gets packages from the database, gets all metadata
+
+** disambiguator - lets user specify what sort of file formats need to be processed, what the input/outputs have to be, and finds puzzle pieces that match these specs
+
+** agx-sim - the simulator
+
+** agx-make - considering fablab facilities (/dev stuff), configuration, layout, orientations, inventory, number of humans available, etc., generate an overall recipe for the entire lab to execute and make the product ('go command' should be avoidable via passing a parameter)
+
+
+
 = Unit testing =
 
 All packages are required to have their own method of doing 'unit tests' to test each of the features. In a project, the programmer should be able to call upon an overall test of all of the units working together (pipelined and whatnot).
