@@ -11,9 +11,15 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 
 = refined materials and their uses =
 
-*ceramic (AlMgSiO4)
+*raw ceramic (AlMgSiO4)
 **circuit board
 **high grade mechanics
+**medium temperature refractory
+
+*alumina ceramic
+**high temperature refractory
+**high grade mechanics (bearings)
+**abrasives, cutting tools
 
 * aluminum
 **http://openfarmtech.org/index.php?title=Aluminum_Extraction_From_Clays
