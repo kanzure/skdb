@@ -90,5 +90,25 @@ There are two main components that I am particularly concerned about: (1) formal
 
 tags tags tags! -fenn
 
+: Sure. -- [[User:71.41.149.62|71.41.149.62]] 08:43, 9 April 2008 (CDT)
+
+
+
+= 2008-04-09: A pretty good bet on what the start can be =
+
+Okay, I think I know what to start with. The trick is the file formats and specifications for each type of file format. You know the websites where they list file format types and what programs might be used to work with them? Same thing here. Autogenix would be used to download new meta-information on file formats for various programs, with backlinks and references to the programs in the local database. Yesterday I was figuring that an interesting way to implement this would be to include a new way to specify file format IO in the parameters for programs. For example, here's the conventional approach to telling people about the parameters to your program (below). This may be known as '''shell wrapping''' (what I want). What's currently out there are [http://perldoc.perl.org/Pod/Usage.html usage statements (pod2usage here)]. Yeah, the pod2usage module is not enough, it's not formal enough, it's pretty basic and based off of natural language processing (look at the examples on that page) -- instead, we need to formalize this and have a database for managing file formats and such information. For Ruby, [http://cmdline.rubyforge.org/ the cmdline tool] might be the solution - but it looks like more natural language stuff. Okay -- so I can't find any specific examples of it hardcoded, but it's everywhere, and it's not formally identified as such (I had to go start the Wikipedia article on [http://en.wikipedia.org/wiki/Usage_message usage messages]. But a good example might be [http://curl.haxx.se/docs/manpage.html cURL's help page] or [http://en.wikipedia.org/wiki/Manual_page_(Unix) any man page] really. 
+
+
+
+
+
+What would a more formal API for specifying IO file format types? You would have to reference a centralized database, maybe a [[DTD]] [http://en.wikipedia.org/wiki/DTD] (what's that about?). So this will end up being a simple library or module to include while programming, and then instead of hardcoding some natural language to specify the input parameters, you reference the database, and then you would output a formal file when somebody passes the -h or --help parameter to your program. Plus you'd submit an entry to the database so that there's a reference to your program. You would also tag and write a description of the program (which would have its own file format, a simple XML-like method). The calls to the API should be simple. They should not be runtime calls, but rather compile-time calls --- the idea is that you construct the XML output specifying acceptable IO formats that the current program uses, right? So in this sense it may be silly to do it at compile-time since you may as well open up another file and just make a new file for specifying the data types expected to be passed (this is not the same thing as &quot;error, expected integer and got (noninteger) object instead&quot; - there are certain integer numbers that can be of a certain type, and bash and other shells are not 'typed' systems where you see &quot;error, wget output is not the same as cat output&quot; or whatever). So this would be a secondary tool to run when compiling your projects -- something that could easily be called in a makefile. This does not solve the code-documentation problem ([http://heybryan.org/bookmarking.html]) [not that it was supposed to in the first place]. 
+
+
+
+
+
+So once we have the file format database, we can then start making up our specifications for each of the file formats plus let [[autogenix]] download new scripts to interpret new versions of the files whenever necessary. Then, we just throw up the packages on the wiki, with file format specifications at the top (kind of like the XHTML version specification number at the top of w3c valid HTML docs). The wiki does not need separate namespaces for different aspects of packages, just solid, explicit, meta-information on the relationship between two pages, i.e. the page [[file.pack]] might cite some reference information which can be downloaded at [[filepack-information.html]] -- and instead of just interpreting the file extension (the previous method), read the file version/format specs to go lookup software that can handle that sort of data. When we want to compress a package and all of its contents, we can just read the [[file.pack]] page and then scan its references and 'links' to other packages and download it all, so it's not like everything will be all over the place, as long as we do routine backups and mirroring etc. -- [[User:71.41.149.62|71.41.149.62]] 08:43, 9 April 2008 (CDT)
+
 </textarea>
 
