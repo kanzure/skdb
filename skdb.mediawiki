@@ -22,11 +22,7 @@ Skdb started as a method for finding a feasible [[self-replication]] process: th
 
 
 
-
-
-To continue: just as you cannot search for software based on functionality, you cannot search for other tools based on functionality, except in as much as the language and social context allows you to express similar ideas that others have had before ([[natural languages]] have allowed this to some extent). &lt;- i have no idea what this says [[User:Fenn|Fenn]] 19:41, 18 April 2008 (CDT)
-
-
+Users must know how to explain the functionality they want in generally agreed-upon language, in order to search for existing projects and avoid duplicated effort.
 
 
 
