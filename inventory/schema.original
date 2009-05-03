@@ -1,0 +1,53 @@
+form/tab completion for previous entries
+yaml save format?
+ID's suck!
+
+supplier:
+  ID
+  physical address/directions
+  url
+
+order : 
+  ID
+  date: "2008 08 27"
+  agent: ben
+  supplier: ID
+  order URL
+  shipping method
+  shipping fee
+  other fees
+  total price
+  dynamic total of boughts
+  purchase list
+
+bought:
+  ID
+  link to relevant item
+  price
+  url
+  backlink to order
+  
+item:
+  ID
+  1 line description
+  comment
+  link to manual/datasheet
+  picture
+  quantity (units)
+  allocation status (freeforall preferred reserved allocated)
+  backlinks to boughts
+  backlink to container
+
+container:
+  ID
+  type
+  name/description
+  shelf
+    shelf coordinates
+
+shelf:
+  ID
+  name/description
+  global coordinates
+  directions to location
+  
