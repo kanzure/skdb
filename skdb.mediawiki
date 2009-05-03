@@ -12,7 +12,7 @@ Much of this discussion has taken place in irc.freenode.net's #hplusroadmap, as 
 
 
 
-Engineering knowledge is learned information about how the world works and ways to make it do what you want. Social or societal knowledge is the set of all knowledge in a society. Therefore, societal engineering knowledge is a society's knowledge about how to make the world do what it wants. 
+Engineering knowledge is learned information about how the world works and ways to make it do what you want or need. Social or societal knowledge is the set of all knowledge in a society. Therefore, societal engineering knowledge is a society's knowledge about how to make the world do what it wants.  This is part of the literary construct involved in the negotiation of reality constructs.
 
 
 
