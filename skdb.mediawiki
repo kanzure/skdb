@@ -14,7 +14,7 @@ The '''s'''ocietal engineering '''k'''nowledge '''d'''ata'''b'''ase ([[skdb]]) i
 
 
 
-Implementation for physical projects will become much easier when we have [[self-replication]] and [[fabbers]] like [http://reprap.org RepRap], [http://fennetic.net/machines/hextatic hextatic], etc., but in the mean time we have [[hu]]mans who can track down materials and tools (by following specific instructions) to make the particular [[blackbox]] that they need for a project. The point to remember is that computers cannot pull together apparently unrelated concepts to make a new functioning whole, but there are many humans eager for an opportunity to contribute just this sort of knowledge.
+Physically building projects will become much easier when we have [[fabbers]] like [http://reprap.org RepRap], [http://fennetic.net/machines/hextatic hextatic], [[molecular nanotechnology]] etc., but in the mean time we have [[hu]]mans who can track down materials and tools (by following detailed instructions) to make the particular [[blackbox]] that they need for a project. The point to remember is that computers cannot pull together apparently unrelated concepts to make a new functioning whole, but there are many humans eager for an opportunity to contribute just this sort of knowledge.
 
 
 
