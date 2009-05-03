@@ -25,6 +25,7 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 **http://openfarmtech.org/index.php?title=Aluminum_Extraction_From_Clays
 **wiring, circuit board cladding
 ** mirrors
+**vacuum tube getters
 
 * silicone rubber and silicone grease
 ** insulation
@@ -32,10 +33,14 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 ** seals
 ** lubrication
 **springs
+**QTC switches (requires nickel)
 
 *bulk glass
 **mirrors
 **low-grade mechanics
+**reaction chambers, pipes
+**vacuum tubes
+**instrument springs?
 
 *fiber glass
 **tough composite (silicone mash)
