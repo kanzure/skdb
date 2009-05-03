@@ -86,5 +86,9 @@ Theoretically, we can add specifications to a package format to describe the inp
 
 There are two main components that I am particularly concerned about: (1) formalized knowledge in the form of data sets, units, specifications on file formats, mathematical models stored in data files, etc., and then (2) the social knowlede that we process and convert into #1. All that we really need to do is figure out how we want #2 and #1 to work, and then create a certain type of (wikiable) file format to represent a project/unit in the overall database. It does not matter where on the internet the files are, as long as the user can automatically fetch them from the shell. It would be ideal if the database can be mirrored on other locations. It would also be ideal if we can do CVS+wiki all at the same time. What would the namespace structure of the wiki look like? There would be a namespace for package files, and then what? A namespace for the different types of files? It is important to clearly separate &quot;natural language&quot; from everything else. -- [[User:Kanzure|Kanzure]] 15:54, 8 April 2008 (CDT)
 
+
+
+tags tags tags! -fenn
+
 </textarea>
 
