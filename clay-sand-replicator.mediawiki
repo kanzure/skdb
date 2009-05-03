@@ -1,4 +1,4 @@
-2008-03-22
+2008-03-23
 
 = Chasis / framework / platform =
 Let's say 10-by-10 feet or there-abouts. 2D platform. 
@@ -18,6 +18,8 @@ how to make electricity without the use of permanent magnets or iron? electricit
 *'''amtec''' [http://en.wikipedia.org/wiki/Alkali-metal_thermal_to_electric_converter]
 *thermionic converter
 *photoelectric effect
+*zinc-air fuel cell
+*field coil alternator (like in a car, requires a battery)
 
 
 = Mechanical arm / manipulator =
