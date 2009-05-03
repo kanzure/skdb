@@ -186,5 +186,21 @@ For the wiki+versioning system, see [http://ikiwiki.info/ ikiwiki] and [http://i
 
 * [http://advogato.org/article/972.html Notes on debtorrent, revamping the meta-repository infrastructure]
 
+
+
+= 2008-05-14: pepakura =
+
+We need to make some example metadata files, and for that we need an example artifact and process to build it with. I considered origami due to its apparent simplicity, but it turns out that origami is conceptually difficult for humans, and maybe computers too. So, a related process, called &quot;pepakura&quot; or papercraft, where paper is allowed to be cut and taped/glued back together, sidesteps the problems of origami at a minimum of added complexity. Also, pepakura can be used to generate a physical artifact from an arbitrary polygon mesh, using only FOSS tools available today. (blender mesh_unfold.py and inkscape) 
+
+Current upper limit of the technology: http://www.bertsimons.nl/zenphoto/paperworks/
+
+
+
+fenn's initial pepakura attempt:
+
+[[Image:25-hedron.png]]
+
+[[Image:DCP_0804.png]]
+
 </textarea>
 
