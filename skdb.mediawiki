@@ -1,0 +1,48 @@
+cols='80' >The '''s'''ocialized engineering '''k'''nowledge '''d'''atabase ([[skdb]]) is kind of like aptitude, yum, [http://cpan.org/ CPAN], rpm, etc., in that it hosts modules ([[blackbox]]es) for projects, whether digital or physical. Just as you cannot search for software based on functionality, you cannot search for other tools based on functionality, except in as much as the language and social context allows you to express similiar ideas that others have had before ([[natural languages]] have allowed this to some extent). The success of APT and friends comes not from any magical software search functionality, but rather in the wide-spread social diffusion and the easy accessibility to get new project components, to play with them, modify them and implement them on the spot. Implementation for physical projects will become much easier when we have [[self-replication]] and [[fabbers]] like RepRap, hextatic, etc., and in the mean time we have [[hu]]mans who can sufficiently track down materials and tools (by following specific instructions) to make the [[blackbox]] that they need for a project. 
+
+
+
+
+
+
+
+Part of the database will contain [[biobricks]], or genes and combinations of genes that do particular tasks. Although you cannot specify all possible interactions with all possible other components, you can generally intend for a project to work in a certain way.
+
+
+
+
+
+
+
+Imagine the possibilities for project design now: using a database, you can download different components and just add it into the project, if it doesn't exist yet leave a few comments and hope that somebody can come along and make something to meet your desired specifications. Just leave the &quot;project definition files&quot; up on the net somewhere, and somebody is bound to come around and tweak it and implement it, as long as we can specifically reference other projects, tools, and people that have done the same thing.
+
+
+
+= Getting started =
+
+* General file specification standard
+
+* General client (hack Debian APT?)
+
+** fenn's suggested name for the package manager: [[autogenix]].
+
+* Server daemon process
+
+* Need to get a number of servers to start hosting copies of the database
+
+* Seed the database with a number of functional parts, components, tools, etc.
+
+** Basic: [[lemon battery]], [[paper airplane]], ...
+
+** Advanced: [[airplane]], [[automobile]], [[spaceship]], [[computer]] ([[microprocessor]] -- see [http://opencores.org OpenCores]), ...
+
+* '''Note''' that it would be ''nice'' to start with the [[elements]] and specify from the ground up where to go get them (such as the data on [http://mindat.org/ mindat.org]), and then how to process them with the materials around there, but we ''must'' avoid the infinite regress in trying to find everything back down to the source because there's a world of resources and materials already available (though poorly mapped) that can be used to boostrap various projects. So each project, component, part, tool is more like a node that aggregates information about that specific object/concept/idea, while also allowing an interface for simulation or 'making' a final project, or specifications on how to make it if it's generally not available; i.e., this is all 'blackboxed' but with information on what to do and what approaches to take if something is unavailable, not localized, etc.
+
+
+
+= Unit testing =
+
+All packages are required to have their own method of doing 'unit tests' to test each of the features. In a project, the programmer should be able to call upon an overall test of all of the units working together (pipelined and whatnot).
+
+</textarea>
+
