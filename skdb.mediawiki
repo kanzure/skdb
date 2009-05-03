@@ -1,4 +1,4 @@
-cols='80' >[[Image:Skdb.png]]
+[[Image:Skdb.png]]
 
 
 
@@ -282,5 +282,5 @@ Then we need to work on [[agx-get]], the python script that automates the downlo
 
 * shape grammars?
 
-</textarea>
+
 
