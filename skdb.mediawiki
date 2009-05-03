@@ -262,5 +262,25 @@ class metadata:
 
 Then we need to work on [[agx-get]], the python script that automates the downloading of these metadata files and the dot-skdb files (the git repositories, basically). And then we need to demonstrate a command that would encapsulate the cupsd server and actually printing it out, instructing the user to make the folds and cuts and use the tape, etc.
 
+
+
+= 2009-04-03 =
+
+* [[Part mating]]
+
+** part mating: [http://heybryan.org/~bbishop/docs/Scale-Space%20Representations%20and%20their%20Applications%20to%203D%20Matching%20of%20Solid%20Models.ppt.pdf Scale-space representations and their applications to 3D match of solid models]
+
+* [[PythonOCC]] ( http://pythonocc.org/ ) (OpenCASCADE API bindings for python)
+
+* [http://pyyaml.org/ PyYAML]
+
+* Dependency algorithms
+
+** [http://search.cpan.org/~adamk/Algorithm-Dependency-1.108/lib/Algorithm/Dependency.pm Algorithm::Dependency] (perl)
+
+** [http://heybryan.org/~bbishop/docs/scripts/topsort.py topsort.py] (python)
+
+* shape grammars?
+
 </textarea>
 
