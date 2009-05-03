@@ -1,4 +1,10 @@
-cols='80' >The '''s'''ocietal engineering '''k'''nowledge '''d'''atabase ([[skdb]]) is kind of like aptitude, yum, [http://cpan.org/ CPAN], rpm, etc., in that it hosts modules ([[blackbox]]es) for projects, whether digital or physical. Just as you cannot search for software based on functionality, you cannot search for other tools based on functionality, except in as much as the language and social context allows you to express similiar ideas that others have had before ([[natural languages]] have allowed this to some extent). The success of APT and friends comes not from any magical software search functionality, but rather in the wide-spread social diffusion and the easy accessibility to get new project components, to play with them, modify them and implement them on the spot. Implementation for physical projects will become much easier when we have [[self-replication]] and [[fabbers]] like RepRap, hextatic, etc., and in the mean time we have [[hu]]mans who can sufficiently track down materials and tools (by following specific instructions) to make the [[blackbox]] that they need for a project. 
+cols='80' >The '''s'''ocietal engineering '''k'''nowledge '''d'''atabase ([[skdb]]) is kind of like aptitude, yum, [http://cpan.org/ CPAN], rpm, etc., in that it hosts modules ([[blackbox]]es) for projects, whether digital or physical. These project packages include simulation tools for tweaking, software packages to rewrite the package for a particular use, explicit well-documented links and dependencies to other projects, etc. Skdb started as a need for [[self-replication]]: the idea is to come up with as much social knowledge as possible (stuff that can't be derived from first principles on the spot) and then connect all of the components together and fish out the Hamiltonian paths.
+
+
+
+
+
+To continue: just as you cannot search for software based on functionality, you cannot search for other tools based on functionality, except in as much as the language and social context allows you to express similiar ideas that others have had before ([[natural languages]] have allowed this to some extent). The success of APT and friends comes not from any magical software search functionality, but rather in the wide-spread social diffusion and the easy accessibility to get new project components, to play with them, modify them and implement them on the spot. Implementation for physical projects will become much easier when we have [[self-replication]] and [[fabbers]] like RepRap, hextatic, etc., and in the mean time we have [[hu]]mans who can sufficiently track down materials and tools (by following specific instructions) to make the [[blackbox]] that they need for a project. 
 
 
 
@@ -43,6 +49,12 @@ Imagine the possibilities for project design now: using a database, you can down
 = Unit testing =
 
 All packages are required to have their own method of doing 'unit tests' to test each of the features. In a project, the programmer should be able to call upon an overall test of all of the units working together (pipelined and whatnot).
+
+
+
+= OSCOMAK =
+
+2008-04-06: I see no differences between this project and [http://www.kurtz-fernhout.com/oscomak/index.htm OSCOMAK]. -- [[User:Kanzure|Kanzure]] 18:16, 6 April 2008 (CDT)
 
 </textarea>
 
