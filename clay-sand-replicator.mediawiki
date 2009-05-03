@@ -6,12 +6,11 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 = Mechanical arm / manipulator =
 
 = Resources =
-* sunlight
-* clay is aluminum magnesium silicate
-
+* direct sunlight
+* clay (aluminum magnesium silicate)
+* sand (silica)
 = refined materials and their uses =
 *concentrated sunlight
-
 **moderate temperatures
 ***phase changes
 ****electricity
@@ -29,27 +28,34 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 **low toughness mechanics
 **medium temperature refractory
 
-*alumina ceramic
+*alumina ceramic (Al2O3)
 **high temperature refractory
-***glass molds
+***glass molds and tooling
 ***aluminum extrusion molds
-**high hardness and strength mechanics
+**high hardness high strength mechanics
 ***bearings
-**abrasives, cutting tools
+**abrasives, cutting tools(?)
 
-* aluminum
+*hydrogen gas (requires: water, salt, electricity)
+*chlorine gas (requires: salt, electricity)
+*hydrochloric acid (requires: hydrogen gas, chlorine gas, water)
+* aluminum (requires hydrochloric acid, clay)
 **http://openfarmtech.org/index.php?title=Aluminum_Extraction_From_Clays
 **wiring, circuit board cladding
 ** mirrors
-**vacuum tube getters
+**vacuum tube getter
 
-* silicone rubber and silicone grease
-** insulation
+*chlorosilanes (requires: hydrochloric acid, silicon)
+**solvents
+
+* silicone rubber and silicone grease (requires: chlorosilanes, water)
+** electrical insulation
 ** gaskets
-** seals
+** seals (silicone has high gas permeability)
 ** lubrication
 **springs
 ** [[QTC pills|QTC switches]] (requires nickel)
+**mold release, mold preparation
 
 *bulk glass
 **mirrors
@@ -66,6 +72,6 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 ***cloth
 ****intermediate composite
 
-*silicon
+*ultrapure silicon (requires: chlorosilanes)
 
 (requires carbon)**high temperature ceramic (SiC)}}
