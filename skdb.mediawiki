@@ -2,7 +2,7 @@ cols='80' >[[Image:Skdb.png]]
 
 
 
-Engineering knowledge is learned information about how the world works and ways to make it do what you want. Social or societal knowledge is the set of all knowledge in a society. Therefore, societal engineering knowledge is the subset of a society's knowledge about how to make the world do what it wants. 
+Engineering knowledge is learned information about how the world works and ways to make it do what you want. Social or societal knowledge is the set of all knowledge in a society. Therefore, societal engineering knowledge is a society's knowledge about how to make the world do what it wants. 
 
 
 
@@ -30,13 +30,7 @@ Imagine the possibilities for project design now: using a database, you can down
 
 
 
-Part of the database will contain [[biobricks]], or genes and combinations of genes that do particular tasks. Although you cannot specify all possible interactions with all possible other components, you can generally intend for a project to work in a certain way.
-
-
-
-
-
-
+Part of the database will contain [[biobricks]]: genes that can be combined to do a particular task. Although it is not computationally tractable to simulate or predict all possible interactions between components in an [[amorphous computing]] system, you can specify well understood mechanisms that have been shown to work, and use techniques that limit crosstalk to narrow the search space.
 
 
 
