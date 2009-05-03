@@ -214,5 +214,37 @@ papercraft is generalizable and not limited to regular polyhedrons, although aut
 
 [[Image:triangulated_knot.jpg]]
 
+
+
+= 2008-05-18: Formalizing the reuslts =
+
+So using [http://blender.org/ blender] anywhere in a todo list is generally a bad idea because of the well-known [http://www.google.com/search?client=opera&amp;rls=en&amp;q=blender+steep+learning+curve&amp;sourceid=opera&amp;ie=utf-8&amp;oe=utf-8 ridiculously steep learning curve]. So, ideally, just go find some [[3D models]] that you want to play with, then run the unfold.py script (possibly in blender's [http://geheim.blender.org/forum/viewtopic.php?t=6242&amp;view=next batch mode]). Then dump the 3D models, 2D unfolded meshes (SVG) into a [http://git.or.cz/ git repository], and throw in some [http://python.org/ python] to specify the class in a metadata file, like so (but modified to fit the needs of pepakura) (it's from [[2008-05-12]]):
+
+
+
+&lt;python&gt;
+
+class metadata:
+
+	name = &quot;Default project name&quot;
+
+	pgpKey = &quot;3940914afdafdja0r391&quot;
+
+	hashSum = &quot;90149940141&quot; # This is of the dot skdb file in general, yes?
+
+	maintainerEmailAddy = &quot;Bryan Bishop &lt;kanzure@gmail.com&gt;&quot;
+
+	reqFiles # Required files for a default installation.
+
+	configScript = path/to/config/script/within/.skdb/config.py
+
+	# To help with over-rides, the config-script is still included.
+
+&lt;/python&gt;
+
+
+
+Then we need to work on [[agx-get]], the python script that automates the downloading of these metadata files and the dot-skdb files (the git repositories, basically). And then we need to demonstrate a command that would encapsulate the cupsd server and actually printing it out, instructing the user to make the folds and cuts and use the tape, etc.
+
 </textarea>
 
