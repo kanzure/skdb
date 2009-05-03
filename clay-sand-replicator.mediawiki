@@ -6,13 +6,16 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 = Mechanical arm / manipulator =
 
 = Resources =
+* sunlight
 * clay is aluminum magnesium silicate
-* aluminum
-* silicon
-* rubber
 
-= Components =
-* insulation
-* gaskets
-* seals
-* lubrication
+= refined materials and their uses =
+* aluminum
+**http://openfarmtech.org/index.php?title=Aluminum_Extraction_From_Clays
+**wiring, mirrors
+
+* silicone rubber and silicone grease
+** insulation
+** gaskets
+** seals
+** lubrication
