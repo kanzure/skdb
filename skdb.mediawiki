@@ -8,7 +8,7 @@ cols='80' >[[Image:Skdb.png]]
 
 
 
-'''Please see also [http://heybryan.org/exp.html another explanation at exp.html] too.'''
+Much of this discussion has taken place in irc.freenode.net's #hplusroadmap, as well as on following mailing lists: [http://groups.google.com/group/openmanufacturing-dev openmanufacturing-dev], [http://groups.google.com/group/openmanufacturing open source manufacturing], and [http://groups.google.com/group/openvirgle openvirgle]. Please see also [http://heybryan.org/exp.html another explanation at exp.html], [http://oscomak.net/ oscomak.net], etc. This page (as of 2008-12-09) is terribly outdated and may never recover. Much of the relevant information is spewn across the #hplusroadmap logs and mailing list discussions that it may be hopelessly recoverable. Take this as a lesson for documentation during design phases of complex projects ...
 
 
 
