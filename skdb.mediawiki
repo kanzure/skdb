@@ -66,17 +66,21 @@ Part of the database will contain [[biobricks]]: genes that can be combined to d
 
 ** later: torrent distribution services
 
+*** seed all packages
+
+*** be a tracker to organize all of the seeds and leechers for each of the packages
+
 * metarepo website
 
 ** This is simply where we describe the overall system architecture; might be doable in a meta namespace on the ikiwiki installation.
 
 * userspace
 
-** autospec - validates the units for the packages
+** autospec - validates the units for the packages, validates the yaml, gets additional python plugins if necessary when the yaml specifies some weird class that is not yet installed.
 
-** agx-get - gets packages from the database, gets all metadata
+** agx-get - gets packages from the database, gets all metadata (local user cache in ~/.skdb/mimedb/ or something), allows the user to search for packages, uses a sources.list type file to connect to skdb or other metarepo installations, torrent functionality would be nice, and must be able to process the metadata files and give the user options to download particular parts (or everything) related to a .skdb file -- this will typically involve downloading a new skdb package in the first place in order to understand the skdb file in its entirety (for example, different types of packages will most likely have different types of metadata specified, different types of resources, with data worth parsing on the user-end for options related to seeking out the package-contents).
 
-** disambiguator - lets user specify what sort of file formats need to be processed, what the input/outputs have to be, and finds puzzle pieces that match these specs
+*** disambiguator - lets user specify what sort of file formats need to be processed, what the input/outputs have to be, and finds puzzle pieces that match these specs
 
 ** agx-sim - the simulator
 
