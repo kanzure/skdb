@@ -33,7 +33,7 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 ** seals
 ** lubrication
 **springs
-**QTC switches (requires nickel)
+** [[QTC pills|QTC switches]] (requires nickel)
 
 *bulk glass
 **mirrors
