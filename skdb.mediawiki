@@ -190,13 +190,13 @@ For the wiki+versioning system, see [http://ikiwiki.info/ ikiwiki] and [http://i
 
 = 2008-05-14: pepakura =
 
-We need to make some example metadata files, and for that we need an example artifact and process to build it with. I considered origami due to its apparent simplicity, but it turns out that origami is conceptually difficult for humans, and maybe computers too. So, a related process, called &quot;pepakura&quot; or papercraft, where paper is allowed to be cut and taped/glued back together, sidesteps the problems of origami at a minimum of added complexity. Also, pepakura can be used to generate a physical artifact from an arbitrary polygon mesh, using only FOSS tools available today. (blender mesh_unfold.py and inkscape) 
+We need to make some example metadata files, and for that we need an example artifact and process to build it with.We considered origami due to its apparent simplicity, but it turns out that origami is conceptually difficult for humans, and maybe computers too. So, a related process, called papercraft or &quot;pepakura&quot;, where paper is allowed to be cut and taped/glued back together, sidesteps the problems of origami at a minimum of added complexity. Also, papercraft can be used to generate a physical artifact from an arbitrary polygon mesh, using only FOSS tools available today. (blender mesh_unfold.py and inkscape) 
 
 Current upper limit of the technology: http://www.bertsimons.nl/zenphoto/paperworks/
 
 
 
-fenn's initial pepakura attempt:
+fenn's initial papercraft attempt:
 
 
 
@@ -206,7 +206,13 @@ fenn's initial pepakura attempt:
 
 
 
-In this case, the paper torus is the artifact, pepakura is the process used to make it, and a 2d printer, paper, scissors, tape, are the build-time requirements. Unfortunately a paper torus doesnt have much functionality without further modification, such as filling with foam, applying fiberglass, or embedding other functional components.
+In this case, the paper torus is the artifact, papercraft is the process used to make it, and a 2d printer, paper, scissors, tape, are the build-time requirements. Unfortunately a paper torus doesn't have much functionality without further modification, such as filling with foam, applying fiberglass, or embedding other functional components.
+
+
+
+papercraft is generalizable and not limited to regular polyhedrons, although automated &quot;bud chopping&quot; is not yet implemented. The current mesh_unfold.py has no problem with &quot;weird&quot; topology, as long as there are no twisted quadrilaterals:
+
+[[Image:triangulated_knot.jpg]]
 
 </textarea>
 
