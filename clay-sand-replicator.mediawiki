@@ -10,6 +10,18 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 * clay is aluminum magnesium silicate
 
 = refined materials and their uses =
+*concentrated sunlight
+
+**moderate temperatures
+***phase changes
+****electricity
+***mineral drying
+***brazing, soldering
+**extremely high temperatures
+***chemical decomposition
+****ultra high purity glass (requires silicone)
+***sputtering
+***welding
 
 *raw ceramic (AlMgSiO4)
 **circuit board
@@ -46,6 +58,7 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 **instrument springs?
 
 *fiber glass
+**paper - lightly sintered, stiff but not brittle
 **tough composite (silicone mash)
 ***circuit boards
 **rope, string
