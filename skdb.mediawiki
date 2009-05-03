@@ -80,7 +80,11 @@ Part of the database will contain [[biobricks]]: genes that can be combined to d
 
 ** agx-sim - the simulator
 
+*** Packages (.skdb) would describe how they are to be simulated, if at all. I am sure somebody would like to come up with a standardized simulation interface. There are a few problems (computationally) that have to be addressed, like whether or not it should be a binary sort comparison, n!, or something else. Hard to tell, but the important aspect is that the architecture allows for this sort of thing. 
+
 ** agx-make - considering fablab facilities (/dev stuff), configuration, layout, orientations, inventory, number of humans available, etc., generate an overall recipe for the entire lab to execute and make the product ('go command' should be avoidable via passing a parameter)
+
+* Note: whether or not a bug report is from agx-sim, agx-make, or autospec is irrelevant; all of this data should be fed back into skdb. Especially user-reports, bug reports, usecases, feedback, etc.
 
 
 
