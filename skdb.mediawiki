@@ -1,4 +1,8 @@
-cols='80' >The '''s'''ocietal engineering '''k'''nowledge '''d'''atabase ([[skdb]]) is kind of like aptitude, yum, [http://cpan.org/ CPAN], rpm, etc., in that it hosts modules ([[blackbox]]es) for projects, whether digital or physical. These project packages include simulation tools for tweaking, software packages to rewrite the package for a particular use, explicit well-documented links and dependencies to other projects, etc. Skdb started as a need for [[self-replication]]: the idea is to come up with as much social knowledge as possible (stuff that can't be derived from first principles on the spot) and then connect all of the components together and fish out the Hamiltonian paths.
+cols='80' >[[Image:Skdb.png]]
+
+
+
+The '''s'''ocietal engineering '''k'''nowledge '''d'''atabase ([[skdb]]) is kind of like aptitude, yum, [http://cpan.org/ CPAN], rpm, etc., in that it hosts modules ([[blackbox]]es) for projects, whether digital or physical. These project packages include simulation tools for tweaking, software packages to rewrite the package for a particular use, explicit well-documented links and dependencies to other projects, etc. Skdb started as a need for [[self-replication]]: the idea is to come up with as much social knowledge as possible (stuff that can't be derived from first principles on the spot) and then connect all of the components together and fish out the Hamiltonian paths.
 
 
 
