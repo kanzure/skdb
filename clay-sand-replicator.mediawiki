@@ -19,7 +19,8 @@ Let's say 10-by-10 feet or there-abouts. 2D platform.
 ***brazing, soldering
 **extremely high temperatures
 ***chemical decomposition
-****ultra high purity glass (requires silicone)
+****aerogels
+*****ultra high purity glass (requires silicone)
 ***sputtering
 ***welding
 
