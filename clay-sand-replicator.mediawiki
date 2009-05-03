@@ -8,6 +8,18 @@ assuming solar power as the primary energy source, we will need more than that f
 = Behavior =   
 although one machine can do everything on its own, they will be more productive in groups, each adapting to run one single process in a continuous manner, trading products and refined materials. movement happens mainly to reduce population pressure and when resources become scarce.
 
+= Problems =
+how to make electricity without the use of permanent magnets or iron? electricity is needed for electrolysis (and communication/control)
+*'''magnetohydrodynamics''' [http://en.wikipedia.org/wiki/MHD_generator]
+**sodium vapor plasma
+*piezoelectricity
+*ferroelectricity
+*static electricity (pooh)
+*'''amtec''' [http://en.wikipedia.org/wiki/Alkali-metal_thermal_to_electric_converter]
+*thermionic converter
+*photoelectric effect
+
+
 = Mechanical arm / manipulator =
 actuators take a supply of power and turn it into controlled motion:   
 *rotary actuators   
