@@ -28,7 +28,13 @@ def simplify(string):
       if string.__contains__(i):
         print "Typo?"+ string + ": contains '" + i + "'"
     return rval
-      
+
+def compatible(a, b):
+    '''check if both expressions boil down to the same base units'''
+    try: simplify(str(a) + '+' + str(b))
+    except UnitError: return None
+    else: return True
+
 class Measurement:
   '''try to preserve the original units, and provide a wrapper to the GNU units program'''
   def __init__(self, string, uncertainty=None):
@@ -65,11 +71,6 @@ class Measurement:
 #    return conv_factor + dest
 #  def simplify(self, string):
 
-  def compatible(self, b):
-    '''check if both expressions boil down to the same base units'''
-    try: simplify(str(self) + '+' + str(b))
-    except UnitError: return None
-    else: return True
 
 mm = Measurement('1mm')
 
@@ -83,7 +84,7 @@ class Fastener:
 class Thread:
   '''examples: ballscrews, pipe threads, bolts - NOT any old helix'''
   def __init__(self, diameter, pitch, form="UN"):
-    self.diameter, self.pitch, self.form = diameter, pitch, form
+    self.diameter, self.pitch, self.form = Measurement(diameter), Measurement(pitch), form
     
   def clamping_force(self, torque, efficiency=0.1):
     s = Template('($torque)*($pitch)*$efficiency')
@@ -91,17 +92,60 @@ class Thread:
     simplified = simplify(string) #compute the expression
     force = Measurement(simplified).to('lbf') #I guess this looks better than kg*m/s^2, but there should be a default units setting somewhere
     return force
+  
+  def tensile_area(self):
+      #machinery's handbook 26th edition page 1490 formula 2a "tensile-stress area of screw thread"
+      assert compatible(self.pitch, 'rev/inch')
+      s = Template('pi/4*($D-0.9743rev/($n))^2') #n is rev/inch
+      string = s.safe_substitute(D=self.diameter, n=self.pitch)
+      simplified = simplify(string)
+      return Measurement(simplified).to('in^2')
+  
+
 
 class Screw(Fastener):
-  def __init__(self, thread, length, grade="3"):
+  proof_load = {#grade:load, proof load is defined as load bolt can withstand without permanent set
+        '1':'33ksi',
+        '2':'55ksi',
+        '3':'85ksi',
+        '5':'85ksi',
+        '7':'105ksi',
+        '8':'120ksi',
+        }
+  tensile_strength = {#grade:load, tensile strength is defined as load bolt can withstand without breaking
+        '1':'60ksi',
+        '2':'74ksi',
+        '3':'110ksi',
+        '5':'120ksi',
+        '7':'133ksi',
+        '8':'150ksi',
+        }
+  def __init__(self, thread, length, grade="2"):
     '''length is defined as the distance from bottom of the head for all screws but 
     flat head and set screws which use the top of the head instead'''
     #thread.__init__()
     self.thread, self.length, self.grade = thread, length, grade
-
+    #note these tables vary from source to source; might want to check if it really matters to you
+  
+  def max_force(self):
+      s = Template('$area*$strength')
+      string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.proof_load[self.grade])
+      simplified = simplify(string)
+      return Measurement(simplified).to('lbf')
+  
+  def breaking_force(self):
+      s = Template('$area*$strength')
+      string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.tensile_strength[self.grade])
+      simplified = simplify(string)
+      return Measurement(simplified).to('lbf')
+        
 def main():
     screw = yaml.load(open('screw.yaml'))['screw']
-    screw.thread.clamping_force('20N*m/rev')
+    print yaml.dump(screw)
+    print screw.thread.clamping_force('20N*m/rev')
+    print screw.thread.clamping_force('100ft*lbf')
+    print screw.thread.tensile_area()
+    print screw.max_force()
 
 if __name__ == "__main__":
   main()
