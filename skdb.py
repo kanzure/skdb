@@ -111,6 +111,12 @@ class Measurement:
 
 mm = Measurement('1mm')
 
+class Material:
+    def __init__(self, name, density=1, specific_heat=1, etc=None): #TODO figure out what goes here
+        self.name = name
+        self.density = density
+        self.specific_heat = specific_heat
+
 class Fastener:
     '''could be a rivet, could be a bolt. duct tape? superglue? twine? hose clamp?
     these methods are what actually get called by higher levels of abstraction'''
@@ -189,6 +195,12 @@ class Screw():
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.tensile_strength[self.grade])
         simplified = simplify(string)
         return Measurement(simplified).to('lbf')
+
+class Bolt(Fastener):
+    '''a screw by itself cannot convert torque to force. a bolt is a screw with a nut'''
+    def __init__(self, screw, nut):
+        self.screw = screw
+        self.nut = nut
 
 def main():
     screw = yaml.load(open('screw.yaml'))['screw']
