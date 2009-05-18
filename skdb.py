@@ -12,22 +12,39 @@ from string import Template
 class UnitError(Exception): pass 
 class NaNError(Exception): pass
 
+def sanitize(string):
+    '''intercept things that will cause GNU units to screw up'''
+    if string is None or str(string) == 'None': string = 0  
+    for i in ['..', '--']:
+        if str(string).__contains__(i):
+            raise UnitError, "Typo? units expression '"+ string + "' contains '" + i + "'"
+    return '('+str(string)+')' #units -1 screws up; units (-1) works
 
-def simplify(string):
-    rval = os.popen("units -t '" + string + "'").read().rstrip('\n')
-    error = re.search('Unknown|Parse|Error', rval)
+def units_happy(rval):
+    '''the conversion or expression evaluated without error'''
+    error = re.search('Unknown|Parse|Error|invalid', rval)
     if error:  
         raise UnitError, rval
-    nan = re.search(' nan?!o', rval)
+    nan = re.search('^nan', rval) #not sure how to not trip on results like 'nanometer'
     if nan:
         raise NaNError, rval
-#   -t flag takes care of this
-#    if not rval.__contains__('Definition'):
-#      raise UnitError, "unexpected problem with units program: " + rval
-    for i in ['..']: #units bugs out on '1..2'
-        if string.__contains__(i):
-            print "Typo?"+ string + ": contains '" + i + "'"
-    return rval
+    return True #well? what else am i gonna do
+
+def simplify(string):
+    rval = os.popen("units -t '" + sanitize(string) + "'").read().rstrip('\n')
+    if units_happy(rval): return rval
+    else: raise UnitError
+
+def convert(string, destination):
+    conv_factor = os.popen("units -t '" + sanitize(string) + "' '" + sanitize(destination) + "'").read().rstrip('\n')
+    if units_happy(conv_factor): 
+        return str(conv_factor +'*'+ destination) #1*mm
+    else: raise UnitError, conv_factor, destination
+    
+def check(string):
+        try: simplify(str(string))
+        except UnitError or NaNError: return False
+        return True
 
 def compatible(a, b):
     '''check if both expressions boil down to the same base units'''
@@ -39,38 +56,52 @@ class Measurement:
     '''try to preserve the original units, and provide a wrapper to the GNU units program'''
     def __init__(self, string, uncertainty=None):
         simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
+        self.string = str(string)
         self.uncertainty = uncertainty
-        e_number = '([+-]?\d*\.?\d*([eE][+-]?\d+)?)' #engineering notation
+        #e_number = '([+-]?\d*\.?\d*([eE][+-]?\d+)?)' #engineering notation
         #match = re.match(e_number + '?(\D*)$', string) #i dunno wtf i was trying to do here
-        match = re.match(e_number + '?(.*)$', string)
-        if match is None: raise UnitError, string
-        try: self.number = float(match.group(1))
-        except ValueError: self.number = 1.0
-        self.unit = match.group(3)
+        #match = re.match(e_number + '?(.*)$', string)
+        #if match is None: raise UnitError, string
+        #try: self.number = float(match.group(1))
+        #except ValueError: self.number = 1.0
+        #self.unit = match.group(3)
 
     def __repr__(self):
-        return str(self.number) + self.unit #ew
+        return str(self.string)
    
     def __mul__(self, other):
-        if isinstance(other, Unit):
-            return Measurement(str(self.number*other.number) + self.unit + '*' + other.unit)
-        else:
-            return Measurement(str(self.number * other) + self.unit)
+        if str(self) == 'None' or str(other) == 'None': return None
+        s = Template('($a)*($b)')
+        expression = s.safe_substitute(a=str(self), b=str(other))
+        rval = Measurement(expression)
+        if debug: rval.check()
+        return rval
+        
     __rmul__ = __mul__
 
     def __div__(self, other):
-        if isinstance(other, Measurement):
-            return Measurement(str(self.number/other.number) + self.unit + '/' + other.unit)
-        else:
-            return Measurement(str(self.number / other) + self.unit)
+        if str(self) == 'None' or str(other) == 'None': return None
+        s = Template('($a)/($b)')
+        expression = s.safe_substitute(a=str(self), b=str(other))
+        rval = Measurement(expression)
+        if debug: rval.check()
+        return rval
+
     __rdiv__ = __div__
+    
+    def __eq__(self, other):
+        if str(simplify(self)) == str(simplify(other)): return True
+        else: return False
 
     def to(self, dest):
-        conv_factor = os.popen("units -t '" + self.__repr__() + "' '" + dest + "'").read().rstrip('\n')
-        return Measurement(conv_factor + dest)
+        return Measurement(convert(self, dest))
+
     
     def check(self):
-        return simplify(str(self))
+        return check(self)
+
+    def simplify(self):
+        return simplify(self)
     
     def compatible(self, other):
         return compatible(self, other)
@@ -86,11 +117,11 @@ class Fastener:
     def __init__(self, force, rigidity, safety_factor=7):
         pass
 
-
 class Thread:
     '''examples: ballscrews, pipe threads, bolts - NOT any old helix'''
-    def __init__(self, diameter, pitch, form="UN"):
+    def __init__(self, diameter, pitch, gender='male', length=None, form="UN"):
         self.diameter, self.pitch, self.form = Measurement(diameter), Measurement(pitch), form
+        self.gender, self.length, self.form
     
     def pitch_diameter(self):
         assert self.form=="UN" and compatible(self.pitch, 'rev/inch'), "this only works for triangular threads atm"
@@ -117,10 +148,12 @@ class Thread:
         string = s.safe_substitute(Dm=self.minor_diameter(), Dp=self.pitch_diameter())
         simplified = simplify(string)
         return Measurement(simplified).to('in^2')
-  
+  #max torque requires finding the combined "von mises" stress, given on page 1498
+  #because the screw body will twist off as a combination of tensile and torque shear loads
 
 
-class Screw(Fastener):
+class Screw():
+    '''a screw by itself isn't a fastener, it needs a nut of some sort'''
     proof_load = {#grade:load, proof load is defined as load bolt can withstand without permanent set
         '1':'33ksi',
         '2':'55ksi',
@@ -142,6 +175,7 @@ class Screw(Fastener):
         flat head and set screws which use the top of the head instead'''
         #thread.__init__()
         self.thread, self.length, self.grade = thread, length, grade
+        if self.thread.length is None: self.thread.length = self.length
         #note these tables vary from source to source; might want to check if it really matters to you
         
     def max_force(self):
@@ -155,7 +189,7 @@ class Screw(Fastener):
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.tensile_strength[self.grade])
         simplified = simplify(string)
         return Measurement(simplified).to('lbf')
-        
+
 def main():
     screw = yaml.load(open('screw.yaml'))['screw']
     print yaml.dump(screw)
