@@ -68,6 +68,12 @@ class Measurement:
     def to(self, dest):
         conv_factor = os.popen("units -t '" + self.__repr__() + "' '" + dest + "'").read().rstrip('\n')
         return Measurement(conv_factor + dest)
+    
+    def check(self):
+        return simplify(str(self))
+    
+    def compatible(self, other):
+        return compatible(self, other)
 #    return conv_factor + dest
 #  def simplify(self, string):
 
