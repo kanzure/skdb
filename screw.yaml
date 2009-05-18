@@ -12,6 +12,6 @@ screw:
  thread: !!python/object:skdb.Thread
     diameter: in/4
     form: UN 
-    pitch: 20/rev
+    pitch: 20rev/in
 
 
