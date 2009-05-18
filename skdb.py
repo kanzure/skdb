@@ -5,20 +5,38 @@
 import yaml
 import re
 import os
-
+from string import Template
 #unum looks rather immature, perhaps I will write a wrapper for GNU units instead
 #scientific.Physics.PhysicalQuantities looks ok-ish
 
 class UnitError(Exception): pass 
 class NaNError(Exception): pass
 
+
+def simplify(string):
+    rval = os.popen("units -t '" + string + "'").read().rstrip('\n')
+    error = re.search('Unknown|Parse|Error', rval)
+    if error:  
+      raise UnitError, rval
+    nan = re.search(' nan?!o', rval)
+    if nan:
+      raise NaNError, rval
+#   -t flag takes care of this
+#    if not rval.__contains__('Definition'):
+#      raise UnitError, "unexpected problem with units program: " + rval
+    for i in ['..']: #units bugs out on '1..2'
+      if string.__contains__(i):
+        print "Typo?"+ string + ": contains '" + i + "'"
+    return rval
+      
 class Measurement:
   '''try to preserve the original units, and provide a wrapper to the GNU units program'''
   def __init__(self, string, uncertainty=None):
-    self.check(string=string)
+    simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
     self.uncertainty = uncertainty
     e_number = '([+-]?\d*\.?\d*([eE][+-]?\d+)?)' #engineering notation
-    match = re.match(e_number + '?(\D*)$', string)
+    #match = re.match(e_number + '?(\D*)$', string) #i dunno wtf i was trying to do here
+    match = re.match(e_number + '?(.*)$', string)
     if match is None: raise UnitError, string
     try: self.number = float(match.group(1))
     except ValueError: self.number = 1.0
@@ -45,36 +63,15 @@ class Measurement:
     conv_factor = os.popen("units -t '" + self.__repr__() + "' '" + dest + "'").read().rstrip('\n')
     return Measurement(conv_factor + dest)
 #    return conv_factor + dest
-
-  def check(self, string=None):
-    if string is None:
-      string = self.__repr__()
-    rval = os.popen("units -t '" + string + "'").read().rstrip('\n')
-    error = re.search('Unknown|Parse|Error', rval)
-    if error:  
-      raise UnitError, rval
-    nan = re.search(' nan?!o', rval)
-    if nan:
-      raise NaNError, rval
-#    if not rval.__contains__('Definition'):
-#      raise UnitError, "unexpected problem with units program: " + rval
-    for i in ['..']: #units bugs out on '1..2'
-      if string.__contains__(i):
-        print "Typo?"+ string + ": contains '" + i + "'"
-    return rval
+#  def simplify(self, string):
 
   def compatible(self, b):
     '''check if both expressions boil down to the same base units'''
-    try: Measurement(str(self) + '+' + str(b)).check()
+    try: simplify(str(self) + '+' + str(b))
     except UnitError: return None
     else: return True
 
-
-
 mm = Measurement('1mm')
-#inch = mm*25.4
-#print yaml.dump(inch)
-
 
 class Fastener:
   '''could be a rivet, could be a bolt. duct tape? superglue? twine? hose clamp?
@@ -87,10 +84,13 @@ class Thread:
   '''examples: ballscrews, pipe threads, bolts - NOT any old helix'''
   def __init__(self, diameter, pitch, form="UN"):
     self.diameter, self.pitch, self.form = diameter, pitch, form
+    
   def clamping_force(self, torque, efficiency=0.1):
-    #units '(torque*ft*lbf/rev)*(pitch*rev/in)*efficiency' lbf
-    #return lbf
-    pass
+    s = Template('($torque)*($pitch)*$efficiency')
+    string = s.safe_substitute(torque=torque, pitch=self.pitch, efficiency=efficiency) #fill in template keywords
+    simplified = simplify(string) #compute the expression
+    force = Measurement(simplified).to('lbf') #I guess this looks better than kg*m/s^2, but there should be a default units setting somewhere
+    return force
 
 class Screw(Fastener):
   def __init__(self, thread, length, grade="3"):
@@ -100,7 +100,8 @@ class Screw(Fastener):
     self.thread, self.length, self.grade = thread, length, grade
 
 def main():
-  pass
+    screw = yaml.load(open('screw.yaml'))['screw']
+    screw.thread.clamping_force('20N*m/rev')
 
 if __name__ == "__main__":
   main()
