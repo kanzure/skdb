@@ -86,6 +86,18 @@ class Thread:
   def __init__(self, diameter, pitch, form="UN"):
     self.diameter, self.pitch, self.form = Measurement(diameter), Measurement(pitch), form
     
+  def pitch_diameter(self):
+      assert self.form=="UN" and compatible(self.pitch, 'rev/inch'), "this only works for triangular threads atm"
+      s = Template('($diameter)-0.6495919rev/($pitch)') #machinery's handbook 27ed page 1502
+      string = s.safe_substitute(diameter=self.diameter, pitch=self.pitch)
+      return Measurement(simplify(string)).to('in')
+  
+  def minor_diameter(self):
+      assert self.form=="UN" and compatible(self.pitch, 'rev/inch'), "this only works for triangular threads atm"
+      s = Template('($diameter)-1.299038rev/($pitch)')  #machinery's handbook 27ed page 1502
+      string = s.safe_substitute(diameter=self.diameter, pitch=self.pitch)
+      return Measurement(simplify(string)).to('in')
+    
   def clamping_force(self, torque, efficiency=0.1):
     s = Template('($torque)*($pitch)*$efficiency')
     string = s.safe_substitute(torque=torque, pitch=self.pitch, efficiency=efficiency) #fill in template keywords
@@ -94,10 +106,9 @@ class Thread:
     return force
   
   def tensile_area(self):
-      #machinery's handbook 26th edition page 1490 formula 2a "tensile-stress area of screw thread"
       assert compatible(self.pitch, 'rev/inch')
-      s = Template('pi/4*($D-0.9743rev/($n))^2') #n is rev/inch
-      string = s.safe_substitute(D=self.diameter, n=self.pitch)
+      s = Template('pi/4*(($Dm+$Dp)/2)^2') #machinery's handbook 27ed page 1502 formula 9 "tensile-stress area of screw thread"
+      string = s.safe_substitute(Dm=self.minor_diameter(), Dp=self.pitch_diameter())
       simplified = simplify(string)
       return Measurement(simplified).to('in^2')
   
@@ -145,7 +156,10 @@ def main():
     print screw.thread.clamping_force('20N*m/rev')
     print screw.thread.clamping_force('100ft*lbf')
     print screw.thread.tensile_area()
+    print screw.thread.minor_diameter()
+    print screw.thread.pitch_diameter()
     print screw.max_force()
+    print screw.breaking_force()
 
 if __name__ == "__main__":
   main()
