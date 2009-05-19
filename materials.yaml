@@ -1,0 +1,13 @@
+author: 'ben lipkowitz'
+license: 'GPL2+'
+urls: 
+- 'http://heybryan.org/mediawiki/index.php/Skdb'
+- 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=materials.yaml'
+- 'git://fennetic.net/git/skdb.git/'
+
+
+steel: !!python/object:skdb.Material
+    density: 7.85g/cc
+    friction_coefficient: #see MH27 page 1499
+        steel: 0.4
+        steel, zinc-plated: 0.17
