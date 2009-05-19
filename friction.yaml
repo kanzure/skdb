@@ -1,0 +1,463 @@
+#it would be nice to find some explicitly free source of material data, perhaps CRC handbook or NIST?
+url: http://www.school-for-champions.com/science/friction_coefficient.htm
+
+aluminum:
+  aluminum:
+    kinetic_max: 1.4
+    kinetic_min: 1.4
+    static_max: 1.35
+    static_min: 1.05
+  mild steel:
+    kinetic_max: 0.47
+    kinetic_min: 0.47
+    static_max: 0.61
+    static_min: 0.61
+brake material:
+  cast iron:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.4
+    static_min: 0.4
+  cast iron (wet):
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.2
+    static_min: 0.2
+brass:
+  cast iron:
+    kinetic_max: 0.3
+    kinetic_min: 0.3
+    static_max: null
+    static_min: null
+brick:
+  wood:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.6
+    static_min: 0.6
+bronze:
+  cast iron:
+    kinetic_max: 0.22
+    kinetic_min: 0.22
+    static_max: null
+    static_min: null
+  steel:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: null
+    static_min: null
+cadmium:
+  cadmium:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.5
+    static_min: 0.5
+  mild steel:
+    kinetic_max: 0.46
+    kinetic_min: 0.46
+    static_max: null
+    static_min: null
+cast iron:
+  cast iron:
+    kinetic_max: 0.15
+    kinetic_min: 0.15
+    static_max: 1.1
+    static_min: 1.1
+  oak:
+    kinetic_max: 0.49
+    kinetic_min: 0.49
+    static_max: null
+    static_min: null
+chromium:
+  chromium:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.41
+    static_min: 0.41
+copper:
+  cast iron:
+    kinetic_max: 0.29
+    kinetic_min: 0.29
+    static_max: 1.05
+    static_min: 1.05
+  copper:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 1.0
+    static_min: 1.0
+  mild steel:
+    kinetic_max: 0.36
+    kinetic_min: 0.36
+    static_max: 0.53
+    static_min: 0.53
+copper-lead alloy:
+  steel:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.22
+    static_min: 0.22
+diamond:
+  diamond:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.1
+    static_min: 0.1
+  metal:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.15
+    static_min: 0.1
+glass:
+  glass:
+    kinetic_max: 0.4
+    kinetic_min: 0.4
+    static_max: 1.0
+    static_min: 0.9
+  metal:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.7
+    static_min: 0.5
+  nickel:
+    kinetic_max: 0.56
+    kinetic_min: 0.56
+    static_max: 0.78
+    static_min: 0.78
+graphite:
+  graphite:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.1
+    static_min: 0.1
+  steel:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.1
+    static_min: 0.1
+graphite (in vacuum):
+  graphite (in vacuum):
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.8
+    static_min: 0.5
+hard carbon:
+  hard carbon:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.16
+    static_min: 0.16
+  steel:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.14
+    static_min: 0.14
+iron:
+  iron:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 1.0
+    static_min: 1.0
+lead:
+  cast iron:
+    kinetic_max: 0.43
+    kinetic_min: 0.43
+    static_max: null
+    static_min: null
+leather:
+  metal (clean):
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.6
+    static_min: 0.6
+  metal (wet):
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.4
+    static_min: 0.4
+  oak (parallel grain):
+    kinetic_max: 0.52
+    kinetic_min: 0.52
+    static_max: 0.61
+    static_min: 0.61
+  wood:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.4
+    static_min: 0.3
+magnesium:
+  magnesium:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.6
+    static_min: 0.6
+nickel:
+  mild steel:
+    kinetic_max: 0.64
+    kinetic_min: 0.64
+    static_max: null
+    static_min: null
+  nickel:
+    kinetic_max: 0.53
+    kinetic_min: 0.53
+    static_max: 1.1
+    static_min: 0.7
+nylon:
+  nylon:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.25
+    static_min: 0.15
+oak:
+  oak (cross grain):
+    kinetic_max: 0.32
+    kinetic_min: 0.32
+    static_max: 0.54
+    static_min: 0.54
+  oak (parallel grain):
+    kinetic_max: 0.48
+    kinetic_min: 0.48
+    static_max: 0.62
+    static_min: 0.62
+platinum:
+  platinum:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 1.2
+    static_min: 1.2
+plexiglas:
+  plexiglas:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.8
+    static_min: 0.8
+  steel:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.5
+    static_min: 0.4
+polystyrene:
+  polystyrene:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.5
+    static_min: 0.5
+  steel:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.35
+    static_min: 0.3
+polythene:
+  steel:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.2
+    static_min: 0.2
+rubber:
+  asphalt (dry):
+    kinetic_max: 0.8
+    kinetic_min: 0.5
+    static_max: null
+    static_min: null
+  asphalt (wet):
+    kinetic_max: 0.75
+    kinetic_min: 0.25
+    static_max: null
+    static_min: null
+  concrete (dry):
+    kinetic_max: 0.85
+    kinetic_min: 0.6
+    static_max: null
+    static_min: null
+  concrete (wet):
+    kinetic_max: 0.75
+    kinetic_min: 0.45
+    static_max: null
+    static_min: null
+sapphire:
+  sapphire:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.2
+    static_min: 0.2
+silver:
+  silver:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 1.4
+    static_min: 1.4
+sintered bronze:
+  steel:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: null
+    static_min: null
+solids:
+  rubber:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 4.0
+    static_min: 1.0
+steel:
+  aluminum bros:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.45
+    static_min: 0.45
+  brass:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.35
+    static_min: 0.35
+  cast iron:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.4
+    static_min: 0.4
+  copper lead alloy:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.22
+    static_min: 0.22
+  graphite:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.1
+    static_min: 0.1
+  phos bros:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.35
+    static_min: 0.35
+  zinc (plated on steel):
+    kinetic_max: 0.45
+    kinetic_min: 0.45
+    static_max: 0.5
+    static_min: 0.5
+steel (hard):
+  graphite:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.21
+    static_min: 0.21
+  polystyrene:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.35
+    static_min: 0.3
+  polythene:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.2
+    static_min: 0.2
+  steel (hard):
+    kinetic_max: 0.42 
+    kinetic_min: 0.42
+    static_max: 0.78
+    static_min: 0.78
+steel (mild):
+  brass:
+    kinetic_max: 0.44
+    kinetic_min: 0.44
+    static_max: 0.51
+    static_min: 0.51
+  cast iron:
+    kinetic_max: 0.23
+    kinetic_min: 0.23
+    static_max: null
+    static_min: null
+  lead:
+    kinetic_max: 0.95 
+    kinetic_min: 0.95
+    static_max: 0.95
+    static_min: 0.95
+  phos. bros:
+    kinetic_max: 0.34 
+    kinetic_min: 0.34
+    static_max: null
+    static_min: null
+  steel (mild):
+    kinetic_max: 0.57 
+    kinetic_min: 0.57
+    static_max: 0.74
+    static_min: 0.74
+teflon:
+  steel:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.04
+    static_min: 0.04
+  teflon:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.04
+    static_min: 0.04
+tin:
+  cast iron:
+    kinetic_max: .32
+    kinetic_min: .32
+    static_max: null
+    static_min: null
+tungsten carbide:
+  copper:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.35
+    static_min: 0.35
+  iron:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.8
+    static_min: 0.8
+  steel:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.6
+    static_min: 0.4
+  tungsten carbide:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.25
+    static_min: 0.2
+wood:
+  brick:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.6
+    static_min: 0.6
+  concrete:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.62
+    static_min: 0.62
+  metals (clean):
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.6
+    static_min: 0.2
+  metals (wet):
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.2
+    static_min: 0.2
+  wood (clean):
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.5
+    static_min: 0.25
+  wood (wet):
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.2
+    static_min: 0.2
+zinc:
+  cast iron:
+    kinetic_max: 0.21
+    kinetic_min: 0.21
+    static_max: 0.85
+    static_min: 0.85
+  zinc:
+    kinetic_max: null
+    kinetic_min: null
+    static_max: 0.6
+    static_min: 0.6
+
