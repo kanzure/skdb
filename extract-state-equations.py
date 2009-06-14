@@ -24,7 +24,7 @@
 # then it's part of the set.
 #
 # given: a single edge.
-# returned: the set of edges (including the given edge) that cut the graph into two parts.
+# returns: the set of edges (including the given edge) that cut the graph into two parts.
 
 # cycle algorithm.
 #
