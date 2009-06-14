@@ -3,7 +3,7 @@
 #
 # Extract state equations for a mechanical assembly from a graph.
 #
-# usage: python extract-state-equations.py some-sort-of-input
+# usage: python extract-state-equations.py input.gxml
 #
 # Bryan Bishop (kanzure@gmail.com)
 # http://heybryan.org/
@@ -33,8 +33,21 @@
 #
 # given: a single edge
 # returns: all edges in the cycle that the original edge was a member of.
-
-
+#
+#######
+#
+# another possible algorithm
+#
+# to figure out the circuits (cycles) in a graph:
+#
+# count the number of incoming edges for each node
+# put each node with 0 incoming edges in a set S
+# while S has nodes:
+#	take a node n from S.
+#	delete n and update the number of incoming edges of the nodes connected to n.
+#	if any of those nodes now have 0 incoming edges, put them in S.
+# endwhile
+# if S is empty but there are still nodes left, you have a cycle.
 
 
 
