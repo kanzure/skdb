@@ -4,6 +4,7 @@
 # find-all-cutsets.py - find all of the cutsets in a graph
 import pygraph
 import copy
+import unittest
 
 def find_all_paths(graph, start, end, path=[]):
         #http://www.python.org/doc/essays/graphs/
@@ -31,7 +32,10 @@ def isGraphConnected(graph):
          if (paths == []):
             pathExists = False
    return pathExists
-      
+
+#g = pygraph.graph()
+#g.add_nodes(range(1,20))
+#assertTrue(isGraphConnected(g))
 
 # f-cutset algorithm
 # an f-cutset is made up of a single branch and a unique set of chords
@@ -47,3 +51,18 @@ def cutset(fromNode, toNode, graph):
    return rset
 
 # now for some testing.
+
+class TestCut(unittest.TestCase):
+   def test_isGraphConnected(self):
+      g = pygraph.graph()
+      g.add_nodes(range(1,20))
+      self.assertFalse(isGraphConnected(g))
+      for each in range(1,19):
+         g.add_edge(each,each+1)
+      print "graph is ", g
+      self.assertTrue(isGraphConnected(g))
+
+if __name__ == '__main__':
+   unittest.main()
+
+
