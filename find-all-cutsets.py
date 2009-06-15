@@ -44,9 +44,12 @@ def isGraphConnected(graph):
 
 def cutset(fromNode, toNode, graph):
    rset = [(fromNode, toNode)] # return set (we assume it starts with this edge at least)
+   print "function cutset: graph is ", graph
    graph.del_edge(fromNode, toNode)
+   print "function cutset (2): graph is ", graph
    if not isGraphConnected(graph): # graphDivided()
       for each in graph.edges():
+         print "each var is: ", each
          rset.extend(cutset(each[0],each[1],copy.copy(graph)))
    return rset
 
@@ -61,6 +64,17 @@ class TestCut(unittest.TestCase):
          g.add_edge(each,each+1)
       print "graph is ", g
       self.assertTrue(isGraphConnected(g))
+            
+      # 1-2-3 cutsets: [[(1,2)], [(2,3)]
+      g = pygraph.graph() # still not using a digraph
+      g.add_nodes([1,2,3])
+      g.add_edge(1,2)
+      g.add_edge(2,3)
+      print "graph is ", g
+      print cutset(1,2,g)
+
+      # TODO: try pygraph.digraph(). for checking connectedness it should ignore direction.
+      # for path finding, directionality does matter in a digraph.
 
 if __name__ == '__main__':
    unittest.main()
