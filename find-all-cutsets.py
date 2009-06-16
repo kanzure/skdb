@@ -45,7 +45,10 @@ def isGraphConnected(graph):
 # 
 # remove the root (given) branch. if the graph is not divided, repeat. if it is, add that branch to the return set.
 
-def cutset(fromNode, toNode, graph):
+def cutset(fromNode, toNode, graph, level=0):
+   if not (graph.has_edge(fromNode, toNode)):
+      return
+   print "cutset level level =",level,"\n"
    graph2 = copy.copy(graph)
    rset = [(fromNode, toNode)] # return set (we assume it starts with this edge at least)
    print "function cutset: graph is ", graph2
@@ -54,8 +57,11 @@ def cutset(fromNode, toNode, graph):
    print "function cutset (2): graph is ", graph2
    if isGraphConnected(graph2): # graphDivided()
       for each in graph2.edges():
-         print "each var is: ", each
-         rset.extend(cutset(each[0],each[1],copy.copy(graph2)))
+         print "level=",level," .. each var is: ", each
+         extension = cutset(each[0],each[1],copy.copy(graph2),level+1)
+         if extension:
+            rset.extend(cutset(each[0],each[1],copy.copy(graph2),level+1))
+   print "leaving cutset level level=",level,"\n"
    return rset
 
 # now for some testing.
@@ -85,7 +91,7 @@ class TestCut(unittest.TestCase):
       thecutset = cutset(7,8,g)#(1,2,g)
       print "thecutset = ", thecutset
       self.assertTrue(len(thecutset)==1)
-   
+
       # more complicated graph
       g = pygraph.graph()
       g.add_nodes(range(1,8))
