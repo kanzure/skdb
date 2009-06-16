@@ -2,7 +2,7 @@
 # Bryan Bishop (kanzure@gmail.com) http://heybryan.org/
 # 2009-06-14
 # find-all-cutsets.py - find all of the cutsets in a graph
-import pygraph
+import graph as pygraph # for pygraph 1.5
 import copy
 import unittest
 
@@ -56,12 +56,13 @@ def cutset(fromNode, toNode, graph, level=0):
    graph2.del_edge(fromNode, toNode)
    print "function cutset (2): graph is ", graph2
    if isGraphConnected(graph2): # graphDivided()
+      print "the graph is connected!\n"
       for each in graph2.edges():
          #if (each[0] and each[1]):
          print "level=",level," .. each var is: ", each
          extension = cutset(each[0],each[1],copy.copy(graph2),level+1)
          if extension:
-            rset.extend(cutset(each[0],each[1],copy.copy(graph2),level+1))
+            rset.extend(extension) #cutset(each[0],each[1],copy.copy(graph2),level+1))
    print "leaving cutset level level=",level,"\n"
    return rset
 
@@ -87,29 +88,14 @@ class TestCut(unittest.TestCase):
       g.add_edge(5,6)
       g.add_edge(6,7)
       g.add_edge(7,8)
-      g.add_edge(8,9)
+      g.add_edge(8,9) # so, 8 individual different cutsets, right?
       print "graph is ", g
       thecutset = cutset(7,8,g)#(1,2,g)
       print "thecutset = ", thecutset
       self.assertTrue(len(thecutset)==1)
 
       # more complicated graph
-      g = pygraph.graph()
-      g.add_nodes(range(1,8))
-      g.add_edge(1,2)
-      g.add_edge(3,2)
-      g.add_edge(4,2)
-      g.add_edge(3,5)
-      g.add_edge(2,4)
-      g.add_edge(6,4)
-      g.add_edge(4,7)
-      g.add_edge(7,4)
-      g.add_edge(7,5) # er, in the graph, there was no directionality here (at all)
-      g.add_edge(5,7)      
-      cutset1 = cutset(3,2,g) # it wants to delete edge (4,6) (which does not exist) :(
-      print "cutset1 = ", cutset1
-    
-
+      
 
 
       # TODO: try pygraph.digraph(). for checking connectedness it should ignore direction.
