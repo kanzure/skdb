@@ -47,7 +47,7 @@ def isGraphConnected(graph):
 
 def cutset(fromNode, toNode, graph, level=0):
    if not (graph.has_edge(fromNode, toNode)):
-      return
+      return []
    print "cutset level level =",level,"\n"
    graph2 = copy.copy(graph)
    rset = [(fromNode, toNode)] # return set (we assume it starts with this edge at least)
@@ -57,6 +57,7 @@ def cutset(fromNode, toNode, graph, level=0):
    print "function cutset (2): graph is ", graph2
    if isGraphConnected(graph2): # graphDivided()
       for each in graph2.edges():
+         #if (each[0] and each[1]):
          print "level=",level," .. each var is: ", each
          extension = cutset(each[0],each[1],copy.copy(graph2),level+1)
          if extension:

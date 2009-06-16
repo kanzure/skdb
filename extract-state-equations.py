@@ -9,7 +9,7 @@
 # http://heybryan.org/
 # 2009-06-14
 
-# cutset algorithm from Smári McCarthy.
+# cutset algorithm from Smari McCarthy.
 #
 # given edge e from edges E:
 #	put nodes connected to e in separate bins.
