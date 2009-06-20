@@ -1,13 +1,10 @@
 #!/usr/bin/python
-# Bryan Bishop (kanzure@gmail.com) http://heybryan.org/
-# 2009-06-14
-# find-all-cutsets.py - find all of the cutsets in a graph
-import graph as pygraph # for pygraph 1.5
+import graph as pygraph
 import copy
 import unittest
-#import sets from Set
 
 def combinations(iterable, r):
+    # http://docs.python.org/library/itertools.html#itertools.combinations
     # combinations('ABCD', 2) --> AB AC AD BC BD CD
     # combinations(range(4), 3) --> 012 013 023 123
     pool = tuple(iterable)
@@ -15,7 +12,7 @@ def combinations(iterable, r):
     if r > n:
         return
     indices = range(r)
-    yield frozenset(tuple(pool[i] for i in indices))
+    yield tuple(pool[i] for i in indices)
     while True:
         for i in reversed(range(r)):
             if indices[i] != i + n - r:
@@ -25,14 +22,10 @@ def combinations(iterable, r):
         indices[i] += 1
         for j in range(i+1, r):
             indices[j] = indices[j-1] + 1
-        yield frozenset(tuple(pool[i] for i in indices))
-
-#for counter in range(len(graph.edges()):
-#        combinations(graph.edges(),counter)
-
+        yield tuple(pool[i] for i in indices)
 
 def find_all_paths(graph, start, end, path=[]):
-        #http://www.python.org/doc/essays/graphs/
+        # http://www.python.org/doc/essays/graphs/
         path = path + [start]
         if start == end:
             return [path]
@@ -47,8 +40,6 @@ def find_all_paths(graph, start, end, path=[]):
                     paths.append(newpath)
         return paths
 
-
-# a graph is connected if there is a path to go from any given two vertices (ignoring directions)
 def isGraphConnected(graph):
    pathExists = True
    #print "isGraphConnected: number of edges = ", len(graph.edges())
@@ -61,149 +52,188 @@ def isGraphConnected(graph):
             pathExists = False
    return pathExists
 
+def countGraphs(g): 
+        # count the number of graphs in g.
+        if (len(g.nodes()) == 0):
+                return 0
+        elif (len(g.nodes()) == 1):
+                return 1
+        dict = pygraph.accessibility.connected_components(g)
+        return len(list(frozenset(dict.values())))
+
 def makeCut(cutset,g):
         # make a cut in graph g by removing the edges in the cutset list.
-        returng = copy.copy(g)
+        # if no cut is made, returns the original graph
+        returng = copy.deepcopy(g)
         multipleCuts = False
-        print "the len of the cutset is: ", len(cutset)
-        if len(cutset) > 2:
-                multipleCuts = True
+        # print "the len of the cutset is: ", len(cutset)
+        if len(cutset) >= 2:
+                #print "the type is: ", type(cutset[0]), " and type int is: ", type(int())
+                if not (type(cutset[0]) == type(int())): # FIXME not all nodes are int() objects; maybe check that it's not a list? (er, type(list))
+                        if len(cutset[0]) > 0:
+                                multipleCuts = True
         if multipleCuts:
                 for each in cutset:
                         #print "about to delete the following edge: ", each[0], each[1]
                         #print "the list of each is:\t", list(each)
-                        if (returng.has_edge(list(each)[0],list(each)[1])):
-                                returng.del_edge(list(each)[0],list(each)[1])
+                        if (returng.has_edge(list(each)[0],list(each)[1])): # used to be: list(each)[0], list(each)[1] ; used to be: each[0], each[1]
+                                returng.del_edge(list(each)[0],list(each)[1]) # used to be: list(each)[0], list(each)[1]
         elif not multipleCuts and len(cutset)>1:
-                if returng.has_edge(list(cutset)[0],list(cutset)[1]):
-                        returng.del_edge(list(cutset)[0],list(cutset)[1])
+                if returng.has_edge(cutset[0],cutset[1]):
+                        returng.del_edge(cutset[0],cutset[1])
         return returng # return this new graph.
 
-#def removeDupes(cutsetlist):
-#        # set([frozenset((1,2)),frozenset((3,4))]) == set([frozenset((2,1)),frozenset((3,4))])
-#        # True
-#        listOfSets = []
-#        for each in cutsetlist:
-#              thisSet = set()
-#              for edge in each:
-#                thisSet.add(frozenset(edge))
-#              listOfSets.append(thisSet)
-#        for each in listOfSets:
-#                for other in listOfSets:
+# g = pygraph.graph or pygraph.digraph object
+# howManyResultingGraphs = include a cutset only if it makes this many graphs out of the original given graph.
+# howManySets = the number of sets to create (=0 implies "go wild")
+def cutsets(g, howManyResultingGraphs = 2, howManySets = 0):
+        # find all cutsets in graph g. return them.
+        returnlist = [] # no cutsets yet
+        createdSets = 0
+        for each in range(1,len(g.edges())):
+                if ((howManySets!=0 and createdSets<howManySets) or (howManySets == 0)):
+                        com = list(combinations(g.edges(),each)) # list() unrolls the generator object (from combinations())
+                        for each in com: # for each cut within the cutset,
+                                if ((howManySets!=0 and createdSets<howManySets) or (howManySets == 0)):
+                                        # try this cut.
+                                        # some modifications ..
+                                        if len(each)==1: each = list(each[0]) # thanks bingogas_station
+                                        g2 = makeCut(each,g)
+                                        if 1==1: #if not isGraphConnected(g2):
+                                                counter = countGraphs(g2)
+                                                #if counter==1: print "g2 = ", g2, "\n\tcounter = ", counter, "\t", each, "\t len(each)= ", len(each)
+                                                if counter == howManyResultingGraphs:
+                                                        #print "cut found: ", each
+                                                        returnlist.append(each)
+                                                        createdSets=createdSets+1
+        #print "cutsets() exiting after creating \t", createdSets, "\t cutsets.\n"
+        return returnlist
+
+# unit tests
+class TestCutSet(unittest.TestCase):
+        def test_isGraphConnected(self):
+                # make a graph
+                g = pygraph.graph()
+                # add some nodes
+                g.add_nodes(range(1,20))
+                self.assertFalse(isGraphConnected(g))
+
+                # add some edges, make the graph connected.
+                for each in range(1,19):
+                        g.add_edge(each,each+1)
+                self.assertTrue(isGraphConnected(g))
+
+                g.del_edge(1,2)
+                self.assertFalse(isGraphConnected(g))
+
+                # TODO: digraph tests
+
+        def test_combinations(self):
+                # combinations() actually exists in python 2.6 as itertools.combinations()
                 
+                # very simple test.
+                simpleTest = [1,2,3,4,5]
+                simplecom = combinations(simpleTest,1)
+                simplecom = list(simplecom)
+                self.assertTrue(len(simplecom) == len(simpleTest))
+                #stillsimplecom = list(combinations(simpleTest,2)) 
 
-#g = pygraph.graph()
-#g.add_nodes(range(1,20))
-#assertTrue(isGraphConnected(g))
+                # make a directed graph
+                g = pygraph.digraph()
+                # add some nodes
+                g.add_nodes(range(1,11))
+                # add some edges
+                for each in range(1,10):
+                        g.add_edge(each,each+1)
+                # get the combinations
+                com = combinations(g.edges(),3)
+                # don't want a generator
+                com = list(com)
+                # don't want dupes.
+                com2 = frozenset(copy.copy(com))
+                self.assertTrue(com!=com2)
 
-# f-cutset algorithm
-# an f-cutset is made up of a single branch and a unique set of chords
-# 
-# remove the root (given) branch. if the graph is not divided, repeat. if it is, add that branch to the return set.
+        def test_makeCut(self):
+                # blah?
 
-# this probably has to be rewritten
-def cutset(fromNode, toNode, graph, level=0):
-   if not (graph.has_edge(fromNode, toNode)):
-      return []
-   print "cutset level level =",level,"\n"
-   graph2 = copy.copy(graph)
-   rset = [(fromNode, toNode)] # return set (we assume it starts with this edge at least)
-   print "function cutset: graph is ", graph2
-   print "removing:\n\tfromNode = ", fromNode, "\n\ttoNode = ", toNode, "\n"
-   graph2.del_edge(fromNode, toNode)
-   print "function cutset (2): graph is ", graph2
-   if isGraphConnected(graph2): # graphDivided()
-      print "the graph is connected!\n"
-      for each in graph2.edges():
-         #if (each[0] and each[1]):
-         print "level=",level," .. each var is: ", each
-         extension = cutset(each[0],each[1],copy.copy(graph2),level+1)
-         if extension:
-            rset.extend(extension) #cutset(each[0],each[1],copy.copy(graph2),level+1))
-   print "leaving cutset level level=",level,"\n"
-   return rset
+                # start with a non-directed graph.
+                g = pygraph.graph()
+                # add some nodes
+                g.add_nodes(range(1,11))
+                # add some edges
+                for each in range(1,10):
+                        g.add_edge(each,each+1)
+                # make a single cut
+                gcut1 = makeCut([1,2],g)
+                # should be two less edges because both (1,2) and (2,1) should have been removed.
+                self.assertTrue(len(gcut1.edges()) == len(g.edges())-2)
+                gcut2 = makeCut(([1,2],[3,4]),g)
+                self.assertTrue(len(gcut2.edges()) == len(g.edges())-4)
+                gcut3 = makeCut(([1,2],[3,4],[4,5]),g)
+                self.assertTrue(len(gcut3.edges()) == len(g.edges())-6)
 
-# now for some testing.
+                # directed graph test
+                g2 = pygraph.digraph()
+                # add some nodes
+                g2.add_nodes(range(1,11))
+                # add some edges
+                for each in range(1,10):
+                        g2.add_edge(each,each+1)
+                # make a single cut
+                g2cut1 = makeCut([1,2],g2)
+                self.assertTrue(len(g2cut1.edges()) == len(g2.edges())-1)
+                # make two cuts
+                g2cut2 = makeCut(([1,2],[2,3]),g2)
+                self.assertTrue(len(g2cut2.edges()) == len(g2.edges())-2)
 
-class TestCut(unittest.TestCase):
-   def test_isGraphConnected(self):
-      g = pygraph.graph()
-      g.add_nodes(range(1,20))
-      self.assertFalse(isGraphConnected(g))
-      for each in range(1,19):
-         g.add_edge(each,each+1)
-      print "graph is ", g
-      self.assertTrue(isGraphConnected(g))
-            
-      # 1-2-3 cutsets: [[(1,2)], [(2,3)]
-      g = pygraph.graph() # still not using a digraph
-      g.add_nodes([1,2,3,4,5,6,7,8,9])
-      g.add_edge(1,2)
-      g.add_edge(2,3)
-      g.add_edge(3,4)
-      g.add_edge(4,5)
-      g.add_edge(5,6)
-      g.add_edge(6,7)
-      g.add_edge(7,8)
-      g.add_edge(8,9) # so, 8 individual different cutsets, right?
-      print "graph is ", g
-      thecutset = cutset(7,8,g)#(1,2,g)
-      print "thecutset = ", thecutset
-      self.assertTrue(len(thecutset)==1)
+        def test_countGraphs(self):
+                g = pygraph.graph()
+                g.add_nodes(range(1,11))
+                for each in range(1,10):
+                        g.add_edge(each,each+1)
+                self.assertTrue(countGraphs(g)==1)
+                g1cut1 = makeCut([1,2],g)
+                self.assertTrue(countGraphs(g1cut1)==2)
+                g1cut2 = makeCut(([1,2],[3,4]),g)
+                self.assertTrue(countGraphs(g1cut2)==3)
 
-      # more complicated graph
+        def test_countGraphs_digraph(self):
+                g = pygraph.digraph()
+                g.add_nodes(range(1,11))
+                for each in range(1,10):
+                        g.add_edge(each,each+1)
+                self.assertTrue(countGraphs(g)==1)
+                g1cut1 = makeCut([1,2],g)
+                self.assertTrue(countGraphs(g1cut1)==2)
 
+        def test_cutsets(self):
+                # this is the big one.
+                # total number of cutsets in a given graph = (len(g.nodes())-1)
 
-      # testing combinations()
-      print "testing combinations().\n\n"
+                # start with a non-directed graph
+                g = pygraph.graph()
+                # add some nodes.
+                g.add_nodes(range(1,11))
+                # add some edges
+                for each in range(1,10):
+                        g.add_edge(each,each+1)
 
-      com = combinations((1,2,3,4,5),3)
-      print frozenset(com)
-      for each in com:
-        print "tiny is", each
-      raw_input("done testing combinations?")
+                # find all cutsets that divide the graph into 2 graphs.
+                # the third parameter is set to the max number of cuts to return
+                # in this case, we know that there are at most 9 cuts,
+                # (because of the 9 edges)
+                gsets = cutsets(g,2,len(g.edges())/2)
+                self.assertTrue(len(gsets)==len(g.edges())/2) # this only holds for pygraph.graph (not pygraph.digraph)
+                self.assertTrue(len(gsets)==len(g.nodes())-1)
 
-      # find all possible cutsets.
-      print "\n\nfind all possible cutsets.\n"
-      cutsetlist = set()
-      for counter in range(len(g.edges())):
-         stuff = combinations(g.edges(),counter)
-         print "here are the combinations of g.edges() for counter = ", counter
-         print frozenset(stuff)
-         raw_input("continue?")
-         for tinystuff in stuff:
-                cutsetlist.add(frozenset(tinystuff))
-      
-      print ".. done making the cutsetlist.\n"
-      #print "cutsetlist is: ", cutsetlist
-      #print "\n\n\n"
-      
-      realCutSets = set()
-
-      # now shorten the list of cutsets.
-      for each in cutsetlist:
-        #print "the length of this cutset was .. ", len(each)
-        #print "\t", each
-        theCutGraph = makeCut(each,g)
-        if not isGraphConnected(theCutGraph):
-                # "each" is indeed a cutset.
-                realCutSets.add(each)#frozenset(each))
-      
-      # clean up the list.
-
-      # remove duplicates. for instance, if the list has (4,6) and (6,4), remove one of them.
-      #realCutSets = removeDupes(realCutSets)
-    
-      # now inform the user which ones were really cutsets.
-      for each in realCutSets:
-        print "a real cutset was: ", each
-        #raw_input("continue?")
-
-      print "END.\n\n\n"
-      # TODO: try pygraph.digraph(). for checking connectedness it should ignore direction.
-      # for path finding, directionality does matter in a digraph.
+                # directed graph test.
+                g2 = pygraph.digraph()
+                g2.add_nodes(range(1,11))
+                for each in range(1,10):
+                        g2.add_edge(each,each+1)
+                self.assertTrue(countGraphs(makeCut([1,2],g2)) == 2)
+                g2sets = cutsets(g2,2)
+                self.assertTrue(len(g2sets)==len(g.nodes())-1)
 
 if __name__ == '__main__':
-   unittest.main()
-
-
+        unittest.main()
