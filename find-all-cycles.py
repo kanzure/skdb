@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # http://www2.decf.berkeley.edu/~faridani/python.htm
 # TODO: convert to python-graph instead of silly adjacency matrix thingy.
-import pygraph
+import graph as pygraph
 import random
 from sets import Set
 import copy
