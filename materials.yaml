@@ -11,3 +11,12 @@ steel: !!python/object:skdb.Material
     friction_coefficient: #see MH27 page 1499
         steel: 0.4
         steel, zinc-plated: 0.17
+
+aluminum: !!python/object:skdb.Material
+    density: 2.7g/cc
+    similar:
+        - steel
+        - metal
+    description: 
+        a white lustrous metal, aluminum has been prized
+        for its use in beer cans, lawn furniture, and fighter jets
