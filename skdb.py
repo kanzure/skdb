@@ -52,8 +52,8 @@ def compatible(a, b):
     except UnitError: return None
     else: return True
 
-class Measurement(yaml.YAMLObject):
-    yaml_tag = "!Measurement"
+class Unit(yaml.YAMLObject):
+    yaml_tag = "!Unit"
     '''try to preserve the original units, and provide a wrapper to the GNU units program'''
     def __init__(self, string, uncertainty=None):
         simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
@@ -74,7 +74,7 @@ class Measurement(yaml.YAMLObject):
         if str(self) == 'None' or str(other) == 'None': return None
         s = Template('($a)*($b)')
         expression = s.safe_substitute(a=str(self), b=str(other))
-        rval = Measurement(expression)
+        rval = Unit(expression)
         if debug: rval.check()
         return rval
         
@@ -84,7 +84,7 @@ class Measurement(yaml.YAMLObject):
         if str(self) == 'None' or str(other) == 'None': return None
         s = Template('($a)/($b)')
         expression = s.safe_substitute(a=str(self), b=str(other))
-        rval = Measurement(expression)
+        rval = Unit(expression)
         if debug: rval.check()
         return rval
 
@@ -95,7 +95,7 @@ class Measurement(yaml.YAMLObject):
         else: return False
 
     def to(self, dest):
-        return Measurement(convert(self, dest))
+        return Unit(convert(self, dest))
     
     def check(self):
         return check(self)
@@ -132,26 +132,26 @@ class Thread(yaml.YAMLObject):
     yaml_tag = '!Thread'
     '''examples: ballscrews, pipe threads, bolts - NOT any old helix'''
     def __init__(self, diameter, pitch, gender='male', length=None, form="UN"):
-        self.diameter, self.pitch, self.form = Measurement(diameter), Measurement(pitch), form
+        self.diameter, self.pitch, self.form = Unit(diameter), Unit(pitch), form
         self.gender, self.length, self.form
     
     def pitch_diameter(self):
         assert self.form=="UN" and compatible(self.pitch, 'rev/inch'), "this only works for triangular threads atm"
         s = Template('($diameter)-0.6495919rev/($pitch)') #machinery's handbook 27ed page 1502
         string = s.safe_substitute(diameter=self.diameter, pitch=self.pitch)
-        return Measurement(simplify(string)).to('in')
+        return Unit(simplify(string)).to('in')
   
     def minor_diameter(self):
         assert self.form=="UN" and compatible(self.pitch, 'rev/inch'), "this only works for triangular threads atm"
         s = Template('($diameter)-1.299038rev/($pitch)')  #machinery's handbook 27ed page 1502
         string = s.safe_substitute(diameter=self.diameter, pitch=self.pitch)
-        return Measurement(simplify(string)).to('in')
+        return Unit(simplify(string)).to('in')
     
     def clamping_force(self, torque, efficiency=0.1):
         s = Template('($torque)*($pitch)*$efficiency')
         string = s.safe_substitute(torque=torque, pitch=self.pitch, efficiency=efficiency) #fill in template keywords
         simplified = simplify(string) #compute the expression
-        force = Measurement(simplified).to('lbf') #I guess this looks better than kg*m/s^2, but there should be a default units setting somewhere
+        force = Unit(simplified).to('lbf') #I guess this looks better than kg*m/s^2, but there should be a default units setting somewhere
         return force
   
     def tensile_area(self):
@@ -159,7 +159,7 @@ class Thread(yaml.YAMLObject):
         s = Template('pi/4*(($Dm+$Dp)/2)^2') #machinery's handbook 27ed page 1502 formula 9 "tensile-stress area of screw thread"
         string = s.safe_substitute(Dm=self.minor_diameter(), Dp=self.pitch_diameter())
         simplified = simplify(string)
-        return Measurement(simplified).to('in^2')
+        return Unit(simplified).to('in^2')
   #max torque requires finding the combined "von mises" stress, given on page 1498
   #because the screw body will twist off as a combination of tensile and torque shear loads
 
@@ -195,13 +195,13 @@ class Screw(yaml.YAMLObject):
         s = Template('$area*$strength')
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.proof_load[self.grade])
         simplified = simplify(string)
-        return Measurement(simplified).to('lbf')
+        return Unit(simplified).to('lbf')
   
     def breaking_force(self):
         s = Template('$area*$strength')
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.tensile_strength[self.grade])
         simplified = simplify(string)
-        return Measurement(simplified).to('lbf')
+        return Unit(simplified).to('lbf')
 
 class Bolt(Fastener):
     '''a screw by itself cannot convert torque to force. a bolt is a screw with a nut'''
