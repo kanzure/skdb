@@ -7,9 +7,48 @@ import re
 import os
 from string import Template
 import re
-#unum looks rather immature, perhaps I will write a wrapper for GNU units instead
-#scientific.Physics.PhysicalQuantities looks ok-ish
 
+class Range(yaml.YAMLObject):
+    yaml_tag = "!range"
+    def constructor(loader, node): #see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers
+        value = loader.construct_scalar(node)
+        a, b = map(int, value.split('..'))
+    def representer(dumper, data):
+        print 'hi mom!'
+        return dumper.represent_scalar('!range', '%s .. %s' % data)
+    def __init__(self, min, max):
+        self.min = min
+        self.max = max
+ 
+class Uncertainty(yaml.YAMLObject):
+     yaml_tag = "!+-" #ehh.. going to do something with this eventually
+     pass
+ 
+def load(filename):
+        #patterns = {'!range': '^\d+\.\.\d+$', # 1 .. 2 inches# FIXME: scientific notation regular expression
+        patterns = {'!range': '^\d+fnord\d+$', # 1 .. 2 inches# FIXME: scientific notation regular expression
+            #'!plus':     r'$',
+            #'minus':    r'$',
+            } 
+
+        for key in patterns:
+            compiled = re.compile(patterns[key])
+            yaml.add_implicit_resolver(key, compiled)
+        
+        return yaml.load(open(filename))
+
+def dump():
+    yaml.add_representer(Range, Range.representer)
+    retval = yaml.dump()
+    if filename is not None:
+        f = open(filename, 'w')
+        f.write(retval)
+    else:
+        return retval
+    #some stdout call here might not be a bad idea
+
+#unum looks rather immature, perhaps I will write a wrapper for GNU units instead
+#scientific.Physics.PhysicalQuantities looks ok-ish        
 class UnitError(Exception): pass 
 class NaNError(Exception): pass
 
@@ -53,17 +92,6 @@ def compatible(a, b):
     except UnitError: return None
     else: return True
 
-def load(filename):
-        patterns = {'range':    r'^\d+\.\.\d+$', # FIXME: scientific notation regular expression
-                    #'plus':     r'$',
-                    #'minus':    r'$',
-                   } 
-
-        for key in patterns:
-                compiled = re.compile(patterns[key])
-                yaml.add_implicit_resolver(u("!" + key),compiled)
-        
-        return yaml.load(filename)
 
 
 class Unit(yaml.YAMLObject):
@@ -72,7 +100,7 @@ class Unit(yaml.YAMLObject):
     def __init__(self, string, uncertainty=None):
         simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
         self.string = str(string)
-        self.uncertainty = uncertainty
+        self.uncertainty = Uncertainty(uncertainty)
         #e_number = '([+-]?\d*\.?\d*([eE][+-]?\d+)?)' #engineering notation
         #match = re.match(e_number + '?(\D*)$', string) #i dunno wtf i was trying to do here
         #match = re.match(e_number + '?(.*)$', string)
@@ -121,8 +149,15 @@ class Unit(yaml.YAMLObject):
         return compatible(self, other)
 #    return conv_factor + dest
 #  def simplify(self, string):
+    def number(self): 
+        '''return the number portion of the unit string'''
+        pass
+    def unit(self):
+        '''return the unit portion of the unit string'''
+        pass
+        
 
-class Process(yaml.YAMLObject):
+class Process(yaml.YAMLObject, dict):
     yaml_tag = '!Process'
     def __init__(self, name):
         self.name = name
@@ -224,15 +259,11 @@ class Bolt(Fastener):
         self.nut = nut
 
 def main():
-    screw = load('screw.yaml')['screw'] #yaml.load(open('screw.yaml'))['screw']
-    print yaml.dump(screw)
-    print screw.thread.clamping_force('20N*m/rev')
-    print screw.thread.clamping_force('100ft*lbf')
-    print screw.thread.tensile_area()
-    print screw.thread.minor_diameter()
-    print screw.thread.pitch_diameter()
-    print screw.max_force()
-    print screw.breaking_force()
+    foo = load('processes.yaml')
+#    for key in foo['abrasive jet']:
+#       print yaml.dump(foo[key])
+#    print yaml.dump(foo['abrasive jet']['surface finish'])
+    print yaml.dump(foo)
 
 if __name__ == "__main__":
     main()
