@@ -1,0 +1,69 @@
+author: 'ben lipkowitz'
+license: 'GPL2+'
+urls: 
+- 'http://heybryan.org/mediawiki/index.php/Skdb'
+- 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=materials.yaml'
+- 'git://fennetic.net/git/skdb.git/'
+
+abrasive jet: !!python/object:skdb.Process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
+    name: abrasive jet machining
+    removal: 
+        typical:
+            min: 0.0003in/min
+            max: 0.0007in/min
+        feasible:
+            min: 0.0001in/min
+            max: 0.002in/min    
+    tolerance:
+        typical: 0.005in
+        feasible: 0.001in
+    surface finish: #arithmetic average
+        typical:
+            min: 6microinch
+            max: 48microinch
+        feasible:
+            min: 4microinch
+            max: 64microinch
+    consumables:
+        nozzle: &orifice
+        tungsten carbide:
+            min: 12hr
+            max: 30hr
+        sapphire:
+            min: 300hr
+        abrasive:
+            aluminum oxide:
+            silicon carbide:
+            glass beads:
+            sodium bicarbonate:
+            calcium compounds:
+            magnesium compounds:
+    parameters:
+        workpiece material: &machinability
+            ceramic: #stars is a scale of 0 to 4 representing process quality and/or ease of use
+                min: 2.25 stars
+                max: 3.75 stars
+            germanium:
+                min: 2.2 stars
+                max: 3.5stars
+            glass:
+                min: 2.2stars
+                max: 3.8stars
+            mica:
+                min: 1.9stars
+                max: 3.4stars
+            silicon:
+                min: 2.3stars
+                max: 3.8stars
+            steel:
+                min: 1.1stars
+                max: 2.5stars
+            aluminum:
+                min: 0.4stars
+                max: 1.6stars
+        abrasive material:
+        nozzle distance:
+        nozzle angle:
+        air pressure:
+        orifice size:
+        orifice shape:
