@@ -5,9 +5,9 @@ urls:
 - 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=materials.yaml'
 - 'git://fennetic.net/git/skdb.git/'
 
-abrasive jet: !!python/object:skdb.Process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
+abrasive jet: !Process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
     name: abrasive jet machining
-    removal: 
+    removal rate: 
         typical:
             min: 0.0003in/min
             max: 0.0007in/min
@@ -26,15 +26,22 @@ abrasive jet: !!python/object:skdb.Process #eventually this will be something li
             max: 64microinch
     consumables:
         nozzle: &orifice
-        tungsten carbide:
-            life:
-                min: 12hr
-                max: 30hr
-        sapphire:
-            life:
-                min: 300hr
+            tungsten carbide:
+                life:
+                    min: 12hr
+                    max: 30hr
+            sapphire:
+                life:
+                    min: 300hr
 
     parameters:
+        workpiece size:
+            typical:
+                min: 5 in^2
+                max: 50 in^2
+            feasible:
+                min: 0.2 in^2
+                max: 100 in^2
         workpiece material: &machinability
             ceramic: #stars is a scale of 0 to 4 representing process quality and/or ease of use
                 min: 2.25 stars
@@ -73,7 +80,7 @@ abrasive jet: !!python/object:skdb.Process #eventually this will be something li
             glass beads:
                 diameter:
                     min: 0.025in
-                    max:0.05in
+                    max: 0.05in
             sodium bicarbonate:
             calcium compounds:
             magnesium compounds:
