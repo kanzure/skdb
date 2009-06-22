@@ -6,6 +6,7 @@ import yaml
 import re
 import os
 from string import Template
+import re
 #unum looks rather immature, perhaps I will write a wrapper for GNU units instead
 #scientific.Physics.PhysicalQuantities looks ok-ish
 
@@ -51,6 +52,19 @@ def compatible(a, b):
     try: simplify(str(a) + '+' + str(b))
     except UnitError: return None
     else: return True
+
+def load(filename):
+        patterns = {'range':    r'^\d+\.\.\d+$', # FIXME: scientific notation regular expression
+                    #'plus':     r'$',
+                    #'minus':    r'$',
+                   } 
+
+        for key in patterns:
+                compiled = re.compile(patterns[key])
+                yaml.add_implicit_resolver(u("!" + key),compiled)
+        
+        return yaml.load(filename)
+
 
 class Unit(yaml.YAMLObject):
     yaml_tag = "!Unit"
@@ -210,7 +224,7 @@ class Bolt(Fastener):
         self.nut = nut
 
 def main():
-    screw = yaml.load(open('screw.yaml'))['screw']
+    screw = load('screw.yaml')['screw'] #yaml.load(open('screw.yaml'))['screw']
     print yaml.dump(screw)
     print screw.thread.clamping_force('20N*m/rev')
     print screw.thread.clamping_force('100ft*lbf')
