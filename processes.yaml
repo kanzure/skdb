@@ -27,17 +27,13 @@ abrasive jet: !!python/object:skdb.Process #eventually this will be something li
     consumables:
         nozzle: &orifice
         tungsten carbide:
-            min: 12hr
-            max: 30hr
+            life:
+                min: 12hr
+                max: 30hr
         sapphire:
-            min: 300hr
-        abrasive:
-            aluminum oxide:
-            silicon carbide:
-            glass beads:
-            sodium bicarbonate:
-            calcium compounds:
-            magnesium compounds:
+            life:
+                min: 300hr
+
     parameters:
         workpiece material: &machinability
             ceramic: #stars is a scale of 0 to 4 representing process quality and/or ease of use
@@ -62,6 +58,25 @@ abrasive jet: !!python/object:skdb.Process #eventually this will be something li
                 min: 0.4stars
                 max: 1.6stars
         abrasive material:
+            aluminum oxide:
+                diameter:
+                    min: 10 micron
+                    max: 50 micron
+                orifice:
+                    diameter:
+                        min: 0.005in
+                        max: 0.018in
+            silicon carbide:
+                diameter:
+                    min: 25 micron
+                    max: 50 micron
+            glass beads:
+                diameter:
+                    min: 0.025in
+                    max:0.05in
+            sodium bicarbonate:
+            calcium compounds:
+            magnesium compounds:
         nozzle distance:
         nozzle angle:
         air pressure:
