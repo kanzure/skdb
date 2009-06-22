@@ -181,21 +181,41 @@ def separateGraphs(g):
         return graphs
 
 def extractAcrossVariables(node):
+        # across variable = a variable that is measured in parallel (difference of values between two points)
+        # like: volts, ohms, velocity (m/sec), angular speed (rad/sec), pressure (N*m**(-2))
         acrossvariables = []
         return acrossvariables
 
 def extractThroughVariables(node):
+        # through variable = a variable that is measured in series
+        # like: current (amps), force (kg*m/sec^2), torque (N*m), flow rate (kg/sec)
         throughvariables = []
         return throughvariables
 
-def equationsFromCutsets(g,cutsets): # KCL (Kirchhoff's Circuit Law)
+def equationsFromCutsets(g,cutsets): # KCL (Kirchhoff's Current Law)
         # McPhee's Vertex Postulate: the sum of through variables at any node of a system graph must equal zero when due account is taken of the orientation of edges incident upon that node.
         # Each fundamental cutset breaks the circuit into two pieces: two supernodes. Write a KCL equation for one supernode in each f-cutset (in terms of node voltages). The KCL equations for the two supernodes formed by an f-cutset will be the same. This yields n-1 equations in n node voltage variables. Set one node voltage to zero volts (ground) and solve.
         equations = []
         for cutset in cutsets:
-                # TODO: check whether or not the cutset is an f-cutset for the graph
+                # TODO: check whether or not the cutset is an f-cutset for the graph (maybe this should be done elsewhere?)
                 g2 = makeCut(cutset,g)
                 graphs = separateGraphs(g2)
+                # FIXME: choose the graph that does not contain a voltage source.
+                # FIXME: in the mean time, using the smaller graph (which seems to be a good approximation or rule of thumb)
+                useThisGraph = min(graphs[0],graphs[1])
+                equationLeft = ""
+                equationRight = ""
+                for node in useThisGraph:
+                        for neighbor in useThisGraph.neighbors(node):
+                                # FIXME: relying on extractThroughVariables() to add in directionality of the edge wrt the var
+                                throughvars = extractThroughVariables(neighbor,node) # maybe it's at a port between these two devices
+                                # FIXME: which port or interface? there might be multiple edges between any given two components.
+                                for through in throughvars:
+                                        if(through>0): # put it on the left
+                                                equationLeft = equationLeft + through + " + "
+                                        else: equationRight = equationRight + through " + "
+                equation = equationLeft + " 0 = " + equationRight + " 0" # KCL (Kirchhoff's Current Law)
+                equations.append(equation)                
         return equations
 
 def equationsFromCycles(g,cycles): # KVL (Kirchhoff's Voltage Law)
