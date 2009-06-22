@@ -52,7 +52,8 @@ def compatible(a, b):
     except UnitError: return None
     else: return True
 
-class Measurement:
+class Measurement(yaml.YAMLObject):
+    yaml_tag = "!Measurement"
     '''try to preserve the original units, and provide a wrapper to the GNU units program'''
     def __init__(self, string, uncertainty=None):
         simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
@@ -95,7 +96,6 @@ class Measurement:
 
     def to(self, dest):
         return Measurement(convert(self, dest))
-
     
     def check(self):
         return check(self)
@@ -108,22 +108,28 @@ class Measurement:
 #    return conv_factor + dest
 #  def simplify(self, string):
 
+class Process(yaml.YAMLObject):
+    yaml_tag = '!Process'
+    def __init__(self, name):
+        self.name = name
+    
 
-mm = Measurement('1mm')
-
-class Material:
+class Material(yaml.YAMLObject):
+    yaml_tag = '!Material'
     def __init__(self, name, density=1, specific_heat=1, etc=None): #TODO figure out what goes here
         self.name = name
         self.density = density
         self.specific_heat = specific_heat
 
-class Fastener:
+class Fastener(yaml.YAMLObject):
+    yaml_tag = '!Fastener'
     '''could be a rivet, could be a bolt. duct tape? superglue? twine? hose clamp?
     these methods are what actually get called by higher levels of abstraction'''
     def __init__(self, force, rigidity, safety_factor=7):
         pass
 
-class Thread:
+class Thread(yaml.YAMLObject):
+    yaml_tag = '!Thread'
     '''examples: ballscrews, pipe threads, bolts - NOT any old helix'''
     def __init__(self, diameter, pitch, gender='male', length=None, form="UN"):
         self.diameter, self.pitch, self.form = Measurement(diameter), Measurement(pitch), form
@@ -158,7 +164,8 @@ class Thread:
   #because the screw body will twist off as a combination of tensile and torque shear loads
 
 
-class Screw():
+class Screw(yaml.YAMLObject):
+    yaml_tag = "!Screw"
     '''a screw by itself isn't a fastener, it needs a nut of some sort'''
     proof_load = {#grade:load, proof load is defined as load bolt can withstand without permanent set
         '1':'33ksi',
