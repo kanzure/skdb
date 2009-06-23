@@ -173,8 +173,8 @@ processes:
             electrohydraulic:
     joining:
       mechanical:
-        pressure: (cold welding)
-        friction: (inertial welding)
+        pressure: #(cold welding)
+        friction: #(inertial welding)
         ultrasonic:
         explosive:
       thermal:
@@ -199,12 +199,12 @@ processes:
           braze:
             gas:
             carbon arc:
-          diffusion: (diffusion bonding)
+          diffusion: #(diffusion bonding)
           high energy beam:
             electron beam:
             laser beam:
             plasma arc:
-        brazing: (how is this any different from thermal welding->braze?)
+        brazing: #(how is this any different from thermal welding; braze?)
           infrared:
           resistance:
           torch:
@@ -229,7 +229,7 @@ processes:
           stress relieving:
           tempering:
         recrystallization:
-          full: (full annealing)
+          full: #(full annealing)
           process:
           short-cycle:
       hardening:
@@ -304,13 +304,13 @@ processes:
           roll:
             calendering:
             roller coating:
-          (doctor blade method):
+#          (doctor blade method):
         thermal:
           flame spraying:
             combustion:
             plasma arc:
             detonation gun:
-          vaporized: (vaporized metal coating)
+          vaporized: #(vaporized metal coating)
             vacuum metalizing:
             sputtering:
             chemical vapor-phase deposition:
