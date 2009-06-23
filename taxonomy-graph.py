@@ -4,7 +4,7 @@ import graph
 
 linnaeus = yaml.load(open('taxonomy.yaml'))
 
-taxonomy = graph.graph()
+taxonomy = graph.digraph()
 node_id=0 #we need numerical nodes because some terms show up multiple times, like thermal, mechanical, chemical
 
 def walk(treebeard, name, parent_node):
