@@ -1,0 +1,335 @@
+processes:
+  shaping:
+    mass-reducing:
+      mechanical:
+        reducing:
+          single-point:
+            turning/facing:
+            boring:
+            shaping/planing:
+            parting/grooving:
+            threading:
+          multi-point:
+            drilling:
+            reaming:
+            milling/routing:
+            broaching:
+            threading:
+            filing:
+            sawing:
+            gear cutting:
+          abrasive:
+            grinding:
+            honing:
+            lapping:
+            superfinishing:
+            ultrasonic machining:
+            jet machining:
+        separating:
+          shearing:
+            squaring:
+            slitting:
+            rotary shearing:
+            nibbling:
+          blanking:
+            conventional:
+            steel-rule-die:
+            fine:
+            shaving/trimming:
+            dinking:
+          piercing:
+            punching:
+            perforating:
+            lancing:
+            notching:
+      thermal:
+        torch cutting:
+          air arc cutting:
+          gas cutting:
+          plasma arc cutting:
+        electrical discharge machining:
+          cavity-type EDM:
+          EDM grinding:
+          EDM sawing:
+        high energy beam machining:
+          electron beam cutting:
+          laser beam cutting:
+          ion beam cutting:
+      chemical:
+        chemical milling:
+          immersion chemical milling:
+          spray chemical milling:
+        electrochemical milling:
+          cavity-type ECM:
+          grinder-type ECM:
+        photochemical milling:
+          photo etching:
+          photo milling:
+    mass-conserving:
+      consolidation:
+        casting:
+          nonreusable mold:
+            ceramic mold:
+              investment:
+              plaster:
+            sand mold:
+              sand:
+              shell:
+              no-bake:
+              full:
+          reusable mold:
+            die:
+            permanent:
+            flexible:
+            continuous:
+        molding:
+          ceramic:
+            wet forming:
+            dry pressing:
+          polymer:
+            injection:
+            blow:
+            transfer:
+            compresion:
+            extrusion:
+            thermoform:
+            rotational:            
+        compacting:
+          continuous:
+            p/m extrusion:
+            p/m rolling:
+          noncontinuous:
+            pressing:
+            centrifugal:
+            explosive:
+            isostatic:
+            slip casting:
+        deposition:
+          electroforming:
+        laminating:
+          filament winding:
+          sheet laminating:
+          bulk laminating:
+            spray lay-up:
+          pultrusion:
+      deformation:
+        total:
+          forging:
+            hot:
+              hammer:
+              drop:
+              press:
+              upset:
+              roll:
+            cold:
+              swaging:
+              cold heading:
+          extruding:
+            direct:
+            indirect:
+            impact:
+          drawing:
+            wire:
+            tube:
+          rolling:
+            sheet:
+            foil:
+            structural:
+            pierce:
+          shear spinning:
+          coining/sizing/hobbing:
+          thread forming:
+          knurling:
+        local:
+          bending:
+            straight angle:
+            corrugation:
+            joggle:
+            curling:
+            seaming:
+            tube:
+            roll forming:
+          conventional forming:
+            sheet:
+              die:
+                matched drawing:
+                  simple rigid:
+                  compound:
+                  progressive:
+                rubber:
+                  guerin:
+                  marform:
+                  hydroform:
+              spinning:
+              stretching:
+              embossing:
+            tube:
+              swaging:
+              flaring:
+              intraforming:
+          high energy rate forming:
+            explosive:
+            electromagnetic:
+            electrohydraulic:
+    joining:
+      mechanical:
+        pressure: (cold welding)
+        friction: (inertial welding)
+        ultrasonic:
+        explosive:
+      thermal:
+        welding:
+          electric arc:
+            shielded metal:
+            gas metal:
+            gas tungsten:
+            submerged:
+            carbon:
+            stud:
+          electric resistance:
+            spot:
+            seam:
+            projection:
+            butt:
+            percussion:
+            electroslag:
+          gas/chemical:
+            combustible gas welding:
+            atomic hydrogen welding:
+          braze:
+            gas:
+            carbon arc:
+          diffusion: (diffusion bonding)
+          high energy beam:
+            electron beam:
+            laser beam:
+            plasma arc:
+        brazing: (how is this any different from thermal welding->braze?)
+          infrared:
+          resistance:
+          torch:
+          furnace:
+          induction:
+        soldering:
+          friction/ultrasonic:
+          induction:
+          infrared:
+          dip:
+          iron:
+          resistance:
+          torch:
+          wave:          
+      chemical:
+        adhesive:
+        solvent:
+  non-shaping:
+    heat-treatment:
+      annealing:
+        recovery:
+          stress relieving:
+          tempering:
+        recrystallization:
+          full: (full annealing)
+          process:
+          short-cycle:
+      hardening:
+        surface:
+          carburizing:
+          chromizing:
+          carbonitriding:
+          cyaniding:
+          nitriding:
+          diffusion:
+          flame:
+          induction:
+        through:
+          water quench:
+          oil quench:
+          air quench:
+          martempering:
+          austempering:
+          age:
+      other:
+        sintering:
+          solid-phase:
+          liquid-phase:
+        cryo:
+        firing/glazing:
+        curing/bonding:
+    surface-finishing:
+      preparation:
+        descaling:
+          mechanical:
+            abrasive blasting:
+            belt sanding:
+            shot pening:
+            wire brushing:
+            grinding:
+          thermal:
+            flame:
+          chemical:
+            pickling:
+        deburring:
+          mechanical:
+            barrel tumbling:
+            vibratory finishing:
+            knife deburring:
+          thermal:
+            thermochemical deburring:
+          chemical:
+            electrochemical deburring:
+        degreasing:
+          mechanical degreasing:
+            ultrasonic degreasing:
+          chemical degreasing:
+            vapor:
+            solvent:
+            alkalai:
+      coating:
+        mechanical:
+          spray:
+            pressure:
+              air gun:
+              high pressure airless:
+            charged:
+              electrostatic:
+              vacuum:
+          dip/flow:
+            cold dip:
+            hot dip:
+            electrocoating:
+            fluidized bed:
+            curtain:
+          dust:
+          roll:
+            calendering:
+            roller coating:
+          (doctor blade method):
+        thermal:
+          flame spraying:
+            combustion:
+            plasma arc:
+            detonation gun:
+          vaporized: (vaporized metal coating)
+            vacuum metalizing:
+            sputtering:
+            chemical vapor-phase deposition:
+          heat tinting:
+        chemical:
+          electroplating:
+          conversion:
+            anodize:
+            alkaline oxide:
+            fused nitrate:
+            proprietary:
+            phosphate:
+            chromate:
+      modification:
+        burnishing:
+        peening:
+          shot:
+          hammer:
+        texturing:
+          wire brush:
+          buffing/polishing:
+
