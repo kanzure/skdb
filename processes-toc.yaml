@@ -1,0 +1,154 @@
+source: manufacturing processes reference guide, 1993 first edition. todd, allen, and alting.:
+
+taxonomy:
+  reducing:
+    mechanical:
+      abrasive jet machining:
+      arbor milling:
+      band filing:
+      band sawing:
+      broaching:
+      centerless grinding:
+      circular sawing:
+      conventional blanking:
+      cylindrical grinding:
+      die threading:
+      drilling:
+      end milling:
+      fine blanking:
+      gear hobbing:
+      gear milling:
+      gear shaping:
+      honing:
+      horizontal boring:
+      internal grinding:
+      jig boring:
+      lancing:
+      lapping:
+      lathe boring:
+      nibbling:
+      notching:
+      parting/grooving:
+      perforating:
+      precision boring:
+      punching:
+      reaming:
+      reciprocating filing:
+      reciprocating sawing:
+      routing:
+      sandblasting:
+      shaping/planing:
+      shearing:
+      slitting:
+      steel-rule-die blanking:
+      superfinishing:
+      surface grinding:
+      tapping:
+      thread cutting:
+      thread milling:
+      turning/facing:
+      vertical boring:
+      vibratory finishing:
+    thermal:
+      cavity EDM:
+      grinding EDM:
+      wire EDM:
+      gas flame cutting:
+      laser beam cutting:
+      plasma arc cutting:
+    chemical:
+      electrochemical grinding:
+      electrochemical machining:
+      immersion chemical milling/blanking:
+      photo etching:
+  consolidation:
+    axial powder compaction:
+    blow molding:
+    cold chamber die casting:
+    compression molding:
+    cored sand casting:
+    extrusion molding:
+    filament wining:
+    green sand casting:
+    hot chamber die casting:
+    injection molding:
+    investment casting:
+    isostatic powder compaction:
+    no-bake mold casting:
+    permanent mold casting:
+    plaster mold casting:
+    rotational molding:
+    shell mold casting:
+    thermoform molding:
+    transfer molding:
+  deformation:
+    brake forming:
+    cold heading:
+    deep drawing:
+    drop forging:
+    impact extrusion:
+    plate roll bending:
+    progressive die drawing:
+    progressive roll forming:
+    stretch-draw forming:
+    swaging:
+    thread rolling:
+    tube bending:
+    tube drawing:
+    upset forging:
+    wire drawing:
+
+joining:
+  thermal:
+    electron beam welding:
+    furnace brazing:
+    gas metal arc welding:
+    gas torch braze welding:
+    gas tungsten arc welding:
+    laser beam welding:
+    metal bath dip soldering:
+    plasma arc welding:
+    projection welding:
+    shielded metal arc welding:
+    spot welding:
+    submerged arc welding:
+    wave soldering:
+  chemical:
+    adhesive bonding:
+    (solvent welding):
+
+annealing:
+  annealing:
+  stress relieving:
+  tempering:
+  (flame polishing):
+
+hardening:
+  age hardening:
+  carbonitriding:
+  carburizing:
+  induction hardening:
+  quench hardening:
+  work hardening:
+
+surface:
+  preparation:
+    chemical degreasing:
+    chromate conversion:
+    phosphate conversion:
+    solvent degreasing:
+    ultrasonic cleaning:
+    vapor degreasing:
+
+  coating:
+    air gun spraying:
+    electroplating:
+    electrostatic coating:
+    hot dip coating:
+    ion plating:
+    sputtering:
+    vacuum metallizing:
+
+  modification:
+    barrel tumbling:
+
