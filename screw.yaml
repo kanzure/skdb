@@ -1,32 +1,16 @@
-!!python/object:skdb.Package
-maintainer: 'ben lipkowitz'
+author: 'ben lipkowitz'
 license: 'GPL2+'
 urls: 
 - 'http://heybryan.org/mediawiki/index.php/Skdb'
 - 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=screw.yaml'
 - 'git://fennetic.net/git/skdb.git/'
 
-contents: !!python/object:skdb.Screw
+screw: !!python/object:skdb.Screw
  grade: '3'
  length: 1in
  thread: !!python/object:skdb.Thread
     diameter: 1/4*in
     form: UN 
     pitch: 20rev/in
- head: !!python/object:skdb.ScrewHead
-    diameter: 2in
-    equations:
-        - equation:
-                - 'F = m*a'
-                - units
-                        F: 'N'
-                        m: 'kg'
-                        a: 'm/s^2'
- interfaces:
-    head: !!python/object:skdb.Interface
-       geometry: null
-       name: head
-       units: N
 
-# TODO: "interfaces" should be in the Screw class (not in the YAML file)
-# TODO: "equations" for the head should go into the Screw clas
+
