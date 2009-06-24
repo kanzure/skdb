@@ -21,16 +21,33 @@ class Interface(yaml.YAMLObject):
 
         a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry
         '''
-        def __init__(self, interfaceName, units, direction, geometry):
+        def __init__(self, interfaceName, units, geometry):
                 self.name = interfaceName
-                self.direction = direction  # magnitude of the units, with respect to the package
                 self.units = units
                 self.geometry = geometry # need to get a geometry handler class to get everything looking the same
 
+
+class Contributor(yaml.YAMLObject):
+        '''
+        used in package metadata
+
+        authorName = Bryan Bishop
+        email = kanzure@gmail.com
+        url = http://heybryan.org/
+        '''
+        def __init__(self, authorName, email, url):
+                self.name = authorName
+                self.email = email
+                self.url = url
+
 class Package(yaml.YAMLObject):
         interfaces = []
-        def __init__(self, packageName):
+        def __init__(self, packageName, packageUnixName, licenseStringIdentifier, urls, contributors):
                 self.name = packageName
+                self.packageUnixName = packageName # TODO: complain if it's not a valid "unix name"
+                self.license = licenseStringIdentifier
+                self.urls = urls
+                self.contributors = contributors
                 # TODO: set up other metadata here
 
 class Range(yaml.YAMLObject):
@@ -47,7 +64,8 @@ class Range(yaml.YAMLObject):
  
 class Uncertainty(yaml.YAMLObject):
      yaml_tag = "!+-" #ehh.. going to do something with this eventually
-     pass
+     def __init__(self,value):
+        self.value = value
  
 def load(filename):
         #patterns = {'!range': '^\d+\.\.\d+$', # 1 .. 2 inches# FIXME: scientific notation regular expression
@@ -208,7 +226,10 @@ class Thread(Package):
     def __init__(self, diameter, pitch, gender='male', length=None, form="UN"):
         self.diameter, self.pitch, self.form = Unit(diameter), Unit(pitch), form
         self.gender, self.length, self.form
-    
+        self.interfaces = [
+                (pitch_diameter, 'in'), # conversion function .. so this is wrong.
+                (minor_diameter, 'in'),
+                (clamping_force, 'lbf')]
     def pitch_diameter(self):
         assert self.form=="UN" and compatible(self.pitch, 'rev/inch'), "this only works for triangular threads atm"
         s = Template('($diameter)-0.6495919rev/($pitch)') #machinery's handbook 27ed page 1502
@@ -237,8 +258,13 @@ class Thread(Package):
   #max torque requires finding the combined "von mises" stress, given on page 1498
   #because the screw body will twist off as a combination of tensile and torque shear loads
 
+class Component(yaml.YAMLObject):
+        interfaces = []
+        #def __init__(self):
+        #        pass
+        pass
 
-class Screw(Package):
+class Screw(Component):
     yaml_tag = "!Screw"
     '''a screw by itself isn't a fastener, it needs a nut of some sort'''
     proof_load = {#grade:load, proof load is defined as load bolt can withstand without permanent set
