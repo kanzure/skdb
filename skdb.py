@@ -7,35 +7,101 @@ import re
 import os
 from string import Template
 import re
+import copy
+
+# the following aren't our responsibility, actually (pythonOCC?)
+#class Circle(yaml.YAMLObject)
+#class Cylinder(yaml.YAMLObject)
+#class InterfaceGeom(yaml.YAMLObject):
+#        def __init__(self, 
+
+# TODO: coordinates (location) of an interface
+class Interface(yaml.YAMLObject):
+        '''
+        "units" should be what is being transmitted through the interface, not about the structure
+
+        a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry
+        '''
+        def __init__(self, interfaceName, units, geometry):
+                self.name = interfaceName
+                self.units = units
+                self.geometry = geometry # need to get a geometry handler class to get everything looking the same
+
+
+class Contributor(yaml.YAMLObject):
+        '''
+        used in package metadata
+
+        authorName = Bryan Bishop
+        email = kanzure@gmail.com
+        url = http://heybryan.org/
+        '''
+        def __init__(self, authorName, email, url):
+                self.name = authorName
+                self.email = email
+                self.url = url
+
+class Package(yaml.YAMLObject):
+        interfaces = []
+        def __init__(self, packageName, packageUnixName, licenseStringIdentifier, urls, contributors):
+                self.name = packageName
+                self.packageUnixName = packageName # TODO: complain if it's not a valid "unix name"
+                self.license = licenseStringIdentifier
+                self.urls = urls
+                self.contributors = contributors
+                # TODO: set up other metadata here
 
 class Range(yaml.YAMLObject):
     yaml_tag = "!range"
-    def constructor(loader, node): #see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers
-        value = loader.construct_scalar(node)
-        a, b = map(int, value.split('..'))
-    def representer(dumper, data):
+    def representer(self, dumper, data):
         print 'hi mom!'
-        return dumper.represent_scalar('!range', '%s .. %s' % data)
+        return dumper.represent_scalar('!range', '%s..%s' % data)
     def __init__(self, min, max):
         self.min = min
         self.max = max
+
+sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to do regex without parens?
+range_expression = sci+'\s*\.\.\s*'+sci+'\s*(.*)$'
+ 
+def range_constructor(loader, node): #see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers
+    '''i wish this were a method of Range'''
+    value = loader.construct_scalar(node)
+    match = re.search(range_expression, value)
+    a, crap, b, crap2, units = match.groups() 
+    if units != '':
+        a = Unit(a+units)
+        b = Unit(b+units)
+    else: #yuck
+        #if '.' in a: a = float(a)
+        #else: a = int(a)
+        #if '.' in b: b = float(b)
+        #else: b = int(b)
+        #double yuck. maybe i should just pass this to units instead?
+        a = eval(a)
+        #print b #this line causes unit test to fail for some reason
+        b = eval(b)
+
+    #a, b = [Unit(x) for x in value.split('..')]
+    return Range(min(a,b), max(a,b))
  
 class Uncertainty(yaml.YAMLObject):
      yaml_tag = "!+-" #ehh.. going to do something with this eventually
-     pass
+     def __init__(self,value):
+        self.value = value
  
-def load(filename):
+def load(string):
         #patterns = {'!range': '^\d+\.\.\d+$', # 1 .. 2 inches# FIXME: scientific notation regular expression
-        patterns = {'!range': '^\d+fnord\d+$', # 1 .. 2 inches# FIXME: scientific notation regular expression
+        patterns = {'!range': range_expression, # 1 .. 2 inches# FIXME: scientific notation regular expression
             #'!plus':     r'$',
             #'minus':    r'$',
             } 
 
         for key in patterns:
             compiled = re.compile(patterns[key])
+            yaml.add_constructor('!range', range_constructor)
             yaml.add_implicit_resolver(key, compiled)
         
-        return yaml.load(open(filename))
+        return yaml.load(string)
 
 def dump():
     yaml.add_representer(Range, Range.representer)
@@ -163,27 +229,30 @@ class Process(yaml.YAMLObject, dict):
         self.name = name
     
 
-class Material(yaml.YAMLObject):
+class Material(Package):
     yaml_tag = '!Material'
     def __init__(self, name, density=1, specific_heat=1, etc=None): #TODO figure out what goes here
         self.name = name
         self.density = density
         self.specific_heat = specific_heat
 
-class Fastener(yaml.YAMLObject):
+class Fastener(Package):
     yaml_tag = '!Fastener'
     '''could be a rivet, could be a bolt. duct tape? superglue? twine? hose clamp?
     these methods are what actually get called by higher levels of abstraction'''
     def __init__(self, force, rigidity, safety_factor=7):
         pass
 
-class Thread(yaml.YAMLObject):
+class Thread(Package):
     yaml_tag = '!Thread'
     '''examples: ballscrews, pipe threads, bolts - NOT any old helix'''
     def __init__(self, diameter, pitch, gender='male', length=None, form="UN"):
         self.diameter, self.pitch, self.form = Unit(diameter), Unit(pitch), form
         self.gender, self.length, self.form
-    
+        self.interfaces = [
+                (pitch_diameter, 'in'), # conversion function .. so this is wrong.
+                (minor_diameter, 'in'),
+                (clamping_force, 'lbf')]
     def pitch_diameter(self):
         assert self.form=="UN" and compatible(self.pitch, 'rev/inch'), "this only works for triangular threads atm"
         s = Template('($diameter)-0.6495919rev/($pitch)') #machinery's handbook 27ed page 1502
@@ -212,8 +281,13 @@ class Thread(yaml.YAMLObject):
   #max torque requires finding the combined "von mises" stress, given on page 1498
   #because the screw body will twist off as a combination of tensile and torque shear loads
 
+class Component(yaml.YAMLObject):
+        interfaces = []
+        #def __init__(self):
+        #        pass
+        pass
 
-class Screw(yaml.YAMLObject):
+class Screw(Component):
     yaml_tag = "!Screw"
     '''a screw by itself isn't a fastener, it needs a nut of some sort'''
     proof_load = {#grade:load, proof load is defined as load bolt can withstand without permanent set
