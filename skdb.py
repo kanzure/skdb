@@ -16,7 +16,7 @@ import re
 
 # TODO: coordinates (location) of an interface
 class Interface(yaml.YAMLObject):
-        def __init__(self, interfaceName, units, direction, geometry)
+        def __init__(self, interfaceName, units, direction, geometry):
                 self.name = interfaceName
                 self.direction = direction  # magnitude of the units, with respect to the package
                 self.units = units
