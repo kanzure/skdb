@@ -16,6 +16,11 @@ import re
 
 # TODO: coordinates (location) of an interface
 class Interface(yaml.YAMLObject):
+        '''
+        "units" should be what is being transmitted through the interface, not about the structure
+
+        a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry
+        '''
         def __init__(self, interfaceName, units, direction, geometry):
                 self.name = interfaceName
                 self.direction = direction  # magnitude of the units, with respect to the package
