@@ -5,7 +5,7 @@ urls:
 - 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=materials.yaml'
 - 'git://fennetic.net/git/skdb.git/'
 
-abrasive jet: !Process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
+abrasive jet: #!Process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
     name: abrasive jet machining
     removal rate: 
         typical:
@@ -18,9 +18,10 @@ abrasive jet: !Process #eventually this will be something like skdb.Shaping.Redu
         typical: 0.005in
         feasible: 0.001in
     surface finish: #arithmetic average
-        typical:
-            min: 6microinch
-            max: 48microinch
+        typical: 
+            6..48 microinch
+            #min: 6microinch
+            #max: 48microinch
         feasible:
             min: 4microinch
             max: 64microinch
@@ -33,7 +34,6 @@ abrasive jet: !Process #eventually this will be something like skdb.Shaping.Redu
             sapphire:
                 life:
                     min: 300hr
-
     parameters:
         workpiece size:
             typical:

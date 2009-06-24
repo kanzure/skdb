@@ -50,7 +50,7 @@ class TestUnits(unittest.TestCase):
 
 class TestScrew(unittest.TestCase):
     def test_conversions(self):
-            screw = skdb.load('screw.yaml')['screw'] #yaml.load(open('screw.yaml'))['screw']
+            screw = skdb.load(open('screw.yaml'))['screw'] #yaml.load(open('screw.yaml'))['screw']
             #print yaml.dump(screw)
             self.assertEqual(screw.thread.clamping_force('20N*m/rev'), '354.02982*lbf')
             self.assertEqual(screw.thread.clamping_force('100ft*lbf'), '15079.645*lbf')
@@ -59,5 +59,30 @@ class TestScrew(unittest.TestCase):
             self.assertEqual(screw.thread.pitch_diameter(), '0.21752041*in')
             self.assertEqual(screw.max_force(), '2704.758*lbf')
             self.assertEqual(screw.breaking_force(), '3500.275*lbf')
+
+class TestYaml(unittest.TestCase):
+    def test_implicit(self):
+        testrange = skdb.load('1..2')
+        self.assertEqual(testrange.min, 1)
+        self.assertEqual(testrange.max, 2)
+    def test_units(self):
+        testrange = skdb.load('1..2m')
+        self.assertEqual(testrange.min, skdb.Unit('1m'))
+        self.assertEqual(testrange.max, skdb.Unit('2m'))
+    def test_negative(self):
+        testrange = skdb.load('-2.345..1.234')
+        self.assertEqual(testrange.min, -2.345)
+        self.assertEqual(testrange.max, 1.234)
+    def test_ordering(self):
+        testrange = skdb.load('1.234 .. -2.345')
+        self.assertEqual(testrange.min, -2.345)
+        self.assertEqual(testrange.max, 1.234)
+    def test_scientific(self):
+        testrange = skdb.load('2.345e234 .. 2.345e-1')
+        self.assertEqual(testrange.min, 2.345e-1)
+        self.assertEqual(testrange.max, 2.345e234)
+        
+
+           
 if __name__ == '__main__':
     unittest.main()
