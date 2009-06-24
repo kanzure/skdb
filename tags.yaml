@@ -5,6 +5,7 @@ urls:
 - 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=screw.yaml'
 - 'git://fennetic.net/git/skdb.git/'
 
+stuff: 1..20 megatons
 
 foo: 
 - &screw !!python/object:skdb.Screw
