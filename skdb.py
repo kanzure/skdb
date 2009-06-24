@@ -8,6 +8,26 @@ import os
 from string import Template
 import re
 
+# the following aren't our responsibility, actually (pythonOCC?)
+#class Circle(yaml.YAMLObject)
+#class Cylinder(yaml.YAMLObject)
+#class InterfaceGeom(yaml.YAMLObject):
+#        def __init__(self, 
+
+# TODO: coordinates (location) of an interface
+class Interface(yaml.YAMLObject):
+        def __init__(self, interfaceName, units, direction, geometry)
+                self.name = interfaceName
+                self.direction = direction  # magnitude of the units, with respect to the package
+                self.units = units
+                self.geometry = geometry # need to get a geometry handler class to get everything looking the same
+
+class Package(yaml.YAMLObject):
+        interfaces = []
+        def __init__(self, packageName):
+                self.name = packageName
+                # TODO: set up other metadata here
+
 class Range(yaml.YAMLObject):
     yaml_tag = "!range"
     def constructor(loader, node): #see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers
@@ -163,21 +183,21 @@ class Process(yaml.YAMLObject, dict):
         self.name = name
     
 
-class Material(yaml.YAMLObject):
+class Material(Package):
     yaml_tag = '!Material'
     def __init__(self, name, density=1, specific_heat=1, etc=None): #TODO figure out what goes here
         self.name = name
         self.density = density
         self.specific_heat = specific_heat
 
-class Fastener(yaml.YAMLObject):
+class Fastener(Package):
     yaml_tag = '!Fastener'
     '''could be a rivet, could be a bolt. duct tape? superglue? twine? hose clamp?
     these methods are what actually get called by higher levels of abstraction'''
     def __init__(self, force, rigidity, safety_factor=7):
         pass
 
-class Thread(yaml.YAMLObject):
+class Thread(Package):
     yaml_tag = '!Thread'
     '''examples: ballscrews, pipe threads, bolts - NOT any old helix'''
     def __init__(self, diameter, pitch, gender='male', length=None, form="UN"):
@@ -213,7 +233,7 @@ class Thread(yaml.YAMLObject):
   #because the screw body will twist off as a combination of tensile and torque shear loads
 
 
-class Screw(yaml.YAMLObject):
+class Screw(Package):
     yaml_tag = "!Screw"
     '''a screw by itself isn't a fastener, it needs a nut of some sort'''
     proof_load = {#grade:load, proof load is defined as load bolt can withstand without permanent set
