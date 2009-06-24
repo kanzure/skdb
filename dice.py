@@ -2,11 +2,12 @@
 
 import yaml
 
-class Dice(tuple):
-    def __new__(cls, a, b):
-        return tuple.__new__(cls, [a, b])
+class Dice():
+    def __init__(self, major, minor):
+        self.major = major
+        self.minor = minor
     def __repr__(self):
-        return "Dice(%s,%s)" % self
+        return "Dice(%s,%s)" % (self.major, self.minor)
 
 def dice_representer(dumper, data):
     return dumper.represent_scalar('!dice', '%sd%s' %data)
