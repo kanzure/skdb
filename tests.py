@@ -61,13 +61,15 @@ class TestScrew(unittest.TestCase):
             self.assertEqual(screw.breaking_force(), '3500.275*lbf')
 
 class TestYaml(unittest.TestCase):
-
+    
     def test_implicit(self):
         testrange = skdb.load('1..2')
         self.assertEqual(testrange.min, 1)
         self.assertEqual(testrange.max, 2)
     def test_equals(self):
         self.assertEqual(skdb.load('1..2'), skdb.load('1..2'))
+    def test_implicit_equals(self):
+        self.assertEqual(skdb.load('1..2'), skdb.Range(1, 2))
     def test_spaces(self):
         testrange = skdb.load('1..2')
         self.assertEqual(testrange, skdb.load('1   ..2'))
@@ -81,6 +83,8 @@ class TestYaml(unittest.TestCase):
         self.assertEqual(testrange.max, skdb.Unit('2m'))
     def test_both_labeled(self):
         self.assertEqual(skdb.load('1..2m'), skdb.load('1m .. 2m'))
+    def test_one_labeled_equal(self):
+        self.assertEqual(skdb.load('1..2m'), skdb.Range(skdb.Unit('1m'), skdb.Unit('2m')))
     def test_negative(self):
         testrange = skdb.load('-2.345..1.234')
         self.assertEqual(testrange.min, -2.345)

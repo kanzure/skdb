@@ -65,16 +65,21 @@ class Range(yaml.YAMLObject):
         return self.min == other.min and self.max == other.max
 
 sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to do regex without parens?
-range_expression = sci+'\s*\.\.\s*'+sci+'\s*(.*)$'
+#expression looks something like: 1e4 m .. 2km
+range_expression = sci+'\s*(\D?.*)?\s*\.\.\s*'+sci+'\s*(\D?.*)$'
  
 def range_constructor(loader, node): #see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers
     '''i wish this were a method of Range'''
     value = loader.construct_scalar(node)
     match = re.search(range_expression, value)
-    a, crap, b, crap2, units = match.groups() 
-    if units != '':
-        a = Unit(a+units)
-        b = Unit(b+units)
+    a, crap, units1, b, crap2, units2 = match.groups() 
+    if units2 != '':
+        if units1 != '':
+            a = Unit(a+units1)
+            b = Unit(b+units2)
+        else:
+            a = Unit(a+units2)
+            b = Unit(b+units2)
     else: #yuck
         #if '.' in a: a = float(a)
         #else: a = int(a)
@@ -82,7 +87,7 @@ def range_constructor(loader, node): #see http://pyyaml.org/wiki/PyYAMLDocumenta
         #else: b = int(b)
         #double yuck. maybe i should just pass this to units instead?
         a = eval(a)
-        #print b #this line causes unit test to fail for some reason
+        print b #this line causes unit test to fail for some reason
         b = eval(b)
         
     #a, b = [Unit(x) for x in value.split('..')]
