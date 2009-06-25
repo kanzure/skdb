@@ -6,13 +6,13 @@ urls:
 - 'git://fennetic.net/git/skdb.git/'
 
 
-steel: !Material #you have to import skdb to parse this as a skdb.Material object
+steel: !material #you have to import skdb to parse this as a skdb.Material object
     density: 7.85g/cc
     friction_coefficient: #see MH27 page 1499
         steel: 0.4
         steel, zinc-plated: 0.17
 
-aluminum: !Material
+aluminum: !material
     density: 2.7g/cc
     similar:
         - steel

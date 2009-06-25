@@ -13,48 +13,42 @@ import copy
 #class Circle(yaml.YAMLObject)
 #class Cylinder(yaml.YAMLObject)
 #class InterfaceGeom(yaml.YAMLObject):
-#        def __init__(self, 
 
-# TODO: coordinates (location) of an interface
 class Interface(yaml.YAMLObject):
-        '''
-        "units" should be what is being transmitted through the interface, not about the structure
-
-        a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry
-        '''
-        def __init__(self, interfaceName, units, geometry):
-                self.name = interfaceName
-                self.units = units
-                self.geometry = geometry # need to get a geometry handler class to get everything looking the same
-
-
+    '''"units" should be what is being transmitted through the interface, not about the structure.
+    a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry'''
+    yaml_tag='!interface'
+    def __init__(self, name, units=None, geometry=None):
+        self.name = name
+        self.units = units
+        self.geometry = geometry # need to get a geometry handler class to get everything looking the same
+        # TODO: coordinates (location) of an interface
+        
 class Contributor(yaml.YAMLObject):
-        '''
-        used in package metadata
+    '''used in package metadata'''
+    yaml_tag='!contributor'
+    def __init__(self, name, email=None, url=None):
+        self.name = name
+        self.email = email
+        self.url = url
 
-        authorName = Bryan Bishop
-        email = kanzure@gmail.com
-        url = http://heybryan.org/
-        '''
-        def __init__(self, authorName, email, url):
-                self.name = authorName
-                self.email = email
-                self.url = url
+class Author(Contributor):
+    yaml_tag='!author'
 
 class Package(yaml.YAMLObject):
-        interfaces = []
-        def __init__(self, packageName, packageUnixName, licenseStringIdentifier, urls, contributors):
-                self.name = packageName
-                self.packageUnixName = packageName # TODO: complain if it's not a valid "unix name"
-                self.license = licenseStringIdentifier
-                self.urls = urls
-                self.contributors = contributors
-                # TODO: set up other metadata here
+    yaml_tag='!package'
+    def __init__(self, name, unix_name=None, license=None, urls=None, contributors=None):
+        self.name =name
+        self.unix_name =unix_name # TODO: complain if it's not a valid "unix name"
+        self.license = license
+        self.urls = urls
+        self.contributors = contributors
+        self.contents = {}
+        #TODO inherit from some pretty container class
 
 class Range(yaml.YAMLObject):
     yaml_tag = "!range"
     def representer(self, dumper, data):
-        print 'hi mom!'
         return dumper.represent_scalar('!range', '%s..%s' % data)
     def __init__(self, min, max):
         self.min = min
@@ -65,11 +59,11 @@ class Range(yaml.YAMLObject):
         return self.min == other.min and self.max == other.max
 
 sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to do regex without parens?
-#expression looks something like: 1e4 m .. 2km
+#expression should look something like: 1e4 m .. 2km
 range_expression = sci+'\s*(\D?.*)?\s*\.\.\s*'+sci+'\s*(\D?.*)$'
  
-def range_constructor(loader, node): #see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers
-    '''i wish this were a method of Range'''
+def range_constructor(loader, node): #i wish this were a method of Range
+    '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
     value = loader.construct_scalar(node)
     match = re.search(range_expression, value)
     a, crap, units1, b, crap2, units2 = match.groups() 
@@ -80,11 +74,7 @@ def range_constructor(loader, node): #see http://pyyaml.org/wiki/PyYAMLDocumenta
         else:
             a = Unit(a+units2)
             b = Unit(b+units2)
-    else: #yuck
-        #if '.' in a: a = float(a)
-        #else: a = int(a)
-        #if '.' in b: b = float(b)
-        #else: b = int(b)
+    else: 
         #double yuck. maybe i should just pass this to units instead?
         a = eval(a)
         print b #this line causes unit test to fail for some reason
@@ -99,10 +89,7 @@ class Uncertainty(yaml.YAMLObject):
         self.value = value
  
 def load(string):
-        #patterns = {'!range': '^\d+\.\.\d+$', # 1 .. 2 inches# FIXME: scientific notation regular expression
         patterns = {'!range': range_expression, # 1 .. 2 inches# FIXME: scientific notation regular expression
-            #'!plus':     r'$',
-            #'minus':    r'$',
             } 
 
         for key in patterns:
@@ -112,7 +99,7 @@ def load(string):
         
         return yaml.load(string)
 
-def dump():
+def dump(filename=None):
     yaml.add_representer(Range, Range.representer)
     retval = yaml.dump()
     if filename is not None:
@@ -146,7 +133,6 @@ def units_happy(units_call, rval):
     return True #well? what else am i gonna do
 
 def simplify(string):
-    #FIXME non-deterministic: while True: skdb.Unit('1m') > skdb.Unit('1mm')
     rval = os.popen("units -t '" + sanitize(string) + "'").read().rstrip('\n')
     if units_happy(string, rval): return rval
     else: raise UnitError
@@ -168,10 +154,8 @@ def compatible(a, b):
     except UnitError: return None
     else: return True
 
-
-
 class Unit(yaml.YAMLObject):
-    yaml_tag = "!Unit"
+    yaml_tag = "!unit"
     '''try to preserve the original units, and provide a wrapper to the GNU units program'''
     def __init__(self, string, uncertainty=None):
         simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
@@ -234,27 +218,27 @@ class Unit(yaml.YAMLObject):
         
 
 class Process(yaml.YAMLObject, dict):
-    yaml_tag = '!Process'
+    yaml_tag = '!process'
     def __init__(self, name):
         self.name = name
     
 
 class Material(Package):
-    yaml_tag = '!Material'
+    yaml_tag = '!material'
     def __init__(self, name, density=1, specific_heat=1, etc=None): #TODO figure out what goes here
         self.name = name
         self.density = density
         self.specific_heat = specific_heat
 
 class Fastener(Package):
-    yaml_tag = '!Fastener'
+    yaml_tag = '!fastener'
     '''could be a rivet, could be a bolt. duct tape? superglue? twine? hose clamp?
     these methods are what actually get called by higher levels of abstraction'''
     def __init__(self, force, rigidity, safety_factor=7):
         pass
 
 class Thread(Package):
-    yaml_tag = '!Thread'
+    yaml_tag = '!thread'
     '''examples: ballscrews, pipe threads, bolts - NOT any old helix'''
     def __init__(self, diameter, pitch, gender='male', length=None, form="UN"):
         self.diameter, self.pitch, self.form = Unit(diameter), Unit(pitch), form
@@ -292,13 +276,13 @@ class Thread(Package):
   #because the screw body will twist off as a combination of tensile and torque shear loads
 
 class Component(yaml.YAMLObject):
-        interfaces = []
-        #def __init__(self):
-        #        pass
-        pass
+    interfaces = []
+    #def __init__(self):
+    #        pass
+    pass
 
 class Screw(Component):
-    yaml_tag = "!Screw"
+    yaml_tag = "!screw"
     '''a screw by itself isn't a fastener, it needs a nut of some sort'''
     proof_load = {#grade:load, proof load is defined as load bolt can withstand without permanent set
         '1':'33ksi',
