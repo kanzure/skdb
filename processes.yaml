@@ -5,6 +5,8 @@ urls:
 - 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=materials.yaml'
 - 'git://fennetic.net/git/skdb.git/'
 
+source: manufacturing processes reference guide, 1993 first edition. todd, allen, and alting.
+
 abrasive jet: #!Process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
     name: abrasive jet machining
     removal rate: 
