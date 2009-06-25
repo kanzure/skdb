@@ -146,6 +146,7 @@ def units_happy(units_call, rval):
     return True #well? what else am i gonna do
 
 def simplify(string):
+    #FIXME non-deterministic: while True: skdb.Unit('1m') > skdb.Unit('1mm')
     rval = os.popen("units -t '" + sanitize(string) + "'").read().rstrip('\n')
     if units_happy(string, rval): return rval
     else: raise UnitError
