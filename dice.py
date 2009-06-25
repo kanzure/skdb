@@ -10,7 +10,7 @@ class Dice():
         return "Dice(%s,%s)" % (self.major, self.minor)
 
 def dice_representer(dumper, data):
-    return dumper.represent_scalar('!dice', '%sd%s' %data)
+    return dumper.represent_scalar('!dice', '%sd%s' %(data.major, data.minor))
 
 yaml.add_representer(Dice, dice_representer)
 
@@ -31,3 +31,6 @@ def dump(foo):
 import re
 pattern = re.compile('^\d+d\d+$')
 yaml.add_implicit_resolver('!dice', pattern)
+
+print load('2d6')
+print dump(Dice(2,6))
