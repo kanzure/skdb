@@ -59,6 +59,10 @@ class Range(yaml.YAMLObject):
     def __init__(self, min, max):
         self.min = min
         self.max = max
+    def __repr__(self):
+        return "%s .. %s" %(self.min, self.max)
+    def __eq__(self, other):
+        return self.min == other.min and self.max == other.max
 
 sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to do regex without parens?
 range_expression = sci+'\s*\.\.\s*'+sci+'\s*(.*)$'
