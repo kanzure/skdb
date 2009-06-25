@@ -81,6 +81,10 @@ class TestYaml(unittest.TestCase):
         testrange = skdb.load('2.345e234 .. 2.345e-1')
         self.assertEqual(testrange.min, 2.345e-1)
         self.assertEqual(testrange.max, 2.345e234)
+    def test_yaml_units(self): 
+        import yaml
+        try: yaml.dump(skdb.Unit('1')) #this blew up once for some reason
+        except skdb.UnitError: return False
         
 
            

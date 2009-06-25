@@ -80,7 +80,7 @@ def range_constructor(loader, node): #see http://pyyaml.org/wiki/PyYAMLDocumenta
         a = eval(a)
         #print b #this line causes unit test to fail for some reason
         b = eval(b)
-
+        
     #a, b = [Unit(x) for x in value.split('..')]
     return Range(min(a,b), max(a,b))
  
@@ -120,17 +120,17 @@ class NaNError(Exception): pass
 
 def sanitize(string):
     '''intercept things that will cause GNU units to screw up'''
-    if string is None or str(string) == 'None': string = 0  
+    if string is None or str(string) == 'None' or str(string) == '()': string = 0  
     for i in ['..', '--']:
         if str(string).__contains__(i):
             raise UnitError, "Typo? units expression '"+ string + "' contains '" + i + "'"
     return '('+str(string)+')' #units -1 screws up; units (-1) works
 
-def units_happy(rval):
+def units_happy(units_call, rval):
     '''the conversion or expression evaluated without error'''
     error = re.search('Unknown|Parse|Error|invalid', rval)
     if error:  
-        raise UnitError, rval
+        raise UnitError, str(units_call) + ': ' + str(rval)
     nan = re.search('^nan', rval) #not sure how to not trip on results like 'nanometer'
     if nan:
         raise NaNError, rval
@@ -138,12 +138,12 @@ def units_happy(rval):
 
 def simplify(string):
     rval = os.popen("units -t '" + sanitize(string) + "'").read().rstrip('\n')
-    if units_happy(rval): return rval
+    if units_happy(string, rval): return rval
     else: raise UnitError
 
 def convert(string, destination):
     conv_factor = os.popen("units -t '" + sanitize(string) + "' '" + sanitize(destination) + "'").read().rstrip('\n')
-    if units_happy(conv_factor): 
+    if units_happy(string, conv_factor): 
         return str(conv_factor +'*'+ destination) #1*mm
     else: raise UnitError, conv_factor, destination
     
@@ -333,7 +333,8 @@ class Bolt(Fastener):
         self.nut = nut
 
 def main():
-    foo = load('processes.yaml')
+    foo = load(open('processes.yaml'))
+#    foo = load(open('tags.yaml'))
 #    for key in foo['abrasive jet']:
 #       print yaml.dump(foo[key])
 #    print yaml.dump(foo['abrasive jet']['surface finish'])
