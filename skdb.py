@@ -47,27 +47,29 @@ class Package(yaml.YAMLObject):
         self.contributors = contributors
         self.contents = {}
         #TODO inherit from some pretty container class
+    
+sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to do regex without parens?
 
 class Range(yaml.YAMLObject):
     yaml_tag = "!range"
-    def representer(self, dumper, data):
-        return dumper.represent_scalar('!range', '%s..%s' % data)
+    #expression should look something like: 1e4 m .. 2km
+    yaml_pattern = sci+'\s*(\D?.*)?\s*\.\.\s*'+sci+'\s*(\D?.*)$'
     def __init__(self, min, max):
         self.min = min
         self.max = max
     def __repr__(self):
         return "%s .. %s" %(self.min, self.max)
+    def yaml_repr(self):
+        return self.__repr__()
     def __eq__(self, other):
-        return self.min == other.min and self.max == other.max
+        if type(other) == type(self):
+            return self.min == other.min and self.max == other.max
+        else: return None
 
-sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to do regex without parens?
-#expression should look something like: 1e4 m .. 2km
-range_expression = sci+'\s*(\D?.*)?\s*\.\.\s*'+sci+'\s*(\D?.*)$'
- 
 def range_constructor(loader, node): #i wish this were a method of Range
     '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
     value = loader.construct_scalar(node)
-    match = re.search(range_expression, value)
+    match = re.search(Range.yaml_pattern, value)
     a, crap, units1, b, crap2, units2 = match.groups() 
     if units2 != '':
         if units1 != '':
@@ -86,24 +88,28 @@ def range_constructor(loader, node): #i wish this were a method of Range
     return Range(min(a,b), max(a,b))
  
 class Uncertainty(yaml.YAMLObject):
-     yaml_tag = "!+-" #ehh.. going to do something with this eventually
-     def __init__(self,value):
+    yaml_tag = "!+-" #ehh.. going to do something with this eventually
+    def __init__(self,value):
         self.value = value
- 
-def load(string):
-        patterns = {'!range': range_expression, # 1 .. 2 inches# FIXME: scientific notation regular expression
-            } 
-
-        for key in patterns:
-            compiled = re.compile(patterns[key])
-            yaml.add_constructor('!range', range_constructor)
-            yaml.add_implicit_resolver(key, compiled)
+    def yaml_repr(self):
+        if self.value is not None:
+            return "+-%s" % (self.value)
+        else: return ""
         
-        return yaml.load(string)
+yaml_shortcut_classes = [Unit, Range]
 
-def dump(filename=None):
-    yaml.add_representer(Range, Range.representer)
-    retval = yaml.dump()
+def load(string):
+    for name in yaml_shortcut_classes:
+        compiled = re.compile(name.yaml_pattern)
+        yaml.add_constructor('!range', range_constructor)
+        yaml.add_implicit_resolver(key, compiled)
+        
+    return yaml.load(string)
+
+def dump(value, filename=None):
+    for name in yaml_shortcut_classes:
+        yaml.add_representer(name, lambda dumper, x: dumper.represent_scalar(name.yaml_tag, x.yaml_repr()))
+    retval = yaml.dump(value, default_flow_style=False)
     if filename is not None:
         f = open(filename, 'w')
         f.write(retval)
@@ -177,7 +183,11 @@ class Unit(yaml.YAMLObject):
 
     def __repr__(self):
         return str(self.string)
-        
+    
+    def yaml_repr(self):
+        return self.string + self.uncertainty.yaml_repr()
+
+            
     def units_operator(self, a, b, operator):
         if str(a)=='None' or str(b)=='None': return None
         s = Template('($a)$operator($b)')
@@ -206,7 +216,12 @@ class Unit(yaml.YAMLObject):
         if str(simplify(self)) == str(simplify(other)): return True
         else: return False
     
+    def __ne__(self, other):
+        if self.__eq__(other): return True
+        else: return False
+        
     def __cmp__(self, other):
+        #i should probably be using __lt__, __gt__, etc
         if self.compatible(other):
             conv = conv_factor(self, other)
             #print conv #god what a mess
@@ -350,14 +365,12 @@ class Bolt(Fastener):
         self.nut = nut
 
 def main():
-    #foo = load(open('processes.yaml'))
+    foo = load(open('tags.yaml'))
 #    foo = load(open('tags.yaml'))
 #    for key in foo['abrasive jet']:
 #       print yaml.dump(foo[key])
 #    print yaml.dump(foo['abrasive jet']['surface finish'])
-    #print yaml.dump(foo)
-    print '1m > 1m', Unit('1m') > '1m'
-    print '1m > -1m', Unit('1m') > '-1m'
+    print dump(foo)
 
 if __name__ == "__main__":
     main()
