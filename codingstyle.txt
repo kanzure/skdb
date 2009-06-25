@@ -1,0 +1,8 @@
+the following will make ben happy:
+lower case attributes, variables, function names
+upper case classes
+4-space indentation
+short variable names that are english words
+no unnecessary positional arguments
+
+
