@@ -209,7 +209,7 @@ class Unit(yaml.YAMLObject):
     def __cmp__(self, other):
         if self.compatible(other):
             conv = conv_factor(self, other)
-            print conv #god what a mess
+            #print conv #god what a mess
             if conv == 1: return 0
             if conv < 1 and conv > 0: return -1
             if conv > 1: return 1

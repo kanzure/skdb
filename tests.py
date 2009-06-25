@@ -13,6 +13,7 @@ class TestUnits(unittest.TestCase):
         self.assertTrue(skdb.Unit(0).compatible(skdb.Unit(1)))
         self.assertTrue(skdb.Unit(1234).compatible(skdb.Unit(1)))
         self.assertTrue(skdb.Unit(-1).compatible(skdb.Unit(1)))
+    def test_inf(self):
         self.assertEqual(str(skdb.Unit('1/0').simplify()), 'inf') #hmmmm
     def test_imaginary(self):
         self.assertTrue(skdb.Unit('nanometer').check()) #actually i dont think we will ever see 'nano' in the result
@@ -59,9 +60,11 @@ class TestUnits(unittest.TestCase):
         self.assertTrue(skdb.Unit('1m') <= skdb.Unit('1000mm'))
         self.assertFalse(skdb.Unit('1') < skdb.Unit('1'))
         self.assertFalse(skdb.Unit('1') > skdb.Unit('1'))
+        self.assertTrue(skdb.Unit('1m') < skdb.Unit('1001mm'))
+    def test_negative_cmp(self): #this may not even make any sense in terms of real measurements, since they should never be negative
         self.assertFalse(skdb.Unit('1') < skdb.Unit('-10'))
         self.assertTrue(skdb.Unit('1') > skdb.Unit('-10'))
-        self.assertTrue(skdb.Unit('1m') < skdb.Unit('1001mm'))
+
         self.assertTrue(skdb.Unit('1') > skdb.Unit('0'))
         self.assertTrue(skdb.Unit('0') > skdb.Unit('-1'))
         self.assertTrue(skdb.Unit('1') > skdb.Unit('-1'))
