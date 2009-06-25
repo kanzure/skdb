@@ -3,6 +3,6 @@ lower case attributes, variables, function names
 upper case classes
 4-space indentation
 short variable names that are english words
-no unnecessary positional arguments
+no unnecessary positional arguments, use named arguments
 
 not loading yaml files and dumping the output and then editing it
