@@ -9,6 +9,8 @@ from string import Template
 import re
 import copy
 
+debug = False
+
 # the following aren't our responsibility, actually (pythonOCC?)
 #class Circle(yaml.YAMLObject)
 #class Cylinder(yaml.YAMLObject)
@@ -77,7 +79,7 @@ def range_constructor(loader, node): #i wish this were a method of Range
     else: 
         #double yuck. maybe i should just pass this to units instead?
         a = eval(a)
-        print b #this line causes unit test to fail for some reason
+        #print b #this line causes unit test to fail for some reason
         b = eval(b)
         
     #a, b = [Unit(x) for x in value.split('..')]
@@ -124,7 +126,7 @@ def sanitize(string):
 
 def units_happy(units_call, rval):
     '''the conversion or expression evaluated without error'''
-    error = re.search('Unknown|Parse|Error|invalid', rval)
+    error = re.search('Unknown|Parse|Error|invalid|error', rval)
     if error:  
         raise UnitError, str(units_call) + ': ' + str(rval)
     nan = re.search('^nan', rval) #not sure how to not trip on results like 'nanometer'
@@ -137,11 +139,15 @@ def simplify(string):
     if units_happy(string, rval): return rval
     else: raise UnitError
 
-def convert(string, destination):
+def conv_factor(string, destination):
+    '''the multiplier to go from one unit to another, for example from inch to mm is 25.4'''
     conv_factor = os.popen("units -t '" + sanitize(string) + "' '" + sanitize(destination) + "'").read().rstrip('\n')
     if units_happy(string, conv_factor): 
-        return str(conv_factor +'*'+ destination) #1*mm
+        return float(conv_factor)
     else: raise UnitError, conv_factor, destination
+    
+def convert(string, destination):
+    return str(conv_factor(string, destination)) +'*'+ str(destination) #1*mm
     
 def check(string):
         try: simplify(str(string))
@@ -151,7 +157,7 @@ def check(string):
 def compatible(a, b):
     '''check if both expressions boil down to the same base units'''
     try: simplify(str(a) + '+' + str(b))
-    except UnitError: return None
+    except UnitError: return False
     else: return True
 
 class Unit(yaml.YAMLObject):
@@ -171,31 +177,48 @@ class Unit(yaml.YAMLObject):
 
     def __repr__(self):
         return str(self.string)
-   
-    def __mul__(self, other):
-        if str(self) == 'None' or str(other) == 'None': return None
-        s = Template('($a)*($b)')
-        expression = s.safe_substitute(a=str(self), b=str(other))
+        
+    def units_operator(self, a, b, operator):
+        if str(a)=='None' or str(b)=='None': return None
+        s = Template('($a)$operator($b)')
+        expression = s.safe_substitute(a=str(a), b=str(b), operator=str(operator))
         rval = Unit(expression)
         if debug: rval.check()
         return rval
         
+    def __mul__(self, other):
+        return self.units_operator(self, other, '*')
     __rmul__ = __mul__
 
     def __div__(self, other):
-        if str(self) == 'None' or str(other) == 'None': return None
-        s = Template('($a)/($b)')
-        expression = s.safe_substitute(a=str(self), b=str(other))
-        rval = Unit(expression)
-        if debug: rval.check()
-        return rval
-
+        return self.units_operator(self, other, '/')
     __rdiv__ = __div__
-    
+
+    def __add__(self, other):
+        return self.units_operator(self, other, '+')
+    __radd__ = __add__
+
+    def __sub__(self, other):
+        return self.units_operator(self, other, '-')
+    __rsub__ = __sub__
+      
     def __eq__(self, other):
         if str(simplify(self)) == str(simplify(other)): return True
         else: return False
-
+    
+    def __cmp__(self, other):
+        if self.compatible(other):
+            conv = conv_factor(self, other)
+            print conv #god what a mess
+            if conv == 1: return 0
+            if conv < 1 and conv > 0: return -1
+            if conv > 1: return 1
+            if conv <0 and conv > -1: return -1
+            if conv <-1 : return 1
+            if conv == -1: return 1
+            if conv == inf: return 1
+            if conv == 0: return -1
+        
     def to(self, dest):
         return Unit(convert(self, dest))
     
@@ -203,7 +226,7 @@ class Unit(yaml.YAMLObject):
         return check(self)
 
     def simplify(self):
-        return simplify(self)
+        return Unit(simplify(self))
     
     def compatible(self, other):
         return compatible(self, other)
@@ -327,12 +350,14 @@ class Bolt(Fastener):
         self.nut = nut
 
 def main():
-    foo = load(open('processes.yaml'))
+    #foo = load(open('processes.yaml'))
 #    foo = load(open('tags.yaml'))
 #    for key in foo['abrasive jet']:
 #       print yaml.dump(foo[key])
 #    print yaml.dump(foo['abrasive jet']['surface finish'])
-    print yaml.dump(foo)
+    #print yaml.dump(foo)
+    print '1m > 1m', Unit('1m') > '1m'
+    print '1m > -1m', Unit('1m') > '-1m'
 
 if __name__ == "__main__":
     main()

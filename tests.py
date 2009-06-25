@@ -20,8 +20,6 @@ class TestUnits(unittest.TestCase):
         self.assertRaises(skdb.NaNError, skdb.Unit,'sqrt(-1mm^2)')
         self.assertRaises(skdb.NaNError, skdb.Unit,'(-1.5e2mm^3)^(1/3)')
         self.assertRaises(skdb.NaNError, skdb.convert,'sqrt(-1)', '1')
-
-      
     def test_weirdshit(self):
         badunits = ['foobar', 
             '..', '...', '1...1',
@@ -47,7 +45,45 @@ class TestUnits(unittest.TestCase):
         self.assertFalse(skdb.Unit('inch').compatible('blargh'))
     def test_nonscalar(self):
         self.assertEqual(skdb.Unit('tempF(212)'), skdb.Unit('tempC(100)'))
-
+    def test_add(self):
+        self.assertEqual(skdb.Unit('1') + skdb.Unit('1'), skdb.Unit('2'))
+        self.assertEqual(skdb.Unit('1m') + skdb.Unit('1yd'), skdb.Unit('1.9144m'))
+    def test_mul(self):
+        self.assertTrue((skdb.Unit('V') * skdb.Unit('A')).compatible('W'))
+        self.assertFalse((skdb.Unit('V') * skdb.Unit('W')).compatible('W'))
+        self.assertEqual(skdb.Unit('V') * skdb.Unit('A'), skdb.Unit('A') * skdb.Unit('V'))
+    def test_cmp(self):
+        self.assertTrue(skdb.Unit('1') >= skdb.Unit('1'))
+        self.assertTrue(skdb.Unit('1') <= skdb.Unit('1'))
+        self.assertTrue(skdb.Unit('1m') <= skdb.Unit('1000mm'))
+        self.assertTrue(skdb.Unit('1m') <= skdb.Unit('1000mm'))
+        self.assertFalse(skdb.Unit('1') < skdb.Unit('1'))
+        self.assertFalse(skdb.Unit('1') > skdb.Unit('1'))
+        self.assertFalse(skdb.Unit('1') < skdb.Unit('-10'))
+        self.assertTrue(skdb.Unit('1') > skdb.Unit('-10'))
+        self.assertTrue(skdb.Unit('1m') < skdb.Unit('1001mm'))
+        self.assertTrue(skdb.Unit('1') > skdb.Unit('0'))
+        self.assertTrue(skdb.Unit('0') > skdb.Unit('-1'))
+        self.assertTrue(skdb.Unit('1') > skdb.Unit('-1'))
+        self.assertTrue(skdb.Unit('1') < skdb.Unit('0'))
+        self.assertTrue(skdb.Unit('0') < skdb.Unit('-1'))
+        self.assertTrue(skdb.Unit('1') < skdb.Unit('-1'))
+        #now, to the left!
+        self.assertFalse(skdb.Unit('0') > skdb.Unit('1'))
+        self.assertFalse(skdb.Unit('-1') > skdb.Unit('0'))
+        self.assertFalse(skdb.Unit('-1') > skdb.Unit('1'))
+        self.assertFalse(skdb.Unit('0') < skdb.Unit('1'))
+        self.assertFalse(skdb.Unit('-1') < skdb.Unit('0'))
+        self.assertFalse(skdb.Unit('-1') < skdb.Unit('1'))
+        
+        self.assertTrue(skdb.Unit('0') >= skdb.Unit('0'))
+        
+        
+    def test_somethingorother(self): #is this even desirable?
+        self.assertTrue(skdb.Unit('1') > 0.9)
+        
+        
+        
 class TestScrew(unittest.TestCase):
     def test_conversions(self):
             screw = skdb.load(open('screw.yaml'))['screw'] #yaml.load(open('screw.yaml'))['screw']
