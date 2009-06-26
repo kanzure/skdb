@@ -8,79 +8,45 @@ urls:
 abrasive jet: !process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
     name: abrasive jet machining
     removal rate: 
-        typical:
-            min: 0.0003in/min
-            max: 0.0007in/min
-        feasible:
-            min: 0.0001in/min
-            max: 0.002in/min    
+        typical: 0.003.. 0.0007in/min
+        feasible: 0.0001 .. 0.002in/min  
     tolerance:
-        typical: 0.005in
-        feasible: 0.001in
+        typical: +-0.005in
+        feasible: +-0.001in
     surface finish: #arithmetic average
-        typical: 
-            6..48 microinch
-            #min: 6microinch
-            #max: 48microinch
-        feasible:
-            min: 4microinch
-            max: 64microinch
+        typical:  6..48 microinch
+        feasible: 4..64 microinch
     consumables:
         nozzle: &orifice
             tungsten carbide:
-                life:
-                    min: 12hr
-                    max: 30hr
+                life: 12..30hr
             sapphire:
-                life:
-                    min: 300hr
+                #this should work, but it doesn't?
+               # life: !range
+               #     min: 300hr
     parameters:
         workpiece size:
-            typical:
-                min: 5 in^2
-                max: 50 in^2
-            feasible:
-                min: 0.2 in^2
-                max: 100 in^2
+            typical: 5..50 in^2
+            feasible: 0.2 .. 100 in^2
         workpiece material: &machinability
-            ceramic: #stars is a scale of 0 to 4 representing process quality and/or ease of use
-                min: 2.25 stars
-                max: 3.75 stars
-            germanium:
-                min: 2.2 stars
-                max: 3.5stars
-            glass:
-                min: 2.2stars
-                max: 3.8stars
-            mica:
-                min: 1.9stars
-                max: 3.4stars
-            silicon:
-                min: 2.3stars
-                max: 3.8stars
-            steel:
-                min: 1.1stars
-                max: 2.5stars
-            aluminum:
-                min: 0.4stars
-                max: 1.6stars
+        #on a scale of 0 to 4 representing process quality and/or ease of use
+        #need to figure out a new unit 'stars' representing this
+            ceramic: 2.25 .. 3.75
+            germanium: 2.2 .. 3.5
+            glass: 2.2 .. 3.8
+            mica: 1.9 .. 3.4
+            silicon: 2.3 .. 3.8
+            steel: 1.1 .. 2.5
+            aluminum: 0.4 .. 1.6
         abrasive material:
             aluminum oxide:
-                diameter:
-                    min: 10 micron
-                    max: 50 micron
+                diameter: 10 .. 50 microns
                 orifice:
-                    diameter:
-                        min: 0.005in
-                        max: 0.018in
+                    diameter: 0.005 .. 0.018in
             silicon carbide:
-                diameter:
-                    min: 25 micron
-                    max: 50 micron
+                diameter: 25 .. 50 microns
             glass beads:
-                diameter:
-                    min: 0.025in
-                    max: 0.05in
+                diameter: 0.025 .. 0.05in
             sodium bicarbonate:
             calcium compounds:
             magnesium compounds:
