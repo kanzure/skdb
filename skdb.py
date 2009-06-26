@@ -96,26 +96,7 @@ class Uncertainty(yaml.YAMLObject):
             return "+-%s" % (self.value)
         else: return ""
         
-yaml_shortcut_classes = [Unit, Range]
 
-def load(string):
-    for name in yaml_shortcut_classes:
-        compiled = re.compile(name.yaml_pattern)
-        yaml.add_constructor('!range', range_constructor)
-        yaml.add_implicit_resolver(key, compiled)
-        
-    return yaml.load(string)
-
-def dump(value, filename=None):
-    for name in yaml_shortcut_classes:
-        yaml.add_representer(name, lambda dumper, x: dumper.represent_scalar(name.yaml_tag, x.yaml_repr()))
-    retval = yaml.dump(value, default_flow_style=False)
-    if filename is not None:
-        f = open(filename, 'w')
-        f.write(retval)
-    else:
-        return retval
-    #some stdout call here might not be a bad idea
 
 #unum looks rather immature, perhaps I will write a wrapper for GNU units instead
 #scientific.Physics.PhysicalQuantities looks ok-ish        
@@ -363,6 +344,30 @@ class Bolt(Fastener):
     def __init__(self, screw, nut):
         self.screw = screw
         self.nut = nut
+
+yaml_shortcut_classes = [Unit, Range]
+
+def load(string):
+    for name in yaml_shortcut_classes:
+        if hasattr(name, 'yaml_pattern'):
+            compiled = re.compile(name.yaml_pattern)
+            yaml.add_constructor(name, range_constructor)
+            yaml.add_implicit_resolver(name.yaml_tag, compiled)
+        
+    return yaml.load(string)
+
+def dump(value, filename=None):
+    for name in yaml_shortcut_classes:
+        if hasattr(name, 'yaml_repr'):
+            representer = lambda dumper, x: dumper.represent_scalar(name.yaml_tag, x.yaml_repr())
+            yaml.add_representer(name, representer)
+    retval = yaml.dump(value, default_flow_style=False)
+    if filename is not None:
+        f = open(filename, 'w')
+        f.write(retval)
+    else:
+        return retval
+    #some stdout call here might not be a bad idea
 
 def main():
     foo = load(open('tags.yaml'))
