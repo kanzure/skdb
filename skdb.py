@@ -53,7 +53,7 @@ sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to d
 class Range(yaml.YAMLObject):
     yaml_tag = "!range"
     #expression should look something like: 1e4 m .. 2km
-    yaml_pattern =re.compile(sci+'\s*(\D?.*)?\s*\.\.\s*'+sci+'\s*(\D?.*)$')
+    yaml_pattern = sci+'\s*(\D?.*)?\s*\.\.\s*'+sci+'\s*(\D?.*)$'
     def __init__(self, min, max):
         self.min = min
         self.max = max
@@ -81,17 +81,30 @@ class Range(yaml.YAMLObject):
             #double yuck. maybe i should just pass this to units instead?
             a = eval(a)
             b = eval(b)
-        return Range(min(a,b), max(a,b))
+        return cls(min(a,b), max(a,b))
  
 class Uncertainty(yaml.YAMLObject):
-    yaml_tag = "!+-" #ehh.. going to do something with this eventually
+    '''predicted range of error in the measurement'''
+    yaml_tag = "!uncertainty" #ehh.. going to do something with this eventually
+    yaml_pattern = '^\+-' + sci + '\s*(\D?.*)$' #+-, number, units
     def __init__(self,value):
-        self.value = value
+        self.value = Unit(value)
     def yaml_repr(self):
         if self.value is not None:
             return "+-%s" % (self.value)
         else: return ""
         
+    @classmethod
+    def constructor(cls, data):
+        match = re.search(cls.yaml_pattern, data)
+        if match is None:
+            print 'why am i here?'
+            print "name: %s, pattern: %s, data: %s" %(cls.__name__, cls.yaml_pattern, data)
+            return None
+        number = match.group(1) #cast to float here?
+        assert float(number) >= 0 #negative uncertainty would be highly unusual
+        units = match.group(3) #3 because scientific notation regex has 2 groups in it
+        return cls(number+units)
 
 
 #unum looks rather immature, perhaps I will write a wrapper for GNU units instead
@@ -149,7 +162,8 @@ class Unit(yaml.YAMLObject):
     def __init__(self, string, uncertainty=None):
         simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
         self.string = str(string)
-        self.uncertainty = Uncertainty(uncertainty)
+        if uncertainty is not None:
+            self.uncertainty = Uncertainty(uncertainty)
         #e_number = '([+-]?\d*\.?\d*([eE][+-]?\d+)?)' #engineering notation
         #match = re.match(e_number + '?(\D*)$', string) #i dunno wtf i was trying to do here
         #match = re.match(e_number + '?(.*)$', string)
@@ -201,6 +215,7 @@ class Unit(yaml.YAMLObject):
         
     def __cmp__(self, other):
         #i should probably be using __lt__, __gt__, etc
+        #neither does this work for nonlinear units like tempF() or tempC()
         if self.compatible(other):
             conv = conv_factor(self, other)
             #print conv #god what a mess
@@ -344,11 +359,11 @@ class Bolt(Fastener):
         self.nut = nut
 
 def load(string):
-    for cls in [Range]: #only one so far
+    for cls in [Range]:#, Uncertainty]: #only one at a time works so far?
         assert hasattr(cls, 'yaml_pattern')
         if hasattr(cls, 'yaml_pattern'):
             yaml.add_constructor(cls.yaml_tag, lambda loader, node: cls.constructor(loader.construct_scalar(node)))
-            yaml.add_implicit_resolver(cls.yaml_tag, cls.yaml_pattern)
+            yaml.add_implicit_resolver(cls.yaml_tag, re.compile(cls.yaml_pattern))
         
     return yaml.load(string)
 
