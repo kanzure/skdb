@@ -1,4 +1,6 @@
-author: 'ben lipkowitz'
+!author 
+name: 'ben lipkowitz'
+
 license: 'GPL2+'
 urls: 
 - 'http://heybryan.org/mediawiki/index.php/Skdb'
@@ -6,6 +8,8 @@ urls:
 - 'git://fennetic.net/git/skdb.git/'
 
 stuff: 1..20 megatons
+morestuff: !unit 
+    string: 60gigajoules
 
 foo: 
 - &screw !!python/object:skdb.Screw

@@ -53,7 +53,7 @@ sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to d
 class Range(yaml.YAMLObject):
     yaml_tag = "!range"
     #expression should look something like: 1e4 m .. 2km
-    yaml_pattern = sci+'\s*(\D?.*)?\s*\.\.\s*'+sci+'\s*(\D?.*)$'
+    yaml_pattern =re.compile(sci+'\s*(\D?.*)?\s*\.\.\s*'+sci+'\s*(\D?.*)$')
     def __init__(self, min, max):
         self.min = min
         self.max = max
@@ -65,27 +65,23 @@ class Range(yaml.YAMLObject):
         if type(other) == type(self):
             return self.min == other.min and self.max == other.max
         else: return None
-
-def range_constructor(loader, node): #i wish this were a method of Range
-    '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
-    value = loader.construct_scalar(node)
-    match = re.search(Range.yaml_pattern, value)
-    a, crap, units1, b, crap2, units2 = match.groups() 
-    if units2 != '':
-        if units1 != '':
-            a = Unit(a+units1)
-            b = Unit(b+units2)
-        else:
-            a = Unit(a+units2)
-            b = Unit(b+units2)
-    else: 
-        #double yuck. maybe i should just pass this to units instead?
-        a = eval(a)
-        #print b #this line causes unit test to fail for some reason
-        b = eval(b)
-        
-    #a, b = [Unit(x) for x in value.split('..')]
-    return Range(min(a,b), max(a,b))
+    @classmethod #constructor takes class as first argument
+    def constructor(cls, data): 
+        '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
+        match = re.search(cls.yaml_pattern, data)
+        a, crap, units1, b, crap2, units2 = match.groups() 
+        if units2 != '':
+            if units1 != '':
+                a = Unit(a+units1)
+                b = Unit(b+units2)
+            else:
+                a = Unit(a+units2)
+                b = Unit(b+units2)
+        else: 
+            #double yuck. maybe i should just pass this to units instead?
+            a = eval(a)
+            b = eval(b)
+        return Range(min(a,b), max(a,b))
  
 class Uncertainty(yaml.YAMLObject):
     yaml_tag = "!+-" #ehh.. going to do something with this eventually
@@ -166,7 +162,9 @@ class Unit(yaml.YAMLObject):
         return str(self.string)
     
     def yaml_repr(self):
-        return self.string + self.uncertainty.yaml_repr()
+        if hasattr(self, 'uncertainty'): u = self.uncertainty.yaml_repr()
+        else: u = ''
+        return self.string +u
 
             
     def units_operator(self, a, b, operator):
@@ -345,22 +343,21 @@ class Bolt(Fastener):
         self.screw = screw
         self.nut = nut
 
-yaml_shortcut_classes = [Unit, Range]
-
 def load(string):
-    for name in yaml_shortcut_classes:
-        if hasattr(name, 'yaml_pattern'):
-            compiled = re.compile(name.yaml_pattern)
-            yaml.add_constructor(name, range_constructor)
-            yaml.add_implicit_resolver(name.yaml_tag, compiled)
+    for cls in [Range]: #only one so far
+        assert hasattr(cls, 'yaml_pattern')
+        if hasattr(cls, 'yaml_pattern'):
+            yaml.add_constructor(cls.yaml_tag, lambda loader, node: cls.constructor(loader.construct_scalar(node)))
+            yaml.add_implicit_resolver(cls.yaml_tag, cls.yaml_pattern)
         
     return yaml.load(string)
 
 def dump(value, filename=None):
-    for name in yaml_shortcut_classes:
-        if hasattr(name, 'yaml_repr'):
-            representer = lambda dumper, x: dumper.represent_scalar(name.yaml_tag, x.yaml_repr())
-            yaml.add_representer(name, representer)
+    for cls in [Unit, Range]:
+        assert hasattr(cls, 'yaml_repr')
+        if hasattr(cls, 'yaml_repr'):
+            repr = lambda dumper, instance: dumper.represent_scalar(instance.yaml_tag, instance.yaml_repr())
+            yaml.add_representer(cls, repr )
     retval = yaml.dump(value, default_flow_style=False)
     if filename is not None:
         f = open(filename, 'w')
