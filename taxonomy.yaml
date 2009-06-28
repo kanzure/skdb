@@ -318,7 +318,7 @@ process:
           roll:
             calendering:
             roller coating:
-#          (doctor blade method):
+            doctor blade:
         thermal:
           flame spraying:
             combustion:
