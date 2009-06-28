@@ -1,5 +1,4 @@
 #skdb.py
-#first go at a YAML file format, generated automatically from python classes
 #(c) ben lipkowitz 11/16/08, distributed under the GPL version 2 or later
 
 import yaml
@@ -181,7 +180,6 @@ class Unit(yaml.YAMLObject):
         else: u = ''
         return self.string +u
 
-            
     def units_operator(self, a, b, operator):
         if str(a)=='None' or str(b)=='None': return None
         s = Template('($a)$operator($b)')
@@ -189,7 +187,7 @@ class Unit(yaml.YAMLObject):
         rval = Unit(expression)
         if debug: rval.check()
         return rval
-        
+    
     def __mul__(self, other):
         return self.units_operator(self, other, '*')
     __rmul__ = __mul__
@@ -205,7 +203,7 @@ class Unit(yaml.YAMLObject):
     def __sub__(self, other):
         return self.units_operator(self, other, '-')
     __rsub__ = __sub__
-      
+    
     def __eq__(self, other):
         if str(simplify(self)) == str(simplify(other)): return True
         else: return False
@@ -213,7 +211,7 @@ class Unit(yaml.YAMLObject):
     def __ne__(self, other):
         if self.__eq__(other): return True
         else: return False
-        
+    
     def __cmp__(self, other):
         #i should probably be using __lt__, __gt__, etc
         #neither does this work for nonlinear units like tempF() or tempC()
@@ -228,7 +226,7 @@ class Unit(yaml.YAMLObject):
             if conv == -1: return 1
             if conv == inf: return 1
             if conv == 0: return -1
-        
+    
     def to(self, dest):
         return Unit(convert(self, dest))
     
@@ -240,15 +238,15 @@ class Unit(yaml.YAMLObject):
     
     def compatible(self, other):
         return compatible(self, other)
-#    return conv_factor + dest
-#  def simplify(self, string):
+        #return conv_factor + dest
+    #def simplify(self, string):
     def number(self): 
         '''return the number portion of the unit string'''
-        pass
+        return 'not yet implemented, sorry!'
     def unit(self):
         '''return the unit portion of the unit string'''
-        pass
-        
+        return 'not yet implemented, sorry!'
+    
 
 class Process(yaml.YAMLObject):
     yaml_tag = '!process'
@@ -319,6 +317,7 @@ class Component(yaml.YAMLObject):
 class Screw(Component):
     yaml_tag = "!screw"
     '''a screw by itself isn't a fastener, it needs a nut of some sort'''
+    ##i suppose this stuff should go in a screws.yaml file or something, along with standard diameters
     proof_load = {#grade:load, proof load is defined as load bolt can withstand without permanent set
         '1':'33ksi',
         '2':'55ksi',
@@ -385,11 +384,8 @@ def dump(value, filename=None):
     #some stdout call here might not be a bad idea
 
 def main():
+    #basic self-test demo
     foo = load(open('tags.yaml'))
-#    foo = load(open('tags.yaml'))
-#    for key in foo['abrasive jet']:
-#       print yaml.dump(foo[key])
-#    print yaml.dump(foo['abrasive jet']['surface finish'])
     print dump(foo)
 
 if __name__ == "__main__":
