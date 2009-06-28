@@ -13,10 +13,10 @@ class Dependency(yaml.YAMLObject):
         self.name = name
         self.graph = graph
         self.met = False
-        self.dependencies = []
-        #self.dependencysets = []
+        #self.dependencies = []
+        self.dependencysets = {}
     def __repr__(self):
-        return ("%s, s:%s" % (self.name, self.met))
+        return ("%s, m:%s, approaches:%d" % (self.name, self.met, len(self.dependencysets)))
     def solved(self):
         # note: if all dependencies of this dependency are solved,
         # then this dependency should be by definition 'solved'.
@@ -28,16 +28,21 @@ class Dependency(yaml.YAMLObject):
         # note: if all dependencies of this dependency are solved,
         # then this dependency should be by definition 'solved'.
         # check whether or not all of the dependencies are solved
-        if len(self.dependencies) > 0:
-            broken = False
-            for each in self.dependencies: #for each in g.dependencies(self):
-                each.step()
-                if not (each.met):
-                    broken = True
-            if not broken: self.met = True
-    def add_edge(self, from1):
+        if len(self.dependencysets) > 0:
+            totallybroken = False
+            for each in self.dependencysets:
+                broken = False
+                if len(self.dependencysets[each]) > 0:
+                    for dependence in self.dependencysets[each]:
+                        dependence.step()
+                        if not dependence.met: broken = True
+                if not broken: self.met = True # FIXME: keep track of which set of dependencies actually work
+    def add_dependency(self, setname, dependency):
         # self depends on from1
-        self.dependencies.append(from1)
+        if self.dependencysets.has_key(setname):
+            self.dependencysets[setname].append(dependency)
+        else:
+            self.dependencysets[setname] = [[dependency]]
 
 class Resolver(yaml.YAMLObject, pygraph.digraph):
     def __init__(self):
@@ -55,23 +60,29 @@ class Resolver(yaml.YAMLObject, pygraph.digraph):
     def unmets(self,node):
         # return unmet dependencies
         return
-    def add_edge(self, from1, to1):
+    def add_dependency(self, setname, dependency, root):
+        '''
+        setname is the setname or index of to1's dependencyset list where this dependency is to be appended
+        '''
         #from1.add_edge(from1, to1)
-        to1.add_edge(from1)
-        pygraph.digraph.add_edge(self, from1, to1)
+        root.add_dependency(setname, dependency)
+        pygraph.digraph.add_edge(self, dependency, root)
 
 class TestResolver(unittest.TestCase):
     def test_Dependency(self):
         g = Resolver()
-        d1 = Dependency(g,name="transportation device")
-        d2 = Dependency(g,name="fuel")
-        g.add_node(d1)
-        g.add_node(d2)
-        g.add_edge(d1,d2)
+        fuel = Dependency(g,name="fuel")
+        transportation = Dependency(g,name="transportation device")
+        g.add_node(fuel)
+        g.add_node(transportation)
+        g.add_dependency("The Typical Approach", fuel, transportation)
 
         # a dependency of d1 is d2 (er, at least in name)
-        self.assertTrue(g.dependencies((g.nodes())[1])==[d2])
+        print g.dependencies((g.nodes())[1]) # FIXME
+        self.assertTrue(g.dependencies((g.nodes())[1])==fuel.__repr__)
         print g.dependencies((g.nodes())[1])
+        print "grabbing the approaches to solving the 'transportation device': "
+        print d2.dependencysets
     def test_Resolver(self):
         pass
 
