@@ -4,12 +4,24 @@ urls:
 - 'http://heybryan.org/mediawiki/index.php/Skdb'
 - 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=materials.yaml'
 - 'git://fennetic.net/git/skdb.git/'
+source: manufacturing processes reference guide, 1993 first edition. todd, allen, and alting.
+
+template: !process
+    name: a template process
+    parameters:
+        one: 
+        -   1m
+        -   19in
+        two: 6..28GW
+        three: 0..15teranats/sec
+       
 
 abrasive jet: !process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
     name: abrasive jet machining
     removal rate: 
-        typical: 0.003.. 0.0007in/min
+        typical: 0.003.. 0.0007in/min #what exactly does this refer to?
         feasible: 0.0001 .. 0.002in/min  
+    geometry: cone #what angle?
     tolerance:
         typical: +-0.005in
         feasible: +-0.001in
@@ -24,10 +36,17 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
                 #this should work, but it doesn't?
                # life: !range
                #     min: 300hr
-    parameters:
+        abrasive: 1..25g/min
+        #this really should be something like "compressed air: 4.5..7cfm"
+        power: 0.5..4 hp #power = cfm * pressure is dependent on pressure and diameter
+    parameters: #"factors affecting process results"
+        pressure: 25..130psi
+        orifice diameter: 0.005..0.05in
+        nozzle distance: 0.03..0.6 in
+        nozzle angle: 
         workpiece size:
             typical: 5..50 in^2
-            feasible: 0.2 .. 100 in^2
+            feasible: 0.2 .. 100 in^2 #workpiece size is only limited by enclosure
         workpiece material: &machinability
         #on a scale of 0 to 4 representing process quality and/or ease of use
         #need to figure out a new unit 'stars' representing this
@@ -40,18 +59,39 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
             aluminum: 0.4 .. 1.6
         abrasive material:
             aluminum oxide:
+                functionality: 
+                -   cutting
+                -   hard materials
                 diameter: 10 .. 50 microns
-                orifice:
-                    diameter: 0.005 .. 0.018in
             silicon carbide:
+                functionality:
+                -   fast cutting
+                -   hard materials
+                -   ceramics
                 diameter: 25 .. 50 microns
             glass beads:
+                functionality:
+                -   deburring
+                -   light cleaning #how do i parameterize this with dimensional units?
+                -   polishing
                 diameter: 0.025 .. 0.05in
             sodium bicarbonate:
+                functionality:
+                -   cleaning
             calcium compounds:
+                functionality:
+                -   light cleaning
+                -   light etching
             magnesium compounds:
-        nozzle distance:
-        nozzle angle:
-        air pressure:
-        orifice size:
-        orifice shape:
+                functionality:
+                -   light cleaning
+                -   light etching
+    safety:
+        personal:
+        -   airborne dust
+        -   flying particles
+        -   abrasion
+        environmental:
+        -   toxic dust
+        
+
