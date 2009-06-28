@@ -1,0 +1,6 @@
+#these extra units are needed for parsing skdb packages
+
+man ! #a human laborer's average output of directed attention
+tooth ! #a cutting edge
+quality ! #satisfaction
+star 0.25 quality
