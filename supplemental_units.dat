@@ -1,4 +1,5 @@
 #these extra units are needed for parsing skdb packages
+#the file is in units.dat format. see the units man page for details
 
 man ! #a human laborer's average output of directed attention
 tooth ! #a cutting edge
