@@ -14,6 +14,7 @@ template: !process
         -   19in
         two: 6..28GW
         three: 0..15teranats/sec
+    safety:
        
 
 abrasive jet: !process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
@@ -21,7 +22,7 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
     removal rate: 
         typical: 0.003.. 0.0007in/min #what exactly does this refer to?
         feasible: 0.0001 .. 0.002in/min  
-    geometry: cone #what angle?
+    geometry: cone #!geometry #what angle?
     tolerance:
         typical: +-0.005in
         feasible: +-0.001in
@@ -48,8 +49,8 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
             typical: 5..50 in^2
             feasible: 0.2 .. 100 in^2 #workpiece size is only limited by enclosure
         workpiece material: &machinability
-        #on a scale of 0 to 4 representing process quality and/or ease of use
-        #need to figure out a new unit 'stars' representing this
+            #on a scale of 0 to 4 representing process quality and/or ease of use
+            #need to figure out a new unit 'stars' representing this
             ceramic: 2.25 .. 3.75
             germanium: 2.2 .. 3.5
             glass: 2.2 .. 3.8
@@ -87,11 +88,183 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
                 -   light cleaning
                 -   light etching
     safety:
-        personal:
-        -   airborne dust
-        -   flying particles
-        -   abrasion
-        environmental:
-        -   toxic dust
+    -   airborne dust
+    -   flying particles
+    -   abrasion
+    -   toxic dust
         
-
+arbor milling: !process # !process.machining.multipoint?
+    name: arbor milling #really this is just endmilling supported at both ends and you can stack cutters
+    geometry: revolute #!geometry #like a candlestick. used to calculate swept volume of tool path
+        #cutters can be ganged.. where do i put this?
+        length:
+            typical: 0.2..5in
+            feasible: &width_of_cut 0.03..20in
+        radius:
+            typical: 1.5 .. 10in
+        constraints:
+            angle:
+    surface finish:
+        typical: 64..200 microinch
+        feasible: 32..500 microinch
+    tolerance:
+        typical:+- 0.005
+        feasible: +- 0.001
+    unit power: !depends workpiece material
+    consumables:
+        power: !formula unit power * removal rate
+        tool:
+            life: !depends tool material
+        lubricant: !depends lubrication #how long does each lubricant last? where do i get this info?
+    parameters:
+        depth of cut:
+            typical: 0.05 .. 0.25in
+            feasible: 0.004 .. 1in
+        width of cut: *width_of_cut
+        rotation direction vs feed: #surely there's a name for this
+        #clockwise rotating cutter by default; a counterclockwise cutter reverses this
+        -   conventional
+        -   climb
+        feed per tooth: 0.005 .. 0.010in/tooth
+        surface speed: 30 .. 500 feet/min #see materials
+        lubrication: workpiece-material-dependent
+        workpiece hardness:
+            typical:
+                max: Rockwell C25 #joy~~ how about some real units
+        rigidity: #this includes the machine, workpiece, clamps, and tool bit rigidity
+            static: #mostly affects deflection or absolute uncompensated accuracy
+            dynamic: #affects maximum cutting rate vs surface finish, tool life, etc
+        effects:
+            -   surface stress
+            -   untempered martensitic layer 0.001in in heat treated alloy steels #blargh
+        tool geometry: !depends workpiece material
+        tool count: #i dont like this name
+            typical: 10 .. 20 tooth/rev #i just made up these values
+            feasible: 1 .. 200 tooth/rev #ditto
+        tool sharpness: #units??
+        tool material:
+            high speed steel:
+                functionality:
+                -   special geometry
+                -   low production
+            carbide insert:
+                functionality:
+                -   high production
+            ceramic insert:
+                functionality:
+                -   high speed machining
+                -   high production
+                -   uninterrupted cuts
+            diamond insert:
+                functionality:
+                -   high surface finish
+                -   low tolerance
+                -   nonferrous materials
+        workpiece material:
+                aluminum:
+                    tool geometry:
+                        axial rake: 12 .. 25 deg
+                        radial rake: 10 .. 20 deg
+                        axial relief: 5 .. 7 deg
+                        radial relief: 5 .. 11 deg
+                    unit power: 0.3 hp/in^3
+                    hardness:
+                        typical: 70 .. 125 brinell
+                        feasible: 30 .. 150 brinell
+                    machinability:
+                        typical: 2.6 .. 3.2
+                        feasible: 2.2 .. 3.7/home/fenn/code/skdb/
+                    lubricant:
+                        -   none
+                        -   mineral oil
+                        -   fatty oil
+                brass:
+                    tool geometry:
+                        axial rake: 12 .. 25 deg
+                        radial rake: 10 .. 20 deg
+                        axial relief: 5 .. 7 deg
+                        radial relief: 5 .. 11 deg
+                    unit power: 0.6 .. 1.0 hp/in^3
+                    hardness:
+                        typical: 60..100brinell
+                        feasible: 50..240 brinell
+                    machinability:
+                        feasible: 2.1 .. 3.6
+                        typical: 2.6 .. 3.1
+                    lubricant:
+                        -   mineral oil
+                        -   specialty fluid #wtf??
+                cast iron:
+                    tool geometry:
+                        axial rake: 10 .. 12 deg
+                        radial rake: 10 .. 20 deg
+                        axial relief: 2 .. 4 deg
+                        radial relief: 3 .. 7 deg
+                    unit power: 0.6 .. 1.1 hp/in^3
+                    hardness:
+                        typical: 250..320 brinell
+                        feasible: 110 .. 320brinell
+                    machinability:
+                        feasible: 2 .. 3
+                        typical: 2.3 .. 2.6
+                    lubricant:
+                        -   soluble oil
+                        -   chemical oil
+                        -   synthetic oil
+                        -   none
+                mild steel:
+                    tool geometry:
+                        axial rake: 10 .. 15 deg
+                        radial rake: 10 .. 15 deg
+                        axial relief: 3 .. 5 deg
+                        radial relief: 4 .. 8 deg
+                    unit power: 1.1.. 2.1 hp/in^3
+                    hardness:
+                        typical: 275..325 brinell
+                        feasible: 85..560 brinell
+                    machinability:
+                        feasible: 2.1 .. 3
+                        typical: 2.3 .. 2.6
+                    lubricant:
+                        -   chemical oil
+                        -   syntheic oil
+                        -   soluble oil
+                stainless steel:
+                    tool geometry:
+                        axial rake: 10 .. 12 deg
+                        radial rake: 5 .. 10 deg
+                        axial relief: 3 .. 5 deg
+                        radial relief: 4 .. 8 deg
+                    unit power: 1.4 .. 1.5hp/in^3
+                    hardness:
+                        typical: 275..325 brinell
+                        feasible: 135..430 brinell
+                    machinability:
+                        feasible: 0.3 .. 2.4
+                        typical: 0.8 .. 1.5
+                    lubricant:
+                        -   sulfurized mineral oil
+                        -   fatty soluble oil
+                        -   chemical oil
+                        -   synthetic oil
+                plastic:
+                    tool geometry:
+                        axial rake: 18 deg
+                        radial rake: 15 deg
+                        axial relief: 6 deg
+                        radial relief: 8 deg
+                    hardness:
+                    unit power: 0.05hp/in^3
+                    machinability:
+                        feasible: 2 .. 3.8
+                        typical: 2.5 .. 3.2
+                    lubricant:
+                        -   mineral oil
+                        -   soluble oil
+                        -   cold air
+                        -   none
+    safety:
+    -   rotating parts #if this were a high speed rotating part we'd calculate the energy, but the danger is mostly from being crushed by the torque
+    -   hot chips #todo: calculate the energy in a typical hot chip
+    -   sharp chips
+    -   toxic fluids
