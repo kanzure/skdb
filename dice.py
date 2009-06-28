@@ -5,6 +5,11 @@ import yaml, re
 #def  dice_constructor(Dice, data):
     #major, minor =[int(x) for x in data.split('d')]
     #return Dice(major, minor)
+class automagic(yaml.YAMLObject, str):
+    yaml_tag='!magic'
+    @classmethod
+    def constructor(cls, data):
+        return cls(data)
 
 class Dice(yaml.YAMLObject):
     yaml_tag = '!dice'
@@ -33,7 +38,7 @@ class Foo(yaml.YAMLObject):
         return cls(data)
         
 #the class we want to load/dump
-for cls in [Dice, Foo]:
+for cls in [Dice, Foo, automagic]:
     #how yaml will dump a Dice object
     #def dice_representer(dumper, data):
     #    return dumper.represent_scalar('!dice', '%sd%s' %(data.major, data.minor))
@@ -54,7 +59,8 @@ for cls in [Dice, Foo]:
     #yaml.add_implicit_resolver('!dice', re.compile('^\d+d\d+$')  )
 
     #the generic way
-    yaml.add_implicit_resolver(cls.yaml_tag, cls.yaml_pattern)
+    if hasattr(cls, 'yaml_pattern'):
+        yaml.add_implicit_resolver(cls.yaml_tag, cls.yaml_pattern)
 
 
 def load(foo):
@@ -65,3 +71,4 @@ def dump(foo):
 
 print "loading '2d6 turns into:  ", load('2d6')
 print "dumping Dice(2,6) looks like:  ",  dump(Dice(2,6))
+print 'automagic scalar: ', load('!magic myscalar')
