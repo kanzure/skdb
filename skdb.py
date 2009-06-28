@@ -251,6 +251,18 @@ class Unit(yaml.YAMLObject):
         '''return the unit portion of the unit string'''
         return 'not yet implemented, sorry!'
     
+class RuntimeData(yaml.YAMLObject, str):
+    yaml_tag = '!which'
+    @classmethod
+    def constructor(cls, data):
+        return cls(data)
+
+class Formula(yaml.YAMLObject, str):
+    yaml_tag = '!formula'
+    @classmethod
+    def constructor(cls, data):
+        return cls(data)
+
 class Process(yaml.YAMLObject):
     yaml_tag = '!process'
     def __init__(self, name):
@@ -312,6 +324,8 @@ class Thread(Package):
   #because the screw body will twist off as a combination of tensile and torque shear loads
 
 class Component(yaml.YAMLObject):
+    '''is this sufficiently generic or what?'''
+    yaml_tag = '!component'
     interfaces = []
     #def __init__(self):
     #        pass
@@ -364,11 +378,13 @@ class Bolt(Fastener):
         self.nut = nut
 
 def load(string):
-    for cls in [Range]:#, Uncertainty]: #only one at a time works so far?
-        assert hasattr(cls, 'yaml_pattern')
-        if hasattr(cls, 'yaml_pattern'):
+    for cls in [Range, RuntimeData, Formula]:#, Uncertainty]: #only one at a time works so far?
+        if hasattr(cls, 'constructor'): #for pesky things like !formula and !which
             yaml.add_constructor(cls.yaml_tag, lambda loader, node: cls.constructor(loader.construct_scalar(node)))
+        else: print "eek, %s has no constructor!" %(cls)
+        if hasattr(cls, 'yaml_pattern'):
             yaml.add_implicit_resolver(cls.yaml_tag, re.compile(cls.yaml_pattern))
+        else: print "%s has no implicit resolver!" %(cls)
         
     return yaml.load(string)
 

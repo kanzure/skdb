@@ -95,7 +95,9 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
         
 arbor milling: !process # !process.machining.multipoint?
     name: arbor milling #really this is just endmilling supported at both ends and you can stack cutters
-    geometry: revolute #!geometry #like a candlestick. used to calculate swept volume of tool path
+    type: process, shaping, mass-reducing, mechanical, reducing, multi-point, milling
+    geometry: #!geometry 
+        primitive: revolute #like a candlestick. used to calculate swept volume of tool path
         #cutters can be ganged.. where do i put this?
         length:
             typical: 0.2..5in
@@ -108,14 +110,14 @@ arbor milling: !process # !process.machining.multipoint?
         typical: 64..200 microinch
         feasible: 32..500 microinch
     tolerance:
-        typical:+- 0.005
-        feasible: +- 0.001
-    unit power: !depends workpiece material
+        typical: +-0.005
+        feasible: +-0.001
+    unit power: !which workpiece material
     consumables:
         power: !formula unit power * removal rate
         tool:
-            life: !depends tool material
-        lubricant: !depends lubrication #how long does each lubricant last? where do i get this info?
+            life: !which tool material
+        lubricant: !which lubrication #how long does each lubricant last? where do i get this info?
     parameters:
         depth of cut:
             typical: 0.05 .. 0.25in
@@ -127,7 +129,7 @@ arbor milling: !process # !process.machining.multipoint?
         -   climb
         feed per tooth: 0.005 .. 0.010in/tooth
         surface speed: 30 .. 500 feet/min #see materials
-        lubrication: workpiece-material-dependent
+        lubrication: !which workpiece material
         workpiece hardness:
             typical:
                 max: Rockwell C25 #joy~~ how about some real units
@@ -137,7 +139,7 @@ arbor milling: !process # !process.machining.multipoint?
         effects:
             -   surface stress
             -   untempered martensitic layer 0.001in in heat treated alloy steels #blargh
-        tool geometry: !depends workpiece material
+        tool geometry: !which workpiece material
         tool count: #i dont like this name
             typical: 10 .. 20 tooth/rev #i just made up these values
             feasible: 1 .. 200 tooth/rev #ditto
