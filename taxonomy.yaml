@@ -7,7 +7,7 @@ process:
         reducing:
           single-point:
             turning: &turning
-            facing:*turning
+            facing: *turning
             boring:
             planing: &planing
             shaping: *planing
@@ -18,7 +18,7 @@ process:
             drilling:
             reaming:
             milling: &milling
-            routing:*milling
+            routing: *milling
             broaching:
             threading:
             filing:
@@ -41,8 +41,8 @@ process:
             conventional:
             steel-rule-die:
             fine:
-            shaving:*trimming
-            trimming:&trimming
+            trimming: &trimming
+            shaving: *trimming
             dinking:
           piercing:
             punching:
@@ -146,7 +146,7 @@ process:
           shear spinning:
           coining: &coining
           sizing: *coining
-          hobbing:*coining
+          hobbing: *coining
           thread forming:
           knurling:
         local:
@@ -202,10 +202,10 @@ process:
             butt:
             percussion:
             electroslag:
-          gas: *chemical
           chemical: &chemical
             combustible gas welding:
             atomic hydrogen welding:
+          gas: *chemical
           braze:
             gas:
             carbon arc:
@@ -221,8 +221,8 @@ process:
           furnace:
           induction:
         soldering:
-          friction:*ultrasonic
           ultrasonic: &ultrasonic
+          friction: *ultrasonic
           induction:
           infrared:
           dip:
@@ -307,13 +307,13 @@ process:
             charged:
               electrostatic:
               vacuum:
-          flow: *dip
           dip: &dip
             cold dip:
             hot dip:
             electrocoating:
             fluidized bed:
             curtain:
+          flow: *dip
           dust:
           roll:
             calendering:
@@ -345,6 +345,6 @@ process:
           hammer:
         texturing:
           wire brush:
-          buffing: *polishing
           polishing: &polishing
+          buffing: *polishing
 
