@@ -13,6 +13,7 @@ def random_color():
     brightness = 0.9
     return '"%f,%f,%f"' % (hue, saturation, brightness)
 
+#linnaeus = yaml.load(open('processes_notags.yaml'))['abrasive jet']
 linnaeus = yaml.load(open('taxonomy.yaml'))
 
 taxonomy = graph.digraph()
@@ -20,19 +21,21 @@ node_id=0 #we need numerical nodes because some terms show up multiple times, li
 
 def walk(treebeard, color, parent_node):
     global node_id
-    try:
-        for key in treebeard.keys():
-            node_id += 1
-            taxonomy.add_node(node_id, [('label', key), ('shape', 'box'),
-                ('fontsize', '24'), ('color', color), ('style', 'filled')])
-            taxonomy.add_edge(parent_node, node_id)
-            walk(treebeard[key], random_color(), node_id)
-    except AttributeError: #leaf node, need some way to peek at contents
-        pass #node_id += 1
+    children = []
+    if hasattr(treebeard, 'keys'):
+        children = treebeard.keys()
+    for child in children:
+        node_id += 1
+        taxonomy.add_node(node_id, [('label', child), ('shape', 'box'),
+            ('fontsize', '24'), ('color', color), ('style', 'filled')])
+        taxonomy.add_edge(parent_node, node_id)
+        #if hasattr(child, 'keys'): 
+        walk(treebeard[child], random_color(), node_id)
+
 
 taxonomy.add_node(node_id, [('label', 'root')])
 #walk(linnaeus['processes']['shaping']['joining'], 'root', node_id)
 walk(linnaeus, 'yellow', node_id)
 
-#run with: python build-taxonomy-graph.py  |dot -Tpng -o'foo.png
+#run with: python build-taxonomy-graph.py  |dot -G rankdir=LR -Tpng -o 'foo.png'
 print graph.readwrite.write_dot_graph(taxonomy, False)
