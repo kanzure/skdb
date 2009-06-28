@@ -112,6 +112,10 @@ class Uncertainty(yaml.YAMLObject):
 class UnitError(Exception): pass 
 class NaNError(Exception): pass
 
+#first you need to do this:
+#cat /usr/share/misc/units.dat > combined.dat
+#cat supplemental_units.dat >> combined.dat
+units_call = "units -f combined.dat -t " #export LOCALE=en_US; ?
 def sanitize(string):
     '''intercept things that will cause GNU units to screw up'''
     if string is None or str(string) == 'None' or str(string) == '()': string = 0  
@@ -120,24 +124,24 @@ def sanitize(string):
             raise UnitError, "Typo? units expression '"+ string + "' contains '" + i + "'"
     return '('+str(string)+')' #units -1 screws up; units (-1) works
 
-def units_happy(units_call, rval):
+def units_happy(call_string, rval):
     '''the conversion or expression evaluated without error'''
     error = re.search('Unknown|Parse|Error|invalid|error', rval)
     if error:  
-        raise UnitError, str(units_call) + ': ' + str(rval)
+        raise UnitError, str(call_string) + ': ' + str(rval)
     nan = re.search('^nan', rval) #not sure how to not trip on results like 'nanometer'
     if nan:
         raise NaNError, rval
     return True #well? what else am i gonna do
 
 def simplify(string):
-    rval = os.popen("units -t '" + sanitize(string) + "'").read().rstrip('\n')
+    rval = os.popen(units_call + "'" + sanitize(string) + "'").read().rstrip('\n')
     if units_happy(string, rval): return rval
     else: raise UnitError
 
 def conv_factor(string, destination):
     '''the multiplier to go from one unit to another, for example from inch to mm is 25.4'''
-    conv_factor = os.popen("units -t '" + sanitize(string) + "' '" + sanitize(destination) + "'").read().rstrip('\n')
+    conv_factor = os.popen(units_call + "'" + sanitize(string) + "' '" + sanitize(destination) + "'").read().rstrip('\n')
     if units_happy(string, conv_factor): 
         return float(conv_factor)
     else: raise UnitError, conv_factor, destination
@@ -247,7 +251,6 @@ class Unit(yaml.YAMLObject):
         '''return the unit portion of the unit string'''
         return 'not yet implemented, sorry!'
     
-
 class Process(yaml.YAMLObject):
     yaml_tag = '!process'
     def __init__(self, name):
