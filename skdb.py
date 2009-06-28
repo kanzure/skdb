@@ -58,8 +58,9 @@ class Range(yaml.YAMLObject):
         self.min = min
         self.max = max
     def __repr__(self):
-        return "%s .. %s" %(self.min, self.max)
+        return "Range(%s, %s)" %(self.min, self.max)
     def yaml_repr(self):
+        return "%s .. %s" %(self.min, self.max)
         return self.__repr__()
     def __eq__(self, other):
         if type(other) == type(self):
@@ -249,10 +250,12 @@ class Unit(yaml.YAMLObject):
         pass
         
 
-class Process(yaml.YAMLObject, dict):
+class Process(yaml.YAMLObject):
     yaml_tag = '!process'
     def __init__(self, name):
         self.name = name
+    def __repr__(self):
+        return "Process(%s)" % (self.name)
     
 
 class Material(Package):
