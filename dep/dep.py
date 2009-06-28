@@ -66,7 +66,7 @@ class Resolver(yaml.YAMLObject, pygraph.digraph):
         '''
         #from1.add_edge(from1, to1)
         root.add_dependency(setname, dependency)
-        pygraph.digraph.add_edge(self, dependency, root)
+        pygraph.digraph.add_edge(self, root, dependency) #dependency, root)
 
 class TestResolver(unittest.TestCase):
     def test_Dependency(self):
@@ -78,11 +78,15 @@ class TestResolver(unittest.TestCase):
         g.add_dependency("The Typical Approach", fuel, transportation)
 
         # a dependency of d1 is d2 (er, at least in name)
-        print g.dependencies((g.nodes())[1]) # FIXME
-        self.assertTrue(g.dependencies((g.nodes())[1])==fuel.__repr__)
+        print "g.nodes()[0] is: ", g.nodes()[0]
+        print "g.nodes()[1] is: ", g.nodes()[1]
+        print "the dependencies of g.nodes()[0] are: ", g.dependencies((g.nodes())[0]) # FIXME
+        print "the dependencies of g.nodes()[1] are: ", g.dependencies((g.nodes())[1])
+        print "fuel.__repr__ is: ", fuel
+        self.assertTrue(g.dependencies((g.nodes())[0])==[fuel])
         print g.dependencies((g.nodes())[1])
         print "grabbing the approaches to solving the 'transportation device': "
-        print d2.dependencysets
+        print transportation.dependencysets
     def test_Resolver(self):
         pass
 
