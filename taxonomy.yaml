@@ -1,20 +1,24 @@
 source: manufacturing processes reference guide, 1993 first edition. todd, allen, and alting.
 
-processes:
+process:
   shaping:
     mass-reducing:
       mechanical:
         reducing:
           single-point:
-            turning/facing:
+            turning: &turning
+            facing:*turning
             boring:
-            shaping/planing:
-            parting/grooving:
+            planing: &planing
+            shaping: *planing
+            parting: &parting
+            grooving: *parting
             threading:
           multi-point:
             drilling:
             reaming:
-            milling/routing:
+            milling: &milling
+            routing:*milling
             broaching:
             threading:
             filing:
@@ -37,7 +41,8 @@ processes:
             conventional:
             steel-rule-die:
             fine:
-            shaving/trimming:
+            shaving:*trimming
+            trimming:&trimming
             dinking:
           piercing:
             punching:
@@ -95,10 +100,10 @@ processes:
             compresion:
             extrusion:
             thermoform:
-            rotational:            
+            rotational:
         compacting:
           continuous:
-            p/m extrusion:
+            p/m extrusion: #what does p/m mean?
             p/m rolling:
           noncontinuous:
             pressing:
@@ -139,7 +144,9 @@ processes:
             structural:
             pierce:
           shear spinning:
-          coining/sizing/hobbing:
+          coining: &coining
+          sizing: *coining
+          hobbing:*coining
           thread forming:
           knurling:
         local:
@@ -195,7 +202,8 @@ processes:
             butt:
             percussion:
             electroslag:
-          gas/chemical:
+          gas: *chemical
+          chemical: &chemical
             combustible gas welding:
             atomic hydrogen welding:
           braze:
@@ -213,14 +221,15 @@ processes:
           furnace:
           induction:
         soldering:
-          friction/ultrasonic:
+          friction:*ultrasonic
+          ultrasonic: &ultrasonic
           induction:
           infrared:
           dip:
           iron:
           resistance:
           torch:
-          wave:          
+          wave:
       chemical:
         adhesive:
         solvent:
@@ -256,8 +265,10 @@ processes:
           solid-phase:
           liquid-phase:
         cryo:
-        firing/glazing:
-        curing/bonding:
+        firing: &firing
+        glazing: *firing
+        curing: &curing
+        bonding: *curing
     surface-finishing:
       preparation:
         descaling:
@@ -296,7 +307,8 @@ processes:
             charged:
               electrostatic:
               vacuum:
-          dip/flow:
+          flow: *dip
+          dip: &dip
             cold dip:
             hot dip:
             electrocoating:
@@ -333,5 +345,6 @@ processes:
           hammer:
         texturing:
           wire brush:
-          buffing/polishing:
+          buffing: *polishing
+          polishing: &polishing
 
