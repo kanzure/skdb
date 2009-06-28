@@ -1,3 +1,9 @@
+#copyright ben lipkowitz, 2009. distributed under the GNU GPL version 2 or later
+
+#usage:
+# cat processes.yaml | sed 's/!.*$//' > processes_notags.yaml  #strip tags which confuse yaml
+# python taxonomy-graph.py  |dot -Grankdir=LR -Tjpg -o 'foo.jpg'
+
 import os
 import yaml
 import graph
@@ -34,8 +40,6 @@ def walk(treebeard, color, parent_node):
 
 
 taxonomy.add_node(node_id, [('label', 'root')])
-#walk(linnaeus['processes']['shaping']['joining'], 'root', node_id)
 walk(linnaeus, 'yellow', node_id)
 
-#run with: python build-taxonomy-graph.py  |dot -G rankdir=LR -Tpng -o 'foo.png'
 print graph.readwrite.write_dot_graph(taxonomy, False)
