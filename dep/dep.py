@@ -10,8 +10,14 @@ import unittest
 class Dependency:
     def __init__(self, name="dependency name here"):
         self.name = name
+        self.solved = False
     def __repr__(self):
-        return self.name
+        return ("%s, s:%s" % (self.name, self.solved))
+    def solved(self):
+        # note: if all dependencies of this dependency are solved,
+        # then this dependency should be by definition 'solved'.
+        # FIXME: check for whether or not all dependencies are solved.
+        return self.solved
     #def dependencies(self):
     #    return self.neighbors()
 
@@ -35,9 +41,9 @@ class TestResolver(unittest.TestCase):
         g.add_node(d2)
         g.add_edge(d1,d2)
 
-        # a dependency on d1 is d2 (er, at least in name)
+        # a dependency of d1 is d2 (er, at least in name)
         self.assertTrue(g.dependencies((g.nodes())[1])==[d2])
-
+        print g.dependencies((g.nodes())[1])
     def test_Resolver(self):
         pass
 
