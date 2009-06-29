@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+<title>JavaScript Bs_Slider example 2</title>
+
+<style>
+  .sliderInput {
+  	height:20;
+    width:30;
+  	font-family : Arial, Helvetica, sans-serif;
+  	font-size : 12px;
+  }
+</style>
+
+<script type="text/javascript" src="../../../lib/LibCrossBrowser.js"></script>
+<script type="text/javascript" src="../../../lib/EventHandler.js"></script>
+<script type="text/javascript" src="../../../core/form/Bs_FormUtil.lib.js"></script>
+<script type="text/javascript" src="../Bs_Slider.class.js"></script>
+
+<script><!--
+function init(){
+  // - Slider 1 -----------------------------------------
+  mySlider1 = new Bs_Slider();
+  mySlider1.attachOnChange(bsSliderChange);
+  mySlider1.width         = 81;
+  mySlider1.height        = 27;
+  mySlider1.minVal        = 0;
+  mySlider1.maxVal        = 100;
+  mySlider1.valueDefault  = 50;
+  mySlider1.valueInterval = 1;
+  mySlider1.imgDir   = '../img/';
+  mySlider1.setBackgroundImage('volume/bg.gif', 'no-repeat');
+  mySlider1.setSliderIcon('volume/slider.gif', 9, 22);
+  mySlider1.useInputField = 0;
+  mySlider1.draw('sliderDiv1');
+	
+	
+  // - Slider 2 -----------------------------------------
+  mySlider2 = new Bs_Slider();
+  mySlider2.attachOnChange(bsSliderChange);
+  mySlider2.width         = 81;
+  mySlider2.height        = 27;
+  mySlider2.minVal        = 50;
+  mySlider2.maxVal        = 100;
+  mySlider2.valueDefault  = 74;
+  mySlider2.valueInterval = 2;
+  mySlider2.imgDir   = '../img/';
+  mySlider2.setBackgroundImage('volume/bg.gif', 'no-repeat');
+  mySlider2.setSliderIcon('volume/slider.gif', 9, 22);
+  mySlider2.useInputField = 0;
+  mySlider2.colorbar = new Object();
+  mySlider2.colorbar['color']           = 'red';
+  mySlider2.colorbar['height']          = 3;
+  mySlider2.colorbar['widthDifference'] = -2;
+  mySlider2.colorbar['offsetLeft']      = 3;
+  mySlider2.colorbar['offsetTop']       = 11;
+  mySlider2.draw('sliderDiv2');
+	
+	
+  // - Slider 3 -----------------------------------------
+  mySlider3 = new Bs_Slider();
+  mySlider3.attachOnChange(bsSliderChange);
+	mySlider3.fieldName     = 'volume';
+  mySlider3.width         = 49;
+  mySlider3.height        = 15;
+  mySlider3.minVal        = 5;
+  mySlider3.maxVal        = 8;
+  mySlider3.valueDefault  = 6;
+  mySlider3.valueInterval = 0.1;
+  mySlider3.imgDir   = '../img/';
+  mySlider3.setBackgroundImage('increase/bg.gif', 'no-repeat');
+  mySlider3.setSliderIcon('increase/knob.gif', 10, 21);
+  mySlider3.useInputField = 0;
+  mySlider3.draw('sliderDiv3');
+	
+}
+
+/**
+* @param object sliderObj
+* @param int val (the value)
+*/
+function bsSliderChange(sliderObj, val, newPos){ 
+  document.test.attacedFieldValue.value = val;
+}
+// --></script>
+
+</head>
+<body bgColor="#D6D6CE" text="#3366aa" link="#0000ee" alink="#ff0000" vlink="#551a8b" onLoad="init();">
+
+<h1>JavaScript Bs_Slider example 2</h1>
+
+<ul>
+	<li>Similar to example 1, using different styles.</li>
+	<li>
+		Slider 3 uses fallback code for old browsers. <br>
+		Screenshot old browser:<br>
+		<img src="./example2_screenshot1.gif" border="0" style="border:1px solid black;"><br>
+		Screenshot new browser:<br>
+		<img src="./example2_screenshot2.gif" border="0" style="border:1px solid black;"><br>
+		Just put your fallback code inside the div tags. All innerHTML content will be replaced 
+		if the slider renders.
+	</li>
+</ul>
+
+<hr>
+<br>
+
+  <form  name="test" id="test" action="http://www.blueshoes.org/postDump.php" method="post">
+    <table border="0" cellspacing="0" cellpadding="2">
+      <tr>
+        <td width="200" valign="top">
+					<b>Slider 1</b><br>
+					<div id="sliderDiv1"></div>
+				</td>
+        <td width="200" valign="top">
+					<b>Slider 2</b><br>
+					<div id="sliderDiv2"></div>
+				</td>
+        <td width="200" valign="top">
+					<b>Slider 3</b><br>
+					<div id="sliderDiv3">
+						<!-- all this will be replaced with the slider... if the browser supports it. -->
+						Volume <input type="text" name="volume" value="0" maxlength="2" size="2"> (0-50)
+					</div>
+				</td>
+      </tr>
+      <tr>
+        <td colspan="100%"><br><br><br><br>
+          value: <input type="text" name="attacedFieldValue" value="" size="6" style="background:yellow;">
+        </td>
+      </tr>
+    </table>
+  	<br>
+  	<input type="submit">
+  </form>
+
+</body></html>

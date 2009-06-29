@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>BlueShoes ResizeGrip Example 2</title>
+
+<script type="text/javascript" src="../../../core/lang/Bs_Misc.lib.js"></script>
+<script type="text/javascript" src="../../../components/resizegrip/Bs_ResizeGrip.class.js"></script>
+<script>
+function init() {
+	rg = new Bs_ResizeGrip('myTextarea');
+	rg.gripIcon = '../../../../images/windows/resizeWindow.gif'; 
+	rg.maxWidth  = 400;
+	rg.maxHeight = 200;
+	rg.draw();
+}
+</script>
+</head>
+
+<body onload="init();" bgcolor="white">
+
+<h1>BlueShoes ResizeGrip Example 2</h1>
+
+This is an example of the <a href="http://www.blueshoes.org/en/javascript/resizegrip/">BlueShoes Resize Grip</a>.<br><br>
+
+<form>
+<table border="1">
+	<tr>
+		<td valign="top">Text</td>
+		<td valign="top"><input type="text"></td>
+	</tr>
+	<tr>
+		<td valign="top">Textarea</td>
+		<td valign="top">
+<textarea name="myTextarea" id="myTextarea" cols="20" rows="3">
+this is some text and this area is definitely too small to type large text.
+this is some text and this area is definitely too small to type large text.
+this is some text and this area is definitely too small to type large text.
+this is some text and this area is definitely too small to type large text.
+this is some text and this area is definitely too small to type large text.
+this is some text and this area is definitely too small to type large text.
+</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">Text</td>
+		<td valign="top"><input type="text"></td>
+	</tr>
+</table>
+</form>
+
+
+</body>
+</html>
