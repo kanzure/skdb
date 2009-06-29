@@ -3,6 +3,7 @@
 
 man ! #a human laborer's average output of directed attention
 tooth ! #a cutting edge
+teeth tooth
 quality ! #satisfaction
 star 0.25 quality
 deg degree #because i hate typing it out
