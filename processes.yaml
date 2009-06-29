@@ -547,3 +547,128 @@ external broaching: !process
                 -   high production
                 -   prismatic geometry
                 -   high hardness
+
+superfinishing: !process #somehow i think there isnt quite enough info here
+    name: superfinishing
+    type: shaping, mass-reducing, mechanical, reducing, abrasive #is this right?
+    mechanism: abrasive surface and oil act as hydrodynamic bearing; surface asperities contact abrasive and are cut
+    geometry:
+        primitive: cylinder, sphere, cone, plane
+        tolerance: -0.0002 .. -0.0008in
+    effect: removes smeared surface layer
+    surface finish:
+        typical: 2 .. 8 microinch
+        feasible: 0 .. 30 microinch
+    rate: 10..40 in^2/min
+    consumables:
+        abrasive:
+    functionality:
+    -   high precision
+    -   wear resistance
+    -   bearing surfaces
+    parameters:
+        periodicity: #how the heck do i represent this
+        surface speed: 50 .. 60 feet/min
+        pressure: 10 .. 40 psi
+        lubricant:
+        -   oil
+        -   water
+        workpiece surface finish: 30..200 microinch #i made this up.. chrysler recommends rough grinding prior to surface finishing
+    safety:
+    -   abrasive fluid
+    -   rotating parts
+
+gas cutting: !process
+    name: gas flame cutting
+    type: shaping, mass-reducing, thermal, torch cutting, gas cutting
+    mechanism: ferrous workpiece is heated and then oxidized. gas flow then blows the liquid metal out of the cut
+    geometry:
+        primitive: swept cylinder
+        diameter: 1/16 .. 1/4 in #kerf
+        tolerance:
+            typical: +- 1/8 in
+            feasible: +- 1/32 in
+    surface finish:
+        typical: 250..1000 microinches
+        feasible: 100..1100 microinches
+    consumables:
+        fuel consumption: !which fuel
+        oxygen consumption: !which fuel
+        torch tip:
+    functionality:
+    -   straight cuts
+    -   parting
+    -   roughing
+    -   irregular prismatic geometry
+    -   angular cuts
+    -   ferrous materials > 3/8 inch thickness
+    effects:
+    -   distortion
+    -   tempering
+    -   microcracks
+    -   residual stress
+    -   surface embrittlement
+    -   oxidation
+    parameters:
+        workpiece thickness:
+            typical: 0.125 .. 12in
+            feasible: 0.05 .. 60in #wow
+        oxidizer pressure: 20 .. 50 psi
+        fuel pressure: 3 .. 7 psi
+        feed rate: !which fuel
+        temperature: tempf(1400)..tempf(1600)
+        tip style: !which fuel
+        fuel:
+            acetylene: #how do i say acetylene is the preferred fuel? least heat dispersion
+                tip style: 
+                -   one-piece straight tip
+                -   one-piece divergent tip
+                feed rate: 2.6 .. 20 in/min
+                removal rate: 120 in^3/hr
+                fuel consumption: 25 ft^3/hr
+                oxygen consumption: 155 ft^3/hr
+            propane:
+                tip style: two-piece recessed tip
+                feed rate: 2.5 .. 30 in/min #typo?
+                removal rate: 130 in^3/hr
+                fuel consumption: 11 ft^3/hr
+                oxygen consumption: 167 ft^3/hr
+            natural gas:
+                tip style: two-piece recessed tip
+                feed rate: 3 .. 20 in/min
+                removal rate: 130 in^3/hr
+                fuel consumption: 20 ft^3/hr
+                oxygen consumption: 167 ft^3/hr 
+            MAPP gas:
+                tip style: 
+                feed rate: 14 .. 30 in/min
+                removal rate: 90 in^3/hr
+                fuel consumption: 15 ft^3/hr
+                oxygen consumption: 120 ft^3/hr
+        workpiece material:
+            carbon steel:
+                machinability:
+                    typical: 3.3..3.7 stars
+                    feasible: 3..4 stars
+            cast iron:
+                machinability:
+                    feasible: 0.5..1.5 stars
+                    typical: 0.8..1.2 stars
+            galvanized steel:
+                machinability:
+                    feasible: 0 .. 1 stars
+                    typical: 0.3 .. 0.6 stars
+            free machining steel:
+                machinability:
+                    feasible: 0 .. 1 stars
+                    typical: 0.3 .. 0.6 stars
+    safety:
+    -   hot parts
+    -   toxic fumes
+    -   sparks
+    -   ultraviolet radiation
+    -   flammable gases
+    -   compressed gases
+    -   smoke
+    -   open flame
+    -   explosive mixture
