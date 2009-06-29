@@ -8,6 +8,11 @@ source: manufacturing processes reference guide, 1993 first edition. todd, allen
 
 template: !process
     name: a template process
+    mechanism:
+    geometry:
+        tolerance:
+    surface finish:
+    consumables:
     parameters:
         one: 
         -   1m
@@ -19,13 +24,15 @@ template: !process
 
 abrasive jet: !process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
     name: abrasive jet machining
+    mechanism: compressed air accelerates abrasive particles toward the workpiece
     removal rate: 
         typical: 0.003.. 0.0007in/min #what exactly does this refer to?
         feasible: 0.0001 .. 0.002in/min  
-    geometry: cone #!geometry #what angle?
-    tolerance:
-        typical: +-0.005in
-        feasible: +-0.001in
+    geometry: 
+        primitive: cone #!geometry #what angle?
+        tolerance:
+            typical: +-0.005in
+            feasible: +-0.001in
     surface finish: #arithmetic average
         typical:  6..48 microinch
         feasible: 4..64 microinch
@@ -93,9 +100,10 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
     -   abrasion
     -   toxic dust
         
-arbor milling: !process # !process.machining.multipoint?
+arbor milling: !process
     name: arbor milling #really this is just endmilling supported at both ends and you can stack cutters
     type: process, shaping, mass-reducing, mechanical, reducing, multi-point, milling
+    mechanism: rotating toothed cutter supported axially at both ends is fed into the workpiece at a controlled rate
     geometry: #!geometry 
         primitive: revolute #like a candlestick. used to calculate swept volume of tool path
         #cutters can be ganged.. where do i put this?
@@ -106,18 +114,20 @@ arbor milling: !process # !process.machining.multipoint?
             typical: 1.5 .. 10in
         constraints:
             angle:
+        tolerance:
+            typical: +-0.005
+            feasible: +-0.001
     surface finish:
         typical: 64..200 microinch
         feasible: 32..500 microinch
-    tolerance:
-        typical: +-0.005
-        feasible: +-0.001
+
     unit power: !which workpiece material
     consumables:
         power: !formula unit power * removal rate
         tool:
             life: !which tool material
         lubricant: !which lubrication #how long does each lubricant last? where do i get this info?
+    functionality: !which tool material #hmm
     parameters:
         depth of cut:
             typical: 0.05 .. 0.25in
@@ -270,3 +280,32 @@ arbor milling: !process # !process.machining.multipoint?
     -   hot chips #todo: calculate the energy in a typical hot chip
     -   sharp chips
     -   toxic fluids
+    
+band filing: !process
+    #there really wasn't much data on this
+    name: band filing
+    type: shaping, mass reducing, mechanical, multi-point, filing
+    mechanism: a prismatic multipoint cutter mounted on a metal belt is fed into the work
+    geometry:
+        primitive: prismatic
+    tolerance:
+    surface finish: "fine"
+    functionality:
+    -   irregular 2D shape
+    -   deburring
+    -   squaring edges
+    consumables:
+        tool:
+            life:
+    parameters:
+        tool geometry:
+        -   flat (square)
+        -   triangle
+        -   half oval
+        -   half cylinder
+        tooth count: 10..24 teeth/in
+    safety:
+    -   particulates
+    -   moving belt
+    
+
