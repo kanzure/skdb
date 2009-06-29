@@ -7,18 +7,15 @@ urls:
 source: manufacturing processes reference guide, 1993 first edition. todd, allen, and alting.
 
 template: !process
-    name: a template process
+    name:
+    type:
     mechanism:
     geometry:
         tolerance:
     surface finish:
     consumables:
+    functionality:
     parameters:
-        one: 
-        -   1m
-        -   19in
-        two: 6..28GW
-        three: 0..15teranats/sec
     safety:
        
 
@@ -150,9 +147,9 @@ arbor milling: !process
             -   surface stress
             -   untempered martensitic layer 0.001in in heat treated alloy steels #blargh
         tool geometry: !which workpiece material
-        tool count: #i dont like this name
-            typical: 10 .. 20 tooth/rev #i just made up these values
-            feasible: 1 .. 200 tooth/rev #ditto
+        tooth count:
+            typical: 10 .. 20 teeth/rev #i just made up these values
+            feasible: 1 .. 200 teeth/rev #ditto
         tool sharpness: #units??
         tool material:
             high speed steel:
@@ -284,7 +281,7 @@ arbor milling: !process
 band filing: !process
     #there really wasn't much data on this
     name: band filing
-    type: shaping, mass reducing, mechanical, multi-point, filing
+    type: shaping, mass reducing, mechanical, reducing, multi-point, filing
     mechanism: a prismatic multipoint cutter mounted on a metal belt is fed into the work
     geometry:
         primitive: prismatic
@@ -294,6 +291,7 @@ band filing: !process
     -   irregular 2D shape
     -   deburring
     -   squaring edges
+    -   finishing
     consumables:
         tool:
             life:
@@ -305,7 +303,62 @@ band filing: !process
         -   half cylinder
         tooth count: 10..24 teeth/in
     safety:
-    -   particulates
+    -   particulate material
     -   moving belt
-    
 
+band sawing: !process
+    name: band sawing
+    type: shaping, mass-reducing, mechanical, reducing, multipoint, sawing
+    mechanism: a moving flexible tensioned metal loop with teeth is fed into the workpiece at a controlled rate
+    geometry:
+        primitive: parallelepiped
+        constraint: geometry must extend above and below workpiece
+        tolerance: 
+            typical: 0.05 .. 0.1 in
+            feasible: 0.02 .. 0.3 in
+    surface finish:
+    consumables:
+        tool:
+        lubricant:
+    functionality:
+    -   narrow kerf
+    -   single angle cuts
+    -   !which tooth shape
+    -   !which blade width #sigh.. want to do some formula relating blade width and minimum radius
+    -   !formula minimum radius of curvature = something * blade width
+    parameters:
+        teeth in contact with work: !range
+            min: 2 teeth #bleh
+        tooth count: 4..28 teeth/in
+        tooth shape:
+            precision:
+                functionality:
+                -   finishing
+            buttress:
+                functionality:
+                -   roughing
+                -   parting
+                -   high chip load
+            claw:
+                functionality:
+                -   chip clearance
+                -   fast cuts
+        blade width:
+            thin:
+                functionality:
+                -   irregular 2D shape
+                -   curved cuts
+            thick:
+                functionality:
+                -   straight cuts
+                -   parting
+        blade thickness:
+        blade tension:
+        lubricant:
+        -   none
+        -   soluble oil
+        -   cutting oil
+    safety:
+    -   moving belt
+    -   moving blade
+    -   particulate material
