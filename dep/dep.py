@@ -81,6 +81,9 @@ class TestResolver(unittest.TestCase):
         self.assertTrue(g.dependencies((g.nodes())[0])==[fuel])
         print "grabbing the approaches to solving the 'transportation device': "
         print transportation.dependencysets
+
+        print "\n\n\nyaml testing\n\n"
+        print yaml.dump(g)
     def test_Resolver(self):
         pass
 
