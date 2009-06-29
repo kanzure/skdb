@@ -604,11 +604,12 @@ gas cutting: !process
     -   ferrous materials > 3/8 inch thickness
     effects:
     -   distortion
-    -   tempering
+    -   annealing
     -   microcracks
     -   residual stress
     -   surface embrittlement
     -   oxidation
+    heat affected zone: #no mention?
     parameters:
         workpiece thickness:
             typical: 0.125 .. 12in
@@ -672,3 +673,101 @@ gas cutting: !process
     -   smoke
     -   open flame
     -   explosive mixture
+
+laser cutting: !process
+    name: laser beam cutting
+    type: shaping, mass-reducing, thermal, high energy beam machining
+    mechanism: focused coherent light heats workpiece to melting or vaporization, then shielding gas blows the melted material out of the cut
+    geometry: 
+        primitive: swept double cone
+        diameter: !which beam
+        tolerance:
+            typical: +- 0.001in
+            feasible: +- 0.0005in
+    surface finish:
+        typical: 125..250 microinch
+        feasible: 100 .. 300 microinch
+    consumables:
+        cutting gas:
+        power: !which workpiece material
+    functionality: 
+    -   drilling
+    -   straight cuts
+    -   irregular prismatic geometry
+    -   !which lasing material
+    effects:
+    -   hardening
+    -   annealing
+    -   change in grain size
+    parameters:
+        beam: 
+            focal length: 1.5 .. 3 in #this varies significantly with material thickness
+            diameter:
+                typical: 0.004 .. 0.0125 in
+                feasible: 0.0002 .. 0.2 in
+            power:
+        workpiece thickness:
+            feasible: 0.004 .. 6 inch
+            typical: 0.02 .. 0.5 inch
+        cutting gas:
+            oxygen:
+            compressed air:
+            nitrogen:
+            argon:
+        feed rate: !which workpiece material #over typical thickness range
+        workpiece reflectivity:
+        workpiece thermal conductivity:
+        workpiece material:
+            aluminum:
+                power: 1000 .. 10000 W
+                feed rate: 30 .. 800 in/min
+                machinability:
+                    typical: 2.9..3.5 stars
+                    feasible: 0.2 .. 3.8 stars
+            stainless:
+                power: 250 .. 1000 W
+                feed rate: 20 .. 750 in/min
+                machinability:
+                    typical: 2.6..3.2 stars
+                    feasible: 0.6 .. 3.6 stars
+            mild steel:
+                power: 400 .. 500 W
+                feed rate: 40 .. 177 in/min
+                machinability:
+                    feasible: 2.5 .. 3.8 stars
+                    typical: 2.9 .. 3.3 stars
+            wood:
+                power: 50 .. 650W
+                feed rate: #45 .. 180 in/min #this is wrong, 180 refers to 0.25" thickness, paper must be faster
+                machinability:
+                    feasible: 2.3 .. 3.9 stars
+                    typical: 2.9 .. 3.5 stars
+            titanium:
+                power: 210 .. 250 W
+                feed rate: 40 .. 300 in/min
+            plastic:
+                feed rate: #25 .. 60 in/min #this is also wrong
+                power: 50 .. 100W #i made this up
+                machinability:
+                    feasible: 2.1 .. 3.6 stars
+                    typical: 2.6 .. 3.3 stars
+        lasing material:
+            CO2:
+                functionality:
+                -   scribing
+                -   engraving 
+            Nd: 
+                functionality:
+                -   high energy pulse
+                -   low repetition speed #(1 KHz)#huh?
+            Nd-YAG:
+                functionality:
+                -   very high energy pulse
+                -   engraving
+                -   trimming #wtf does this mean
+    safety:
+    -   coherent infrared radiation
+    -   hot parts
+    -   toxic fumes
+    -   dust
+    -   compressed gases
