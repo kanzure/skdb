@@ -1,0 +1,242 @@
+1:
+    buffer A:
+        date: 2009-06-06
+        pH: 8
+        contents:
+            - 100mM Tris
+            - 50mM EDTA
+            - 100mM NaCl
+    extraction buffer:
+        notes: SATA'S RESEARCH - DO NOT USE #'
+        pH: 8
+        date: 2009-02-20
+        contents:
+            - 100mM Tris-HCl
+            - 50mM EDTA
+            - 1% SDS
+            - 1% PVP
+    buffer A:
+        date: 2009-02-16
+        pH: 8
+        notes: SATA's RESEARCH - DO NOT USE #'
+        volume: 60 mL
+    extraction buffer:
+        date: 2009-06-06
+        pH: 8
+        contents:
+            - 100mM Tris-HCl
+            - 50mM EDTA
+            - 1% SDS
+            - 1% PVP
+    %Sarkosyl:
+        date: 2009-02-11
+        contents:
+            - 0.3g/30mL
+    NaCL:
+        date: 2009-02-26
+        contents:
+            - 5M NaCl
+        volume: 100mL
+    ethanol:
+        date: 2009-02-11
+        contents:
+            - ethanol
+        volume: 200mL
+    SDS:
+        date: 2007-11-30
+        contents:
+            - 5% SDS
+        notes: EH.
+        volume: 200 mL
+    NaOH:
+        date: 2007-06-18
+        contents:
+            - 0.1% NaOH
+        person: Kafi J.
+        volume: 1000mL
+    SSC:
+        date: 2009-03-27
+        volume: full
+        contents:
+            - 5x SSC
+        notes:
+            - L. R.
+            - L. B.
+    TES:
+        pH: 8
+        date: 2009-02-20
+        person:
+            - JT
+            - XY
+        contents:
+            - 50mM Tris
+            - 5mM EDTA
+            - 50mM MNaCl
+        volume: 50mL
+    acetone:
+        volume: 50mL
+        contents:
+            - acetone
+    SOB medium:
+        volume: 400mL
+        date: 2009-03-12
+        person: LB
+        contents:
+            - SOB medium
+2:
+    neutralization solution:
+        date: 2007-11-13
+        person: RG
+        pH: 7.5
+        volume: 1000mL
+    untitled:
+        date: 2009-04-06
+        person: EC
+        contents:
+            - .1% SDS
+            - .1% SSC
+        volume: 500mL
+    HEPES:
+        contents:
+            - .1M HEPES
+        volume: 110mL
+    EDTA:
+        contents:
+            - 0.5M EDTA
+        pH: 8
+        volume:
+            - 100mL
+            - 50mL
+        date: 2007-01-19
+        person: RG
+        notes:
+            - BIO 331L Monday
+            - RNA only
+    denaturization solution:
+        date: 2008-10-26
+        person: KP
+        volume: 250mL
+    SSC:
+        contents:
+            - 0.5x SSC
+            - 0.1% SDS
+        date: 2008-11-04
+        person: KP
+    gel running buffer:
+        contents:
+            - 10x 614 oxal gel running buffer
+        date: 2009-03-27
+        person: EG
+        notes: RNA only!
+        volume: 250mL
+    TRIS:
+        contents:
+            - 1M Tris x2
+        pH: 7.6
+        notes:
+            - 5D
+            - 5P
+        date: 2009-02-09
+        volume: 150mL
+    SSC:
+        contents:
+            - 2x SSC
+            - .1% SDS
+        person: EC
+        date: 2009-04-06
+        volume: 800mL
+    DEPC:
+        contents:
+            - DEPC
+            - H2O
+        date: 2009-06-09
+        person: LB
+        volume: 200mL
+    NaCL:
+        contents:
+            - 3M NaCl
+        date: 2005-09-13
+        notes: C1RM
+        volume: 400mL
+    CTAB precipitation buffer:
+        contents:
+            #- CTAB precipitation buffer
+            - 1% CTAB
+            - 50mM Tris
+            - 10mM EDTA
+        date: 2007-05-18
+        person: MJ
+        volume: 200mL
+    NaOH:
+        contents:
+            - 0.4M NaOH
+        date: 2009-03-27
+        person: EC
+        volume: full
+    HCl:
+        contents:
+            - 250mM HCl
+        date: 2008-10-27
+        person: KP
+        volume: 450mL
+3:
+    acetate:
+        contents:
+            - 3M Na acetate
+        pH: 5.2
+        date: 2007-04-13
+        checked: 2009-03-26
+        person:
+            - RR
+            - EC
+        notes: checked by EC 2009-03-26 for BIO 331L
+        volume: 200mL
+    DNA extraction buffer:
+        notes: steralized on 2008-04-21
+        date: 2008-04-16
+        volume:
+            - 100mL #start volume
+            - 50mL #current volume
+        person: IA
+    TE buffer:
+        notes: BIO 331L Monday
+        date: 2007-02-08
+        person: KH
+        contents:
+            - 10mM Tris-Cl
+            - 0.1mN EDTA
+        pH: 8
+        volume: 175mL
+    CaCl2:
+        date: 2009-06-24
+        person: LB
+        contents:
+            - CaCl2
+        volume: 450mL
+    TE buffer:
+        pH: 8
+        person: RL
+        date: 2007-11-28
+        volume: 850mL
+    transfer buffer:
+        notes: for SDS proteins
+        person: LB
+        date: 2009-04-15
+        volume: 400mL
+    DI water:
+        notes: autoclaved
+        person: LB
+        volume: 700mL
+    TRIS:
+        contents:
+            - 1M TRIS
+        pH: 8
+        date: 2005-10-13
+        notes: checked by RL (2008-05-09)
+        volume: 500mL
+    5x DNA annealing:
+        contents:
+            - 350mN TRIS 
+            - 50mM MgCl2
+            - 50mM KCL
+        date: 2009-02-09
