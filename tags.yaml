@@ -9,6 +9,8 @@ tol: +-15micronewtons
 stuff: 1..20 megatons
 morestuff: !unit 
     string: 60gigajoules
+#newton: !formula F = m*a
+#thread: !which foo #thread depends on which value foo has
 
 foo: 
 - &screw !!python/object:skdb.Screw

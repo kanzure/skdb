@@ -378,7 +378,7 @@ class Bolt(Fastener):
         self.nut = nut
 
 def load(string):
-    for cls in [Range, RuntimeData, Formula]:#, Uncertainty]: #only one at a time works so far?
+    for cls in [Range]:#, RuntimeData, Formula]:#, Uncertainty]: #only one at a time works so far?
         if hasattr(cls, 'constructor'): #for pesky things like !formula and !which
             yaml.add_constructor(cls.yaml_tag, lambda loader, node: cls.constructor(loader.construct_scalar(node)))
         else: print "eek, %s has no constructor!" %(cls)

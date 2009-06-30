@@ -7,25 +7,36 @@ urls:
 source: manufacturing processes reference guide, 1993 first edition. todd, allen, and alting.
 
 template: !process
-    name: a template process
+    name:
+    type:
+    mechanism:
+    geometry:
+        tolerance:
+    surface finish:
+    consumables:
+    functionality:
     parameters:
-        one: 
-        -   1m
-        -   19in
-        two: 6..28GW
-        three: 0..15teranats/sec
     safety:
        
 
 abrasive jet: !process #eventually this will be something like skdb.Shaping.Reducing.Mechanical
     name: abrasive jet machining
+    mechanism: compressed air accelerates abrasive particles toward the workpiece
+    functionality:
+    -   finishing
+    -   hole drilling
+    -   deburring
+    -   prismatic geometry
+    -   tapered geometry
+    machinability: !which workpiece material
     removal rate: 
         typical: 0.003.. 0.0007in/min #what exactly does this refer to?
         feasible: 0.0001 .. 0.002in/min  
-    geometry: cone #!geometry #what angle?
-    tolerance:
-        typical: +-0.005in
-        feasible: +-0.001in
+    geometry: 
+        primitive: swept cone #!geometry #what angle?
+        tolerance:
+            typical: +-0.005in
+            feasible: +-0.001in
     surface finish: #arithmetic average
         typical:  6..48 microinch
         feasible: 4..64 microinch
@@ -51,13 +62,20 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
         workpiece material: &machinability
             #on a scale of 0 to 4 representing process quality and/or ease of use
             #need to figure out a new unit 'stars' representing this
-            ceramic: 2.25 .. 3.75
-            germanium: 2.2 .. 3.5
-            glass: 2.2 .. 3.8
-            mica: 1.9 .. 3.4
-            silicon: 2.3 .. 3.8
-            steel: 1.1 .. 2.5
-            aluminum: 0.4 .. 1.6
+            ceramic:
+                machinability: 2.25 .. 3.75 stars
+            germanium: 
+                machinability: 2.2 .. 3.5 stars
+            glass: 
+                machinability: 2.2 .. 3.8 stars
+            mica: 
+                machinability: 1.9 .. 3.4 stars
+            silicon:
+                machinability: 2.3 .. 3.8 stars
+            steel: 
+                machinability: 1.1 .. 2.5 stars
+            aluminum: 
+                machinability: 0.4 .. 1.6 stars
         abrasive material:
             aluminum oxide:
                 functionality: 
@@ -93,11 +111,12 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
     -   abrasion
     -   toxic dust
         
-arbor milling: !process # !process.machining.multipoint?
+arbor milling: !process
     name: arbor milling #really this is just endmilling supported at both ends and you can stack cutters
     type: process, shaping, mass-reducing, mechanical, reducing, multi-point, milling
+    mechanism: rotating toothed cutter supported axially at both ends is fed into the workpiece at a controlled rate
     geometry: #!geometry 
-        primitive: revolute #like a candlestick. used to calculate swept volume of tool path
+        primitive: swept revolute #like a candlestick. used to calculate swept volume of tool path
         #cutters can be ganged.. where do i put this?
         length:
             typical: 0.2..5in
@@ -106,18 +125,24 @@ arbor milling: !process # !process.machining.multipoint?
             typical: 1.5 .. 10in
         constraints:
             angle:
+        tolerance:
+            typical: +-0.005
+            feasible: +-0.001
     surface finish:
         typical: 64..200 microinch
         feasible: 32..500 microinch
-    tolerance:
-        typical: +-0.005
-        feasible: +-0.001
+
     unit power: !which workpiece material
     consumables:
         power: !formula unit power * removal rate
         tool:
             life: !which tool material
         lubricant: !which lubrication #how long does each lubricant last? where do i get this info?
+    functionality: 
+    -   roughing
+    -   prismatic geometry
+    -   !which tool material #hmm
+    machinability: !which workpiece material
     parameters:
         depth of cut:
             typical: 0.05 .. 0.25in
@@ -140,9 +165,9 @@ arbor milling: !process # !process.machining.multipoint?
             -   surface stress
             -   untempered martensitic layer 0.001in in heat treated alloy steels #blargh
         tool geometry: !which workpiece material
-        tool count: #i dont like this name
-            typical: 10 .. 20 tooth/rev #i just made up these values
-            feasible: 1 .. 200 tooth/rev #ditto
+        tooth count:
+            typical: 10 .. 20 teeth/rev #i just made up these values
+            feasible: 1 .. 200 teeth/rev #ditto
         tool sharpness: #units??
         tool material:
             high speed steel:
@@ -174,8 +199,8 @@ arbor milling: !process # !process.machining.multipoint?
                         typical: 70 .. 125 brinell
                         feasible: 30 .. 150 brinell
                     machinability:
-                        typical: 2.6 .. 3.2
-                        feasible: 2.2 .. 3.7/home/fenn/code/skdb/
+                        typical: 2.6 .. 3.2 stars
+                        feasible: 2.2 .. 3.7stars
                     lubricant:
                         -   none
                         -   mineral oil
@@ -191,8 +216,8 @@ arbor milling: !process # !process.machining.multipoint?
                         typical: 60..100brinell
                         feasible: 50..240 brinell
                     machinability:
-                        feasible: 2.1 .. 3.6
-                        typical: 2.6 .. 3.1
+                        feasible: 2.1 .. 3.6 stars
+                        typical: 2.6 .. 3.1 stars 
                     lubricant:
                         -   mineral oil
                         -   specialty fluid #wtf??
@@ -207,8 +232,8 @@ arbor milling: !process # !process.machining.multipoint?
                         typical: 250..320 brinell
                         feasible: 110 .. 320brinell
                     machinability:
-                        feasible: 2 .. 3
-                        typical: 2.3 .. 2.6
+                        feasible: 2 .. 3 stars 
+                        typical: 2.3 .. 2.6 stars 
                     lubricant:
                         -   soluble oil
                         -   chemical oil
@@ -242,8 +267,8 @@ arbor milling: !process # !process.machining.multipoint?
                         typical: 275..325 brinell
                         feasible: 135..430 brinell
                     machinability:
-                        feasible: 0.3 .. 2.4
-                        typical: 0.8 .. 1.5
+                        feasible: 0.3 .. 2.4 stars
+                        typical: 0.8 .. 1.5 stars
                     lubricant:
                         -   sulfurized mineral oil
                         -   fatty soluble oil
@@ -258,8 +283,8 @@ arbor milling: !process # !process.machining.multipoint?
                     hardness:
                     unit power: 0.05hp/in^3
                     machinability:
-                        feasible: 2 .. 3.8
-                        typical: 2.5 .. 3.2
+                        feasible: 2 .. 3.8 stars
+                        typical: 2.5 .. 3.2 stars
                     lubricant:
                         -   mineral oil
                         -   soluble oil
@@ -270,3 +295,479 @@ arbor milling: !process # !process.machining.multipoint?
     -   hot chips #todo: calculate the energy in a typical hot chip
     -   sharp chips
     -   toxic fluids
+    
+band filing: !process
+    #there really wasn't much data on this
+    name: band filing
+    type: shaping, mass reducing, mechanical, reducing, multi-point, filing
+    mechanism: a prismatic multipoint cutter mounted on a metal belt is fed into the work
+    geometry:
+        primitive: swept prismatic
+    tolerance:
+    surface finish: "fine"
+    functionality:
+    -   irregular prismatic geometry
+    -   deburring
+    -   squaring edges
+    -   finishing
+    consumables:
+        tool:
+            life:
+    parameters:
+        tool geometry:
+        -   flat (square)
+        -   triangle
+        -   half oval
+        -   half cylinder
+        tooth count: 10..24 teeth/in
+    safety:
+    -   particulate material
+    -   moving belt
+
+band sawing: !process
+    name: band sawing
+    type: shaping, mass-reducing, mechanical, reducing, multipoint, sawing
+    mechanism: a moving flexible tensioned metal loop with teeth is fed into the workpiece at a controlled rate
+    geometry:
+        primitive: swept parallelepiped
+        constraints: 
+        -   geometry must extend above and below workpiece
+        -   !formula minimum radius of curvature = something * blade width
+        tolerance: 
+            typical: 0.05 .. 0.1 in
+            feasible: 0.02 .. 0.3 in
+    surface finish:
+    consumables:
+        tool:
+        lubricant:
+    functionality:
+    -   narrow kerf
+    -   single angle cuts
+    -   !which tooth shape
+    -   !which blade width
+        parameters:
+        teeth in contact with work: !range
+            min: 2 teeth #bleh
+        tooth count: 4..28 teeth/in
+        tooth shape:
+            precision:
+                functionality:
+                -   finishing
+            buttress:
+                functionality:
+                -   roughing
+                -   parting
+                -   high chip load
+            claw:
+                functionality:
+                -   chip clearance
+                -   fast cuts
+        blade width:
+            thin:
+                functionality:
+                -   irregular prismatic shape
+                -   curved cuts
+            thick:
+                functionality:
+                -   straight cuts
+                -   parting
+        blade thickness:
+        blade tension:
+        lubricant:
+        -   none
+        -   soluble oil
+        -   cutting oil
+    safety:
+    -   moving belt
+    -   moving blade
+    -   particulate material
+
+internal broaching: &internal_broaching !process 
+    name: internal broaching
+    type: shaping, mass-reducing, mechanical, reducing, multi-point, broaching
+    mechanism: a tapered cutter is fed into a hole in one pass
+    geometry:
+        primitive: prismatic or helical
+        constraints:
+        -   axis parallel to machine
+        -   helix angle < 20 deg #yah i made this up.. isnt a tap just a helical broach?
+        tolerance:
+            typical: +-0.002in
+            feasible: +-0.0005
+    surface finish:
+        typical: 16..63 microinch
+        feasible: 8..125 microinch
+    consumables:
+        tool:
+        power: !formula drive efficiency * hardness / chip load #see graph, normalize so that 80% * 100brinnel/(0.01in/tooth) = 0.25 hp/(in^3/min) ... or something like that
+    requirements: #do i even need this?
+    -   pre-existing hole
+    functionality:
+    -   heat treated parts
+    -   low production
+    -   roughing
+    -   finishing
+    -   internal prismatic geometry
+    -   low angle internal helical geometry
+    -   keyways
+    -   !which tool material
+    machinability: !which workpiece material
+    effects:
+    -   welding tool and workpiece
+    -   work hardening
+    parameters:
+        diameter:
+            typical: 0.125 .. 6 in
+            feasible: 0.04 .. 12 in
+        surface speed: !which material
+        rigidity:
+        alignment:
+        lubricant: !which workpiece material
+        feed per tooth: !which workpiece material
+        tool geometry: !which workpiece material
+        hardness: !which workpiece material
+        tool material:
+            high speed steel:
+                functionality:
+                -   low production
+                -   irregular internal prismatic geometry
+                -   irregular internal helical geometry
+        workpiece material:
+            aluminum:
+                feed per tooth: 0.005..0.007in/tooth
+                lubricant:
+                -   kerosene
+                -   mineral oil
+                -   sulfurized mineral oil
+                tool geometry:
+                    rake: 10 .. 15 deg
+                    clearance: 1 .. 3 deg
+                hardness: 30 .. 150 brinell
+                machinability:
+                    typical: 2.8 .. 3.2 stars
+                    feasible: 2.2 .. 3.7 stars
+            brass:
+                feed per tooth: 0.004..0.005in/tooth
+                lubricant:
+                -   water
+                -   soluble oil
+                -   mineral lard oil
+                tool geometry:
+                    rake: -5 .. 5 deg
+                    clearance: 1 .. 3 deg
+                hardness: 40 .. 200 brinell
+                machinability:
+                    typical: 2.7 .. 3.2 stars
+                    feasible: 2.1 .. 3.6 stars
+            cast iron:
+                feed per tooth: 0.002..0.005in/tooth
+                lubricant:
+                -   water
+                -   soluble oil
+                -   sulfurized mineral oil
+                tool geometry:
+                    rake: 6..15 deg
+                    clearance: 2 .. 3 deg
+                hardness: 
+                    typical: 120 .. 320 brinell
+                    feasible: 110 .. 400 brinell
+                machinability:
+                    feasible: 2 .. 3 stars
+                    typical: 2.3 .. 2.5 stars
+            mild steel:
+                feed per tooth: 0.003..0.004in/tooth
+                lubricant:
+                -   water
+                -   soluble oil
+                -   sulfurized mineral oil
+                -   mineral lard oil
+                tool geometry:
+                    rake: 15..20 deg
+                    clearance: 1..3 deg
+                hardness:
+                    typical: 100..275 brinell
+                    feasible: 85 .. 375 brinell
+                machinability:
+                    feasible: 2.1 .. 3 stars
+                    typical: 2.3 .. 2.5 stars
+            stainless:
+                feed per tooth: 0.002..0.003in/tooth
+                lubricant:
+                -   water
+                -   soluble oil
+                -   sulfurized mineral oil
+                -   mineral lard oil
+                tool geometry:
+                    clearance: 0.5 .. 3 deg
+                    rake: 8 .. 18 deg
+                hardness:
+                    typical: 135 .. 375 brinell
+                    feasible: 135 .. 440 brinell
+                machinability:
+                    feasible: 0.3 .. 2.4 stars
+                    typical: 0.7 .. 1.5 stars
+            plastics:
+                machinability:
+                    feasible: 2 .. 3.7 stars
+                    typical: 2.5 .. 3.2 stars
+    safety:
+    -   reciprocating cutter
+    -   hot chips
+    -   sharp chips
+    -   toxic fluids
+    -   flying broken cutter
+
+external broaching: !process
+    name: external broaching
+    type: shaping, mass-reducing, mechanical, reducing, multi-point, broaching
+    mechanism: a tapered cutter is fed across a workpiece in one pass
+    similar: *internal_broaching
+    functionality:
+    -   heat treated parts
+    -   low production
+    -   roughing
+    -   finishing
+    -   prismatic geometry
+    -   low angle external helical geometry
+    -   gear teeth
+    -   irregular prismatic geometry
+    -   slot cuts
+    -   !which tool material
+    parameters:
+        width:
+            typical: 0.075 .. 10in
+            feasible: 0.02 .. 20in
+        tool material:
+            high speed steel:
+                functionality:
+                -   low production
+                -   irregular prismatic geometry
+            carbide insert:
+                functionality:
+                -   high production
+                -   prismatic geometry
+                -   high hardness
+
+superfinishing: !process #somehow i think there isnt quite enough info here
+    name: superfinishing
+    type: shaping, mass-reducing, mechanical, reducing, abrasive #is this right?
+    mechanism: abrasive surface and oil act as hydrodynamic bearing; surface asperities contact abrasive and are cut
+    geometry:
+        primitive: cylinder, sphere, cone, plane
+        tolerance: -0.0002 .. -0.0008in
+    effect: removes smeared surface layer
+    surface finish:
+        typical: 2 .. 8 microinch
+        feasible: 0 .. 30 microinch
+    rate: 10..40 in^2/min
+    consumables:
+        abrasive:
+    functionality:
+    -   high precision
+    -   wear resistance
+    -   bearing surfaces
+    parameters:
+        periodicity: #how the heck do i represent this
+        surface speed: 50 .. 60 feet/min
+        pressure: 10 .. 40 psi
+        lubricant:
+        -   oil
+        -   water
+        workpiece surface finish: 30..200 microinch #i made this up.. chrysler recommends rough grinding prior to surface finishing
+    safety:
+    -   abrasive fluid
+    -   rotating parts
+
+gas cutting: !process
+    name: gas flame cutting
+    type: shaping, mass-reducing, thermal, torch cutting, gas cutting
+    mechanism: ferrous workpiece is heated and then oxidized. gas flow then blows the liquid metal out of the cut
+    geometry:
+        primitive: swept cylinder
+        diameter: 1/16 .. 1/4 in #kerf
+        tolerance:
+            typical: +- 1/8 in
+            feasible: +- 1/32 in
+    surface finish:
+        typical: 250..1000 microinches
+        feasible: 100..1100 microinches
+    consumables:
+        fuel consumption: !which fuel
+        oxygen consumption: !which fuel
+        torch tip:
+    functionality:
+    -   straight cuts
+    -   parting
+    -   roughing
+    -   irregular prismatic geometry
+    -   angular cuts
+    -   ferrous materials > 3/8 inch thickness
+    effects:
+    -   distortion
+    -   annealing
+    -   microcracks
+    -   residual stress
+    -   surface embrittlement
+    -   oxidation
+    heat affected zone: #no mention?
+    parameters:
+        workpiece thickness:
+            typical: 0.125 .. 12in
+            feasible: 0.05 .. 60in #wow
+        oxidizer pressure: 20 .. 50 psi
+        fuel pressure: 3 .. 7 psi
+        feed rate: !which fuel
+        temperature: tempf(1400)..tempf(1600)
+        tip style: !which fuel
+        fuel:
+            acetylene: #how do i say acetylene is the preferred fuel? least heat dispersion
+                tip style: 
+                -   one-piece straight tip
+                -   one-piece divergent tip
+                feed rate: 2.6 .. 20 in/min
+                removal rate: 120 in^3/hr
+                fuel consumption: 25 ft^3/hr
+                oxygen consumption: 155 ft^3/hr
+            propane:
+                tip style: two-piece recessed tip
+                feed rate: 2.5 .. 30 in/min #typo?
+                removal rate: 130 in^3/hr
+                fuel consumption: 11 ft^3/hr
+                oxygen consumption: 167 ft^3/hr
+            natural gas:
+                tip style: two-piece recessed tip
+                feed rate: 3 .. 20 in/min
+                removal rate: 130 in^3/hr
+                fuel consumption: 20 ft^3/hr
+                oxygen consumption: 167 ft^3/hr 
+            MAPP gas:
+                tip style: 
+                feed rate: 14 .. 30 in/min
+                removal rate: 90 in^3/hr
+                fuel consumption: 15 ft^3/hr
+                oxygen consumption: 120 ft^3/hr
+        workpiece material:
+            carbon steel:
+                machinability:
+                    typical: 3.3..3.7 stars
+                    feasible: 3..4 stars
+            cast iron:
+                machinability:
+                    feasible: 0.5..1.5 stars
+                    typical: 0.8..1.2 stars
+            galvanized steel:
+                machinability:
+                    feasible: 0 .. 1 stars
+                    typical: 0.3 .. 0.6 stars
+            free machining steel:
+                machinability:
+                    feasible: 0 .. 1 stars
+                    typical: 0.3 .. 0.6 stars
+    safety:
+    -   hot parts
+    -   toxic fumes
+    -   sparks
+    -   ultraviolet radiation
+    -   flammable gases
+    -   compressed gases
+    -   smoke
+    -   open flame
+    -   explosive mixture
+
+laser cutting: !process
+    name: laser beam cutting
+    type: shaping, mass-reducing, thermal, high energy beam machining
+    mechanism: focused coherent light heats workpiece to melting or vaporization, then shielding gas blows the melted material out of the cut
+    geometry: 
+        primitive: swept double cone
+        diameter: !which beam
+        tolerance:
+            typical: +- 0.001in
+            feasible: +- 0.0005in
+    surface finish:
+        typical: 125..250 microinch
+        feasible: 100 .. 300 microinch
+    consumables:
+        cutting gas:
+        power: !which workpiece material
+    functionality: 
+    -   drilling
+    -   straight cuts
+    -   irregular prismatic geometry
+    -   !which lasing material
+    effects:
+    -   hardening
+    -   annealing
+    -   change in grain size
+    parameters:
+        beam: 
+            focal length: 1.5 .. 3 in #this varies significantly with material thickness
+            diameter:
+                typical: 0.004 .. 0.0125 in
+                feasible: 0.0002 .. 0.2 in
+            power:
+        workpiece thickness:
+            feasible: 0.004 .. 6 inch
+            typical: 0.02 .. 0.5 inch
+        cutting gas:
+            oxygen:
+            compressed air:
+            nitrogen:
+            argon:
+        feed rate: !which workpiece material #over typical thickness range
+        workpiece reflectivity:
+        workpiece thermal conductivity:
+        workpiece material:
+            aluminum:
+                power: 1000 .. 10000 W
+                feed rate: 30 .. 800 in/min
+                machinability:
+                    typical: 2.9..3.5 stars
+                    feasible: 0.2 .. 3.8 stars
+            stainless:
+                power: 250 .. 1000 W
+                feed rate: 20 .. 750 in/min
+                machinability:
+                    typical: 2.6..3.2 stars
+                    feasible: 0.6 .. 3.6 stars
+            mild steel:
+                power: 400 .. 500 W
+                feed rate: 40 .. 177 in/min
+                machinability:
+                    feasible: 2.5 .. 3.8 stars
+                    typical: 2.9 .. 3.3 stars
+            wood:
+                power: 50 .. 650W
+                feed rate: #45 .. 180 in/min #this is wrong, 180 refers to 0.25" thickness, paper must be faster
+                machinability:
+                    feasible: 2.3 .. 3.9 stars
+                    typical: 2.9 .. 3.5 stars
+            titanium:
+                power: 210 .. 250 W
+                feed rate: 40 .. 300 in/min
+            plastic:
+                feed rate: #25 .. 60 in/min #this is also wrong
+                power: 50 .. 100W #i made this up
+                machinability:
+                    feasible: 2.1 .. 3.6 stars
+                    typical: 2.6 .. 3.3 stars
+        lasing material:
+            CO2:
+                functionality:
+                -   scribing
+                -   engraving 
+            Nd: 
+                functionality:
+                -   high energy pulse
+                -   low repetition speed #(1 KHz)#huh?
+            Nd-YAG:
+                functionality:
+                -   very high energy pulse
+                -   engraving
+                -   trimming #wtf does this mean
+    safety:
+    -   coherent infrared radiation
+    -   hot parts
+    -   toxic fumes
+    -   dust
+    -   compressed gases
