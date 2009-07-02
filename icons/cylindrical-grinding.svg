@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg3941"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="cylindrical-grinding.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs3943">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3949" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="274.15556"
+     inkscape:cy="152.93359"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="708"
+     inkscape:window-height="705"
+     inkscape:window-x="420"
+     inkscape:window-y="178" />
+  <metadata
+     id="metadata3946">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g4143"
+       transform="matrix(-0.4616089,0,0,-0.4616089,488.13593,1357.6243)"
+       style="fill:#ffffff;stroke-width:2.16633605;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         sodipodi:nodetypes="ccczcccsc"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         id="path4145"
+         d="M 307.43256,963.99526 C 310.53249,963.67242 312.13534,962.49315 313.77105,961.33372 L 349.18245,928.27644 C 350.81625,926.71744 352.97265,925.69315 352.79512,921.18311 C 352.60493,916.35137 350.1964,915.7693 348.49431,914.43166 L 312.90633,887.14206 C 312.09198,886.52352 311.00858,885.43874 307.43256,885.33886 C 297.9348,885.33886 290.22647,902.95789 290.22647,924.66706 C 290.22647,946.37623 297.9348,963.99526 307.43256,963.99526 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.16633605;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 302.34702,912.10908 L 263.01665,903.9065"
+       id="path4061"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 302.23533,912.18348 L 273.39113,884.59034"
+       id="path4091"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path4069"
+       id="use4093"
+       transform="matrix(0.9671163,0.2543346,-0.2543346,0.9671163,228.78498,-36.989217)"
+       width="744.09448"
+       height="1052.3622"
+       style="stroke-width:0.99999999;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g4119"
+       transform="matrix(0.4616089,0,0,0.4616089,125.14536,503.16324)"
+       style="stroke-width:2.16633605;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         sodipodi:nodetypes="csssssc"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         id="path7906"
+         d="M 307.43256,963.99526 C 316.93032,963.99526 434.10793,963.99526 443.6057,963.99526 C 453.10346,963.99526 460.81179,946.37623 460.81179,924.66706 C 460.81179,902.95789 453.10346,885.33886 443.6057,885.33886 C 434.10793,885.33886 316.93032,885.33886 307.43256,885.33886 C 297.9348,885.33886 290.22647,902.95789 290.22647,924.66706 C 290.22647,946.37623 297.9348,963.99526 307.43256,963.99526 z"
+         style="fill:#ececec;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.16633605;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         id="path7387"
+         d="M 307.43256,885.33886 C 316.93032,885.33886 324.63865,902.95789 324.63865,924.66706 C 324.63865,946.37623 316.93032,963.99526 307.43256,963.99526"
+         style="fill:#ececec;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.16633605;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         id="path8713"
+         d="M 307.33507,903.45808 C 312.45704,903.45808 316.614,912.95971 316.614,924.66706 C 316.614,936.37441 312.45704,945.87604 307.33507,945.87604"
+         style="fill:#ececec;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.16633605;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         sodipodi:nodetypes="ccc"
+         id="path8715"
+         d="M 309.46309,940.05636 L 307.32569,945.82735 L 310.74553,949.46093"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.16633605;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 300.24379,911.68844 L 265.3302,892.33874"
+       id="path4055"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 302.14346,911.27456 L 275.62927,879.92294"
+       id="path4065"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.69806992;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4069"
+       sodipodi:cx="298.75"
+       sodipodi:cy="828.61218"
+       sodipodi:rx="2.6785715"
+       sodipodi:ry="2.3214285"
+       d="M 301.42857,828.61218 A 2.6785715,2.3214285 0 1 1 296.07143,828.61218 A 2.6785715,2.3214285 0 1 1 301.42857,828.61218 z"
+       transform="matrix(0.5889039,0,0,0.5889039,98.5442,390.169)"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path4069"
+       id="use4071"
+       transform="translate(-12.198724,12.409047)"
+       width="744.09448"
+       height="1052.3622"
+       style="stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path4069"
+       id="use4081"
+       transform="translate(-13.986468,25.3439)"
+       width="744.09448"
+       height="1052.3622"
+       style="stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g4083"
+       transform="matrix(0.5889039,0,0,0.5889039,98.5442,390.169)"
+       style="stroke-width:1.69806992;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         sodipodi:nodetypes="csssssc"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         id="path4039"
+         d="M 341.30616,741.188 C 358.66723,741.188 364.47562,741.188 381.8367,741.188 C 399.19777,741.188 413.28791,773.39403 413.28791,813.07647 C 413.28791,852.75891 399.19777,884.96494 381.8367,884.96494 C 364.47562,884.96494 358.66723,884.96494 341.30616,884.96494 C 323.94509,884.96494 309.85495,852.75891 309.85495,813.07647 C 309.85495,773.39403 323.94509,741.188 341.30616,741.188 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.69806992;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         id="path4041"
+         d="M 341.30616,741.188 C 358.66723,741.188 372.75737,773.39403 372.75737,813.07647 C 372.75737,852.75891 358.66723,884.96494 341.30616,884.96494"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.69806992;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         id="path4043"
+         d="M 341.12796,774.30833 C 350.49047,774.30833 358.08902,791.67647 358.08902,813.07647 C 358.08902,834.47647 350.49047,851.84461 341.12796,851.84461"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.69806992;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         sodipodi:nodetypes="ccc"
+         id="path4045"
+         d="M 345.01779,841.20675 L 341.11081,851.75561 L 347.36198,858.39747"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.69806992;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g4125"
+       transform="matrix(0.5889039,0,0,0.5889039,105.61105,390.169)"
+       style="stroke-width:1.69806992;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         sodipodi:nodetypes="cc"
+         id="path4115"
+         d="M 266.76534,794.71746 L 289.74962,794.69734"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.69806992;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+      <path
+         sodipodi:nodetypes="ccc"
+         id="path4117"
+         d="M 273.91778,787.49277 L 266.69309,794.86195 L 273.84553,802.01438"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.69806992;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+    </g>
+    <g
+       id="g4133"
+       transform="matrix(0.4616089,0,0,0.4616089,105.89011,503.44065)"
+       style="fill:#ffffff;stroke-width:2.16633605;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/cylindrical-grinding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         sodipodi:nodetypes="ccczcccsc"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         id="path4135"
+         d="M 307.43256,963.99526 L 313.77105,961.33372 L 349.18245,928.27644 C 350.81625,926.71744 352.97265,925.69315 352.79512,921.18311 C 352.60493,916.35137 350.1964,915.7693 348.49431,914.43166 L 312.90633,887.14206 L 307.43256,885.33886 C 297.9348,885.33886 290.22647,902.95789 290.22647,924.66706 C 290.22647,946.37623 297.9348,963.99526 307.43256,963.99526 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.16633605;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         id="path4137"
+         d="M 307.43256,885.33886 C 316.93032,885.33886 324.63865,902.95789 324.63865,924.66706 C 324.63865,946.37623 316.93032,963.99526 307.43256,963.99526"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.16633605;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         id="path4139"
+         d="M 307.33507,903.45808 C 312.45704,903.45808 316.614,912.95971 316.614,924.66706 C 316.614,936.37441 312.45704,945.87604 307.33507,945.87604"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.16633605;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/fenn/code/skdb/icons/superfinishing.png"
+         sodipodi:nodetypes="ccc"
+         id="path4141"
+         d="M 309.46309,940.05636 L 307.32569,945.82735 L 310.74553,949.46093"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.16633605;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

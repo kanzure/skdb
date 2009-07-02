@@ -1926,6 +1926,9 @@
        style="opacity:1;fill:#ececec;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 340.07384,637.27197 L 309.67252,637.27197 L 309.67252,691.28064 L 422.33683,691.28064 L 422.33683,637.27197 L 355.76959,637.27197 L 356.13566,667.99727 C 356.10734,673.45329 355.8162,674.29484 352.18408,674.24603 L 343.66831,674.13061 C 339.57261,674.08465 339.64076,672.22261 339.65968,667.75789 L 340.07384,637.27197 z"
        id="path6866"
-       sodipodi:nodetypes="ccccccccccc" />
+       sodipodi:nodetypes="ccccccccccc"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/abrasive-jet.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>
