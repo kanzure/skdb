@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg3361"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="blanking.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs3363">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3369" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.959798"
+     inkscape:cx="423.15178"
+     inkscape:cy="164.71916"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="708"
+     inkscape:window-height="705"
+     inkscape:window-x="853"
+     inkscape:window-y="143" />
+  <metadata
+     id="metadata3366">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path3897"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 434.03725,880.68707 L 438.7448,925.29752 L 465.67081,925.29752 C 466.97518,925.29752 468.01874,924.23684 468.01873,922.93247 L 468.01873,883.05213 C 468.01873,881.74776 466.9752,880.68707 465.67081,880.68707 L 434.03725,880.68707 z M 399.68873,925.29752 L 404.11413,880.68707 L 373.04612,880.68707 C 371.74175,880.68707 370.69818,881.74776 370.69818,883.05213 L 370.69818,922.93247 C 370.69818,924.23682 371.74175,925.29752 373.04612,925.29752 L 399.68873,925.29752 z"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       sodipodi:nodetypes="cccccccccccccc" />
+    <path
+       style="opacity:1;fill:#ececec;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 434.03725,880.41287 L 464.80541,880.41287 C 466.10978,880.41287 467.15333,879.3693 467.15333,878.06493 C 467.15333,876.76058 466.10978,875.69988 464.80541,875.69988 L 434.03725,875.69988 L 434.03725,880.41287 z"
+       id="path3907"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       sodipodi:nodetypes="ccsccc" />
+    <path
+       style="opacity:1;fill:#ececec;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 404.11413,875.69988 L 372.58671,875.69988 C 371.28236,875.69988 370.22167,876.76058 370.22167,878.06493 C 370.22167,879.3693 371.28236,880.41287 372.58671,880.41287 L 404.11413,880.41287 L 404.11413,875.69988 z"
+       id="path3905"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       sodipodi:nodetypes="ccsccc" />
+    <path
+       style="opacity:1;fill:#ececec;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 404.80492,900.92017 C 404.9802,903.4117 402.70311,904.88286 403.95383,906.19535 C 404.94588,907.34782 433.06821,910.27892 433.70228,909.42361 C 435.76522,908.91697 432.95018,905.86931 434.14029,904.1036 L 433.24561,904.6334 C 423.81647,904.22863 414.76713,903.12117 405.15719,901.58528 L 404.80492,900.92017 z"
+       id="rect3371"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 404.11413,850.95248 L 404.11413,890.55861 L 434.03725,890.55861 L 434.03725,850.95248 L 404.11413,850.95248 z"
+       id="rect3882"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 418.24729,859.64261 L 418.52429,880.69411 L 418.52429,880.14012"
+       id="path3909"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 423.46239,875.29992 L 418.52168,880.95795 L 413.51692,875.27126"
+       id="path3911"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3913"
+       width="31.142357"
+       height="14.102201"
+       x="370.3815"
+       y="861.46088"
+       ry="2.3544447"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3915"
+       width="31.142357"
+       height="14.102201"
+       x="436.48557"
+       y="861.46088"
+       ry="2.3544447"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 381.25192,851.47184 L 388.40095,851.47184 L 381.30089,853.45496 L 388.20508,854.4098 L 381.34985,856.5643 L 388.20508,858.00879 L 381.15398,859.89399 L 388.40095,859.86951"
+       id="path3917"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 448.33531,851.76564 L 455.48434,851.76564 L 448.38428,853.74876 L 455.28848,854.7036 L 448.43323,856.8581 L 455.28847,858.30259 L 448.23738,860.18779 L 455.48434,860.16331"
+       id="path3919"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/pngs/blanking.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

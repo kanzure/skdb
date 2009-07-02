@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg8769"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="gas-cutting.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs8771">
+    <linearGradient
+       id="linearGradient9462">
+      <stop
+         style="stop-color:#ffff00;stop-opacity:1;"
+         offset="0"
+         id="stop9464" />
+      <stop
+         id="stop9470"
+         offset="0.71428573"
+         style="stop-color:#ff9f00;stop-opacity:1;" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop9466" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4938">
+      <stop
+         style="stop-color:#000077;stop-opacity:0.58518517;"
+         offset="0"
+         id="stop4940" />
+      <stop
+         id="stop9448"
+         offset="0.20964672"
+         style="stop-color:#00b0d8;stop-opacity:1;" />
+      <stop
+         style="stop-color:#76bce3;stop-opacity:0.32592592;"
+         offset="0.60401982"
+         id="stop9458" />
+      <stop
+         id="stop9456"
+         offset="0.7525124"
+         style="stop-color:#ecc909;stop-opacity:1;" />
+      <stop
+         style="stop-color:#ffee24;stop-opacity:0;"
+         offset="1"
+         id="stop4942" />
+    </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective8777" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4938"
+       id="radialGradient9446"
+       cx="367.06302"
+       cy="861.14209"
+       fx="367.06302"
+       fy="861.14209"
+       r="13.971725"
+       gradientTransform="matrix(0.788708,-9.0283715e-3,2.6936096e-2,7.1343338,55.065071,-5263.1103)"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient9462"
+       id="radialGradient9468"
+       cx="359.10715"
+       cy="917.89789"
+       fx="359.10715"
+       fy="917.89789"
+       r="6.7857141"
+       gradientTransform="matrix(1,0,0,1.3421052,0,-314.01767)"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.959798"
+     inkscape:cx="286.77767"
+     inkscape:cy="213.39607"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1918"
+     inkscape:window-height="1038"
+     inkscape:window-x="0"
+     inkscape:window-y="0" />
+  <metadata
+     id="metadata8774">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="opacity:1;fill:url(#radialGradient9446);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.03799999000000009;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 382.29065,938.34943 L 368.68965,831.07871 L 365.98228,832.04549 L 355.38504,937.14097"
+       id="path4936"
+       sodipodi:nodetypes="cccc"
+       clip-path="none"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#f9f9f9;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 441.97305,792.33776 C 441.97305,792.33776 441.97305,792.33776 441.97305,792.33776 z M 442.38481,821.18029 C 442.24132,818.51176 443.55103,814.61138 442.82597,813.88633 C 441.15035,812.21071 440.92505,807.22762 441.87501,805.32768 C 443.62428,801.82916 440.59773,800.94681 441.56129,797.09256 C 442.08512,794.99726 442.27919,794.11548 441.97305,792.33776 L 416.83632,792.33776 C 416.84525,797.32028 413.77838,801.95244 407.96396,801.84736 L 379.07241,801.84736 C 378.48106,799.5187 376.38433,797.79843 373.86663,797.79843 L 360.19045,797.79843 C 357.21102,797.79843 354.81801,800.20124 354.81801,803.18067 L 355.26898,814.602 C 355.26899,814.84707 355.29636,815.09127 355.32781,815.32747 C 355.2899,816.12123 355.26898,816.92527 355.26898,817.73919 C 355.26899,826.66164 358.93807,833.92955 362.4257,838.25837 C 363.13893,839.14362 362.55701,840.44071 363.35705,841.01321 C 364.61074,841.91033 365.96311,842.39553 367.36677,842.39553 C 368.7982,842.39554 370.17045,841.89553 371.44512,840.96419 C 372.2915,840.34577 371.52138,839.42216 372.26863,838.45444 C 375.64738,834.07886 379.46455,826.49361 379.46456,817.73919 C 379.46456,817.23425 379.45967,816.73666 379.44495,816.23922 C 379.60761,815.72474 379.69004,815.17164 379.69004,814.602 L 379.23907,810.40601 L 407.65024,810.40601 C 415.03745,810.28291 416.27971,819.37618 416.13045,821.18029 L 442.38481,821.18029 z"
+       id="path2383"
+       sodipodi:nodetypes="cccssscccccccccssssssscccccc"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png" />
+    <path
+       style="opacity:1;fill:#ececec;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 375.81757,868.29662 L 376.42858,922.30529 L 442.38481,922.30529 L 442.38481,868.29662 L 375.81757,868.29662 z M 359.64286,922.48386 L 360.12182,868.29662 L 329.7205,868.29662 L 329.7205,922.30529 L 359.64286,922.48386 z"
+       id="path6866"
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:url(#radialGradient9468);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.03799999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path9460"
+       sodipodi:cx="359.10715"
+       sodipodi:cy="917.89789"
+       sodipodi:rx="6.7857141"
+       sodipodi:ry="9.1071424"
+       d="M 365.89286,917.89789 A 6.7857141,9.1071424 0 1 1 352.32143,917.89789 A 6.7857141,9.1071424 0 1 1 365.89286,917.89789 z"
+       transform="matrix(0.2894737,0,0,0.2647058,254.61937,682.51424)"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9474"
+       transform="translate(-0.3571428,6.0714285)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9476"
+       transform="translate(28.392857,3.5714286)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9478"
+       transform="translate(21.96427,3.8393333)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9480"
+       transform="translate(-4.2857296,4.1964761)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9482"
+       transform="translate(-8.5714435,9.0179048)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9484"
+       transform="translate(0.8928419,10.803619)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9486"
+       transform="translate(19.285699,8.8393333)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9488"
+       transform="translate(26.249985,10.267905)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9490"
+       transform="translate(18.749985,-0.6249524)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9492"
+       transform="translate(-2.6785867,7.2321904)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path9460"
+       id="use9494"
+       transform="translate(19.46427,2.7679047)"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="/home/fenn/code/skdb/icons/gas-cutting.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>
