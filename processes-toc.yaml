@@ -3,11 +3,11 @@ source: manufacturing processes reference guide, 1993 first edition. todd, allen
 taxonomy:
   reducing:
     mechanical:
-      abrasive jet machining:
-      arbor milling:
-      band filing:
-      band sawing:
-      broaching:
+      abrasive jet machining: check
+      arbor milling: check 
+      band filing: yaml basic
+      band sawing: check
+      broaching: check
       centerless grinding:
       circular sawing:
       conventional blanking:
@@ -53,8 +53,8 @@ taxonomy:
       cavity EDM:
       grinding EDM:
       wire EDM:
-      gas flame cutting:
-      laser beam cutting:
+      gas flame cutting: check
+      laser beam cutting: check
       plasma arc cutting:
     chemical:
       electrochemical grinding:
