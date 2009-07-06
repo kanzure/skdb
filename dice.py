@@ -5,11 +5,6 @@ import yaml, re
 #def  dice_constructor(Dice, data):
     #major, minor =[int(x) for x in data.split('d')]
     #return Dice(major, minor)
-class automagic(yaml.YAMLObject, str):
-    yaml_tag='!magic'
-    @classmethod
-    def constructor(cls, data):
-        return cls(data)
 
 class Dice(yaml.YAMLObject):
     yaml_tag = '!dice'
@@ -21,47 +16,38 @@ class Dice(yaml.YAMLObject):
         return "Dice(%s,%s)" % (self.major, self.minor)
     def yaml_repr(self):
         return "%sd%s" % (self.major, self.minor)
-    def constructor (cls, data): #constructor takes class as first argument
+    @classmethod
+    def to_yaml(cls, dumper, data):
+        return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data)) #not sure this is right
+    @classmethod
+    def from_yaml(cls, loader, node):
+        data = loader.construct_scalar(node)
         major, minor = [int(x) for x in data.split('d')]
         return cls(major, minor)
-    constructor = classmethod(constructor)
 
 class Foo(yaml.YAMLObject):
     yaml_tag = '!foo'
-    yaml_pattern = re.compile('foo.*')
+    yaml_pattern = re.compile('foo(.*)')
     def __init__(self, value):
         self.value = value
     def __repr__(self):
         return "Foo(%s)" %(self.value)
+    def yaml_repr(self):
+        return "foo%s" % self.value
     @classmethod
-    def constructor(cls, data):
-        return cls(data)
-        
-#the class we want to load/dump
-for cls in [Dice, Foo, automagic]:
-    #how yaml will dump a Dice object
-    #def dice_representer(dumper, data):
-    #    return dumper.represent_scalar('!dice', '%sd%s' %(data.major, data.minor))
-    #yaml.add_representer(Dice, dice_representer)
+    def to_yaml(cls, dumper, data):
+        return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data)) #not sure this is right
+    @classmethod
+    def from_yaml(cls, loader, node):
+        match = re.search(cls.yaml_pattern, loader.construct_scalar(node))
+        if match:
+            return Foo(match.group(1))
+        else:
+            return  Foo(loader.construct_scalar(node))
 
-    #now do it generically instead
-    yaml.add_representer(cls, lambda dumper, instance: dumper.represent_scalar(instance.yaml_tag, instance.yaml_repr()))
-
-    #teach yaml to parse !dice with dice_constructor
-    #yaml.add_constructor(Dice.yaml_tag, lambda loader, node: Dice.constructor(loader.construct_scalar(node)))
-    #yaml.add_constructor('!dice', dice_constructor)
-
-    #the generic (and object-oriented) way
-    yaml.add_constructor(cls.yaml_tag, lambda loader, node: cls.constructor(loader.construct_scalar(node)))
-
-
-    #teach PyYAML that any untagged plain scalar that looks like XdY has the implicit tag !dice.
-    #yaml.add_implicit_resolver('!dice', re.compile('^\d+d\d+$')  )
-
-    #the generic way
-    if hasattr(cls, 'yaml_pattern'):
-        yaml.add_implicit_resolver(cls.yaml_tag, cls.yaml_pattern)
-
+#teach PyYAML that any untagged plain scalar that looks like XdY has the implicit tag !dice.
+for cls in [Dice, Foo]:
+    yaml.add_implicit_resolver(cls.yaml_tag, cls.yaml_pattern)
 
 def load(foo):
     return yaml.load(foo)
@@ -69,6 +55,8 @@ def load(foo):
 def dump(foo):
     return yaml.dump(foo, default_flow_style=False)
 
-print "loading '2d6 turns into:  ", load('2d6')
+print "loading '2d6' turns into:  ", load('2d6')
 print "dumping Dice(2,6) looks like:  ",  dump(Dice(2,6))
-print 'automagic scalar: ', load('!magic myscalar')
+print "loading foomoo: ", load('foomoo')
+print "loading !foo bar: ", load('!foo bar')
+print "dumping Foo(moo): ", dump(Foo("moo"))
