@@ -680,7 +680,7 @@ laser cutting: !process
     mechanism: focused coherent light heats workpiece to melting or vaporization, then shielding gas blows the melted material out of the cut
     geometry: 
         primitive: swept double cone
-        diameter: !which beam
+        diameter: !which beam  #hmmm. beam has no choices, i.e. this varies continuously
         tolerance:
             typical: +- 0.001in
             feasible: +- 0.0005in
@@ -705,7 +705,6 @@ laser cutting: !process
             diameter:
                 typical: 0.004 .. 0.0125 in
                 feasible: 0.0002 .. 0.2 in
-            power:
         workpiece thickness:
             feasible: 0.004 .. 6 inch
             typical: 0.02 .. 0.5 inch
