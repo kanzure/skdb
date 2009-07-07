@@ -345,8 +345,8 @@ band sawing: !process
     -   single angle cuts
     -   !which tooth shape
     -   !which blade width
-        parameters:
-        teeth in contact with work: !range
+    parameters:
+        teeth in contact with work: #!range #FIXME
             min: 2 teeth #bleh
         tooth count: 4..28 teeth/in
         tooth shape:

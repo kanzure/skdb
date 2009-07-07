@@ -53,7 +53,11 @@ class FennObject(yaml.YAMLObject):
     '''so i dont repeat generic yaml stuff everywhere'''
     @classmethod
     def to_yaml(cls, dumper, data):
-        return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data)) #not sure this is right
+        if hasattr(cls, 'yaml_repr'):
+            tmp = cls.yaml_repr(data)
+        else: 
+            tmp = cls.__repr__(data)
+        return dumper.represent_scalar(cls.yaml_tag, tmp)
     @classmethod
     def from_yaml(cls, loader, node):
         '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
@@ -76,7 +80,6 @@ class Range(FennObject):
         return "Range(%s, %s)" %(self.min, self.max)
     def yaml_repr(self):
         return "%s .. %s" %(self.min, self.max)
-        return self.__repr__()
     def __eq__(self, other):
         if type(other) == type(self):
             return self.min == other.min and self.max == other.max
@@ -114,9 +117,9 @@ class Unit(yaml.YAMLObject):
     first you need to do this:
     cat /usr/share/misc/units.dat > combined.dat
     cat supplemental_units.dat >> combined.dat'''
+    units_call = "units -f combined.dat -t " #export LOCALE=en_US; ?
     def __init__(self, string):
         #simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
-        self.units_call = "units -f combined.dat -t " #export LOCALE=en_US; ?
         self.string = str(string)
         if not self.check(): raise UnitError, string
         #e_number = '([+-]?\d*\.?\d*([eE][+-]?\d+)?)' #engineering notation
@@ -205,7 +208,7 @@ class Unit(yaml.YAMLObject):
     
     def conv_factor(self, destination):
         '''the multiplier to go from one unit to another, for example from inch to mm is 25.4'''
-        conv_factor = os.popen(self.units_call + "'" + self.sanitize(self.string) + "' '" + self.sanitize(destination) + "'").read().rstrip('\n')
+        conv_factor = os.popen(self.__class__.units_call + "'" + self.sanitize(self.string) + "' '" + self.sanitize(destination) + "'").read().rstrip('\n')
         if self.units_happy(self.string, conv_factor): 
             return float(conv_factor)
         else: raise UnitError, conv_factor, destination
@@ -220,7 +223,7 @@ class Unit(yaml.YAMLObject):
     def simplify(self, string=None):
         '''returns a string'''
         if string is None: string = self.string
-        rval = os.popen(self.units_call + "'" + self.sanitize(string) + "'").read().rstrip('\n')
+        rval = os.popen(self.__class__.units_call + "'" + self.sanitize(string) + "'").read().rstrip('\n')
         if self.units_happy(string, rval): return rval
         else: raise UnitError
 
@@ -261,17 +264,18 @@ class Uncertainty(FennObject, Unit):
         return "+-%s" % (self.string)
 
 
-class RuntimeData(yaml.YAMLObject, str):
+class RuntimeData(FennObject, str):
     yaml_tag = '!which'
     @classmethod
-    def constructor(cls, data):
+    def from_yaml(cls, loader, node):
+        '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
+        data = loader.construct_scalar(node)
         return cls(data)
 
-class Formula(yaml.YAMLObject, str):
+
+class Formula(FennObject, str):
     yaml_tag = '!formula'
-    @classmethod
-    def constructor(cls, data):
-        return cls(data)
+
 
 class Process(yaml.YAMLObject):
     yaml_tag = '!process'
