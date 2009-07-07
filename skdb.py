@@ -107,60 +107,18 @@ class Range(FennObject):
 class UnitError(Exception): pass 
 class NaNError(Exception): pass
 
-#first you need to do this:
-#cat /usr/share/misc/units.dat > combined.dat
-#cat supplemental_units.dat >> combined.dat
-units_call = "units -f combined.dat -t " #export LOCALE=en_US; ?
-def sanitize(string):
-    '''intercept things that will cause GNU units to screw up'''
-    if string is None or str(string) == 'None' or str(string) == '()': string = 0  
-    for i in ['..', '--']:
-        if str(string).__contains__(i):
-            raise UnitError, "Typo? units expression '"+ string + "' contains '" + i + "'"
-    return '('+str(string)+')' #units -1 screws up; units (-1) works
-
-def units_happy(call_string, rval):
-    '''the conversion or expression evaluated without error'''
-    error = re.search('Unknown|Parse|Error|invalid|error', rval)
-    if error:  
-        raise UnitError, str(call_string) + ': ' + str(rval)
-    nan = re.search('^nan', rval) #not sure how to not trip on results like 'nanometer'
-    if nan:
-        raise NaNError, rval
-    return True #well? what else am i gonna do
-
-def simplify(string):
-    rval = os.popen(units_call + "'" + sanitize(string) + "'").read().rstrip('\n')
-    if units_happy(string, rval): return rval
-    else: raise UnitError
-
-def conv_factor(string, destination):
-    '''the multiplier to go from one unit to another, for example from inch to mm is 25.4'''
-    conv_factor = os.popen(units_call + "'" + sanitize(string) + "' '" + sanitize(destination) + "'").read().rstrip('\n')
-    if units_happy(string, conv_factor): 
-        return float(conv_factor)
-    else: raise UnitError, conv_factor, destination
-    
-def convert(string, destination):
-    return str(conv_factor(string, destination)) +'*'+ str(destination) #1*mm
-    
-def check(string):
-        try: simplify(str(string))
-        except UnitError or NaNError: return False
-        return True
-
-def compatible(a, b):
-    '''check if both expressions boil down to the same base units'''
-    try: simplify(str(a) + '+' + str(b))
-    except UnitError: return False
-    else: return True
 
 class Unit(yaml.YAMLObject):
     yaml_tag = "!unit"
-    '''try to preserve the original units, and provide a wrapper to the GNU units program'''
+    '''try to preserve the original units, and provide a wrapper to the GNU units program
+    first you need to do this:
+    cat /usr/share/misc/units.dat > combined.dat
+    cat supplemental_units.dat >> combined.dat'''
     def __init__(self, string):
-        simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
+        #simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
+        self.units_call = "units -f combined.dat -t " #export LOCALE=en_US; ?
         self.string = str(string)
+        if not self.check(): raise UnitError, string
         #e_number = '([+-]?\d*\.?\d*([eE][+-]?\d+)?)' #engineering notation
         #match = re.match(e_number + '?(\D*)$', string) #i dunno wtf i was trying to do here
         #match = re.match(e_number + '?(.*)$', string)
@@ -173,9 +131,29 @@ class Unit(yaml.YAMLObject):
         return str(self.string)
     
     def yaml_repr(self):
-        if hasattr(self, 'uncertainty'): u = self.uncertainty.yaml_repr()
+        if hasattr(self, 'uncertainty'): u = self.uncertainty.yaml_repr() #TODO delete this
         else: u = ''
         return self.string +u
+
+    @staticmethod #is this right?
+    def sanitize(string):
+        '''intercept things that will cause GNU units to screw up'''
+        if hasattr(string, 'string'): string = string.string #egads. in case i accidentally pass a Unit or something
+        if string is None or str(string) == 'None' or str(string) == '()': string = 0  
+        for i in ['..', '--']:
+            if str(string).__contains__(i):
+                raise UnitError, "Typo? units expression '"+ string + "' contains '" + i + "'"
+        return '('+str(string)+')' #units -1 screws up; units (-1) works
+
+    def units_happy(self, call_string, rval):
+        '''the conversion or expression evaluated without error'''
+        error = re.search('Unknown|Parse|Error|invalid|error', rval)
+        if error:  
+            raise UnitError, str(call_string) + ': ' + str(rval)
+        nan = re.search('^nan', rval) #not sure how to not trip on results like 'nanometer'
+        if nan:
+            raise NaNError, rval
+        return True #well? what else am i gonna do
 
     def units_operator(self, a, b, operator):
         if str(a)=='None' or str(b)=='None': return None
@@ -203,7 +181,7 @@ class Unit(yaml.YAMLObject):
     
     def __eq__(self, other):
         if hasattr(other, 'string'): other = other.string
-        if str(simplify(self.string)) == str(simplify(other)): return True
+        if self.simplify() == Unit(other).simplify(): return True
         else: return False
     
     def __ne__(self, other):
@@ -214,7 +192,7 @@ class Unit(yaml.YAMLObject):
         #i should probably be using __lt__, __gt__, etc
         #neither does this work for nonlinear units like tempF() or tempC()
         if self.compatible(other):
-            conv = conv_factor(self, other)
+            conv = self.conv_factor(other)
             #print conv #god what a mess
             if conv == 1: return 0
             if conv < 1 and conv > 0: return -1
@@ -225,19 +203,42 @@ class Unit(yaml.YAMLObject):
             if conv == inf: return 1
             if conv == 0: return -1
     
+    def conv_factor(self, destination):
+        '''the multiplier to go from one unit to another, for example from inch to mm is 25.4'''
+        conv_factor = os.popen(self.units_call + "'" + self.sanitize(self.string) + "' '" + self.sanitize(destination) + "'").read().rstrip('\n')
+        if self.units_happy(self.string, conv_factor): 
+            return float(conv_factor)
+        else: raise UnitError, conv_factor, destination
+        
+    def convert(self, destination):
+        if self.compatible(destination):
+            return str(self.conv_factor(destination)) +'*'+ str(destination) #1*mm
+        
     def to(self, dest):
-        return Unit(convert(self, dest))
+            return Unit(self.convert(dest))
     
-    def check(self):
-        return check(self)
+    def simplify(self, string=None):
+        '''returns a string'''
+        if string is None: string = self.string
+        rval = os.popen(self.units_call + "'" + self.sanitize(string) + "'").read().rstrip('\n')
+        if self.units_happy(string, rval): return rval
+        else: raise UnitError
 
-    def simplify(self):
-        return Unit(simplify(self))
+    def check(self):
+        try: self.simplify()
+        except UnitError or NaNError: return False
+        return True
+
+    def simplified(self):
+        '''returns a Unit in simplified format. note that it may actually look more complicated due to the lack of default units'''
+        return Unit(self.simplify())
     
     def compatible(self, other):
-        return compatible(self, other)
-        #return conv_factor + dest
-    #def simplify(self, string):
+        '''check if both expressions boil down to the same base units'''
+        try: self.simplify(self.string + '+' + self.sanitize(other))
+        except UnitError: return False
+        else: return True
+
     def number(self): 
         '''return the number portion of the unit string'''
         return 'not yet implemented, sorry!'
@@ -305,30 +306,28 @@ class Thread(Package):
                 (minor_diameter, 'in'),
                 (clamping_force, 'lbf')]
     def pitch_diameter(self):
-        assert self.form=="UN" and compatible(self.pitch, 'rev/inch'), "this only works for triangular threads atm"
+        assert self.form=="UN" and Unit(self.pitch).compatible('rev/inch'), "this only works for triangular threads atm"
         s = Template('($diameter)-0.6495919rev/($pitch)') #machinery's handbook 27ed page 1502
         string = s.safe_substitute(diameter=self.diameter, pitch=self.pitch)
-        return Unit(simplify(string)).to('in')
+        return Unit(string).to('in')
   
     def minor_diameter(self):
-        assert self.form=="UN" and compatible(self.pitch, 'rev/inch'), "this only works for triangular threads atm"
+        assert self.form=="UN" and Unit(self.pitch).compatible('rev/inch'), "this only works for triangular threads atm"
         s = Template('($diameter)-1.299038rev/($pitch)')  #machinery's handbook 27ed page 1502
         string = s.safe_substitute(diameter=self.diameter, pitch=self.pitch)
-        return Unit(simplify(string)).to('in')
+        return Unit(string).to('in')
     
     def clamping_force(self, torque, efficiency=0.1):
         s = Template('($torque)*($pitch)*$efficiency')
         string = s.safe_substitute(torque=torque, pitch=self.pitch, efficiency=efficiency) #fill in template keywords
-        simplified = simplify(string) #compute the expression
-        force = Unit(simplified).to('lbf') #I guess this looks better than kg*m/s^2, but there should be a default units setting somewhere
+        force = Unit(string).to('lbf') #I guess this looks better than kg*m/s^2, but there should be a default units setting somewhere
         return force
   
     def tensile_area(self):
-        assert compatible(self.pitch, 'rev/inch')
+        assert Unit(self.pitch).compatible('rev/inch')
         s = Template('pi/4*(($Dm+$Dp)/2)^2') #machinery's handbook 27ed page 1502 formula 9 "tensile-stress area of screw thread"
         string = s.safe_substitute(Dm=self.minor_diameter(), Dp=self.pitch_diameter())
-        simplified = simplify(string)
-        return Unit(simplified).to('in^2')
+        return Unit(string).to('in^2')
   #max torque requires finding the combined "von mises" stress, given on page 1498
   #because the screw body will twist off as a combination of tensile and torque shear loads
 
@@ -371,14 +370,12 @@ class Screw(Component):
     def max_force(self):
         s = Template('$area*$strength')
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.proof_load[self.grade])
-        simplified = simplify(string)
-        return Unit(simplified).to('lbf')
+        return Unit(string).to('lbf') 
   
     def breaking_force(self):
         s = Template('$area*$strength')
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.tensile_strength[self.grade])
-        simplified = simplify(string)
-        return Unit(simplified).to('lbf')
+        return Unit(string).to('lbf')
 
 class Bolt(Fastener):
     '''a screw by itself cannot convert torque to force. a bolt is a screw with a nut'''
