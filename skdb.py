@@ -54,13 +54,14 @@ class FennObject(yaml.YAMLObject):
     @classmethod
     def to_yaml(cls, dumper, data):
         return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data)) #not sure this is right
+    @classmethod
     def from_yaml(cls, loader, node):
         '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
         data = loader.construct_scalar(node)
-        if hasattr(cls, 'yaml_pattern'):
+        if hasattr(cls, 'yaml_pattern') and hasattr(cls, 'yaml_parse_args') and cls.yaml_parse_args == True:
             match = re.search(cls.yaml_pattern, data)
             if match:
-                return cls(match.groups) #i guess this will stuff the regex groups into the positional args #TODO unit test
+                return cls(match.groups()) #i guess this will stuff the regex groups into the positional args #TODO unit test
         else:
             return cls(data)
 
@@ -98,30 +99,7 @@ class Range(FennObject):
             a = eval(a)
             b = eval(b)
         return cls(min(a,b), max(a,b))
- 
-class Uncertainty(FennObject):
-    '''predicted range of error in the measurement'''
-    yaml_tag = "!uncertainty" #ehh.. going to do something with this eventually
-    yaml_pattern = '^\+-' + sci + '\s*(\D?.*)$' #+-, number, units
-    def __init__(self,value):
-        self.value = Unit(value)
-    def yaml_repr(self):
-        if self.value is not None:
-            return "+-%s" % (self.value)
-        else: return ""
-    @classmethod
-    def from_yaml(cls, loader, node):
-        '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
-        data = loader.construct_scalar(node)
-        match = re.search(cls.yaml_pattern, data)
-        if match is None:
-            print 'why am i here?'
-            print "name: %s, pattern: %s, data: %s" %(cls.__name__, cls.yaml_pattern, data)
-            return None
-        number = match.group(1) #cast to float here?
-        assert float(number) >= 0 #negative uncertainty would be highly unusual
-        units = match.group(3) #3 because scientific notation regex has 2 groups in it
-        return cls(number+units)
+
 
 
 #unum looks rather immature, perhaps I will write a wrapper for GNU units instead
@@ -180,11 +158,9 @@ def compatible(a, b):
 class Unit(yaml.YAMLObject):
     yaml_tag = "!unit"
     '''try to preserve the original units, and provide a wrapper to the GNU units program'''
-    def __init__(self, string, uncertainty=None):
+    def __init__(self, string):
         simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
         self.string = str(string)
-        if uncertainty is not None:
-            self.uncertainty = Uncertainty(uncertainty)
         #e_number = '([+-]?\d*\.?\d*([eE][+-]?\d+)?)' #engineering notation
         #match = re.match(e_number + '?(\D*)$', string) #i dunno wtf i was trying to do here
         #match = re.match(e_number + '?(.*)$', string)
@@ -226,7 +202,8 @@ class Unit(yaml.YAMLObject):
     __rsub__ = __sub__
     
     def __eq__(self, other):
-        if str(simplify(self)) == str(simplify(other)): return True
+        if hasattr(other, 'string'): other = other.string
+        if str(simplify(self.string)) == str(simplify(other)): return True
         else: return False
     
     def __ne__(self, other):
@@ -267,7 +244,22 @@ class Unit(yaml.YAMLObject):
     def unit(self):
         '''return the unit portion of the unit string'''
         return 'not yet implemented, sorry!'
-    
+
+class Uncertainty(FennObject, Unit):
+    '''predicted range of error in the measurement'''
+    yaml_tag = "!uncertainty" #ehh.. going to do something with this eventually
+    yaml_pattern = '^\+-' + sci + '\s*(\D?.*)$' #+-, number, units
+    def __init__(self, string):
+        match = re.match('^\+-(.*)', string)
+        if match: unit = match.group(1)
+        else: raise SyntaxError, "'"+ string +"'" + ": uncertainty must begin with +-, for now at least" #got any better ideas?
+        Unit.__init__(self, unit)
+    def __repr__(self):
+        return 'Uncertainty('+ Unit.__repr__(self) +')'
+    def yaml_repr(self):
+        return "+-%s" % (self.string)
+
+
 class RuntimeData(yaml.YAMLObject, str):
     yaml_tag = '!which'
     @classmethod

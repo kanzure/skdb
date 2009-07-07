@@ -141,7 +141,7 @@ class TestYaml(unittest.TestCase):
         try: yaml.dump(skdb.Unit('1')) #this blew up once for some reason
         except skdb.UnitError: return False
     def test_uncertainty(self):
-        self.assertEqual(skdb.load('+-5e-2m'), skdb.Uncertainty(skdb.Unit('50mm')))
+        self.assertEqual(skdb.load('+-5e-2m'), skdb.Uncertainty('+-50mm'))
           
 
            
