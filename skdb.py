@@ -49,7 +49,22 @@ class Package(yaml.YAMLObject):
     
 sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to do regex without parens?
 
-class Range(yaml.YAMLObject):
+class FennObject(yaml.YAMLObject):
+    '''so i dont repeat generic yaml stuff everywhere'''
+    @classmethod
+    def to_yaml(cls, dumper, data):
+        return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data)) #not sure this is right
+    def from_yaml(cls, loader, node):
+        '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
+        data = loader.construct_scalar(node)
+        if hasattr(cls, 'yaml_pattern'):
+            match = re.search(cls.yaml_pattern, data)
+            if match:
+                return cls(match.groups) #i guess this will stuff the regex groups into the positional args #TODO unit test
+        else:
+            return cls(data)
+
+class Range(FennObject):
     yaml_tag = "!range"
     #expression should look something like: 1e4 m .. 2km
     yaml_pattern = sci+'\s*(\D?.*)?\s*\.\.\s*'+sci+'\s*(\D?.*)$'
@@ -65,9 +80,10 @@ class Range(yaml.YAMLObject):
         if type(other) == type(self):
             return self.min == other.min and self.max == other.max
         else: return None
-    @classmethod #constructor takes class as first argument
-    def constructor(cls, data): 
+    @classmethod
+    def from_yaml(cls, loader, node):
         '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
+        data = loader.construct_scalar(node)
         match = re.search(cls.yaml_pattern, data)
         a, crap, units1, b, crap2, units2 = match.groups() 
         if units2 != '':
@@ -83,7 +99,7 @@ class Range(yaml.YAMLObject):
             b = eval(b)
         return cls(min(a,b), max(a,b))
  
-class Uncertainty(yaml.YAMLObject):
+class Uncertainty(FennObject):
     '''predicted range of error in the measurement'''
     yaml_tag = "!uncertainty" #ehh.. going to do something with this eventually
     yaml_pattern = '^\+-' + sci + '\s*(\D?.*)$' #+-, number, units
@@ -93,9 +109,10 @@ class Uncertainty(yaml.YAMLObject):
         if self.value is not None:
             return "+-%s" % (self.value)
         else: return ""
-        
     @classmethod
-    def constructor(cls, data):
+    def from_yaml(cls, loader, node):
+        '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
+        data = loader.construct_scalar(node)
         match = re.search(cls.yaml_pattern, data)
         if match is None:
             print 'why am i here?'
@@ -378,22 +395,12 @@ class Bolt(Fastener):
         self.nut = nut
 
 def load(string):
-    for cls in [Range]:#, RuntimeData, Formula]:#, Uncertainty]: #only one at a time works so far?
-        if hasattr(cls, 'constructor'): #for pesky things like !formula and !which
-            yaml.add_constructor(cls.yaml_tag, lambda loader, node: cls.constructor(loader.construct_scalar(node)))
-        else: print "eek, %s has no constructor!" %(cls)
+    for cls in [Range, RuntimeData, Formula, Uncertainty]: #only one at a time works so far?
         if hasattr(cls, 'yaml_pattern'):
             yaml.add_implicit_resolver(cls.yaml_tag, re.compile(cls.yaml_pattern))
-        else: print "%s has no implicit resolver!" %(cls)
-        
     return yaml.load(string)
 
 def dump(value, filename=None):
-    for cls in [Unit, Range]:
-        assert hasattr(cls, 'yaml_repr')
-        if hasattr(cls, 'yaml_repr'):
-            repr = lambda dumper, instance: dumper.represent_scalar(instance.yaml_tag, instance.yaml_repr())
-            yaml.add_representer(cls, repr )
     retval = yaml.dump(value, default_flow_style=False)
     if filename is not None:
         f = open(filename, 'w')
