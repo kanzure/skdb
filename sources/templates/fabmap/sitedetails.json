@@ -1,0 +1,30 @@
+{
+	"id":		"{{site.id}}",
+	"name":	"{{site.name}}",
+	"locname": "{{site.locname}}",
+	"latitude": "{{site.latitude}}",
+	"longitude": "{{site.longitude}}",
+	"website": "{{site.website}}",
+	"access": {
+		"name": "{{site.access.name}}",
+		"description": "{{site.access.description}}",
+	},
+	"manager": {
+		"username": "{{site.manager.username}}",
+		"name": "{{site.manager.first_name}} {{site.manager.last_name}}",
+	},
+	"equipment": {
+		{%for e in equipment%}
+		"type": {
+			"name": "{{e.type.name}}",
+			"maker": "{{e.type.maker}}",
+			"capabilities": [
+			{%for c in e.type.capabilities%}
+			"{{c.name}}",
+			{%endfor%}
+			]
+		}
+		"notes": "{{e.notes}}",
+		{%endfor%}
+	},
+}
