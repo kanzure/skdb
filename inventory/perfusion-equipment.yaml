@@ -1,0 +1,48 @@
+author: bryan bishop
+license: GPL 2.0+
+urls:
+	- http://groups.google.com/group/cryonics-europe/browse_thread/thread/d2a3e12a87308338?hl=en
+	- http://cryoeuro.eu/
+	- http://eugen.leitl.org/
+name: basic CPA perfusion capability for Germany
+
+equipment:
+	- graduated cylinders
+	- beakers
+	- pH standards (powdered)
+	- pH electrode
+	- portable ice bath
+		- http://eztube.com/
+	- heart lung resuscitator
+	- pneumatically driven CPR machine (thumper)
+        notes: do not use oxygen
+	- media bottles
+		notes: for high purity water or sterile perfusate storage
+		volume: 5 liters
+		number: 20
+	- stainless steel mixing tool
+	- cordless electric drill
+	- Jiffy mixer
+	- submersible water pump
+		- notes: to chill heat exchanger
+	- diffuser (garden hose type screw fitting)
+	- flexible rubber tubing (perfusate/silastic)
+	- polyethylene tanks
+	- arterial cannula, custom stainless steel femoral or carotid cannula, 2 each
+	- superscissors
+	- thermometers
+	- aquarium air pump
+	- air compressor
+    - anticoagulant
+        options:
+            - heparin
+    - neuropretectants
+        options:
+            - vitamin E
+            - melatonin
+            - curcumin
+            - NAC
+    - dry ice
+
+offsite:
+    - liquid nitrogen storage units
