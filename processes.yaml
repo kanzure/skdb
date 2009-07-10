@@ -137,11 +137,11 @@ arbor milling: !process
         power: !formula unit power * removal rate
         tool:
             life: !which tool material, life
-        lubricant: !which lubrication #how long does each lubricant last? where do i get this info?, lubricant
+        lubricant: !which lubrication, lubricant #how long does each lubricant last? where do i get this info?
     functionality: 
     -   roughing
     -   prismatic geometry
-    -   !which tool material #hmm
+    -   !which tool material, functionality #hmm
     machinability: !which workpiece material, machinability
     parameters:
         depth of cut:
@@ -343,8 +343,8 @@ band sawing: !process
     functionality:
     -   narrow kerf
     -   single angle cuts
-    -   !which tooth shape
-    -   !which blade width
+    -   !which tooth shape, functionality
+    -   !which blade width, functionality
     parameters:
         teeth in contact with work: #!range #FIXME
             min: 2 teeth #bleh
@@ -410,7 +410,7 @@ internal broaching: &internal_broaching !process
     -   internal prismatic geometry
     -   low angle internal helical geometry
     -   keyways
-    -   !which tool material
+    -   !which tool material, functionality
     machinability: !which workpiece material, machinability
     effects:
     -   welding tool and workpiece
@@ -532,7 +532,7 @@ external broaching: !process
     -   gear teeth
     -   irregular prismatic geometry
     -   slot cuts
-    -   !which tool material
+    -   !which tool material, functionality
     parameters:
         width:
             typical: 0.075 .. 10in
@@ -680,7 +680,7 @@ laser cutting: !process
     mechanism: focused coherent light heats workpiece to melting or vaporization, then shielding gas blows the melted material out of the cut
     geometry: 
         primitive: swept double cone
-        diameter: !which beam  #hmmm. beam has no choices, i.e. this varies continuously
+        diameter: !which beam, diameter #hmmm. beam has no choices, i.e. this varies continuously
         tolerance:
             typical: +- 0.001in
             feasible: +- 0.0005in
@@ -694,7 +694,7 @@ laser cutting: !process
     -   drilling
     -   straight cuts
     -   irregular prismatic geometry
-    -   !which lasing material
+    -   !which lasing material, functionality
     effects:
     -   hardening
     -   annealing
@@ -713,7 +713,7 @@ laser cutting: !process
             compressed air:
             nitrogen:
             argon:
-        feed rate: !which workpiece material #over typical thickness range, feed rate
+        feed rate: !which workpiece material, feed rate #over typical thickness range, feed rate
         workpiece reflectivity:
         workpiece thermal conductivity:
         workpiece material:

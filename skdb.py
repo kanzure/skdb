@@ -264,13 +264,27 @@ class Uncertainty(FennObject, Unit):
         return "+-%s" % (self.string)
 
 
-class RuntimeData(FennObject, str):
+class RuntimeSwitch(FennObject):
     yaml_tag = '!which'
+    def __init__(self, depends, parameter):
+        self.depends, self.parameter = depends, parameter
+    def __repr__(self):
+        return 'RuntimeSwitch(%s, %s)' % (self.depends, self.parameter)
+    def yaml_repr(self):
+        return '%s, %s' % (self.depends, self.parameter)
+    def get(self):
+        valid_values = package.parameters[self.depends].keys()
+        if package.runtime[self.depends] in valid_values: 
+            return package.parameters[self.depends][package.runtime[self.depends]][self.parameter] #zoinks
+        else: 
+            return None  #some function to search for similar values here
+
     @classmethod
     def from_yaml(cls, loader, node):
         '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
         data = loader.construct_scalar(node)
-        return cls(data)
+        depends, parameter = [i.strip() for i in data.split(',')]
+        return cls(depends, parameter)
 
 
 class Formula(FennObject, str):
@@ -388,7 +402,7 @@ class Bolt(Fastener):
         self.nut = nut
 
 def load(string):
-    for cls in [Range, RuntimeData, Formula, Uncertainty]: #only one at a time works so far?
+    for cls in [Range, RuntimeSwitch, Formula, Uncertainty]: #only one at a time works so far?
         if hasattr(cls, 'yaml_pattern'):
             yaml.add_implicit_resolver(cls.yaml_tag, re.compile(cls.yaml_pattern))
     return yaml.load(string)
@@ -402,10 +416,11 @@ def dump(value, filename=None):
         return retval
     #some stdout call here might not be a bad idea
 
+package = 'blah'
 def main():
     #basic self-test demo
-    foo = load(open('tags.yaml'))
-    print dump(foo)
+    package = load(open('tags.yaml'))
+    print dump(package)
 
 if __name__ == "__main__":
     main()
