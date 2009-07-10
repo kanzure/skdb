@@ -11,6 +11,7 @@ morestuff: !unit
     string: 60gigajoules
 #newton: !formula F = m*a
 thread: !which foo, thread #thread depends on which value foo has
+anotherstuff: !which stuff
 
 foo: 
 - &screw !!python/object:skdb.Screw
