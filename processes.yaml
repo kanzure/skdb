@@ -28,7 +28,7 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
     -   deburring
     -   prismatic geometry
     -   tapered geometry
-    machinability: !which workpiece material
+    machinability: !which workpiece material, machinability
     removal rate: 
         typical: 0.003.. 0.0007in/min #what exactly does this refer to?
         feasible: 0.0001 .. 0.002in/min  
@@ -132,17 +132,17 @@ arbor milling: !process
         typical: 64..200 microinch
         feasible: 32..500 microinch
 
-    unit power: !which workpiece material
+    unit power: !which workpiece material, unit power
     consumables:
         power: !formula unit power * removal rate
         tool:
-            life: !which tool material
-        lubricant: !which lubrication #how long does each lubricant last? where do i get this info?
+            life: !which tool material, life
+        lubricant: !which lubrication #how long does each lubricant last? where do i get this info?, lubricant
     functionality: 
     -   roughing
     -   prismatic geometry
     -   !which tool material #hmm
-    machinability: !which workpiece material
+    machinability: !which workpiece material, machinability
     parameters:
         depth of cut:
             typical: 0.05 .. 0.25in
@@ -154,7 +154,7 @@ arbor milling: !process
         -   climb
         feed per tooth: 0.005 .. 0.010in/tooth
         surface speed: 30 .. 500 feet/min #see materials
-        lubrication: !which workpiece material
+        lubrication: !which workpiece material, lubrication
         workpiece hardness:
             typical:
                 max: Rockwell C25 #joy~~ how about some real units
@@ -164,7 +164,7 @@ arbor milling: !process
         effects:
             -   surface stress
             -   untempered martensitic layer 0.001in in heat treated alloy steels #blargh
-        tool geometry: !which workpiece material
+        tool geometry: !which workpiece material, tool geometry
         tooth count:
             typical: 10 .. 20 teeth/rev #i just made up these values
             feasible: 1 .. 200 teeth/rev #ditto
@@ -411,7 +411,7 @@ internal broaching: &internal_broaching !process
     -   low angle internal helical geometry
     -   keyways
     -   !which tool material
-    machinability: !which workpiece material
+    machinability: !which workpiece material, machinability
     effects:
     -   welding tool and workpiece
     -   work hardening
@@ -419,13 +419,13 @@ internal broaching: &internal_broaching !process
         diameter:
             typical: 0.125 .. 6 in
             feasible: 0.04 .. 12 in
-        surface speed: !which material
+        surface speed: !which material, surface speed
         rigidity:
         alignment:
-        lubricant: !which workpiece material
-        feed per tooth: !which workpiece material
-        tool geometry: !which workpiece material
-        hardness: !which workpiece material
+        lubricant: !which workpiece material, lubricant
+        feed per tooth: !which workpiece material, feed per tooth
+        tool geometry: !which workpiece material, tool geometry
+        hardness: !which workpiece material, hardness
         tool material:
             high speed steel:
                 functionality:
@@ -592,8 +592,8 @@ gas cutting: !process
         typical: 250..1000 microinches
         feasible: 100..1100 microinches
     consumables:
-        fuel consumption: !which fuel
-        oxygen consumption: !which fuel
+        fuel consumption: !which fuel, fuel consumption
+        oxygen consumption: !which fuel, oxygen consumption
         torch tip:
     functionality:
     -   straight cuts
@@ -616,9 +616,9 @@ gas cutting: !process
             feasible: 0.05 .. 60in #wow
         oxidizer pressure: 20 .. 50 psi
         fuel pressure: 3 .. 7 psi
-        feed rate: !which fuel
+        feed rate: !which fuel, feed rate
         temperature: tempf(1400)..tempf(1600)
-        tip style: !which fuel
+        tip style: !which fuel, tip style
         fuel:
             acetylene: #how do i say acetylene is the preferred fuel? least heat dispersion
                 tip style: 
@@ -689,7 +689,7 @@ laser cutting: !process
         feasible: 100 .. 300 microinch
     consumables:
         cutting gas:
-        power: !which workpiece material
+        power: !which workpiece material, power
     functionality: 
     -   drilling
     -   straight cuts
@@ -713,7 +713,7 @@ laser cutting: !process
             compressed air:
             nitrogen:
             argon:
-        feed rate: !which workpiece material #over typical thickness range
+        feed rate: !which workpiece material #over typical thickness range, feed rate
         workpiece reflectivity:
         workpiece thermal conductivity:
         workpiece material:
