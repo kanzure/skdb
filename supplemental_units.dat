@@ -8,3 +8,7 @@ quality ! #satisfaction
 star 0.25 quality
 deg degree #because i hate typing it out
 brinell ! #a unit of hardness.. doubt it's really the basic type though
+
+piece ! #basic unit of functionality or material
+quantity 1 piece
+qty 1 piece
