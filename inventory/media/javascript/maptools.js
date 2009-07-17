@@ -1,3 +1,7 @@
+/*
+  Deprecated, use map.js instead. ~~ SPM
+*/
+
 function mapinit() {
 	map = new OpenLayers.Map ("map", {
 		controls:[
