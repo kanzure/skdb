@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<process xmlns="http://www.tangiblebit.org/xml/process-1.0.dtd"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+	<name>Hall-Héroult process</name>
+	<description>The Hall-Héroult process is the major industrial process for the production of aluminium. It involves dissolving alumina in molten cryolite, and electrolysing the solution to obtain pure aluminium metal.</description>
+	<dc>
+		<!-- Dublin core metadata -->
+	</dc>
+	<inputs>
+		<!-- Materials could also use 'rel' tags to reference other files-->
+		<material>
+			<material:name>Alumina</material:name>
+			<material:formula>Al2O3</material:formula>
+		</material>
+		<material>
+			<material:name>Cryolite</material:name>
+			<material:formula>Na3AlF6</material:formula>
+		</material>
+		<material>
+			<material:name>Aluminum fluoride</material:name>
+			<material:formula>AlF3</material:formula>
+		</material>
+		<!-- Not necessarily just material inputs... or outputs... -->
+		<electricity>
+			<voltage>110kV</voltage>
+			<current>340kA</voltage>
+		</electricity>
+	</inputs>
+	<outputs>
+		<material>
+			<material:name>Aluminum</material:name>
+			<material:formula>Al</material:formula>
+			<material:phase>liquid</material:phase>
+		</material>
+		<material>
+			<material:name>Hydrogen fluoride</material:name>
+			<material:formula>HF</material:formula>
+			<material:phase>gas</material:phase>
+		</material>
+		<material>
+			<material:name>Carbon dioxide</material:name>
+			<material:formula>CO2</material:formula>
+			<material:phase>gas</material:phase>
+		</material>
+	</outputs>
+	<!-- Various other specifics of the process -->
+</process>
