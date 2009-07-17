@@ -5,6 +5,7 @@ import yaml
 import re
 import time
 import geom
+import numpy
 
 # the following aren't our responsibility, actually (pythonOCC?)
 #class Circle(yaml.YAMLObject)
@@ -12,9 +13,9 @@ import geom
 #class InterfaceGeom(yaml.YAMLObject):
 
 class Part(yaml.YAMLObject):
-    '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.'''
+    '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.
+    should a part without an interface be invalid?'''
     yaml_tag = '!part'
-    yaml_pattern = re.compile("(.*)")
     def __init__(self, description="description", created=time.localtime(), files=[], interfaces={}):
         self.description, self.created, self.files, self.interfaces = description, created, files, interfaces
     def __repr__(self):
@@ -31,7 +32,6 @@ class Part(yaml.YAMLObject):
                 else:
                     self.interfaces = {}
                     self.interfaces[k] = v
-                #self.interfaces[k] = v
             self.__setattr__(k,v)
     #@classmethod
     #def to_yaml(cls, dumper, data):
@@ -47,16 +47,12 @@ class Interface(yaml.YAMLObject):
     '''"units" should be what is being transmitted through the interface, not about the structure.
     a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry'''
     yaml_tag = '!interface'
-    yaml_pattern = re.compile('(.*)')
-    def __init__(self, name="generic interface name", units=None, geometry=None):
-        self.name = name
-        self.units = units
-        self.geometry = geometry # need to get a geometry handler class to get everything looking the same
-        # TODO: coordinates (location) of an interface
+    def __init__(self, name="generic interface name", units=None, geometry=None, point=[0,0,0], i=[0,0,0], j=[0,0,0], k=[0,0,0]):
+        self.name, self.units, self.geometry, self.point, self.i, self.j, self.k = name, units, geometry, points, i, j, k
     def __repr__(self):
-        return "Interface(name=%s,units=%s,geometry=%s)" % (self.name, self.units, self.geometry)
+        return "Interface(name=%s,units=%s,geometry=%s,point=%s,i=%s,j=%s,k=%s)" % (self.name, self.units, self.geometry, self.point, self.i, self.j, self.k)
     def yaml_repr(self):
-        return "name: %s\nunits: %s\ngeometry: %s" % (self.name, self.units, self.geometry)
+        return "name: %s\nunits: %s\ngeometry: %s\npoint: %s\ni: %s\nj: %s\nk: %s" % (self.name, self.units, self.geometry, self.point, self.i, self.j, self.k)
     #@classmethod
     #def to_yaml(cls, dumper, data):
     #    return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data))
@@ -69,10 +65,10 @@ class Interface(yaml.YAMLObject):
 
 def compatibility(part1, part2):
     '''find all possible combinations of part1 and part2 (for each interface/port) and check each compatibility'''
-    pass
+    return []
 def compatibility(part1port, part2port):
     '''note that an interface/port object refers to what it is on. so you don't have to pass the parts.'''
-    pass
+    return []
 
 def load(foo):
     return yaml.load(foo)
@@ -80,5 +76,6 @@ def dump(foo):
     return yaml.dump(foo, default_flow_style=False)
 
 print "loading the file .. it looks like this: "
-print load(open("models/blockhole.yaml"))["blockhole"]
+blockhole = load(open("models/blockhole.yaml"))["blockhole"]
+print "blockhole is = ", dump(blockhole)
 #print "dumping the loaded file looks like this: ", dump(load(content))

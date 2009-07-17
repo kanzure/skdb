@@ -10,8 +10,8 @@ blockhole: !part
     description: 'a block with a hole (a negative of a cylinder)'
     created: '2009-07-16'
     files: #these are all the same
-        - 'block-with-hole.iges'
-        - 'block-with-hole.step'
+        - 'models/block-with-hole.iges'
+        - 'models/block-with-hole.step'
     hole: !interface
         units: 4N
         #tag the geometry (simple primitives only please)
