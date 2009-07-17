@@ -65,24 +65,5 @@ def addequipment(request):
 	
 def addequipmenttype(request):
 	return HttpResponse("")
-
-
-def xmlrpc_getsitelist():
-	"""Returns a list of sites."""
-
-	sites = Site.objects.all()		
-
-	results = { 'sites': [] }
-
-	for site in sites:
-		results['sites'].append({ 'id': site.id, 'lat': site.lat, 'lon': site.lon, 'name': site.name, 'locname': site.locname, 'website': site.website})
-
-	return results
-
-def xmlrpc_getsitedetails():
-	pass
-
-def xmlrpc_getequipmenttypes():
-	pass
-
-
+	
+	

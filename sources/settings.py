@@ -85,9 +85,10 @@ INSTALLED_APPS = (
 	'xmlrpc',
 )
 
+# import fabmap.xmlrpc
 
 XMLRPC_METHODS = (
-        ('sources.fabmap.views.xmlrpc_getsitelist', 'FabMapGetSites',),
-        ('sources.fabmap.views.xmlrpc_getsitedetails', 'FabMapGetSiteDetails',),
-        ('sources.fabmap.views.xmlrpc_getequipmenttypes', 'FabMapGetEquipmentTypes',),
+        ('sources.fabmap.xmlrpc.getsitelist', 'FabMapGetSites',),
+        ('sources.fabmap.xmlrpc.getsitedetails', 'FabMapGetSiteDetails',),
+        ('sources.fabmap.xmlrpc.getequipmenttypes', 'FabMapGetEquipmentTypes',),
 )
