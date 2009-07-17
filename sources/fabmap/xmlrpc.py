@@ -1,5 +1,8 @@
 from fabmap.models import *
 
+# TODO: Authentication!!!
+# TODO: Better error handling
+
 def GetSiteList():
 	"""Returns a list of sites."""
 
@@ -57,21 +60,30 @@ def AddEquipmentType(name, maker, capabilities):
 		if type(a) is int:
 			et.capabilities.add(a)
 	et.save()
-	return True
+	return {'saved': True}
 	
 def AddEquipment(siteid, equipmenttype, notes):
 	# Register equipment
-	return {}
+	eq = Equipment(type=equipmenttype, site=siteid, notes=notes)
+	eq.save()
+	return {'saved': True}
 
-def AddSite():
+def AddSite(name, locname, lat, lon, website, access):
 	# Add a site.
-	return {}
+	manager = 1
+	# FIXME: Here we should make manager be the same as the authed user.
+	site = Site(name=name, locname=locname, lat=lat, lon=lon, website=website, manager=manager, access=access)
+	site.save()
+	return {'saved': True}
 	
-def AddCapability():
+def AddCapability(capability):
 	# Add a capability class
-	return {}
+	cap = EquipmentCapability(name=capability)
+	cap.save()
+	return {'saved': True, 'id': cap.id}
 	
 def FindEquipmentByCapability(capid):
 	# Return a list of equipment, and each equipment type contains a list of sites where it exists.
+	
 	return {}
 

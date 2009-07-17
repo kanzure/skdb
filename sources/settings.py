@@ -66,9 +66,9 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+	# Always use forward slashes, even on Windows.
+	# Don't forget to use absolute paths, not relative paths.
 	"/home/smari/www/tangiblebit.com/sources/templates",
 )
 
@@ -89,7 +89,12 @@ INSTALLED_APPS = (
 
 XMLRPC_METHODS = (
 	('sources.fabmap.xmlrpc.GetSiteList', 'GetSites',),
-	('sources.fabmap.xmlrpc.GetSiteDetails', 'GetSiteDetails',),
+	('sources.fabmap.xmlrpc.GetSiteList', 'AddSite',),
+	('sources.fabmap.xmlrpc.AddEquipment', 'AddEquipment',),
 	('sources.fabmap.xmlrpc.GetEquipmentTypes', 'GetEquipmentTypes',),
+	('sources.fabmap.xmlrpc.AddEquipmentType', 'AddEquipmentType',),
 	('sources.fabmap.xmlrpc.GetCapabilities', 'GetCapabilities',),
+	('sources.fabmap.xmlrpc.AddCapability', 'AddCapability',),
+	('sources.fabmap.xmlrpc.GetSiteDetails', 'GetSiteDetails',),
+	('sources.fabmap.xmlrpc.FindEquipmentByCapability', 'FindEquipmentByCapability',),
 )

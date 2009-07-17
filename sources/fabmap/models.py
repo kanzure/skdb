@@ -52,6 +52,43 @@ class Equipment(models.Model):
 	def __unicode__(self):
 		return self.type
 
+# class Material(models.Model):
+#	# DEFINEME
+#	name = models.CharField(max_length=500)
+#	formula = models.CharField(max_length=200, blank=True)
+#	iselement = models.BooleanField()
+#	description = models.TextField(blank=True)
+#	
+#	meltingpoint = models.FloatField("Melting point", blank=True)
+#	boilingpoint = models.FloatField("Boiling point", blank=True)
+#	
+#	density = models.FloatField(blank=True)
+#	
+#	modulus_elasticity = models.FloatField("Modulus of elasticity", blank=True)
+#	modulus_youngs = models.FloatField("Young's modulus", blank=True)
+#	
+#	hardness_mohs = models.FloatField(blank=True)
+#	hardness_brinnel = models.FloatField(blank=True)
+#	
+#	thermal_inductance = models.FloatField(blank=True)
+#	thermal_capacity = models.FloatField(blank=True)
+#	thermal_expansion = models.FloatField("Coefficient of thermal expansion (CTE)", blank=True)
+#	
+#	electrical_inductance = models.FloatField(blank=True)
+#	electrical_capacity = models.FloatField(blank=True)
+#	# nuclear profile? radioactivity_profile?
+#	# electrical profile?
+#	# thermal profile?
+#	
+#class MaterialProperty(models.Model):
+#	name = models.CharField(max_length=200)
+#	
+#
+#class Method(models.Model):	# Process? Method? TODO: DECIDE ON TERMINOLOGY
+#	# DEFINEME
+#	pass
+#	
+
 #
 #	Registering tables with admin site
 #
