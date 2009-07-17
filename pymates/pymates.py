@@ -1,12 +1,17 @@
 #!/usr/bin/python
 #pymates
 
+import yaml
+import geom
+
 # the following aren't our responsibility, actually (pythonOCC?)
 #class Circle(yaml.YAMLObject)
 #class Cylinder(yaml.YAMLObject)
 #class InterfaceGeom(yaml.YAMLObject):
 
 class Part(yaml.YAMLObject):
+    '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.'''
+    yaml_tag='!part'
     pass
 
 class Interface(yaml.YAMLObject):
