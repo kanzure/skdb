@@ -1,8 +1,10 @@
 import settings
 from django.shortcuts import render_to_response
 from fabmap.models import *
+from fabmap.xmlrpc import *
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+import simplejson
 
 def index(request):
 	addsiteform = SiteForm(auto_id="addsite_")
@@ -14,50 +16,39 @@ def search(request):
 	
 	query = request.GET['q']
 	if not query or query == "":
-		sites = Site.objects.all()		
+		return HttpResonse(simplejson.encode(GetSiteList()))
 	else:
 		# FIXME: This isn't actually a real search function at the moment.
-		sites = Site.objects.all()
-
-	results = "{ 'sites': ["
-
-	for site in sites:
-		results += "{ 'id': '%d', 'lat': '%lf', 'lon': '%lf', 'name': '%s', 'locname': '%s', 'website': '%s'}," % (site.id, site.lat, site.lon, site.name, site.locname, site.website)
-		
-	results += "]}"
-
-	return HttpResponse(results)
+		return HttpResonse(simplejson.encode(GetSiteList()))
 
 
 def addsite(request):
 	# Handle Add Site requests
-	saved = False
-	error = "Not handled"
+	response = {'saved': False, 'error': "Not handled"}
 
 	siteform = SiteForm(request.GET)
+	
 	if not request.user.is_authenticated():
-		return HttpResponse("{'saved': '%d', 'error': '%s'}" % (saved, "You must be logged in to register sites."))
+		response["error"] = "You must be logged in to register sites."
+		return HttpResponse(simplejson.encode(response))
 		
 	if siteform.is_valid():
 		site = siteform.save(commit=False)
 		site.manager = request.user
 		site.save()
-		saved = True
-		return HttpResponse("{'saved': '%d'}" % saved)
+		response["saved"] = True
+		return HttpResponse(simplejson.encode(response))
 	else:
-		error = "Must fill required fields."
-		return HttpResponse("{'saved': '%d', 'error': '%s', 'newtable': '%s'}" % (saved, error, siteform.as_table().replace("\n","\\n")))
+		response["error"] = "Must fill required fields."
+		response["newtable"] = siteform.as_table()
+		return HttpResponse(simplejson.encode(response))
 
 def sitedetails(request):
 	# Return very detailed information about a site.
-	if not request.GET.has_key('id'):
-		return HttpResponse("{'error': 'Must supply ID'}")
+	if not request.GET.has_key('siteid'):
+		return HttpResponse(simplejson.encode({'error': 'Must supply ID'}))
 	
-	site = Site.objects.get(id=request.GET['id'])
-	if site.id:
-		return render_to_response("fabmap/sitedetails.json", {"site": site, "equipment": site.equipment_set.all()})
-	else:
-		HttpResponse("{'error': 'ID not found'}")
+	return HttpResponse(simplejson.encode(GetSiteDetails(request.GET['siteid'])))
 	
 
 def addequipment(request):
