@@ -15,7 +15,8 @@ class Part(yaml.YAMLObject):
     yaml_tag = '!part'
     yaml_pattern = re.compile("(.*)")
     def __init__(self,name="generic part"):
-        pass
+        self.name = name
+        return None
     def __repr__(self):
         return "Part(name=%s)" % self.name
     def yaml_repr(self):
@@ -25,8 +26,10 @@ class Part(yaml.YAMLObject):
         return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data))
     @classmethod
     def from_yaml(cls, loader, node):
+        print "from_yaml() says node = ", node
+        print "from_yaml() says that loader = ", loader
         data = loader.construct_scalar(node)
-        return Part(name="blah") #FIXME: completely wrong
+        return cls(name="blah") #FIXME: completely wrong
 
 class Interface(yaml.YAMLObject):
     '''"units" should be what is being transmitted through the interface, not about the structure.
@@ -52,13 +55,17 @@ class Interface(yaml.YAMLObject):
 #for cls in [Part, Interface]:
 #    yaml.add_implicit_resolver(cls.yaml_tag, cls.yaml_pattern)
 
+def compatibility(part1, part2):
+    '''find all possible combinations of part1 and part2 (for each interface/port) and check each compatibility'''
+    pass
+def compatibility(part1port, part2port):
+    '''note that an interface/port object refers to what it is on. so you don't have to pass the parts.'''
+    pass
+
 def load(foo):
     return yaml.load(foo)
 def dump(foo):
     return yaml.dump(foo, default_flow_style=False)
 
-handler = open("models/blockhole.yaml","r")
-content = handler.read()
-print "loading the file .. it looks like this: ", load(content)
-print "dumping the loaded file looks like this: ", dump(load(content))
-
+print "loading the file .. it looks like this: ", load(open("models/blockhole.yaml"))
+#print "dumping the loaded file looks like this: ", dump(load(content))
