@@ -14,19 +14,19 @@ class Part(yaml.YAMLObject):
     '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.'''
     yaml_tag = '!part'
     yaml_pattern = re.compile("(.*)")
-    def __init__(self,name="generic part"):
-        pass
+    def __init__(self, name="generic part"):
+        self.name = name
     def __repr__(self):
-        return "Part(name=%s)" % self.name
+        return "Part(name=%s)" % (self.name)
     def yaml_repr(self):
-        return "!%s\n not implemented: foo" % (self.name, self.__name__)
+       return "not implemented: %s, %s" % (self.name, self.__class__.__name__) #yaml dumps tag automatically
     @classmethod
     def to_yaml(cls, dumper, data):
         return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data))
     @classmethod
     def from_yaml(cls, loader, node):
-        data = loader.construct_scalar(node)
-        return Part(name="blah") #FIXME: completely wrong
+        data = loader.construct_mapping(node)
+        return cls(name=data) #better?
 
 class Interface(yaml.YAMLObject):
     '''"units" should be what is being transmitted through the interface, not about the structure.
@@ -41,7 +41,7 @@ class Interface(yaml.YAMLObject):
     def __repr__(self):
         return "Interface(name=%s,units=%s,geometry=%s)" % (self.name, self.units, self.geometry)
     def yaml_repr(self):
-        return "!%s\n not implemented: foo" % (self.name)
+        return "%s\n not implemented: foo" % (self.name)
     @classmethod
     def to_yaml(cls, dumper, data):
         return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data))
