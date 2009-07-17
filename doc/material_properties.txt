@@ -1,0 +1,95 @@
+Mechanical properties
+    * Young's modulus
+    * Specific modulus
+    * Tensile strength
+    * Compressive strength
+    * Shear strength
+    * Yield strength
+    * Ductility
+    * Poisson's ratio
+    * Specific weight
+
+Electrical properties
+    * Electrical conductivity
+    * Permittivity
+    * Dielectric constant
+    * Dielectric strength
+    * Piezoelectric constants
+    * Seebeck coefficient
+
+Thermal properties
+    * Thermal conductivity
+    * Thermal diffusivity
+    * Thermal expansion
+    * Seebeck coefficient
+    * Emissivity
+    * Coefficient of thermal expansion
+    * Specific heat
+    * Heat of vaporization
+    * Heat of fusion
+    * Pyrophoricity
+    * Flammability
+    * Vapor Pressure
+    * Autoignition temperature
+    * Critical temperature
+    * Glass transition temperature
+    * Phase diagram
+    * Binary phase diagram
+    * Eutectic point
+    * Melting point
+    * Vicat softening point
+    * Boiling point
+    * Triple point
+    * Flash point
+    * Curie point
+
+Chemical properties
+    * pH
+    * Hygroscopy
+    * Surface energy
+    * Surface tension
+    * Specific internal surface area
+    * Reactivity
+    * Corrosion resistance
+
+Magnetic properties
+    * Permeability
+    * Hysteresis
+    * Curie Point
+
+Optical properties
+    * Absorptivity
+    * Reflectivity
+    * Refractive index
+    * Color
+    * Photosensitivity
+    * Transmittance
+    * Luminosity
+
+Acoustical properties
+    * Acoustical absorption
+    * Speed of sound
+
+Radiological properties
+    * Neutron cross-section
+    * Specific activity
+
+Biological properties
+    * Toxicity
+
+Environmental properties
+    * Embodied energy
+    * Embodied water
+    * RoHS compliance
+
+There are a variety of other properties to consider in an environmental impact assessment that effect the ecological or human environment that may be difficult to quantify (unlike most of the properties listed on this page) including pollution (extraction, transportation, manufacture), scarcity/abundance, habitat destruction, renewability, recycleability, wars fought over materials, labor exploitation, etc. These can be subjective, dependent on context, or inadequately measured.
+
+Atomic properties
+    * Atomic number - applies to pure elements only
+    * Atomic weight - applies to individual isotopes or specific mixtures of isotopes of a given element.
+
+Manufacturing properties
+    * Machining speeds and feeds
+    * Machinability rating
+    * Hardness
+    * Extruding temperature and pressure
