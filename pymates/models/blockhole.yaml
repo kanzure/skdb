@@ -1,0 +1,19 @@
+author: 'Bryan Bishop'
+urls:
+- 'http://heybryan.org/'
+- 'http://www.me.utexas.edu/~adl/'
+
+blockhole: !part
+    description: 'a block with a hole (a negative of a cylinder)'
+    created: 2009-07-16
+    files: #these are all the same
+        - 'block-with-hole.iges'
+        - 'block-with-hole.step'
+    #"hole" is the interface with name/label "hole" in the model.
+    hole: !interface
+        #tag the geometry (simple primitives only please)
+        geometry: !circle
+        point: [50, 20, 30] #xyz
+        i: [1, -1, 1]
+        j: [1, -1, 1]
+        k: [0, 0, 0]

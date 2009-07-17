@@ -1,0 +1,160 @@
+
+
+* bolt.cad
+* bolt.yaml
+** list of ports
+** xyz coords
+** 4x4 matrix (homogeneous coordinate transformation)
+** offset and coordinate rotations
+
+list of ports
+xyz coords
+4x4 matrix
+offset and coordinate rotations
+
+global coordinate frame in the CAD file
+
+
+"yellow globe" = "control point thingy"
+exists at a particular xyz location in reference to the global coordinate frame
+its local z direction is pointing this way "outwards" - how it must move in order to mate with the mating part
+the x and y would be arbitrary off of this point.
+
+there's another port on the back of this, say, its z is pointing backwards (it has to move in that basic direction)
+if y is in the same direction, then x is now where the original z was
+
+it's an extra unit vector  (the blue stuff / yellow orbes)
+
+
+collision detection might be the wrong board
+algorithms:
+    - volume overlap algorithm
+        - normalize this volume that you find (you find the interference volume)
+        - the port specifies its volume (in the YAML file)
+        - average the two port's volumes together and you should never be higher than that (or add them together)
+        - "the interference volume"
+    - collision detection
+    - 
+
+
+up inside this hole, there is a corresponding blue dot that will mate with it
+this blue dot is pointing in the z axis in the opposite direction of the other part
+y is into the board now (if you will)
+
+when they properly mate, the z values are in opposite directions
+the x values must line up
+y values are forced to be in opposite directions
+
+the z has to be in the direction of "free movement"
+
+"alignment vector" or something
+
+xyz
+rotation asimuth  to put this z at that intersection
+rotation from the global axis. 
+
+
+4x4 coordinate transformation
+tau x tau y tau z == how far you have to transfer the global to get to the point (the blue dot)
+the bottom row of the matrix is meaningless (zero)
+the other three columns are the original three unit vectors for this blue dot
+the z axis is pointing in the positive y, so this would be z, this would be x, this would be y
+
+
+i -1 0 0 tx
+j 0 0 1 ty
+k 0 1 0 tz
+  0 0 0 1
+
+tx = 50
+ty = 50
+tz = 0
+
+i&x
+j&y
+k&z
+
+
+
+
+translations
+scewings
+all sorts of other transformations
+
+IGES over STEP
+IGES volumetric & boundary yes/no? this determines what needs to exist in the port data (volumetric primitives & the operations that go)
+IGES - add a point at a particular location? then tag it as a control point
+
+ports in a yaml file
+
+ports:
+    port 1: 
+        - 4x4 location
+        #- list of faces (ID numbers)
+        - feature tag ("square") generic geometry
+        - allowed to be interfering?
+        # - list of rigid faces (later) (versus compliance)
+        # - list of flexible faces (later)
+        # - eventually other stuff
+
+HeeksCAD coordinate transformations - set of axises floating in space where-ever you want (ask fenn)
+
+public double [0 1] compatibility (URI to artifact 1 CAD, URI to artifact 2 CAD)
+    - this calls the second one
+    - checks all possible combinations of ports by calling the other overload
+    - return a giant matrix of the possibilities
+public double [0 1] compatibility (URI to artifact 1 CAD, int p#, URI to artifact 2 CAD, int port number #2)
+    - returns a single value
+    - don't worry about rotation for starters
+    
+
+
+
+
+rotate and translate the CAD models so that the z's are opposite and the x's line up and so on (for two CAD parts that are being mated)
+
+
+artifact 2:
+[50]
+[50]
+[0]
+
+artifact 1:
+[100]
+[10]
+[10]
+
+how much do you translate the second one to get to fifty?
+
+move vector = artifact1.translation - artifact2.translation
+
+B
+0 0 1 100
+-1 0 0 10
+0 -1 0 10
+0 0 0 1
+
+we want that port to eventually be at:
+
+A
+-1 0 0 50
+0 0 -1 50
+0 -1 0 0
+0 0 0 1
+
+so it's just the same as the original 4x4 matrix except x is the same, and the directions on y and z are flipped
+
+
+
+A = BT
+find the matrix T
+
+then apply this T to the whole part
+
+
+
+
+AB^-1 = T
+find the inverse of B
+Kramer's rule? (see Wikipedia)
+
