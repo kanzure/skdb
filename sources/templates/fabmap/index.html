@@ -32,16 +32,16 @@
 		hideDialog($('#addSiteDialog'));
 		showProgress('Saving...');
 		$.getJSON("/dmed/addsite", 
-			{'lat': $('#id_lat').val(),
-			'lon': $('#id_lon').val(),
-			'name': $('#id_name').val(),
-			'locname': $('#id_locname').val(),
-			'website': $('#id_website').val(),
-			'access': $('#id_access').val() },
+			{'lat': $('#addsite_lat').val(),
+			'lon': $('#addsite_lon').val(),
+			'name': $('#addsite_name').val(),
+			'locname': $('#addsite_locname').val(),
+			'website': $('#addsite_website').val(),
+			'access': $('#addsite_access').val() },
 			function(data, s) {
 				hideProgress();
 				if (data['newtable']) {
-					$('#siteform').html(data['newtable']);
+					$('#addsiteform').html(data['newtable']);
 					showDialog($('#addSiteDialog'));
 				} else {
 					if (data['saved'] == 0) {
@@ -53,14 +53,32 @@
 			});
 	}
 	
+	function editLoc(id) {
+		showProgress();
+		$.getJSON("/dmed/sitedetails", {'id': id}, function(data, s) {
+			hideProgress();
+			showDialog($('#editSiteDialog'));
+		});
+	}
+
+	function addSearchResult(id, lat, lon, name, loc, website) {
+		str = "<tr>";
+		str += "<td>" + name + "</td><td>" + loc + "</td>";
+		{%if userauthed%}str+= "<td><a href=\"#\" onclick=\"editLoc(" + id + ");\">Edit</a></td>";{%endif%}
+		str += "</tr>";
+		$('#searchresults_table').append(str);
+	}
+
 	function search(q) {
 		if (q == undefined) {
 			q = $('#q').val();
 		}
+		$('#searchresults_table').empty().append("<tr><th>Site name</th><th>Location</th></tr>");
 		$.getJSON("/dmed/search", {'q': q}, function(data, s) {
 			for (var i = 0; i < data['sites'].length; i++) {
 				a = data['sites'][i];
 				map.quickMarker("sites", a['lat'], a['lon'], a['name'], a['locname'], a['website']);
+				addSearchResult(a['id'], a['lat'], a['lon'], a['name'], a['locname'], a['website']);
 			}
 		});
 	}
@@ -91,12 +109,21 @@
 
 {%block maincontent%}
 <div class="mapdialog" id="addSiteDialog">
-	<table id="siteform">
-	{{siteform.as_table}}
+	<table id="addsiteform">
+	{{addsiteform.as_table}}
 	</table>
 	<input type="button" value="Save" onclick="newSite();"/>
 	<input type="button" value="Cancel" onclick="hideDialog($('#addSiteDialog'));"/>
 </div>
+
+<div class="mapdialog" id="editSiteDialog">
+	<table id="editsiteform">
+	{{editsiteform.as_table}}
+	</table>
+	<input type="button value="Save" onclick="saveSite();"/>
+	<input type="button" value="Cancel" onclick="hideDialog($('#editSiteDialog'));"/>
+</div>
+
 
 <div>
 <b>Quick locations:</b>
@@ -113,5 +140,11 @@
 
 </div>
 
-	<div id="map" style="width: 800px; height: 500px"></div>
+<div id="map" style="width: 800px; height: 500px"></div>
+
+<div id="searchresults">
+	<table id="searchresults_table">
+	</table>
+</div>
+
 {%endblock%}

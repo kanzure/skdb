@@ -32,6 +32,8 @@ urlpatterns = patterns('',
     (r'^dmed/$', 'fabmap.views.index'),
     (r'^dmed/addsite', 'fabmap.views.addsite'),
     (r'^dmed/search', 'fabmap.views.search'),
+    (r'^dmed/sitedetails', 'fabmap.views.sitedetails'),
+    (r'^xmlrpc/$', 'xmlrpc.views.handle_xmlrpc'),
 )
 
 

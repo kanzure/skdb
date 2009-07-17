@@ -82,4 +82,12 @@ INSTALLED_APPS = (
 	'basesite',
 	'fjarlog',
 	'fabmap',
+	'xmlrpc',
+)
+
+
+XMLRPC_METHODS = (
+        ('sources.fabmap.views.xmlrpc_getsitelist', 'FabMapGetSites',),
+        ('sources.fabmap.views.xmlrpc_getsitedetails', 'FabMapGetSiteDetails',),
+        ('sources.fabmap.views.xmlrpc_getequipmenttypes', 'FabMapGetEquipmentTypes',),
 )
