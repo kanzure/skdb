@@ -6,9 +6,11 @@
 
 import yaml
 import re
+import os
 import time
 import geom
 #import numpy
+import wx
 import OCC.gp
 import OCC.BRepPrimAPI
 import OCC.BRepBuilderAPI
@@ -87,7 +89,12 @@ def demo(event=None):
     blockhole = load(open("models/blockhole.yaml"))["blockhole"]
     print "blockhole is = ", dump(blockhole)
 def load_cad_file(event=None, filename="models/plank-with-pegs.step"):
-    my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(filename)
+    filename = wx.FileSelector()
+    print "filename = ", filename
+    fullpath = os.path.realpath(os.path.curdir)
+    filename = filename.replace(fullpath + "/","")
+    print "filename now = ", filename
+    my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(str(filename))
     my_step_importer.ReadFile()
     the_shapes = my_step_importer.GetShapes()
     the_compound = my_step_importer.GetCompound()
