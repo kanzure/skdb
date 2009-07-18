@@ -20,7 +20,7 @@ import OCC.BRepBuilderAPI
 import OCC.Display.wxSamplesGui
 import OCC.Utils.DataExchange.STEP
 
-total_shapes = []
+total_parts = []
 
 # the following aren't our responsibility, actually (pythonOCC?)
 #class Circle(yaml.YAMLObject)
@@ -33,6 +33,16 @@ class Part(yaml.YAMLObject):
     yaml_tag = '!part'
     def __init__(self, description="description", created=time.localtime(), files=[], interfaces={}):
         self.description, self.created, self.files, self.interfaces = description, created, files, interfaces
+    def load_CAD(self):
+        if len(self.files) == 0: return #no files to load
+        #FIXME: assuming STEP
+        for file in self.files:
+            my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(str(file))
+            my_step_importer.ReadFile()
+            self.shapes = my_step_importer.GetShapes()
+            self.compound = my_step_importer.GetCompound()
+            self.ais_shapes = OCC.Display.wxSamplesGui.display.DisplayShape(self.shapes)[0]
+        return
     def __repr__(self):
         return "%s(description=%s, created=%s, files=%s, interfaces=%s)" % (self.__class__.__name__, self.description, self.created, self.files, self.interfaces)
     def yaml_repr(self):
@@ -87,18 +97,49 @@ def compatibility(part1port, part2port):
 
 def load(foo):
     return yaml.load(foo)
+
 def dump(foo):
     return yaml.dump(foo, default_flow_style=False)
+
 def demo(event=None):
     print "loading the file .. it looks like this:"
     blockhole = load(open("models/blockhole.yaml"))["blockhole"]
     print "blockhole is = ", dump(blockhole)
     #load the CAD?
-    load_cad_file(filename=blockhole.files[0])
+    #load_cad_file(filename=blockhole.files[0])
+    blockhole.load_CAD()
+    total_parts.append(blockhole)
+
+def demo2(event=None, part=Part()):
+    '''reposition the part to be at one of the interfaces of the part. this replaces move_parts().'''
+    if not part.interfaces or len(part.interfaces) == 0:
+        if len(total_parts) == 0: return #can't do anything about that, can we
+        part = total_parts[0]
+        if len(part.interfaces) == 0: return #ok I give up
+    #select the first interface
+    interface = part.interfaces[part.interfaces.keys()[0]]
+    point = interface.point
+    i = interface.i
+    j = interface.j
+    k = interface.k
+    o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
+    o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
+    o_vx_vec = OCC.gp.gp_Dir(j[0], j[1], j[2])
+    ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
+    the_transform = OCC.gp.gp_Trsf()
+    the_transform.SetTransformation(ax3)
+    the_toploc = OCC.TopLoc.TopLoc_Location(the_transform)
+    #import OCC.AIS
+    #OCC.AIS.Handle_AIS_InteractiveObject()
+    OCC.Display.wxSamplesGui.display.Context.SetLocation(part.ais_shapes, the_toploc)
+    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
+    return
+
 def load_cad_file(event=None, filename=""):
     if not filename or filename == "":
         #popup menu selector for finding a filename
         filename = wx.FileSelector()
+        #FIXME: this assumes that the path is relative to the curdir- i.e. in skdb/pymates/models/ or at least skdb/pymates/
         #figure out relative path for STEPImporter
         fullpath = os.path.realpath(os.path.curdir)
         filename = filename.replace(fullpath + "/","")
@@ -110,14 +151,16 @@ def load_cad_file(event=None, filename=""):
     #don't forget to get the return value and append it to total_shapes
     #FIXME: don't be so lame re: use of globals.
     ais_shapes = OCC.Display.wxSamplesGui.display.DisplayShape(the_shapes)
-    total_shapes.append(ais_shapes[0]) #sorry
+    total_parts.append(ais_shapes[0]) #sorry
+
 def mate_parts(event=None):
     #mate all of the parts in the workspace
     pass
+
 def move_parts(event=None):
-    if len(total_shapes) == 0: return
-    if len(total_shapes) == 1: working_shape = total_shapes[0]
-    else: working_shape = total_shapes[random.randrange(0,len(total_shapes))]
+    if len(total_parts) == 0: return
+    if len(total_parts) == 1: working_part = total_parts[0]
+    else: working_part = total_parts[random.randrange(0,len(total_parts))]
 
     #gp_Dir, gce_MakeDir, Geom_Direction: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Dir.html
     #gp_Ax3: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Ax3.html
@@ -137,12 +180,14 @@ def move_parts(event=None):
     OCC.Display.wxSamplesGui.display.Context.SetLocation(working_shape, the_toploc)
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
+
 def exit(event=None):
     import sys; sys.exit()
 
 if __name__ == '__main__':
     OCC.Display.wxSamplesGui.add_menu("do stuff")
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', demo)
+    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', demo2)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', load_cad_file)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', mate_parts)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', move_parts)

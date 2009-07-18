@@ -20,3 +20,11 @@ Traceback (most recent call last):
   File "/usr/lib/python2.5/site-packages/OCC/AIS.py", line 7045, in SetLocation
     return _AIS.AIS_InteractiveContext_SetLocation(*args)
 TypeError: in method 'AIS_InteractiveContext_SetLocation', argument 2 of type 'Handle_AIS_InteractiveObject const &'
+
+Traceback (most recent call last):
+  File "pymates.py", line 134, in demo2
+    OCC.Display.wxSamplesGui.display.Context.SetLocation(part.ais_shapes, the_toploc)
+  File "/usr/lib/python2.5/site-packages/OCC/AIS.py", line 7045, in SetLocation
+    return _AIS.AIS_InteractiveContext_SetLocation(*args)
+TypeError: in method 'AIS_InteractiveContext_SetLocation', argument 2 of type 'Handle_AIS_InteractiveObject const &'
+
