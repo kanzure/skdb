@@ -1,5 +1,7 @@
 #!/usr/bin/python
 #pymates
+#ipython -wthread -c "import pymates" -i
+#pymates.start()
 
 #see ~/local/pythonOCC/samples/Level2/DataExchange/import_step_multi.py
 #see ~/local/pythonOCC/samples/Level1/TopologyTransformation/mirror.py
@@ -180,6 +182,9 @@ def move_parts(event=None):
     OCC.Display.wxSamplesGui.display.Context.SetLocation(working_shape, the_toploc)
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
+
+def start():
+    OCC.Display.wxSamplesGui.display.Create()
 
 def exit(event=None):
     import sys; sys.exit()
