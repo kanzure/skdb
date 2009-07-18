@@ -4,9 +4,11 @@
 #see ~/local/pythonOCC/samples/Level2/DataExchange/import_step_multi.py
 #see ~/local/pythonOCC/samples/Level1/TopologyTransformation/mirror.py
 
+
 import yaml
 import re
 import os
+#os.environ['CSF_GraphicShr'] = r"/usr/lib/libTKOpenGl.so"
 import time
 import geom
 #import numpy
@@ -16,6 +18,8 @@ import OCC.BRepPrimAPI
 import OCC.BRepBuilderAPI
 import OCC.Display.wxSamplesGui
 import OCC.Utils.DataExchange.STEP
+
+total_shapes = []
 
 # the following aren't our responsibility, actually (pythonOCC?)
 #class Circle(yaml.YAMLObject)
@@ -97,11 +101,25 @@ def load_cad_file(event=None, filename="models/plank-with-pegs.step"):
     my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(str(filename))
     my_step_importer.ReadFile()
     the_shapes = my_step_importer.GetShapes()
+    total_shapes.append(the_shapes) #sorry
     the_compound = my_step_importer.GetCompound()
     OCC.Display.wxSamplesGui.display.DisplayShape(the_shapes)
 def mate_parts(event=None):
     #mate all of the parts in the workspace
     pass
+def move_parts(event=None):
+    if len(the_shapes) == 0: return
+    working_shape = the_shapes[0]
+    #gp_Dir, gce_MakeDir, Geom_Direction: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Dir.html
+    #gp_Ax3: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Ax3.html
+    #gp_Ax3 (const gp_Pnt &P, const gp_Dir &N, const gp_Dir &Vx)
+    #gp_Ax3 (const gp_Pnt &P, const gp_Dir &V)
+    #see pythonOCC/samples/Level1/Animation/animation.py
+    ax3 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(0,0,0),OCC.gp.gp_Dir(0,0,1),OCC.gp.gp_Dir(0,1,0))
+    the_transform = OCC.gp.gp_Trsf()
+    angle = 0.0
+    #not sure what to do now
+    return
 def exit(event=None):
     import sys; sys.exit()
 
@@ -110,5 +128,6 @@ if __name__ == '__main__':
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', demo)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', load_cad_file)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', mate_parts)
+    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', move_parts)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', exit)
     OCC.Display.wxSamplesGui.start_display()
