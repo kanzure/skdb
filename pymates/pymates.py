@@ -5,7 +5,11 @@ import yaml
 import re
 import time
 import geom
-import numpy
+#import numpy
+import OCC.gp
+import OCC.BRepPrimAPI
+import OCC.BRepBuilderAPI
+import OCC.Display.wxSamplesGui
 
 # the following aren't our responsibility, actually (pythonOCC?)
 #class Circle(yaml.YAMLObject)
@@ -74,8 +78,15 @@ def load(foo):
     return yaml.load(foo)
 def dump(foo):
     return yaml.dump(foo, default_flow_style=False)
+def demo(event=None):
+    print "loading the file .. it looks like this:"
+    blockhole = load(open("models/blockhole.yaml"))["blockhole"]
+    print "blockhole is = ", dump(blockhole)
+def exit(event=None):
+    import sys; sys.exit()
 
-print "loading the file .. it looks like this: "
-blockhole = load(open("models/blockhole.yaml"))["blockhole"]
-print "blockhole is = ", dump(blockhole)
-#print "dumping the loaded file looks like this: ", dump(load(content))
+if __name__ == '__main__':
+    OCC.Display.wxSamplesGui.add_menu("do stuff")
+    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', demo)
+    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', exit)
+    OCC.Display.wxSamplesGui.start_display()
