@@ -1,6 +1,9 @@
 #!/usr/bin/python
 #pymates
 
+#see ~/local/pythonOCC/samples/Level2/DataExchange/import_step_multi.py
+#see ~/local/pythonOCC/samples/Level1/TopologyTransformation/mirror.py
+
 import yaml
 import re
 import time
@@ -10,6 +13,7 @@ import OCC.gp
 import OCC.BRepPrimAPI
 import OCC.BRepBuilderAPI
 import OCC.Display.wxSamplesGui
+import OCC.Utils.DataExchange.STEP
 
 # the following aren't our responsibility, actually (pythonOCC?)
 #class Circle(yaml.YAMLObject)
@@ -82,11 +86,22 @@ def demo(event=None):
     print "loading the file .. it looks like this:"
     blockhole = load(open("models/blockhole.yaml"))["blockhole"]
     print "blockhole is = ", dump(blockhole)
+def load_cad_file(event=None, filename="models/plank-with-pegs.step"):
+    my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(filename)
+    my_step_importer.ReadFile()
+    the_shapes = my_step_importer.GetShapes()
+    the_compound = my_step_importer.GetCompound()
+    OCC.Display.wxSamplesGui.display.DisplayShape(the_shapes)
+def mate_parts(event=None):
+    #mate all of the parts in the workspace
+    pass
 def exit(event=None):
     import sys; sys.exit()
 
 if __name__ == '__main__':
     OCC.Display.wxSamplesGui.add_menu("do stuff")
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', demo)
+    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', load_cad_file)
+    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', mate_parts)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', exit)
     OCC.Display.wxSamplesGui.start_display()
