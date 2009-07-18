@@ -10,6 +10,7 @@ import re
 import os
 #os.environ['CSF_GraphicShr'] = r"/usr/lib/libTKOpenGl.so"
 import time
+import random
 import geom
 #import numpy
 import wx
@@ -92,12 +93,15 @@ def demo(event=None):
     print "loading the file .. it looks like this:"
     blockhole = load(open("models/blockhole.yaml"))["blockhole"]
     print "blockhole is = ", dump(blockhole)
-def load_cad_file(event=None, filename="models/plank-with-pegs.step"):
-    #popup menu selector for finding a filename
-    filename = wx.FileSelector()
-    #figure out relative path for STEPImporter
-    fullpath = os.path.realpath(os.path.curdir)
-    filename = filename.replace(fullpath + "/","")
+    #load the CAD?
+    load_cad_file(filename=blockhole.files[0])
+def load_cad_file(event=None, filename=""):
+    if not filename or filename == "":
+        #popup menu selector for finding a filename
+        filename = wx.FileSelector()
+        #figure out relative path for STEPImporter
+        fullpath = os.path.realpath(os.path.curdir)
+        filename = filename.replace(fullpath + "/","")
     #load the STEP file
     my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(str(filename))
     my_step_importer.ReadFile()
@@ -112,15 +116,22 @@ def mate_parts(event=None):
     pass
 def move_parts(event=None):
     if len(total_shapes) == 0: return
-    working_shape = total_shapes[0]
+    if len(total_shapes) == 1: working_shape = total_shapes[0]
+    else: working_shape = total_shapes[random.randrange(0,len(total_shapes))]
+
     #gp_Dir, gce_MakeDir, Geom_Direction: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Dir.html
     #gp_Ax3: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Ax3.html
     #gp_Ax3 (const gp_Pnt &P, const gp_Dir &N, const gp_Dir &Vx)
     #gp_Ax3 (const gp_Pnt &P, const gp_Dir &V)
     #see pythonOCC/samples/Level1/Animation/animation.py
-    ax3 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(0,0,0),OCC.gp.gp_Dir(0,0,1),OCC.gp.gp_Dir(0,1,0))
+
+    point = OCC.gp.gp_Pnt(0,0,0)
+    n_vec = OCC.gp.gp_Dir(0,0,1)
+    tempvar = [1,1,1] #[-1,0,0] #[0,-1,0]
+    #TODO: check whether or not tempvar is valid
+    vx_vec = OCC.gp.gp_Dir(tempvar[0],tempvar[1],tempvar[1])
+    ax3 = OCC.gp.gp_Ax3(point, n_vec, vx_vec)
     the_transform = OCC.gp.gp_Trsf()
-    angle = 0.0
     the_transform.SetTransformation(ax3)
     the_toploc = OCC.TopLoc.TopLoc_Location(the_transform)
     OCC.Display.wxSamplesGui.display.Context.SetLocation(working_shape, the_toploc)
