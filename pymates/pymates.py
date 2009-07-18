@@ -43,7 +43,9 @@ class Part(yaml.YAMLObject):
             my_step_importer.ReadFile()
             self.shapes = my_step_importer.GetShapes()
             self.compound = my_step_importer.GetCompound()
-            self.ais_shapes = OCC.Display.wxSamplesGui.display.DisplayShape(self.shapes)[0]
+            result = OCC.Display.wxSamplesGui.display.DisplayShape(self.shapes)
+            if type(result) == type([]): self.ais_shapes = result[0]
+            else: self.ais_shapes = result
         return
     def __repr__(self):
         return "%s(description=%s, created=%s, files=%s, interfaces=%s)" % (self.__class__.__name__, self.description, self.created, self.files, self.interfaces)
@@ -106,11 +108,15 @@ def dump(foo):
 def demo(event=None):
     print "loading the file .. it looks like this:"
     blockhole = load(open("models/blockhole.yaml"))["blockhole"]
+    peg = load(open("models/peg.yaml"))["peg"]
     print "blockhole is = ", dump(blockhole)
+    print "peg is = ", dump(peg)
     #load the CAD?
     #load_cad_file(filename=blockhole.files[0])
     blockhole.load_CAD()
+    peg.load_CAD()
     total_parts.append(blockhole)
+    total_parts.append(peg)
 
 def demo2(event=None, part=Part()):
     '''reposition the part to be at one of the interfaces of the part. this replaces move_parts().'''
