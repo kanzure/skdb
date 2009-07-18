@@ -93,23 +93,26 @@ def demo(event=None):
     blockhole = load(open("models/blockhole.yaml"))["blockhole"]
     print "blockhole is = ", dump(blockhole)
 def load_cad_file(event=None, filename="models/plank-with-pegs.step"):
+    #popup menu selector for finding a filename
     filename = wx.FileSelector()
-    print "filename = ", filename
+    #figure out relative path for STEPImporter
     fullpath = os.path.realpath(os.path.curdir)
     filename = filename.replace(fullpath + "/","")
-    print "filename now = ", filename
+    #load the STEP file
     my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(str(filename))
     my_step_importer.ReadFile()
     the_shapes = my_step_importer.GetShapes()
-    total_shapes.append(the_shapes) #sorry
     the_compound = my_step_importer.GetCompound()
-    OCC.Display.wxSamplesGui.display.DisplayShape(the_shapes)
+    #don't forget to get the return value and append it to total_shapes
+    #FIXME: don't be so lame re: use of globals.
+    ais_shapes = OCC.Display.wxSamplesGui.display.DisplayShape(the_shapes)
+    total_shapes.append(ais_shapes[0]) #sorry
 def mate_parts(event=None):
     #mate all of the parts in the workspace
     pass
 def move_parts(event=None):
-    if len(the_shapes) == 0: return
-    working_shape = the_shapes[0]
+    if len(total_shapes) == 0: return
+    working_shape = total_shapes[0]
     #gp_Dir, gce_MakeDir, Geom_Direction: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Dir.html
     #gp_Ax3: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Ax3.html
     #gp_Ax3 (const gp_Pnt &P, const gp_Dir &N, const gp_Dir &Vx)
@@ -118,7 +121,10 @@ def move_parts(event=None):
     ax3 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(0,0,0),OCC.gp.gp_Dir(0,0,1),OCC.gp.gp_Dir(0,1,0))
     the_transform = OCC.gp.gp_Trsf()
     angle = 0.0
-    #not sure what to do now
+    the_transform.SetTransformation(ax3)
+    the_toploc = OCC.TopLoc.TopLoc_Location(the_transform)
+    OCC.Display.wxSamplesGui.display.Context.SetLocation(working_shape, the_toploc)
+    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 def exit(event=None):
     import sys; sys.exit()
