@@ -1,10 +1,10 @@
 Mechanical properties
-    * Young's modulus
-    * Specific modulus
-    * Tensile strength
-    * Compressive strength
-    * Shear strength
-    * Yield strength
+    * Young's modulus			| measure of stiffness in isotropic  elastic material; aka modulus of elasticity or tensile modulus
+    * Specific modulus			| young's modulus / density   (stiffness to weight ratio)
+    * Tensile strength			| maxima of stress-strain curve
+    * Compressive strength		| capacity to withstand axially directed pushing forces (MPa)
+    * Shear strength				| capacity to withstand shear forces.
+    * Yield strength				| Stress level at which material starts to deform plastically
     * Ductility
     * Poisson's ratio
     * Specific weight
