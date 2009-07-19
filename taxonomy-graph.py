@@ -29,7 +29,7 @@ def random_color(depth):
     return returnstring
 
 #linnaeus = yaml.load(open('processes_notags.yaml'))['abrasive jet']
-linnaeus = yaml.load(open('taxonomy.yaml'))
+linnaeus = yaml.load(open('trans-tech.yaml'))
 
 taxonomy = graph.digraph()
 node_id=0 #we need numerical nodes because some terms show up multiple times, like thermal, mechanical, chemical
@@ -52,6 +52,6 @@ def walk(treebeard, color, parent_node, depth):
 
 
 taxonomy.add_node(node_id, [('label', 'root')])
-walk(linnaeus, 'yellow', node_id)
+walk(linnaeus, 'yellow', node_id, 0)
 
 print graph.readwrite.write_dot_graph(taxonomy, False)

@@ -1,7 +1,10 @@
 title: "low hanging fruit"
+#"stuff on the right requires that which is towards the left"
 
 mice: &mice
   kidney-targeted plain-DNA transformation:
+  increased muscle mass:
+    myostatin inhibitors: &myostatin-inhibitors
 
 bio-lab:
     tobacco geneng protein secretion:
@@ -13,11 +16,17 @@ bio-lab:
     antibodies: &antibodies
         affinity chromatography:
             protein purification:
+                taq:
+                    pcr: &pcr
+                        peltier thermocycler:
+    directed evolution equipment:
+        extremozymes:
 
 chem-lab:
   enhancement drugs:
     modafinil:
-    myostatin inhibitors: *mice
+    adderall:
+    myostatin inhibitors: *myostatin-inhibitors
     rsc-14 visual memory:
 
 photolithography:
@@ -30,17 +39,13 @@ photolithography:
     in vitro compartmentalization:
     nanowell virus capture: *antibodies
 
-low tech microfluidics:
+low tech microfluidics: &low-tech-microfluidics
   uv lithography: &uv-lithography
     PDMS: &PDMS
     SU8:
         microfluidic master-molds: &mf-master-molds
             lab-on-a-chip: *PDMS
-  pcr:
-    spiral pcr:
-    peltier thermocycler:
-    thermistor:
-    thermocouple:
+  spiral-pcr: *pcr
   ultrasonic laser micropipet:
   laminated sheets:
 
