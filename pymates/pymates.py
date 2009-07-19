@@ -151,6 +151,8 @@ def demo2(event=None, part=Part()):
     return
 
 def load_cad_file(event=None, filename=""):
+    '''deprecated'''
+    pass
     if not filename or filename == "":
         #popup menu selector for finding a filename
         filename = wx.FileSelector()
@@ -190,14 +192,26 @@ def mate_parts(event=None):
     total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[2] = total_parts[1].transform.tolist()[2][3]
     print "new point = \n", total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
 
-    #o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
-    #o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
-    #o_vx_vec = OCC.gp.gp_Dir(j[0], j[1], j[2])
-    #ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
-    #the_transform = OCC.gp.gp_Trsf()
-    #the_transform.SetTransformation(ax3)
-    #the_toploc = OCC.TopLoc.TopLoc_Location(the_transform)
+    point = total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
+    lresult = result.tolist()
+    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].i = [lresult[0][0], lresult[1][0], lresult[2][0]]
+    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].j = [lresult[0][1], lresult[1][1], lresult[2][1]]
+    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].k = [lresult[0][2], lresult[1][2], lresult[2][2]]
     
+    interface = total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]]
+    i, j, k = interface.i, interface.k, interface.j
+    
+    o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
+    o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
+    print "the j vector is going to be: ", j
+    o_vx_vec = OCC.gp.gp_Dir(1,0,-1)#j[0], j[1], j[2])
+    ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
+    transform2 = OCC.gp.gp_Trsf()
+    transform2.SetTransformation(ax3)
+    toploc = OCC.TopLoc.TopLoc_Location(transform2)
+    
+    OCC.Display.wxSamplesGui.display.Context.SetLocation(total_parts[1].ais_shapes, toploc)
+    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
 def move_parts(event=None):
