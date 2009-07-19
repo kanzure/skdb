@@ -1,18 +1,18 @@
 title: "low hanging fruit"
 
+mice: &mice
+  kidney-targeted plain-DNA transformation:
+
 bio-lab:
     tobacco geneng protein secretion:
         rhizosecretion:
     microorganism cultures:
-        nutrients: &nutrients
     algae:
         biofuels:
-        nutrients: *nutrients
     mice: *mice
-        nutrients: *nutrients
-
-mice: &mice
-  kidney-targeted plain-DNA transformation:
+    antibodies: &antibodies
+        affinity chromatography:
+            protein purification:
 
 chem-lab:
   enhancement drugs:
@@ -28,10 +28,14 @@ photolithography:
     dna synthesis:
     protein purification:
     in vitro compartmentalization:
-    nanowell virus capture:
+    nanowell virus capture: *antibodies
 
 low tech microfluidics:
-  uv lithography:
+  uv lithography: &uv-lithography
+    PDMS: &PDMS
+    SU8:
+        microfluidic master-molds: &mf-master-molds
+            lab-on-a-chip: *PDMS
   pcr:
     spiral pcr:
     peltier thermocycler:
@@ -39,7 +43,6 @@ low tech microfluidics:
     thermocouple:
   ultrasonic laser micropipet:
   laminated sheets:
-
 
 robotics:
   exoskeletons:
@@ -51,7 +54,9 @@ neuro:
   rTMS:
   infrared stim:
   tissue culture: &neuro-tc
-    synthetic neurobiology:
+    genetic engineering:
+        synthetic neurobiology:
+            neurogenetic regulation:
 
 uploading:
   brain slicer:
@@ -59,14 +64,22 @@ uploading:
 instrumentation:
   AFM/STM:
     dna sequencing:
+  spin coater:
+    uv lithography: *uv-lithography
 
 tissue culture:
   stem cell:
+    miRNA induced pluripotency:
     germline cells:
+        sperm:
+        eggs:
+        embryos:
+        neurons:
     regrow teeth/hair:
   neuro: *neuro-tc
 
 basic manufacturing capabilities:
+    solids:
   
 computer stuff:
   skdb:
