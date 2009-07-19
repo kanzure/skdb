@@ -24,6 +24,7 @@ photolithography:
   microfluidics: 
     dna sequencing:
         nanopore:
+        sanger:
     dna synthesis:
     protein purification:
     in vitro compartmentalization:
@@ -32,7 +33,12 @@ photolithography:
 low tech microfluidics:
   uv lithography:
   pcr:
+    spiral pcr:
+    peltier thermocycler:
+    thermistor:
+    thermocouple:
   ultrasonic laser micropipet:
+  laminated sheets:
 
 
 robotics:
@@ -65,5 +71,7 @@ basic manufacturing capabilities:
 computer stuff:
   skdb:
   communication matrix:
+  autoscholar:
+  orgs-mode:
   sci-pirate tech:
-  
+    book scanner:
