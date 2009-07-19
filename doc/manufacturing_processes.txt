@@ -1,0 +1,368 @@
+==Casting==
+
+#Centrifugal casting
+#Continuous casting
+#Die casting
+#Evaporative-pattern casting
+##Full-mold casting
+##Lost-foam casting
+#Investment casting (lost wax casting)
+##Lost-foam casting
+#Low pressure
+#Permanent mold casting
+#Plastic mold
+#Sand casting
+#Shell molding
+#Slush or slurry
+#Spray forming
+
+==Molding==
+{{main|Molding (process)}}
+
+#Powder metallurgy
+##Compaction plus sintering
+##Hot isostatic pressing
+##Metal injection molding
+##Spray forming
+#Plastics (see also rapid-prototyping)
+##Injection molding|Injection
+##Compression
+##{{dn|Transfer}}
+##Extrusion
+##Blow molding
+##Dip Molding
+##Rotational molding
+##Thermoforming
+##Laminating
+##Expandable bead
+##Foam
+##Rotomolding
+##Vacuum plug assist
+##Pressure plug assist
+##Matched mold
+#Shrink fitting
+#Shrink wrapping
+
+==Forming==
+#End tube forming
+##Tube beading
+#Forging
+##Smith (metalwork)|Smith
+##Hammer forge
+##Drop forge
+##Machine press|Press
+##{{dn|Impact}} (see also Extrusion)
+##Upset
+##No draft
+##High-energy-rate
+##Cored
+##Incremental
+##Powder (substance)|Powder
+#Rolling (metalworking)|Rolling (Thick plate and sheet metal)
+##Cold rolling
+##Hot rolling
+##Sheet metal
+##Shape
+##wiktionary:ring|Ring
+##{{dn|Transverse}}
+##Orbital
+##Cross-rolling
+##Screw thread|Thread
+#Extrusion
+#Machine press|Pressing
+##Embossing
+##Stretch forming
+##Die (manufacturing)|Blanking (see drawing below)
+##Drawing (manufacturing) (<em>pulling</em> sheet metal. wire, {{dn|Rod|bar}} or {{dn|Tube|tube}})
+###Bulging
+###{{dn|Necking}}
+###Nosing
+###Oil-canning
+##Deep drawing (sinks, auto body)
+#Bending
+##{{dn|Hemming}}
+#Shearing (metalworking)|Shearing
+##Piercing (metalworking)|Piercing
+###{{dn|Trimming}}
+###Piercing (metalworking)#Shaving|Shaving
+###Notching
+###Perforating
+###Nibbling
+###Dinking operation
+###Lancing (shearing)|Lancing
+###Cutoff (metalworking)|Cutoff
+##Stamping
+###Stamping (metalworking)|Metal
+###Leather stamping|Leather
+###Progressive stamping|Progressive
+##Coining (metalworking)|Coining
+##Straight shearing
+###Slitting
+#Miscellaneous other
+##Redrawing 
+##Ironing (metalworking)|Ironing
+##Flattening
+##Swaging
+##Metal spinning|Spinning
+##Peening
+##Guerin process
+##Wheelon process
+##Magnetic pulse
+##Explosive forming
+##Electroforming
+##Staking (manufacturing)|Staking
+##Seaming
+##Flanging
+##Straightening
+##Decambering
+##Cold sizing
+##Hubbing
+
+==Machining==
+{{main|Machining}}
+
+#Milling machine|Mills
+##Grist mill
+##Hammer mill
+##Ball mill
+##Buhrstone mill
+##Disc mill
+##Saw mill
+##Steel mill
+###Blast furnace
+###Smelting
+###Refining
+###Casting (see #1 above)
+###Reduction mill
+###Annealing (metallurgy)|Annealing
+###Pickling
+###Passivate
+###Coating
+#Milling machine|Milling
+##{{dn|Cut}}
+##Shearing (metalworking)|Shear
+##{{dn|Shredder (device)|Shred}}
+##Fiberize
+##Pulverize
+##Crusher|Crushing
+###Jaw crusher
+###Gyratory crusher
+###Rollers
+###Edge runner
+##Granulate
+##{{dn|Crack}}
+##{{dn|Rub}}
+##{{dn|Curl}}
+##{{dn|Fluff}}
+##{{dn|Twist}}
+##Husk|Hull
+##Blend
+##Refine
+##Atomize
+##Centrifugal disintegration
+##Peripheral (slab)
+##Face
+##Chemical
+#Turning
+##Lathe
+##Facing
+##Boring (mechanical)|Boring (also Single pass bore finishing)
+##Metal spinning|Spinning (flow turning)
+##Knurling
+##Hard turning
+##Cutoff (parting)
+#Drilling
+##Reamer|Ream
+##Countersink
+##Taps_and_dies|Tapping
+#Sawing
+##File (tool)|Filing
+#Broach (metalworking)|Broaching
+#Shaping (metalworking)|Shaping
+##Horizontal
+##Vertical
+##Special purpose
+#Planing (shaping)|Planing
+##Double housing
+##Open-side
+##Edge or plate
+##Pit-type
+##Abrasive jet machining
+##Water jet cutting
+##Abrasive belt
+#Honing (metalworking)|Honing (Sharpening)
+##Electro-chemical grinding
+#Finishing (manufacturing)|Finishing & industrial finishing
+##Abrasive blasting (sand blasting)
+##Buffing
+##Burnishing (metalworking)|Burnishing
+##Electroplating
+##Electropolishing
+##Etching
+##Linishing
+##Mass finishing
+###Tumble finishing|Tumbling (barrel finishing)
+####Spindle finishing
+###Vibratory finishing
+##Plating
+##Polishing
+##Superfinishing
+##Wire brushing
+#Wood router|Routing
+#Hobbing
+#Ultrasonic machining|Ultrasonic
+#Electrical discharge
+#Electron beam machining
+#Electrochemical
+#Chemical
+#Photochemistry|Photochemical
+#Laser beam
+#Grinding (abrasive cutting)|Grinding
+#Gashing
+
+==Joining==
+#Welding
+##Arc welding|Arc
+###Manual metal arc welding|Manual metal
+###Shielded metal
+###Gas metal
+####Pulsed
+####Short circuit
+####Electrogas
+####Spray transfer
+###Gas tungsten
+###Flux-cored
+###Submerged arc welding|Submerged
+###Plasma arc
+###Carbon arc
+###{{dn|Stud}}
+###Electroslag
+###Atomic hydrogen
+###Plasma-MIG (metal inert gas)
+###Impregnated tape
+##Oxy-fuel welding and cutting|Oxyfuel gas
+###oxygen|Oxy-acetylene gas
+###Methylacetylene propadiene (MAPP)
+###Air-acetylene
+###Oxyhydrogen
+###Pressure gas
+####Carbon dioxide|CO<SUB>2</SUB>
+##Resistance welding|Resistance
+###Spot welding
+###Shot welding
+##{{dn|Projection}}
+##Seaming (metalworking)|Seam
+##Flash butt (flash)
+##Upset (butt)
+##Percussion (manufacturing)
+##Solid state (manufacturing)|Solid state
+###{{dn|Ultrasonic}}
+###Explosive
+###Diffusion
+####Machine press|Hot press
+####Isostatic hot gas
+####Vacuum furnace
+###Friction welding
+###Inertia
+###Forge
+###Cold welding|Cold
+###{{dn|Roll}}
+##Electron beam welding
+##Laser welding
+##Pencil
+###How Pencil made
+###Solid state (manufacturing)|Solid state
+###Axial-flow gas
+###Cross-flow gas
+##Thermite
+##Induction welding|Induction
+###Low frequency (50-450 Hz)
+###High frequency (induction resistance; 200-450 kHz)
+##Other types of welding
+###Friction welding
+###Heated metal plate
+###Solvent
+###Dielectric
+###Magnetics
+###Ultrasound|Ultrasonic
+###Radio frequency welding
+###High frequency resistance
+###{{dn|Electromagnetic}}
+###{{dn|Flow}}
+###Resistance welding|Resistance
+###Infrared
+###Vacuum
+###Hot-air-welding
+#Brazing
+##Torch
+##Induction heating|Induction
+##Furnace
+##{{dn|Dip}}
+#Soldering
+##Iron
+##Hot plate
+##Oven
+##Induction heating|Induction
+##{{dn|Dip}}
+##Wave
+##{{dn|Ultrasonic}}
+#Sintering
+#Adhesive bonding (incomplete)
+##Thermosetting plastic|Thermo-setting and thermoplastic
+##Epoxy
+##Modified epoxy
+##Phenolics
+##Polyurethane
+##Adhesive alloys
+##Miscellaneous other powders, liquids, solids, and tapes
+#Fastener|Fastening wood and metal
+##nail (engineering)|Nailing
+##Screwing
+## (By material fastened)
+###Machine (Metal)
+###Wood Screws
+## (By slot type)
+###Phillips ("Plus sign" in Canada)
+###Straight ("Minus sign in Canada)
+## (By shape)
+###Round head
+###Flat head
+###Box head
+###Hex
+###Lag
+##Nut (hardware)| Nuts and {{dn|Bolting|bolting}}
+##Riveting
+##Pining
+###Cotter pin|Cotter
+###Groove (machining)|Groove
+###Tapered
+###{{dn|Roll}}
+###Retaining rings
+###Quick-release
+#Stitching
+#Stapling
+#Press fitting
+
+==Rapid manufacturing==
+{{main|Rapid manufacturing}}
+##Stereolithography
+#Selective laser sintering
+#Fused deposition modeling
+#Three dimensional printing
+#Laminated object manufacturing
+#Laser engineered net shaping
+
+==Other trades==
+#Mining
+##quarrying
+##Blasting
+#Woodworking
+##Joinery (see also joining above)
+###Lapping
+###Morticing
+###Wood router|Routing (see above)
+###Biscuit (woodworking)
+
+Category:Manufacturing
+Category:Metalworking
+Category:Woodworking
