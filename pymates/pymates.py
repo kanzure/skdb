@@ -185,10 +185,9 @@ def mate_parts(event=None):
     print "old point = \n", total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
     #numpy.matrix([[1,2],[3,4]]).getA()[0] = [1,2].
     thingy = total_parts[1].transform#[0][3]
-    print "thingy = ", thingy
-    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[0] = thingy
-    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[1] = total_parts[1].transform[1][3]
-    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[2] = total_parts[1].transform[2][3]
+    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[0] = (total_parts[1].transform.tolist())[0][3]
+    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[1] = total_parts[1].transform.tolist()[1][3]
+    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[2] = total_parts[1].transform.tolist()[2][3]
     print "new point = \n", total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
 
     #o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
