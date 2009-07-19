@@ -1,22 +1,21 @@
-title:"low hanging fruit"
+title: "low hanging fruit"
 
 mice: &mice
-  kidney-targeted plain-DNA transformation
+  kidney-targeted plain-DNA transformation:
 
 enhancement drugs:
   modafinil:
   myostatin inhibitors: *mice
   rsc-14 visual memory:
 
-photolithography: &photolithography
-
-microfluidics: *photolithography
-  dna sequencing:
-    nanopore:
-  dna synthesis:
-  protein purification
-  in vitro compartmentalization
-  nanowell virus capture:
+photolithography:
+  microfluidics: 
+    dna sequencing:
+        nanopore:
+    dna synthesis:
+    protein purification:
+    in vitro compartmentalization:
+    nanowell virus capture:
 
 low tech microfluidics:
   uv lithography:
@@ -34,7 +33,7 @@ neuro:
   rTMS:
   infrared stim:
   tissue culture: &neuro-tc
-    synthetic neurobiology
+    synthetic neurobiology:
 
 uploading:
   brain slicer:
