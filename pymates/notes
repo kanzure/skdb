@@ -156,5 +156,6 @@ then apply this T to the whole part
 
 AB^-1 = T
 find the inverse of B
+B dot B^-1 = identity matrix 
 Kramer's rule? (see Wikipedia)
-
+http://stackoverflow.com/questions/211160/python-inverse-of-a-matrix
