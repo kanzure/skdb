@@ -1,12 +1,16 @@
 title: "low hanging fruit"
 
+bio-lab:
+    tobacco geneng protein secretion:
+
 mice: &mice
   kidney-targeted plain-DNA transformation:
 
-enhancement drugs:
-  modafinil:
-  myostatin inhibitors: *mice
-  rsc-14 visual memory:
+chem-lab:
+  enhancement drugs:
+    modafinil:
+    myostatin inhibitors: *mice
+    rsc-14 visual memory:
 
 photolithography:
   microfluidics: 
