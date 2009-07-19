@@ -1,0 +1,58 @@
+title:"low hanging fruit"
+
+mice: &mice
+  kidney-targeted plain-DNA transformation
+
+enhancement drugs:
+  modafinil:
+  myostatin inhibitors: *mice
+  rsc-14 visual memory:
+
+photolithography: &photolithography
+
+microfluidics: *photolithography
+  dna sequencing:
+    nanopore:
+  dna synthesis:
+  protein purification
+  in vitro compartmentalization
+  nanowell virus capture:
+
+low tech microfluidics:
+  uv lithography:
+  pcr:
+  ultrasonic laser micropipet:
+
+
+robotics:
+  exoskeletons:
+  intermediate manufacturing capability:
+
+wearables:
+
+neuro:
+  rTMS:
+  infrared stim:
+  tissue culture: &neuro-tc
+    synthetic neurobiology
+
+uploading:
+  brain slicer:
+
+instrumentation:
+  AFM/STM:
+    dna sequencing:
+
+tissue culture:
+  stem cell:
+    germline cells:
+    regrow teeth/hair:
+  neuro: *neuro-tc
+
+basic manufacturing capabilities:
+  
+computer stuff:
+  skdb:
+  communication matrix:
+  sci-pirate tech:
+  
