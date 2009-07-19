@@ -132,8 +132,8 @@ def demo2(event=None, part=Part()):
         part = total_parts[0]
         if len(part.interfaces) == 0: return #ok I give up
     #select the first interface
-    interface = part.interfaces[part.interfaces.keys()[0]]
-    point = interface.point
+    interface = part.interfaces[part.interfaces.keys()[0]][0]
+    point = interface[part.interfaces.keys()[0]][0].point
     i = interface.i
     j = interface.j
     k = interface.k
@@ -182,11 +182,14 @@ def mate_parts(event=None):
     result = numpy.matrix(total_parts[0].transform) * T
     print "result = \n", result
     total_parts[1].transform = result #this doesn't do anything
-    print "old point = \n", total_parts[1].interfaces.point
-    total_parts[1].interfaces[0].point[0] = total_parts[1].transform[0][3]
-    total_parts[1].interfaces[0].point[1] = total_parts[1].transform[1][3]
-    total_parts[1].interfaces[0].point[2] = total_parts[1].transform[2][3]
-    print "new point = \n", total_parts[1].point
+    print "old point = \n", total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
+    #numpy.matrix([[1,2],[3,4]]).getA()[0] = [1,2].
+    thingy = total_parts[1].transform#[0][3]
+    print "thingy = ", thingy
+    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[0] = thingy
+    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[1] = total_parts[1].transform[1][3]
+    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[2] = total_parts[1].transform[2][3]
+    print "new point = \n", total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
 
     #o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
     #o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
