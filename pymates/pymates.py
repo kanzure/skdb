@@ -14,7 +14,7 @@ import os
 import time
 import random
 import geom
-#import numpy
+import numpy
 import wx
 import OCC.gp
 import OCC.BRepPrimAPI
@@ -46,6 +46,13 @@ class Part(yaml.YAMLObject):
             result = OCC.Display.wxSamplesGui.display.DisplayShape(self.shapes)
             if type(result) == type([]): self.ais_shapes = result[0]
             else: self.ais_shapes = result
+        i, j, k, point = self.interfaces[self.interfaces.keys()[0]].i, self.interfaces[self.interfaces.keys()[0]].j, self.interfaces[self.interfaces.keys()[0]].k, self.interfaces[self.interfaces.keys()[0]].point
+        self.transform = [
+            [i[0], j[0], k[0], point[0]],
+            [i[1], j[1], k[1], point[1]],
+            [i[2], j[2], k[2], point[2]],
+            [0, 0, 0, 1]
+            ]
         return
     def __repr__(self):
         return "%s(description=%s, created=%s, files=%s, interfaces=%s)" % (self.__class__.__name__, self.description, self.created, self.files, self.interfaces)
@@ -77,7 +84,7 @@ class Interface(yaml.YAMLObject):
     a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry'''
     yaml_tag = '!interface'
     def __init__(self, name="generic interface name", units=None, geometry=None, point=[0,0,0], i=[0,0,0], j=[0,0,0], k=[0,0,0]):
-        self.name, self.units, self.geometry, self.point, self.i, self.j, self.k = name, units, geometry, points, i, j, k
+        self.name, self.units, self.geometry, self.point, self.i, self.j, self.k = name, units, geometry, points, numpy.matrix(i), numpy.matrix(j), numpy.matrix(k)
     def __repr__(self):
         return "Interface(name=%s,units=%s,geometry=%s,point=%s,i=%s,j=%s,k=%s)" % (self.name, self.units, self.geometry, self.point, self.i, self.j, self.k)
     def yaml_repr(self):
@@ -163,7 +170,33 @@ def load_cad_file(event=None, filename=""):
 
 def mate_parts(event=None):
     #mate all of the parts in the workspace
-    pass
+    if len(total_parts) < 1: return #meh
+    print "numpy.matrix(total_parts[0].transform) = \n", numpy.matrix(total_parts[0].transform)
+    print "numpy.matrix(total_parts[1].transform) = \n", numpy.matrix(total_parts[1].transform)
+    print "numpy.matrix(total_parts[0].transform).I = \n", numpy.matrix(total_parts[0].transform).I
+    T = numpy.matrix(total_parts[1].transform) * numpy.matrix(total_parts[0].transform).I
+    print "the transform T is = \n", T
+    #T = (A * B.I)
+    #A = B * (A * B.I)
+    #B = A * T
+    result = numpy.matrix(total_parts[0].transform) * T
+    print "result = \n", result
+    total_parts[1].transform = result #this doesn't do anything
+    print "old point = \n", total_parts[1].interfaces.point
+    total_parts[1].interfaces[0].point[0] = total_parts[1].transform[0][3]
+    total_parts[1].interfaces[0].point[1] = total_parts[1].transform[1][3]
+    total_parts[1].interfaces[0].point[2] = total_parts[1].transform[2][3]
+    print "new point = \n", total_parts[1].point
+
+    #o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
+    #o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
+    #o_vx_vec = OCC.gp.gp_Dir(j[0], j[1], j[2])
+    #ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
+    #the_transform = OCC.gp.gp_Trsf()
+    #the_transform.SetTransformation(ax3)
+    #the_toploc = OCC.TopLoc.TopLoc_Location(the_transform)
+    
+    return
 
 def move_parts(event=None):
     if len(total_parts) == 0: return

@@ -17,6 +17,6 @@ blockhole: !part
         #tag the geometry (simple primitives only please)
         geometry: 'circle' #!circle
         point: [0, 0, 0] #xyz
-        i: [0, 0, 1]
+        i: [1, 0, 1]
         j: [1, 1, 1]
-        k: [0, 0, 0]
+        k: [1, 0, 0]
