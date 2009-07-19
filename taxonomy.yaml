@@ -1,4 +1,7 @@
-source: manufacturing processes reference guide, 1993 first edition. todd, allen, and alting.
+sources:
+-   manufacturing processes reference guide, 1993 first edition. todd, allen, and alting.
+-   http://en.wikipedia.org/wiki/Separation_processes
+-   http://en.wikipedia.org/wiki/Taxonomy_of_manufacturing_processes
 
 process:
   shaping:
@@ -347,4 +350,194 @@ process:
           wire brush:
           polishing: &polishing
           buffing: *polishing
+    separation:
+        binary:
+            magnetic:
+            polarity:
+                deinking:
+                oil-water:
+            phase change:
+                electrowinning:
+                zone refining:
+                sublimation:
+                evaporation:
+                drying:
+                precipitation:
+                crystallization:
+                    recrystallization:
+                distillation:
+                    fractional:
+                freezing:
+            gas-gas: #for completeness
+            gas-liquid:
+                demisting:
+                souders-brown: #wtf is this called
+            gas-solid:
+                cyclone:
+                elutriation:
+                adsorption:
+                filtration:
+            gas-solid-liquid:
+                flotation:
+                    froth:
+                    dissolved-air:
+            liquid-liquid:
+                extraction:
+            liquid-solid:
+                stripping:
+                sedimentation:
+                flocculation:
+                leaching:
+                filtration:
+                    reverse osmosis: #is this really filtration?
+            solid-solid:
+                sieving:
+        gradient:
+            chromatography:
+            electrophoresis:
+            liquid-solid:
+                dialysis:
+            solid-gas:
+                elutriation:
+
+---
+more grist for the mill; much of this may be irrelevant or redundant
+
+carpentry
+mortar/cement
+
+cultured living organisms
+
+
+Spinning/Weaving
+Felting: 
+Spinning, hand, machine: 
+Spinneret Extrusion: 
+Looms, hand, machine, digital: 
+Knitting, hand, machine, digital: 
+Embroidery: 
+Tanning/Leatherworking: 
+
+ 
+Papermaking
+Parchment: 
+Vellum: 
+Pulp Paper: 
+Synthetic: 
+
+ 
+Bookbinding
+Hard Cover: 
+Soft Cover: 
+
+ 
+Sculpting
+Hand Sculpting: 
+Papier Mache: 
+Origami: 
+
+ 
+Lithic Reduction
+Knapping 
+Lapping: 
+Faceting: 
+Polishing: 
+Potterywork
+Hand Forming: 
+Coiling: 
+Throwing (wheel pottery): 
+Jiggering (wheel lathing): 
+
+ 
+Glassmaking
+Blown: 
+Free-Form: 
+Crown: 
+Cylinder: 
+Blown formed: 
+Lampworking: 
+Caneworking: 
+Cast: 
+Pressed: 
+Rolled: 
+Float Glass: 
+Carving/Grinding: 
+Wood/Stone/Crystal: 
+Smelting: 
+Machining
+Breaks, Benders: 
+Die-Cutters: 
+Milling (drills, saws, grinders, sanders, routers, lathes, multi-axis milling): 
+
+ 
+CNC
+Flat-Bed Routers: 
+Sign Cutters: 
+Hydrocutters: 
+Laser Cutters, Drills, Engravers: 
+Forming
+Hammer Shaping/Blacksmithing: 
+Presses/Stampers: 
+Casting/Molding: 
+Investment Casting: 
+Die Casting: 
+Embeddment/Suspension Casting: 
+Compression Molding: 
+Thermoforming: 
+Vacuum Forming: 
+Blow-Molding: 
+Injection Molding: 
+Rotomolding: 
+Laminating: 
+Extrusion: 
+Surfacing: 
+Painting: 
+Etching, Relief Carving: 
+Tiling, Mosaic, Inlay: 
+Decoupage: 
+Lithography/Printing
+Traditional: 
+Plate (fixed and rotary): 
+Photolithography: 
+Xerography: 
+Digital Xerography: 
+Digital Impact: 
+Thermal Print: 
+Thermojet (inkjet): 
+Beam (electron, ion): 
+Laser Engraving, 3D Engraving: 
+Laser Bonding: 
+
+ 
+Fabbing/Rapid Prototyping/Stereo Lithography/3D Printing
+
+Modular Building Systems
+
+Waste/Recycling
+Waste To Feedstock Reduction: Design For Reuse: Upcycling: Waste To Energy Conversion:
+
+ 
+Nanotechnology
+Chemosynthesis: Protein Systems: Statistical Assembly/Sequencers/Mixer Plants: Mechanosynthesis: Desktop ATM Systems/NanoLathes: Biosynthesis:
+
+Agricultural Techniques
+Conventional: 
+Organic: 
+Container Farming: 
+Hydroponics: 
+Living Machine Systems: Air: Plant Air Purifiers: Water: Graywater Systems: Sewerage Systems: Natural Swimming Pools: Abatement Barges/Floats: CELSS (closed environment life support systems): Drip Irrigation: Flood/Drain: NFT: Aeroponics: Semi-Permeable Pressurized Grow-Structures: Curtain Systems: Raft/Trough Systems: Rotating/Moving Frame Systems: 
+Cold-Bed Farming: 
+Permaculture: 
+Terra Preta: 
+Mariculture: 
+Mono-Species: Pen: Tank: Containerized: Frame: 
+Poly-Species: 
+Deep Water Fed Poly-Species: 
+Free-Range Fish Farming: 
+Algaeculture: Trough: Tank: Solar Panel: Flex Tube or Curtain: 
+Animal Husbandry: 
+
+
+
+
 

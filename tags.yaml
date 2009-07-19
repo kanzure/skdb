@@ -13,15 +13,15 @@ morestuff: !unit
 thread: !which foo, thread #thread depends on which value foo has
 anotherstuff: !which stuff
 
-foo: 
-- &screw !!python/object:skdb.Screw
+foo:
+- !screw
  grade: '3'
  length: 1in
- thread: !!python/object:skdb.Thread {diameter: in/4, form: UN, pitch: 20/rev}
-- !!python/object:skdb.Screw
+ thread: !thread {diameter: in/4, form: UN, pitch: 20/rev}
+- !screw
  grade: '3'
  length: 1in
- thread: !!python/object:skdb.Thread
+ thread: !thread
     diameter: in/4
     form: UN 
     pitch: 20/rev
