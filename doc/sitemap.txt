@@ -1,0 +1,17 @@
+Login
+	Logout
+	Add Site
+	Manage Site
+		Manage Equipment
+			Add Equipment
+		Manage Users
+			- Types: (Users, Managers, Owners?)
+		
+	Add Equipment Type
+	Add Capability
+	
+Search
+	Find Site
+	Find Equipment by Capability
+	Find Equipment by Type
+	
