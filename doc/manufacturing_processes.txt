@@ -17,7 +17,6 @@
 #Spray forming
 
 ==Molding==
-{{main|Molding (process)}}
 
 #Powder metallurgy
 ##Compaction plus sintering
@@ -27,7 +26,7 @@
 #Plastics (see also rapid-prototyping)
 ##Injection molding|Injection
 ##Compression
-##{{dn|Transfer}}
+##Transfer
 ##Extrusion
 ##Blow molding
 ##Dip Molding
@@ -51,7 +50,7 @@
 ##Hammer forge
 ##Drop forge
 ##Machine press|Press
-##{{dn|Impact}} (see also Extrusion)
+##Impact (see also Extrusion)
 ##Upset
 ##No draft
 ##High-energy-rate
@@ -64,7 +63,7 @@
 ##Sheet metal
 ##Shape
 ##wiktionary:ring|Ring
-##{{dn|Transverse}}
+##Transverse
 ##Orbital
 ##Cross-rolling
 ##Screw thread|Thread
@@ -73,17 +72,17 @@
 ##Embossing
 ##Stretch forming
 ##Die (manufacturing)|Blanking (see drawing below)
-##Drawing (manufacturing) (<em>pulling</em> sheet metal. wire, {{dn|Rod|bar}} or {{dn|Tube|tube}})
+##Drawing (manufacturing) (pulling sheet metal. wire, bar or tube)
 ###Bulging
-###{{dn|Necking}}
+###Necking
 ###Nosing
 ###Oil-canning
 ##Deep drawing (sinks, auto body)
 #Bending
-##{{dn|Hemming}}
-#Shearing (metalworking)|Shearing
-##Piercing (metalworking)|Piercing
-###{{dn|Trimming}}
+##Hemming
+#Shearing (metalworking)
+##Piercing (metalworking)
+###Trimming
 ###Piercing (metalworking)#Shaving|Shaving
 ###Notching
 ###Perforating
@@ -119,7 +118,6 @@
 ##Hubbing
 
 ==Machining==
-{{main|Machining}}
 
 #Milling machine|Mills
 ##Grist mill
@@ -139,9 +137,9 @@
 ###Passivate
 ###Coating
 #Milling machine|Milling
-##{{dn|Cut}}
+##Cut
 ##Shearing (metalworking)|Shear
-##{{dn|Shredder (device)|Shred}}
+##Shredder (device)|Shred
 ##Fiberize
 ##Pulverize
 ##Crusher|Crushing
@@ -150,11 +148,11 @@
 ###Rollers
 ###Edge runner
 ##Granulate
-##{{dn|Crack}}
-##{{dn|Rub}}
-##{{dn|Curl}}
-##{{dn|Fluff}}
-##{{dn|Twist}}
+##Crack
+##Rub
+##Curl
+##Fluff
+##Twist
 ##Husk|Hull
 ##Blend
 ##Refine
@@ -235,7 +233,7 @@
 ###Submerged arc welding|Submerged
 ###Plasma arc
 ###Carbon arc
-###{{dn|Stud}}
+###Stud
 ###Electroslag
 ###Atomic hydrogen
 ###Plasma-MIG (metal inert gas)
@@ -250,13 +248,13 @@
 ##Resistance welding|Resistance
 ###Spot welding
 ###Shot welding
-##{{dn|Projection}}
+##Projection
 ##Seaming (metalworking)|Seam
 ##Flash butt (flash)
 ##Upset (butt)
 ##Percussion (manufacturing)
 ##Solid state (manufacturing)|Solid state
-###{{dn|Ultrasonic}}
+###Ultrasonic
 ###Explosive
 ###Diffusion
 ####Machine press|Hot press
@@ -266,7 +264,7 @@
 ###Inertia
 ###Forge
 ###Cold welding|Cold
-###{{dn|Roll}}
+###Roll
 ##Electron beam welding
 ##Laser welding
 ##Pencil
@@ -287,8 +285,8 @@
 ###Ultrasound|Ultrasonic
 ###Radio frequency welding
 ###High frequency resistance
-###{{dn|Electromagnetic}}
-###{{dn|Flow}}
+###Electromagnetic
+###Flow
 ###Resistance welding|Resistance
 ###Infrared
 ###Vacuum
@@ -297,15 +295,15 @@
 ##Torch
 ##Induction heating|Induction
 ##Furnace
-##{{dn|Dip}}
+##Dip
 #Soldering
 ##Iron
 ##Hot plate
 ##Oven
 ##Induction heating|Induction
-##{{dn|Dip}}
+##Dip
 ##Wave
-##{{dn|Ultrasonic}}
+##Ultrasonic
 #Sintering
 #Adhesive bonding (incomplete)
 ##Thermosetting plastic|Thermo-setting and thermoplastic
@@ -330,13 +328,13 @@
 ###Box head
 ###Hex
 ###Lag
-##Nut (hardware)| Nuts and {{dn|Bolting|bolting}}
+##Nuts and bolting
 ##Riveting
 ##Pining
 ###Cotter pin|Cotter
 ###Groove (machining)|Groove
 ###Tapered
-###{{dn|Roll}}
+###Roll
 ###Retaining rings
 ###Quick-release
 #Stitching
@@ -344,7 +342,6 @@
 #Press fitting
 
 ==Rapid manufacturing==
-{{main|Rapid manufacturing}}
 ##Stereolithography
 #Selective laser sintering
 #Fused deposition modeling
@@ -360,9 +357,5 @@
 ##Joinery (see also joining above)
 ###Lapping
 ###Morticing
-###Wood router|Routing (see above)
+###Wood routing (see above)
 ###Biscuit (woodworking)
-
-Category:Manufacturing
-Category:Metalworking
-Category:Woodworking
