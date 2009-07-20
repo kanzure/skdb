@@ -7,4 +7,4 @@ import pymates
 
 pymates.demo()
 pymates.mate_parts()
-
+raw_input("I hate you")

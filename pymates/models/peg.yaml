@@ -16,7 +16,7 @@ peg: !part
         units: 4N
         #tag the geometry (simple primitives only please)
         geometry: 'circle' #!circle
-        point: [0, 10, 0] #xyz
+        point: [5, 5, -10] #xyz
         i: [0, 0, 1]
         j: [0, 0, 1]
         k: [0, 0, 1]
