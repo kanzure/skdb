@@ -213,7 +213,19 @@ def mate_parts(event=None):
     transform2 = OCC.gp.gp_Trsf()
     transform2.SetTransformation(ax3)
     toploc = OCC.TopLoc.TopLoc_Location(transform2)
-   
+    
+    ##Build original shape
+    #original_shape = BRepPrimAPI_MakeWedge(60.,100.,80.,20.).Shape()
+    ##Define transformation
+    #transformation = OCC.gp.gp_Trsf()
+    #pnt_center_of_the_transformation = OCC.gp.gp_Pnt(110.,60.,60.)
+    #V = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(pnt_center_of_the_transformation)
+    #transformation.SetMirror(pnt_center_of_the_transformation)
+    ##Apply the transformation
+    #my_brep_transformation = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(original_shape, transformation)
+    #transformed_shape = my_brep_transformation.Shape()
+    ##now display original_shape and transformed_shape()
+
     #take the cross product o_n_vec and o_vx_vec - check if they are consistent with themselves (if they are orthogonal)
     #which gives you what to put in the center column
     #now find out the 2nd column in the 4x4 (the missing vy_vec in the 4x4)
