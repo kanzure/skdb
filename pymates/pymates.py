@@ -201,16 +201,29 @@ def mate_parts(event=None):
     interface = total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]]
     i, j, k = interface.i, interface.k, interface.j
     
-    o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
-    o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
+    o_point = OCC.gp.gp_Pnt(point[0], point[1]-10, point[2]-5)
+    o_n_vec = OCC.gp.gp_Dir(0,0,1)#(i[0], i[1], i[2])
     print "the j vector is going to be: ", j
-    o_vx_vec = OCC.gp.gp_Dir(1,0,-1)#j[0], j[1], j[2])
+    o_vx_vec = OCC.gp.gp_Dir(0,1,0)#j[0], j[1], j[2])
+    # pymates.move(pymates.total_parts[1], 5,5,-10, 0,0,1, -1,0,1)
     ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
     transform2 = OCC.gp.gp_Trsf()
     transform2.SetTransformation(ax3)
     toploc = OCC.TopLoc.TopLoc_Location(transform2)
     
     OCC.Display.wxSamplesGui.display.Context.SetLocation(total_parts[1].ais_shapes, toploc)
+    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
+    return
+
+def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
+    o_point = OCC.gp.gp_Pnt(x,y,z)
+    o_n_vec = OCC.gp.gp_Dir(i1,i2,i3)
+    o_vx_vec = OCC.gp.gp_Dir(j1,j2,j3)
+    ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
+    transform = OCC.gp.gp_Trsf()
+    transform.SetTransformation(ax3)
+    toploc = OCC.TopLoc.TopLoc_Location(transform)
+    OCC.Display.wxSamplesGui.display.Context.SetLocation(my_part.ais_shapes, toploc)
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
