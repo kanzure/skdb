@@ -145,6 +145,8 @@ def demo2(event=None, part=Part()):
     o_vx_vec = OCC.gp.gp_Dir(j[0], j[1], j[2])
     ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
     the_transform = OCC.gp.gp_Trsf()
+    #myax = OCC.gp.gp_Ax3( blah )
+    #myax.Transform(the_transform)
     the_transform.SetTransformation(ax3)
     the_toploc = OCC.TopLoc.TopLoc_Location(the_transform)
     #import OCC.AIS
@@ -211,7 +213,23 @@ def mate_parts(event=None):
     transform2 = OCC.gp.gp_Trsf()
     transform2.SetTransformation(ax3)
     toploc = OCC.TopLoc.TopLoc_Location(transform2)
-    
+   
+    #take the cross product o_n_vec and o_vx_vec - check if they are consistent with themselves (if they are orthogonal)
+    #which gives you what to put in the center column
+    #now find out the 2nd column in the 4x4 (the missing vy_vec in the 4x4)
+    # a cross b = magnitude(a)*magnitude(b) * sin theta * (n - the unit vector perpendicular to the plane containing a & b)
+    # you want theta to be 90
+    # sqrt ( Vyx^2 + Vyy^2 + Vyz^2) = absolute value of Vy
+    # absolute value of Vy = absolute value of Vn * absolute value of Vx    * sin(theta)
+    # theta = arcsin( sqrt(Vyx^2 + vyy^2 + Vyz^2) / (absolute value of Vn * absolute value of Vx) )
+    # arcsin(1) = 90 degrees
+    # figure out that cross product to figure out the central term
+    # check that the magnitudes of Vn and Vx equal the magnitude of Vy .. |Vn|*|Vx| must = |Vy|
+
+    #change it to a cone (instead of a peg)
+    #now to get the z vectors correct.
+    #rotate the interface first by its x-axis (180 degrees) (swap the signs of all values in 2nd&3rd columns)
+
     OCC.Display.wxSamplesGui.display.Context.SetLocation(total_parts[1].ais_shapes, toploc)
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
