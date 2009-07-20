@@ -187,18 +187,17 @@ def mate_parts(event=None):
     print "old point = \n", total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
     #numpy.matrix([[1,2],[3,4]]).getA()[0] = [1,2].
     thingy = total_parts[1].transform#[0][3]
-    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[0] = (total_parts[1].transform.tolist())[0][3]
-    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[1] = total_parts[1].transform.tolist()[1][3]
-    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point[2] = total_parts[1].transform.tolist()[2][3]
+    interface = total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]]
+    interface.point[0] = (total_parts[1].transform.tolist())[0][3]
+    interface.point[1] = total_parts[1].transform.tolist()[1][3]
+    interface.point[2] = total_parts[1].transform.tolist()[2][3]
     print "new point = \n", total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
 
-    point = total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
+    point = interface.point
     lresult = result.tolist()
-    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].i = [lresult[0][0], lresult[1][0], lresult[2][0]]
-    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].j = [lresult[0][1], lresult[1][1], lresult[2][1]]
-    total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].k = [lresult[0][2], lresult[1][2], lresult[2][2]]
-    
-    interface = total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]]
+    interface.i = [lresult[0][0], lresult[1][0], lresult[2][0]]
+    interface.j = [lresult[0][1], lresult[1][1], lresult[2][1]]
+    interface.k = [lresult[0][2], lresult[1][2], lresult[2][2]]
     i, j, k = interface.i, interface.k, interface.j
     
     o_point = OCC.gp.gp_Pnt(point[0], point[1]-10, point[2]-5)
