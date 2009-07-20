@@ -61,17 +61,17 @@ class Part(yaml.YAMLObject):
         return "%s(description=%s, created=%s, files=%s, interfaces=%s)" % (self.__class__.__name__, self.description, self.created, self.files, self.interfaces)
     def yaml_repr(self):
        return "description: %s\ncreated: %s\nfiles: %s\ninterfaces: %s" % (self.description, self.created, self.files, self.interfaces)
-    def __setstate__(self, attrs):
-        #print "Part.__setstate__ says attrs = ", attrs
-        for (k,v) in attrs.items():
-            #self.__setattr__(each[0],each[1])
-            if type(v) == Interface:
-                v.name = k
-                if hasattr(self, "interfaces"): self.interfaces[k] = v
-                else:
-                    self.interfaces = {}
-                    self.interfaces[k] = v
-            self.__setattr__(k,v)
+    #def __setstate__(self, attrs):
+        ##print "Part.__setstate__ says attrs = ", attrs
+        #for (k,v) in attrs.items():
+            ##self.__setattr__(each[0],each[1])
+            #if type(v) == Interface:
+                #v.name = k
+                #if hasattr(self, "interfaces"): self.interfaces[k] = v
+                #else:
+                    #self.interfaces = {}
+                    #self.interfaces[k] = v
+            #self.__setattr__(k,v)
     #@classmethod
     #def to_yaml(cls, dumper, data):
     #    return dumper.represent_mapping(cls.yaml_tag, cls.yaml_repr(data))

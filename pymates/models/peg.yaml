@@ -12,7 +12,9 @@ peg: !part
     files: #these are all the same
         #- 'models/block-with-hole.iges'
         - 'models/peg.step'
-    end: !interface
+    interfaces:
+    -   !interface
+        name: peg
         units: 4N
         #tag the geometry (simple primitives only please)
         geometry: 'circle' #!circle

@@ -12,7 +12,9 @@ blockhole: !part
     files: #these are all the same
         #- 'models/block-with-hole.iges'
         - 'models/block-with-hole.step'
-    hole: !interface
+    interfaces
+    -   !interface
+        name: hole
         units: 4N
         #tag the geometry (simple primitives only please)
         geometry: 'circle' #!circle
