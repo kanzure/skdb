@@ -20,7 +20,9 @@ function Site() {
 		},
 		
 		GetSite(siteid) {
-		
+			if (!siteid) {
+				// Pís.
+			}
 		},
 		
 		AddSite() {
