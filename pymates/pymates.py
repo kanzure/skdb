@@ -23,7 +23,7 @@ import OCC.BRepBuilderAPI
 import OCC.Display.wxSamplesGui
 import OCC.Utils.DataExchange.STEP
 import geom
-import mate
+import assembly
 
 total_parts = []
 
