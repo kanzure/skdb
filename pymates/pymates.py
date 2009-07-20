@@ -9,14 +9,12 @@
 #see ~/local/pythonOCC/samples/Level2/DataExchange/import_step_multi.py
 #see ~/local/pythonOCC/samples/Level1/TopologyTransformation/mirror.py
 
-
 import yaml
 import re
 import os
 #os.environ['CSF_GraphicShr'] = r"/usr/lib/libTKOpenGl.so"
 import time
 import random
-import geom
 import numpy
 import wx
 import OCC.gp
@@ -24,6 +22,8 @@ import OCC.BRepPrimAPI
 import OCC.BRepBuilderAPI
 import OCC.Display.wxSamplesGui
 import OCC.Utils.DataExchange.STEP
+import geom
+import mate
 
 total_parts = []
 
@@ -221,7 +221,9 @@ def mate_parts(event=None):
     #pnt_center_of_the_transformation = OCC.gp.gp_Pnt(110.,60.,60.)
     #V = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(pnt_center_of_the_transformation)
     #transformation.SetMirror(pnt_center_of_the_transformation)
+    ##see also transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
     ##Apply the transformation
+    ##like by P2 = P1.Transformed(transformation) - but not all Shape() objects have a Transformed(?) method
     #my_brep_transformation = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(original_shape, transformation)
     #transformed_shape = my_brep_transformation.Shape()
     ##now display original_shape and transformed_shape()
@@ -242,8 +244,7 @@ def mate_parts(event=None):
     #now to get the z vectors correct.
     #rotate the interface first by its x-axis (180 degrees) (swap the signs of all values in 2nd&3rd columns)
 
-    OCC.Display.wxSamplesGui.display.Context.SetLocation(total_parts[1].ais_shapes, toploc)
-    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
+    OCC.Display.wxSamplesGui.display.DisplayShape(shape_here)
     return
 
 def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
@@ -280,6 +281,15 @@ def move_parts(event=None):
     the_toploc = OCC.TopLoc.TopLoc_Location(the_transform)
     OCC.Display.wxSamplesGui.display.Context.SetLocation(working_shape, the_toploc)
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
+    return
+
+def add_part_mate(part_1_interface, part_2_interface):
+    #mate interface 1 to interface 2 (move part 1)
+    #return the ID of the shape transformation added to the part object
+    return
+
+def show_part_mate(part_mate_object):
+    #look at the part_mate_object and DisplayShape() the shape with the right coordinate system
     return
 
 def start():
