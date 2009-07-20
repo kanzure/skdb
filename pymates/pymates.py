@@ -2,6 +2,9 @@
 #pymates
 #ipython -wthread -c "import pymates" -i
 #pymates.start()
+#pymates.demo()
+#pymates.mate_parts()
+#optionally, pymates.move(pymates.total_parts[0],x,y,z,i,i,i,j,j,j)
 
 #see ~/local/pythonOCC/samples/Level2/DataExchange/import_step_multi.py
 #see ~/local/pythonOCC/samples/Level1/TopologyTransformation/mirror.py
@@ -186,7 +189,6 @@ def mate_parts(event=None):
     total_parts[1].transform = result #this doesn't do anything
     print "old point = \n", total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
     #numpy.matrix([[1,2],[3,4]]).getA()[0] = [1,2].
-    thingy = total_parts[1].transform#[0][3]
     interface = total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]]
     interface.point[0] = (total_parts[1].transform.tolist())[0][3]
     interface.point[1] = total_parts[1].transform.tolist()[1][3]
