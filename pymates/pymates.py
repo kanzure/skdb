@@ -49,7 +49,7 @@ class Part(yaml.YAMLObject):
             result = OCC.Display.wxSamplesGui.display.DisplayShape(self.shapes)
             if type(result) == type([]): self.ais_shapes = result[0]
             else: self.ais_shapes = result
-        i, j, k, point = self.interfaces[self.interfaces.keys()[0]].i, self.interfaces[self.interfaces.keys()[0]].j, self.interfaces[self.interfaces.keys()[0]].k, self.interfaces[self.interfaces.keys()[0]].point
+        i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
         self.transform = [
             [i[0], j[0], k[0], point[0]],
             [i[1], j[1], k[1], point[1]],
@@ -189,13 +189,13 @@ def mate_parts(event=None):
     result = numpy.matrix(total_parts[0].transform) * T
     print "result = \n", result
     total_parts[1].transform = result #this doesn't do anything
-    print "old point = \n", total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
+    print "old point = \n", total_parts[1].interfaces[0].point
     #numpy.matrix([[1,2],[3,4]]).getA()[0] = [1,2].
-    interface = total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]]
+    interface = total_parts[1].interfaces[0]
     interface.point[0] = (total_parts[1].transform.tolist())[0][3]
     interface.point[1] = total_parts[1].transform.tolist()[1][3]
     interface.point[2] = total_parts[1].transform.tolist()[2][3]
-    print "new point = \n", total_parts[1].interfaces[total_parts[1].interfaces.keys()[0]].point
+    print "new point = \n", interface.point
 
     point = interface.point
     lresult = result.tolist()
@@ -244,7 +244,7 @@ def mate_parts(event=None):
     #now to get the z vectors correct.
     #rotate the interface first by its x-axis (180 degrees) (swap the signs of all values in 2nd&3rd columns)
 
-    OCC.Display.wxSamplesGui.display.DisplayShape(shape_here)
+    #OCC.Display.wxSamplesGui.display.DisplayShape(shape_here)
     return
 
 def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
