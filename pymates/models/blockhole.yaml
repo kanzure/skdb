@@ -12,7 +12,7 @@ blockhole: !part
     files: #these are all the same
         #- 'models/block-with-hole.iges'
         - 'models/block-with-hole.step'
-    interfaces
+    interfaces:
     -   !interface
         name: hole
         units: 4N
