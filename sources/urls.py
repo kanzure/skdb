@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     (r'^$', 'basesite.views.index'),
 
     (r'^dmed/$', 'fabmap.views.index'),
+    (r'^dmed/getsite', 'fabmap.views.getsite'),
     (r'^dmed/addsite', 'fabmap.views.addsite'),
     (r'^dmed/search', 'fabmap.views.search'),
     (r'^dmed/sitedetails', 'fabmap.views.sitedetails'),

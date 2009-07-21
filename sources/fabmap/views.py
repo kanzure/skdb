@@ -21,6 +21,24 @@ def search(request):
 		# FIXME: This isn't actually a real search function at the moment.
 		return HttpResonse(simplejson.encode(GetSiteList()))
 
+def setsite(request):
+	if not request.has_key('siteid'):
+		return HttpResponse(simplejson.encode({'error': 'Must supply site ID'}))
+	
+	siteid = request.GET['siteid']
+	vars = {}
+	for a in ('name', 'locname', 'latitude', 'longitude', 'website', 'access'):
+		if request.GET.has_key(a):
+			vars[a] = request.GET[a]
+		else:
+			vars[a] = None
+			
+	SetSite(siteid, **vars)
+
+def getsite(request):
+	if not request.GET['siteid']:
+		return HttpResponse(simplejson.encode({'error': 'Must supply site ID'}))
+	return HttpResponse(simplejson.encode(GetSiteDetails(request.GET['siteid'])))
 
 def addsite(request):
 	# Handle Add Site requests

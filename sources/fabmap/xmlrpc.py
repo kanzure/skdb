@@ -74,7 +74,17 @@ def AddSite(name, locname, lat, lon, website, access):
 	# FIXME: Here we should make manager be the same as the authed user.
 	site = Site(name=name, locname=locname, lat=lat, lon=lon, website=website, manager=manager, access=access)
 	site.save()
-	return {'saved': True}
+	return {'site': site, 'saved': True}
+	
+def SetSite(siteid, name, locname, lat, lon, website, access):
+	site = Site(siteid=siteid)
+	if name:		site.name = name
+	if locname:	site.locname = locname
+	if latitude:		site.latitude = lat
+	if longitude: 	site.longitude = lon
+	if website:	site.website = website
+	if access:		site.access = access
+	site.save()
 	
 def AddCapability(capability):
 	# Add a capability class
