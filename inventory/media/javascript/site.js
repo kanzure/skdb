@@ -7,51 +7,76 @@
  */
 
 function Site() {
+	var siteid;
 	var latitude;
 	var longitude;
 	var name;
-	var location;
+	var locname;
 	var website;
 	var access;
+	var equipment;
 	
 	return {
-		init: function() {
-			
+		GetSite: function(siteid) {
+			$.getJSON("/dmed/getsite", {'siteid': siteid}, this.ReadSite());
 		},
 		
-		GetSite(siteid) {
-			if (!siteid) {
-				// Pís.
+		ReadSite: function(data, s) {
+			if (data['error']) {
+				// Handle error!
 			}
+			siteid = data['site']['id'];
+			latitude = data['site']['latitude'];
+			longitude = data['site']['longitude'];
+			name = data['site']['name'];
+			locname = data['site']['locname'];
+			website = data['site']['website'];
+			access = data['site']['access'];
+			equipment = data['equipment'];
 		},
 		
-		AddSite() {
-			
+		SetSite: function() {
+			$.getJSON("/dmed/setsite", {'siteid': siteid, 'name': pname, 'locname': ploc, 'latitude': latitude, 'longitude': longitude, 'website': pwww, 'access': pacc}, this.ReadSite());
 		},
 		
-		SetLocation(locname) {
-			
+		AddSite: function(pname, ploc, plat, plon, pwww, pacc) {
+			$.getJSON("/dmed/addsite", {'name': pname, 'locname': ploc, 'latitude': latitude, 'longitude': longitude, 'website': pwww, 'access': pacc}, this.ReadSite());
 		},
 		
-		SetLatLon(latitude, longitude) {
-			
+		SetLocation: function(pname) {
+			locname = pname;
+			this.SetSite();
 		},
 		
-		SetName(name) {
-			
+		SetLatLon: function(plat, plon) {
+			latitude = plat;
+			longitude = plon;
+			this.SetSite();
 		},
 		
-		SetWebsite(www) {
-			
+		SetName: function(pname) {
+			name = pname;
+			this.SetSite();
 		},
 		
-		AddEquipment(typeid) {
-			
+		SetWebsite: function(www) {
+			website = www;
+			this.SetSite();
 		},
 		
-		
+		AddEquipment: function(typeid) {
+			$.getJSON("/dmed/addequipment", {'siteid': siteid, 'type': typeid}, this.ReadSite());
+		},
 		
 	};
+}
+
+
+function SiteManager() {
+	var site;
+	var sitedialog;
+	var sitewidgets = {};
+	
 }
 
 
