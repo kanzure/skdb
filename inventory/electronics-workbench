@@ -1,1 +1,130 @@
-# FIXME: find Vern Graner's Nuts & Volts magazine content re: electronics inventories on the cheap.
+== Wishlist ==
+anything in qty 10 or qty n is for the microcontroller workshop
+
+name price quantity vendor vendor-number
+
+web-based controller: fun, practically free, good publicity
+  atmega16
+  some relays
+  isa ethernet card
+  webcam
+
+swarm bot: qty n
+  atmega8 $3.50 qty 1 digikey
+  10-pin header $0.45 qty 1 jameco 67812
+  l298 $3 qty 1 jameco 245403
+    OR sn754410 $1.55 qty 1 jameco 1054684
+  CdS cells $0.20 qty 4 digikey
+  battery holder $0.89 qty 1 jameco 105857PS
+  dc gearmotor $3 qty 2 goldmine-elec
+  microswitch $0.50 qty 4 ??
+
+swarm bot upgrades: qty m
+  ultrasound transducers $1 qty 8 goldmine-elec
+  40kHz IR sensor $1 qty 2 digikey
+  opto-interrupters $0.20 qty 2 goldmine-elec (diy encoder)
+  nRF24L01 transciever $3.50 qty 1 sparkfun
+  misc. components $5 qty 1 jameco/futurlec
+  better motors $10 qty 2 ??
+
+UAV with mapping camera:
+  lithium battery $30
+  motor controller $30
+  brushless motor $20
+  airplane-stuff $30 (or multiply above qty 4 for quad-helicopter)
+  battery charger $20?
+  R/C receiver $20?
+  servos $15 qty 3
+  gps module $50 sparkfun GPS-00163
+  gps antenna $15 sparkfun
+  gyro/accel module $110 sparkfun SEN-00741
+  nRF2401 transciever module $22 qty 2 sparkfun WRL-00151
+  cmucam+avr $170 acroname
+    -OR-
+  usb webcam $20 +
+  host-board (many options)
+    ts7200 runs debian, most reliable $140
+    at91SAM7X usb+ethernet "highly educational"
+      make microcontroller kit $150
+      DIY $60
+    gumstix $180? small, fiddly  
+
+cnc-ify sherline: qty 2? (can swap parts)
+  stepper-motors $20 qty 3
+  driver board $185 qty 1 xylotex (rather not, actually)
+  power supply $40
+  parport card $15
+
+SCARA-type pick and place arm: (and image processing)
+  low-inertia servomotor $20 qty 4 herbach-rademan
+  drive electronics (DIY) $20 qty 4
+  MXL belts and pulleys $5 qty 4 msc/mcmaster
+  bearings $5 qty 4 msc/mcmaster
+  frame materials ??
+  power supply $30
+  old computer ??
+  vacuum solenoid valve ??   
+  vacuum pump/venturi ??
+  ccd camera $40
+  video input card $25
+
+tools and supplies:
+  multimeters $3 qty n harborfreight
+  parrot wirestrippers $3 harborfreight
+  soldering-iron ?? qty n ??
+  rhino-pro 5000 labelmaker $100 ebay (yes really)
+  label cartridges $15 qty 3 staples?
+  wire-bundling-tape $1 qty 3 goldmine-elec
+  wire?
+  heatshrink?
+  hot laminator $50 qty 1 staples (for toner-transfer)
+  solder paste? $15.95 qty 1 circuitspecialists SMD 291AX
+  sodium persulfate $20 qty 1 circuitspecialists 4101-1KG
+  nibbler? $9 qty 1 circuitspecialists HT-204
+  breadboard $4.29 qty 10 circuitspecialists wb-201
+  long-nose-pliers $1.59 qty 10 circuitspecialists HH02075-A
+  diag-cut-pliers $1.59 qty 10 circuitspecialists HH02075-B
+  round-nose-pliers $1.79 qty 1 circuitspecialists HH02075-F
+
+*** i might be underestimating this section
+  0.025" and 0.035" drill bits (slightly larger is ok)
+    qty 2 each enco #302-5060  #325-6160  #325-6089
+  dial calipers (not electronic!)
+    enco #610-5030
+  8-32 spiral flute tap $3.75 qty 2 use-enco
+  1/4-20 spiral flute tap $4.19 qty 2 use-enco
+  1/2-10 acme threaded rod 6' $6 qty 2 use-enco
+  3/4" dia 1' delrin $6 qty 1 use-enco
+  3/4" dia 1' acrylic
+  set screws $5 qty 2 use-enco
+  velcro PSA tape 3/4x15' $16 qty 1 use-enco
+ 
+  screwdriver bits $1 qty 5 ??     
+  carbide pcb drills $12 qty 1 harborfreight
+  
+  18V cordless drill! $40 qty 1 harborfreight
+  belt sander?
+  ventilation hood?
+  toaster oven $30
+
+
+stuff to lay around and maybe get used: (jameco or futurlec)
+  usb to serial adapter
+  max232
+  avr's
+  capacitors
+  32.768kHz 1 10 12 20MHz crystals
+  5mm power jacks
+  tip102
+  diodes 1n4004 1n4007
+  10 100 1k 10k 100k resistors (smd 0802?)
+  irf*
+  idc connectors   
+  ribbon cable
+  led's
+  
+
+and last but not least:
+  shipping and handling $150
+
+note: harbor freight and futurlec are exceedingly slow
