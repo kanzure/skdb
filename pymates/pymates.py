@@ -316,6 +316,12 @@ def show_interface_points():
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
+def show_new_interface_point(x,y,z,color='RED'):
+    mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(x,y,z), 2.0)
+    OCC.Display.wxSamplesGui.display.DisplayColoredShape(mysphere.Shape(), color=color)
+    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
+    return
+
 def add_part_mate(part_1_interface, part_2_interface):
     #mate interface 1 to interface 2 (move part 1)
     #return the ID of the shape transformation added to the part object
