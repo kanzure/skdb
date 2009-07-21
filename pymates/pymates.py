@@ -216,20 +216,36 @@ def mate_parts(event=None):
     
     ##Build original shape
     #original_shape = BRepPrimAPI_MakeWedge(60.,100.,80.,20.).Shape()
+    original_shape = total_parts[1].shapes 
+
     ##Define transformation
-    #transformation = OCC.gp.gp_Trsf()
+    transformation = OCC.gp.gp_Trsf()
     #pnt_center_of_the_transformation = OCC.gp.gp_Pnt(110.,60.,60.)
     #V = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(pnt_center_of_the_transformation)
-    #transformation.SetMirror(pnt_center_of_the_transformation)
     ##see also transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
+    fromCoordinateSystem1 = OCC.gp.gp_Ax3() #(point, x vector, z vector)
+    toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(interface.point), OCC.gp.gp_Dir(interface.i), OCC.gp.gp_Dir(interface.k)) #(point, x vector, z vector)
+    #first 3 values of the first column = x
+    #first 3 values of the second column = y
+    #first 3 values of the third column = z
+    #the first 3 values of the fourth column = point coords
+    transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
     ##Apply the transformation
-    ##like by P2 = P1.Transformed(transformation) - but not all Shape() objects have a Transformed(?) method
+    ##see http://www.opencascade.org/org/forum/thread_9860/
+    brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
+    brep_transform.Perform(original_shape)
+    resulting_shape = brep_transform.Shape()
     #my_brep_transformation = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(original_shape, transformation)
     #transformed_shape = my_brep_transformation.Shape()
     ##now display original_shape and transformed_shape()
 
     #take the cross product o_n_vec and o_vx_vec - check if they are consistent with themselves (if they are orthogonal)
+    cross_product = numpy.cross(o_n_vec, o_vx_vec)
+    if not cross_product == array([0,0,0]): #what should be done?
+        print "they were not orthogonal"
+    #x,y,z,position, z is the normal, you know the third and the first, you take the cross product to find the second
     #which gives you what to put in the center column
+    ###2009-07-21:  missing vy_vec = o_n_vec cross o_vx_vec
     #now find out the 2nd column in the 4x4 (the missing vy_vec in the 4x4)
     # a cross b = magnitude(a)*magnitude(b) * sin theta * (n - the unit vector perpendicular to the plane containing a & b)
     # you want theta to be 90
