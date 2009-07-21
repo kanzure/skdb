@@ -181,6 +181,7 @@ def mate_parts(event=None):
     print "numpy.matrix(total_parts[0].transform) = \n", numpy.matrix(total_parts[0].transform)
     print "numpy.matrix(total_parts[1].transform) = \n", numpy.matrix(total_parts[1].transform)
     print "numpy.matrix(total_parts[0].transform).I = \n", numpy.matrix(total_parts[0].transform).I
+    print "numpy.matrix(total_parts[1].transform).I = \n", numpy.matrix(total_parts[1].transform).I
     T = numpy.matrix(total_parts[1].transform) * numpy.matrix(total_parts[0].transform).I
     print "the transform T is = \n", T
     #T = (A * B.I)
@@ -191,7 +192,7 @@ def mate_parts(event=None):
     #total_parts[1].transform = result #this doesn't do anything
     #print "old point = \n", total_parts[1].interfaces[0].point
     #numpy.matrix([[1,2],[3,4]]).getA()[0] = [1,2].
-    interface = total_parts[0].interfaces[0]
+    interface = total_parts[1].interfaces[0]
     #interface.point[0] = (total_parts[1].transform.tolist())[0][3]
     #interface.point[1] = total_parts[1].transform.tolist()[1][3]
     #interface.point[2] = total_parts[1].transform.tolist()[2][3]
@@ -216,7 +217,7 @@ def mate_parts(event=None):
     
     ##Build original shape
     #original_shape = BRepPrimAPI_MakeWedge(60.,100.,80.,20.).Shape()
-    original_shape = total_parts[0].shapes 
+    original_shape = total_parts[1].shapes 
 
     ##Define transformation
     transformation = OCC.gp.gp_Trsf()
@@ -225,7 +226,7 @@ def mate_parts(event=None):
     ##see also transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
     fromCoordinateSystem1 = OCC.gp.gp_Ax3() #(point, x vector, z vector)
     print "before the standard construction error"
-    print "total_parts[1].transform = ", total_parts[0].transform
+    print "total_parts[1].transform = ", total_parts[1].transform
     print "point = ", interface.point
     print "i = ", interface.i
     print "j = ", interface.j, "(not used)"
