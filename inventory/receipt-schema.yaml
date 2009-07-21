@@ -1,19 +1,19 @@
 #default values
 - !receipt
-  vendor:
-  vendor-order-ID: EO631272
+  vendor: bedwetters #see vendors.yaml
+  order-id: EO631272 #from the vendor
   date: 2009-04-15
   time: 2359
-  payment: visa 1234
-  total:
+  payment: visa 1234 #last 4 digits, or 'cash' or 'check'
+  total: $56.78
   buyer: 'fenn'
   reception: pending
+  shipping: ups 1ZV7855E0321991180
+  receipt-url: http://bedwetters.com/store.asp?cust=fenn&order=1234
   items:
-  - name:
-    price: #is this individual or total price (price*qty)?
-    mass: 200kg
+  - name: depends
+    price: #per item
     qty: 1
     min-qty: 1
-    shipping: ups 1ZV7855E0321991180
-    reception: received #ok where is it?
+    mfg-id: #model number or vendor-SKU (not UPC; that goes in inventory data)
     catalog-id: QWERTY59
