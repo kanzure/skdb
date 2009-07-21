@@ -1,0 +1,19 @@
+#default values
+- !receipt
+  vendor:
+  vendor-order-ID: EO631272
+  date: 2009-04-15
+  time: 2359
+  payment: visa 1234
+  total:
+  buyer: 'fenn'
+  reception: pending
+  items:
+  - name:
+    price: #is this individual or total price (price*qty)?
+    mass: 200kg
+    qty: 1
+    min-qty: 1
+    shipping: ups 1ZV7855E0321991180
+    reception: received #ok where is it?
+    catalog-id: QWERTY59

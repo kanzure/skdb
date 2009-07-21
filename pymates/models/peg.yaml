@@ -1,4 +1,4 @@
-author: 'Bryan Bishop'
+author: 'kanzure@gmail.com'
 license: 'GPL2+'
 urls:
   - 'http://heybryan.org/'
@@ -6,19 +6,19 @@ urls:
   - 'http://adl.serveftp.org/skdb/'
   - 'http://github.com/kanzure/skdb/'
 
-blockhole: !part
-    description: 'a block with a hole (a negative of a cylinder)'
-    created: '2009-07-16'
+peg: !part
+    description: 'a peg (a cylinder)'
+    created: '2009-07-18'
     files: #these are all the same
         #- 'models/block-with-hole.iges'
-        - 'models/block-with-hole.step'
+        - 'models/peg.step'
     interfaces:
     -   !interface
-        name: hole
+        name: peg
         units: 4N
         #tag the geometry (simple primitives only please)
         geometry: 'circle' #!circle
-        point: [0, 0, 0] #xyz
-        i: [1, 0, 1]
-        j: [1, 1, 1]
-        k: [1, 0, 0]
+        point: [5, 5, -10] #xyz
+        i: [0, 0, 1]
+        j: [0, 0, 1]
+        k: [0, 0, 1]
