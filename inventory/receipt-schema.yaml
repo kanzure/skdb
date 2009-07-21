@@ -1,0 +1,13 @@
+#default values
+- !receipt
+  vendor:
+  date: 
+  time: 2359
+  payment: visa 1234
+  total:
+  items:
+  - name:
+    price:
+    mass: 
+    qty: 1
+    min-qty: 1
