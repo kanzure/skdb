@@ -186,22 +186,22 @@ def mate_parts(event=None):
     #T = (A * B.I)
     #A = B * (A * B.I)
     #B = A * T
-    result = numpy.matrix(total_parts[0].transform) * T
-    print "result = \n", result
-    total_parts[1].transform = result #this doesn't do anything
-    print "old point = \n", total_parts[1].interfaces[0].point
+    #result = numpy.matrix(total_parts[0].transform) * T
+    #print "result = \n", result
+    #total_parts[1].transform = result #this doesn't do anything
+    #print "old point = \n", total_parts[1].interfaces[0].point
     #numpy.matrix([[1,2],[3,4]]).getA()[0] = [1,2].
-    interface = total_parts[1].interfaces[0]
-    interface.point[0] = (total_parts[1].transform.tolist())[0][3]
-    interface.point[1] = total_parts[1].transform.tolist()[1][3]
-    interface.point[2] = total_parts[1].transform.tolist()[2][3]
-    print "new point = \n", interface.point
+    interface = total_parts[0].interfaces[0]
+    #interface.point[0] = (total_parts[1].transform.tolist())[0][3]
+    #interface.point[1] = total_parts[1].transform.tolist()[1][3]
+    #interface.point[2] = total_parts[1].transform.tolist()[2][3]
+    #print "new point = \n", interface.point
 
     point = interface.point
-    lresult = result.tolist()
-    interface.i = [lresult[0][0], lresult[1][0], lresult[2][0]]
-    interface.j = [lresult[0][1], lresult[1][1], lresult[2][1]]
-    interface.k = [lresult[0][2], lresult[1][2], lresult[2][2]]
+    #lresult = result.tolist()
+    #interface.i = [lresult[0][0], lresult[1][0], lresult[2][0]]
+    #interface.j = [lresult[0][1], lresult[1][1], lresult[2][1]]
+    #interface.k = [lresult[0][2], lresult[1][2], lresult[2][2]]
     i, j, k = interface.i, interface.k, interface.j
     
     o_point = OCC.gp.gp_Pnt(point[0], point[1]-10, point[2]-5)
@@ -216,7 +216,7 @@ def mate_parts(event=None):
     
     ##Build original shape
     #original_shape = BRepPrimAPI_MakeWedge(60.,100.,80.,20.).Shape()
-    original_shape = total_parts[1].shapes 
+    original_shape = total_parts[0].shapes 
 
     ##Define transformation
     transformation = OCC.gp.gp_Trsf()
@@ -224,7 +224,13 @@ def mate_parts(event=None):
     #V = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(pnt_center_of_the_transformation)
     ##see also transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
     fromCoordinateSystem1 = OCC.gp.gp_Ax3() #(point, x vector, z vector)
-    toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(interface.point), OCC.gp.gp_Dir(interface.i), OCC.gp.gp_Dir(interface.k)) #(point, x vector, z vector)
+    print "before the standard construction error"
+    print "total_parts[1].transform = ", total_parts[0].transform
+    print "point = ", interface.point
+    print "i = ", interface.i
+    print "j = ", interface.j, "(not used)"
+    print "k = ", interface.k
+    toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(interface.point[0],interface.point[1],interface.point[2]), OCC.gp.gp_Dir(interface.i[0],interface.i[1],interface.i[2]), OCC.gp.gp_Dir(interface.k[0],interface.k[1],interface.k[2])) #(point, x vector, z vector)
     #first 3 values of the first column = x
     #first 3 values of the second column = y
     #first 3 values of the third column = z
@@ -233,16 +239,19 @@ def mate_parts(event=None):
     ##Apply the transformation
     ##see http://www.opencascade.org/org/forum/thread_9860/
     brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
-    brep_transform.Perform(original_shape)
+    print "original_shape is of type = ", type(original_shape[0])
+    brep_transform.Perform(original_shape[0])
     resulting_shape = brep_transform.Shape()
+    ##add resulting_shape to the part
     #my_brep_transformation = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(original_shape, transformation)
     #transformed_shape = my_brep_transformation.Shape()
-    ##now display original_shape and transformed_shape()
+    ##now display original_shape and transformed_shape
 
     #take the cross product o_n_vec and o_vx_vec - check if they are consistent with themselves (if they are orthogonal)
-    cross_product = numpy.cross(o_n_vec, o_vx_vec)
-    if not cross_product == array([0,0,0]): #what should be done?
-        print "they were not orthogonal"
+    #cross_product = numpy.cross(o_n_vec, o_vx_vec)
+    #if not cross_product == array([0,0,0]): #what should be done?
+    #    print "they were not orthogonal"
+    
     #x,y,z,position, z is the normal, you know the third and the first, you take the cross product to find the second
     #which gives you what to put in the center column
     ###2009-07-21:  missing vy_vec = o_n_vec cross o_vx_vec
@@ -260,7 +269,7 @@ def mate_parts(event=None):
     #now to get the z vectors correct.
     #rotate the interface first by its x-axis (180 degrees) (swap the signs of all values in 2nd&3rd columns)
 
-    #OCC.Display.wxSamplesGui.display.DisplayShape(shape_here)
+    OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
     return
 
 def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
@@ -296,6 +305,14 @@ def move_parts(event=None):
     the_transform.SetTransformation(ax3)
     the_toploc = OCC.TopLoc.TopLoc_Location(the_transform)
     OCC.Display.wxSamplesGui.display.Context.SetLocation(working_shape, the_toploc)
+    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
+    return
+
+def show_interface_points():
+    for each in total_parts:
+        interface = each.interfaces[0]
+        mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2]), 2.0)
+        OCC.Display.wxSamplesGui.display.DisplayColoredShape(mysphere.Shape(), color='RED')
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 

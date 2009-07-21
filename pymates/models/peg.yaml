@@ -20,5 +20,5 @@ peg: !part
         geometry: 'circle' #!circle
         point: [5, 5, -10] #xyz
         i: [0, 0, 1]
-        j: [0, 0, 1]
+        j: [0, 0, 1] #don't use this
         k: [0, 0, 1]
