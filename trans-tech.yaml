@@ -3,12 +3,12 @@ title: "low hanging fruit"
 
 mice: &mice
   kidney-targeted plain-DNA transformation:
-  increased muscle mass:
-    myostatin inhibitors: &myostatin-inhibitors
+  myostatin inhibitors: &myostatin-inhibitors
+    increased muscle mass:
 
 bio-lab:
-    tobacco geneng protein secretion:
-        rhizosecretion:
+    rhizosecretion:
+        tobacco geneng protein secretion:
     microorganism cultures:
     algae:
         biofuels:
@@ -54,6 +54,8 @@ robotics:
   intermediate manufacturing capability:
 
 wearables:
+    chorded keyboard:
+        improved typing performance:
 
 neuro:
   rTMS:
