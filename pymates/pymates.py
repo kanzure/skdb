@@ -181,22 +181,18 @@ def mate_parts(event=None):
     print "numpy.matrix(total_parts[0].transform) = \n", numpy.matrix(total_parts[0].transform)
     print "numpy.matrix(total_parts[1].transform) = \n", numpy.matrix(total_parts[1].transform)
     print "numpy.matrix(total_parts[0].transform).I = \n", numpy.matrix(total_parts[0].transform).I
-    print "numpy.matrix(total_parts[1].transform).I = \n", numpy.matrix(total_parts[1].transform).I
     T = numpy.matrix(total_parts[1].transform) * numpy.matrix(total_parts[0].transform).I
     print "the transform T is = \n", T
     #T = (A * B.I)
     #A = B * (A * B.I)
     #B = A * T
     #result = numpy.matrix(total_parts[0].transform) * T
-    #print "result = \n", result
     #total_parts[1].transform = result #this doesn't do anything
-    #print "old point = \n", total_parts[1].interfaces[0].point
-    #numpy.matrix([[1,2],[3,4]]).getA()[0] = [1,2].
     interface = total_parts[1].interfaces[0]
+    interface2 = total_parts[0].interfaces[0]
     #interface.point[0] = (total_parts[1].transform.tolist())[0][3]
     #interface.point[1] = total_parts[1].transform.tolist()[1][3]
     #interface.point[2] = total_parts[1].transform.tolist()[2][3]
-    #print "new point = \n", interface.point
 
     point = interface.point
     #lresult = result.tolist()
@@ -205,18 +201,12 @@ def mate_parts(event=None):
     #interface.k = [lresult[0][2], lresult[1][2], lresult[2][2]]
     i, j, k = interface.i, interface.k, interface.j
     
-    o_point = OCC.gp.gp_Pnt(point[0], point[1]-10, point[2]-5)
-    o_n_vec = OCC.gp.gp_Dir(0,0,1)#(i[0], i[1], i[2])
-    print "the j vector is going to be: ", j
-    o_vx_vec = OCC.gp.gp_Dir(0,1,0)#j[0], j[1], j[2])
+    o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
+    o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
+    o_vx_vec = OCC.gp.gp_Dir(j[0], j[1], j[2])
     # pymates.move(pymates.total_parts[1], 5,5,-10, 0,0,1, -1,0,1)
-    ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
-    transform2 = OCC.gp.gp_Trsf()
-    transform2.SetTransformation(ax3)
-    toploc = OCC.TopLoc.TopLoc_Location(transform2)
     
     ##Build original shape
-    #original_shape = BRepPrimAPI_MakeWedge(60.,100.,80.,20.).Shape()
     original_shape = total_parts[1].shapes 
 
     ##Define transformation
@@ -224,8 +214,7 @@ def mate_parts(event=None):
     #pnt_center_of_the_transformation = OCC.gp.gp_Pnt(110.,60.,60.)
     #V = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(pnt_center_of_the_transformation)
     ##see also transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
-    fromCoordinateSystem1 = OCC.gp.gp_Ax3() #(point, x vector, z vector)
-    print "before the standard construction error"
+    fromCoordinateSystem1 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(interface2.point[0],interface2.point[1],interface.point[2]), OCC.gp.gp_Dir(interface2.i[0],interface2.i[1],interface2.i[2]), OCC.gp.gp_Dir(interface2.k[0],interface2.k[1],interface2.k[2])) #(point, x vector, z vector)
     print "total_parts[1].transform = ", total_parts[1].transform
     print "point = ", interface.point
     print "i = ", interface.i
@@ -235,7 +224,7 @@ def mate_parts(event=None):
     #first 3 values of the first column = x
     #first 3 values of the second column = y
     #first 3 values of the third column = z
-    #the first 3 values of the fourth column = point coords
+    #first 3 values of the fourth column = point coords
     transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
     ##Apply the transformation
     ##see http://www.opencascade.org/org/forum/thread_9860/
@@ -248,24 +237,9 @@ def mate_parts(event=None):
     #transformed_shape = my_brep_transformation.Shape()
     ##now display original_shape and transformed_shape
 
-    #take the cross product o_n_vec and o_vx_vec - check if they are consistent with themselves (if they are orthogonal)
-    #cross_product = numpy.cross(o_n_vec, o_vx_vec)
     #if not cross_product == array([0,0,0]): #what should be done?
     #    print "they were not orthogonal"
     
-    #x,y,z,position, z is the normal, you know the third and the first, you take the cross product to find the second
-    #which gives you what to put in the center column
-    ###2009-07-21:  missing vy_vec = o_n_vec cross o_vx_vec
-    #now find out the 2nd column in the 4x4 (the missing vy_vec in the 4x4)
-    # a cross b = magnitude(a)*magnitude(b) * sin theta * (n - the unit vector perpendicular to the plane containing a & b)
-    # you want theta to be 90
-    # sqrt ( Vyx^2 + Vyy^2 + Vyz^2) = absolute value of Vy
-    # absolute value of Vy = absolute value of Vn * absolute value of Vx    * sin(theta)
-    # theta = arcsin( sqrt(Vyx^2 + vyy^2 + Vyz^2) / (absolute value of Vn * absolute value of Vx) )
-    # arcsin(1) = 90 degrees
-    # figure out that cross product to figure out the central term
-    # check that the magnitudes of Vn and Vx equal the magnitude of Vy .. |Vn|*|Vx| must = |Vy|
-
     #change it to a cone (instead of a peg)
     #now to get the z vectors correct.
     #rotate the interface first by its x-axis (180 degrees) (swap the signs of all values in 2nd&3rd columns)
@@ -320,6 +294,12 @@ def show_interface_points():
 def show_new_interface_point(x,y,z,color='RED'):
     mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(x,y,z), 2.0)
     OCC.Display.wxSamplesGui.display.DisplayColoredShape(mysphere.Shape(), color=color)
+    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
+    return
+
+def show_cone_at(x,y,z,color='YELLOW'):
+    mycone = OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(x,y,z)
+    OCC.Display.wxSamplesGui.display.DisplayColoredShape(mycone.Shape(), color=color)
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
