@@ -117,6 +117,7 @@ f1 = open('/usr/share/misc/units.dat').read()
 f2 = open('supplemental_units.dat').read()
 f3 = open('combined.dat', 'w')
 f3.write(f1+f2)
+f3.close()
 
 class Unit(yaml.YAMLObject):
     yaml_tag = "!unit"
@@ -125,7 +126,7 @@ class Unit(yaml.YAMLObject):
     def __init__(self, string):
         #simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
         self.string = str(string)
-        if not self.check(): raise UnitError, string
+        self.simplify() #has no side effects, just raise any exceptions early
         #e_number = '([+-]?\d*\.?\d*([eE][+-]?\d+)?)' #engineering notation
         #match = re.match(e_number + '?(\D*)$', string) #i dunno wtf i was trying to do here
         #match = re.match(e_number + '?(.*)$', string)
@@ -229,7 +230,7 @@ class Unit(yaml.YAMLObject):
         if string is None: string = self.string
         rval = os.popen(self.__class__.units_call + "'" + self.sanitize(string) + "'").read().rstrip('\n')
         if self.units_happy(string, rval): return rval
-        else: raise UnitError
+        else: raise UnitError, self.string
 
     def check(self):
         try: self.simplify()
