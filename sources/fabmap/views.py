@@ -5,6 +5,7 @@ from fabmap.xmlrpc import *
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 import simplejson
+import time
 
 def index(request):
 	addsiteform = SiteForm(auto_id="addsite_")
@@ -74,5 +75,21 @@ def addequipment(request):
 	
 def addequipmenttype(request):
 	return HttpResponse("")
-	
-	
+
+def siteoutput(request):
+	if type(request) == int:
+		siteid = request
+	else:
+		siteid = request.GET['siteid']
+		
+	site = GetSiteDetails(siteid)
+	datetime = time.ctime()
+
+	return {"site": site, "time": datetime}
+
+def sitetoxml(request):	
+	return render_to_response("fabmap/site.xml", siteoutput(request))
+
+def sitetoyaml(request):
+	return render_to_response("fabmap/site.yaml", siteoutput(request))
+

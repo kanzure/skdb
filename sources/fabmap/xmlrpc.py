@@ -80,7 +80,7 @@ def SetSite(siteid, name, locname, lat, lon, website, access):
 	site = Site(siteid=siteid)
 	if name:		site.name = name
 	if locname:	site.locname = locname
-	if latitude:		site.latitude = lat
+	if latitude:	site.latitude = lat
 	if longitude: 	site.longitude = lon
 	if website:	site.website = website
 	if access:		site.access = access
@@ -96,4 +96,4 @@ def FindEquipmentByCapability(capid):
 	# Return a list of equipment, and each equipment type contains a list of sites where it exists.
 	
 	return {}
-
+	

@@ -1,0 +1,18 @@
+
+site:
+    - timestamp: {{time}}
+    - name: {{site.site.name}}
+    - location: {{site.site.locname}}
+    - longitude: {{site.site.longitude}}
+    - latitude: {{site.site.latitude}}
+    - website: {{site.site.website}}
+    - access model: {{site.site.access}}
+    - equipment: {% for eq in site.equipment %}
+        - item:
+            - type: {{eq.type}}
+            - maker: {{eq.maker}}
+            - notes: {{eq.notes}}
+            - capabilities: {%for cap in eq.capabilities %}
+                - {{cap}}
+            {%endfor%}
+    {% endfor %}
