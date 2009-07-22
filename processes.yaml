@@ -34,7 +34,8 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
         feasible: 0.0001 .. 0.002in/min  
     geometry: 
         primitive: cone #!geometry #what angle?
-        sweep: path
+        path:
+        -   parallel to workpiece face
         tolerance:
             typical: +-0.005in
             feasible: +-0.001in
@@ -117,16 +118,16 @@ arbor milling: !process
     type: process, shaping, mass-reducing, mechanical, reducing, multi-point, milling
     mechanism: rotating toothed cutter supported axially at both ends is fed into the workpiece at a controlled rate
     geometry: #!geometry 
-        primitive: swept revolute #like a candlestick. used to calculate swept volume of tool path
-        sweep: radial path #path can only be in the plane perpendicular to cutter's axis of rotation
+        primitive: revolute #like a candlestick. used to calculate swept volume of tool path
+        path:
+        -   path perpendicular to axis
+        -   axis parallel to workpiece opposite face
         #cutters can be ganged.. where do i put this?
         length:
             typical: 0.2..5in
             feasible: &width_of_cut 0.03..20in
         radius:
             typical: 1.5 .. 10in
-        constraints:
-            angle:
         tolerance:
             typical: +-0.005
             feasible: +-0.001
@@ -306,7 +307,9 @@ band filing: !process
     mechanism: a prismatic multipoint cutter mounted on a metal belt is fed into the work
     geometry:
         primitive: prism
-        sweep: perpendicular #direction of cutting really depends on the tool bit geometry
+        path:
+        -   under 90 degrees to previous segment #direction of cutting really depends on the tool bit geometry
+        -   axis perpendicular to workpiece opposite face
     tolerance:
     surface finish: "fine"
     functionality:
@@ -333,11 +336,12 @@ band sawing: !process
     type: shaping, mass-reducing, mechanical, reducing, multipoint, sawing
     mechanism: a moving flexible tensioned metal loop with teeth is fed into the workpiece at a controlled rate
     geometry:
-        primitive: parallelepiped
-        sweep: perpendicular +- some angle related to radius of curvature
-        constraints: 
+        primitive: rectangle
+        path: 
+        -   roll = 90 deg
+        -   perpendicular to rectangle or tangent arc
         -   geometry must extend above and below workpiece
-        -   !formula minimum radius of curvature = something * blade width
+        -   !formula arc radius > something * blade width
         tolerance: 
             typical: 0.05 .. 0.1 in
             feasible: 0.02 .. 0.3 in
@@ -393,9 +397,8 @@ internal broaching: &internal_broaching !process
     mechanism: a tapered cutter is fed into a hole in one pass
     geometry:
         primitive: prismatic or helical
-        sweep: axial with rotation
-        constraints:
-        -   axis parallel to machine
+        path:
+        -   axis parallel to workpiece face
         -   helix angle < 20 deg #yah i made this up.. isnt a tap just a helical broach?
         tolerance:
             typical: +-0.002in
@@ -559,9 +562,9 @@ superfinishing: !process #somehow i think there isnt quite enough info here
     type: shaping, mass-reducing, mechanical, reducing, abrasive #is this right?
     mechanism: abrasive surface and oil act as hydrodynamic bearing; surface asperities contact abrasive and are cut
     geometry:
-        primitive: cylinder, sphere, cone, plane
-        sweep: null #superfinishing just makes a cylinder "more cylindrical" etc
-        location: axis of rotation
+        primitive: cylinder or sphere or cone or plane
+        path: 
+        -   colinear with workpiece face axis #superfinishing just makes a cylinder "more cylindrical" etc
         tolerance: -0.0002 .. -0.0008in
     effect: removes smeared surface layer
     surface finish:
@@ -592,7 +595,8 @@ gas cutting: !process
     mechanism: ferrous workpiece is heated and then oxidized. gas flow then blows the liquid metal out of the cut
     geometry:
         primitive: cylinder
-        sweep: parallel to workpiece
+        path: 
+        -   parallel to workpiece face
         diameter: 1/16 .. 1/4 in #kerf
         tolerance:
             typical: +- 1/8 in
@@ -689,7 +693,8 @@ laser cutting: !process
     mechanism: focused coherent light heats workpiece to melting or vaporization, then shielding gas blows the melted material out of the cut
     geometry: 
         primitive: hyperboloid
-        sweep: parallel to workpiece
+        path: 
+        -   parallel to workpiece face
         diameter: !which beam, diameter #hmmm. beam has no choices, i.e. this varies continuously
         tolerance:
             typical: +- 0.001in
