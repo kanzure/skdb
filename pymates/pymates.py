@@ -15,6 +15,7 @@ import os
 #os.environ['CSF_GraphicShr'] = r"/usr/lib/libTKOpenGl.so"
 import time
 import random
+import copy
 import numpy
 import wx
 import OCC.gp
@@ -187,15 +188,12 @@ def mate_parts(event=None):
     #A = B * (A * B.I)
     #B = A * T
     #result = numpy.matrix(total_parts[0].transform) * T
-    #print "result = \n", result
     #total_parts[1].transform = result #this doesn't do anything
-    #print "old point = \n", total_parts[1].interfaces[0].point
-    #numpy.matrix([[1,2],[3,4]]).getA()[0] = [1,2].
-    interface = total_parts[0].interfaces[0]
+    interface = total_parts[1].interfaces[0]
+    interface2 = total_parts[0].interfaces[0]
     #interface.point[0] = (total_parts[1].transform.tolist())[0][3]
     #interface.point[1] = total_parts[1].transform.tolist()[1][3]
     #interface.point[2] = total_parts[1].transform.tolist()[2][3]
-    #print "new point = \n", interface.point
 
     point = interface.point
     #lresult = result.tolist()
@@ -204,38 +202,41 @@ def mate_parts(event=None):
     #interface.k = [lresult[0][2], lresult[1][2], lresult[2][2]]
     i, j, k = interface.i, interface.k, interface.j
     
-    o_point = OCC.gp.gp_Pnt(point[0], point[1]-10, point[2]-5)
-    o_n_vec = OCC.gp.gp_Dir(0,0,1)#(i[0], i[1], i[2])
-    print "the j vector is going to be: ", j
-    o_vx_vec = OCC.gp.gp_Dir(0,1,0)#j[0], j[1], j[2])
+    o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
+    #o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
+    #o_vx_vec = OCC.gp.gp_Dir(j[0], j[1], j[2])
     # pymates.move(pymates.total_parts[1], 5,5,-10, 0,0,1, -1,0,1)
-    ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
-    transform2 = OCC.gp.gp_Trsf()
-    transform2.SetTransformation(ax3)
-    toploc = OCC.TopLoc.TopLoc_Location(transform2)
     
     ##Build original shape
-    #original_shape = BRepPrimAPI_MakeWedge(60.,100.,80.,20.).Shape()
-    original_shape = total_parts[0].shapes 
+    original_shape = total_parts[1].shapes 
 
     ##Define transformation
     transformation = OCC.gp.gp_Trsf()
     #pnt_center_of_the_transformation = OCC.gp.gp_Pnt(110.,60.,60.)
     #V = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(pnt_center_of_the_transformation)
     ##see also transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
-    fromCoordinateSystem1 = OCC.gp.gp_Ax3() #(point, x vector, z vector)
-    print "before the standard construction error"
-    print "total_parts[1].transform = ", total_parts[0].transform
+    fromCoordinateSystem1 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(interface2.point[0],interface2.point[1],interface.point[2]), OCC.gp.gp_Dir(interface2.i[0],interface2.i[1],interface2.i[2]), OCC.gp.gp_Dir(interface2.k[0],interface2.k[1],interface2.k[2])) #(point, x vector, z vector)
+    print "total_parts[1].transform = ", total_parts[1].transform
     print "point = ", interface.point
     print "i = ", interface.i
     print "j = ", interface.j, "(not used)"
     print "k = ", interface.k
+    print "total_parts[0].transform = ", total_parts[0].transform
     toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(interface.point[0],interface.point[1],interface.point[2]), OCC.gp.gp_Dir(interface.i[0],interface.i[1],interface.i[2]), OCC.gp.gp_Dir(interface.k[0],interface.k[1],interface.k[2])) #(point, x vector, z vector)
+    #let's keep it simple for now
+    #toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(0,0,0), OCC.gp.gp_Dir(1,0,0), OCC.gp.gp_Dir(0,0,1))
+    
+    #switch them
+    temp = copy.copy(fromCoordinateSystem1)
+    fromCoordinateSystem1 = copy.copy(toCoordinateSystem2)
+    toCoordinateSystem2 = temp
+    
     #first 3 values of the first column = x
     #first 3 values of the second column = y
     #first 3 values of the third column = z
-    #the first 3 values of the fourth column = point coords
+    #first 3 values of the fourth column = point coords
     transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
+    print transformation.Transforms()
     ##Apply the transformation
     ##see http://www.opencascade.org/org/forum/thread_9860/
     brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
@@ -247,24 +248,15 @@ def mate_parts(event=None):
     #transformed_shape = my_brep_transformation.Shape()
     ##now display original_shape and transformed_shape
 
-    #take the cross product o_n_vec and o_vx_vec - check if they are consistent with themselves (if they are orthogonal)
-    #cross_product = numpy.cross(o_n_vec, o_vx_vec)
+    #In [117]: pymates.total_parts[0].interfaces
+    #Out[117]: [Interface(name=hole,units=4N,geometry=circle,point=[5, 5, 10],i=[1, 0, -1],j=[0, 0, 0],k=[-1, 0, 0])]
+    #In [118]: pymates.total_parts[1].interfaces
+    #Out[118]: [Interface(name=peg-end,units=4N,geometry=circle,point=[0, 0, 0],i=[1, 0, 1],j=[1, 1, 1],k=[1, 1, 1])]
+
+
     #if not cross_product == array([0,0,0]): #what should be done?
     #    print "they were not orthogonal"
     
-    #x,y,z,position, z is the normal, you know the third and the first, you take the cross product to find the second
-    #which gives you what to put in the center column
-    ###2009-07-21:  missing vy_vec = o_n_vec cross o_vx_vec
-    #now find out the 2nd column in the 4x4 (the missing vy_vec in the 4x4)
-    # a cross b = magnitude(a)*magnitude(b) * sin theta * (n - the unit vector perpendicular to the plane containing a & b)
-    # you want theta to be 90
-    # sqrt ( Vyx^2 + Vyy^2 + Vyz^2) = absolute value of Vy
-    # absolute value of Vy = absolute value of Vn * absolute value of Vx    * sin(theta)
-    # theta = arcsin( sqrt(Vyx^2 + vyy^2 + Vyz^2) / (absolute value of Vn * absolute value of Vx) )
-    # arcsin(1) = 90 degrees
-    # figure out that cross product to figure out the central term
-    # check that the magnitudes of Vn and Vx equal the magnitude of Vy .. |Vn|*|Vx| must = |Vy|
-
     #change it to a cone (instead of a peg)
     #now to get the z vectors correct.
     #rotate the interface first by its x-axis (180 degrees) (swap the signs of all values in 2nd&3rd columns)
@@ -322,6 +314,12 @@ def show_new_interface_point(x,y,z,color='RED'):
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
+def show_cone_at(x,y,z,color='YELLOW'):
+    mycone = OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(x,y,z)
+    OCC.Display.wxSamplesGui.display.DisplayColoredShape(mycone.Shape(), color=color)
+    #OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
+    return
+
 def add_part_mate(part_1_interface, part_2_interface):
     #mate interface 1 to interface 2 (move part 1)
     #return the ID of the shape transformation added to the part object
@@ -333,6 +331,40 @@ def show_part_mate(part_mate_object):
 
 def start():
     OCC.Display.wxSamplesGui.display.Create()
+
+def restart(): #EraseAll
+    '''EraseAll'''
+    OCC.Display.wxSamplesGui.display.EraseAll()
+    return
+
+def nontransform_point(x,y,z,color='YELLOW'):
+    return show_new_interface_point(x,y,z,color=color)
+
+def transform_point(x,y,z,color='YELLOW'):
+    #draw a (small) sphere (maybe eventually a cone to show direction if I figure out the correct parameters to OCC.BRepPrimAPI.BRepPrimAPI_MakeCone())
+    #then transform it in the same way that mate_parts() transforms everything
+    mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(x,y,z), 1.0)
+    transformation = OCC.gp.gp_Trsf()
+    interface1 = total_parts[0].interfaces[0]
+    interface2 = total_parts[1].interfaces[0]
+    point1 = interface1.point
+    point2 = interface2.point
+    i1, j1, k1 = interface1.i, interface1.j, interface1.k
+    i2, j2, k2 = interface2.i, interface2.j, interface2.k
+    fromCoordinateSystem1 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(point1[0],point1[1],point1[2]), OCC.gp.gp_Dir(i1[0],i1[1],i1[2]), OCC.gp.gp_Dir(k1[0],k1[1],k1[2]))
+    toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(point2[0],point2[1],point2[2]), OCC.gp.gp_Dir(i2[0],i2[1],i2[2]), OCC.gp.gp_Dir(k2[0],k2[1],k2[2]))
+    transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
+    brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
+    brep_transform.Perform(mysphere.Shape())  #(total_parts[1].shapes[0])
+    resulting_shape = brep_transform.Shape()
+    OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
+
+
+def supermate_parts():
+    restart()
+    demo()
+    mate_parts()
+    return
 
 def exit(event=None):
     import sys; sys.exit()

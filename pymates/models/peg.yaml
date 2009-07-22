@@ -14,11 +14,11 @@ peg: !part
         - 'models/peg.step'
     interfaces:
     -   !interface
-        name: peg
+        name: peg-end
         units: 4N
         #tag the geometry (simple primitives only please)
         geometry: 'circle' #!circle
-        point: [5, 5, -10] #xyz
-        i: [0, 0, 1]
-        j: [0, 0, 1] #don't use this
-        k: [0, 0, 1]
+        point: [0, 0, 0] #xyz
+        i: [1, 0, 1]
+        j: [1, 1, 1] #-1, 0, -1] #don't use this
+        k: [1, 1, 1]
