@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!ELEMENT site (name, locname, longitude, latitude, website, access, equipment)>
+<!ELEMENT site (name, locname, longitude, latitude, website, access, equipment, datetime)>
 	<!ATTLIST site id ID #REQUIRED>
 <!ELEMENT name (#PCDATA)>
 <!ELEMENT locname (#PCDATA)>
@@ -8,9 +8,12 @@
 <!ELEMENT website (#PCDATA)>
 <!ELEMENT access (#PCDATA)>
 <!ELEMENT equipment (equipment-item*)>
-<!ELEMENT equipment-item (name, type, maker, capabilities)>
+<!ELEMENT equipment-item (type, maker, notes, capabilities)>
 <!ELEMENT type (#PCDATA)>
 <!ELEMENT maker (#PCDATA)>
+<!ELEMENT notes (#PCDATA)>
 <!ELEMENT capabilities (capability*)>
 <!ELEMENT capability (#PCDATA)>
 	<!ATTLIST capability id CDATA #REQUIRED>
+
+<!ELEMENT datetime (#PCDATA)>
