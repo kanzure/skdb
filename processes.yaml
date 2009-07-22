@@ -146,6 +146,9 @@ arbor milling: !process
     -   prismatic geometry
     -   !which tool material, functionality #hmm
     machinability: !which workpiece material, machinability
+    effects:
+    -   surface stress
+    -   untempered martensitic layer 0.001in in heat treated alloy steels #blargh
     parameters:
         depth of cut:
             typical: 0.05 .. 0.25in
@@ -164,9 +167,6 @@ arbor milling: !process
         rigidity: #this includes the machine, workpiece, clamps, and tool bit rigidity
             static: #mostly affects deflection or absolute uncompensated accuracy
             dynamic: #affects maximum cutting rate vs surface finish, tool life, etc
-        effects:
-            -   surface stress
-            -   untempered martensitic layer 0.001in in heat treated alloy steels #blargh
         tool geometry: !which workpiece material, tool geometry
         tooth count:
             typical: 10 .. 20 teeth/rev #i just made up these values
@@ -785,3 +785,145 @@ laser cutting: !process
     -   toxic fumes
     -   dust
     -   compressed gases
+    
+    
+mig: !process
+    name: MIG welding
+    type: shaping, joining, thermal, welding, electric arc, gas metal
+    mechanism: a wire electrode surrounded by inert gas is heated to melting by an electric arc passing through it
+    geometry:
+        primitive: sphere
+        post-operation: fillet edges
+        diameter: !formula electrode rate*pi*(electrode diameter)^2/traverse rate #TODO unit check this formula
+        tolerance: 
+    surface finish:        
+        typical: 250..1000 microinches
+        feasible: 100..1100 microinches
+    consumables:
+        gas: !which shielding gas, flow rate
+        electrode: !which weld geometry, feed rate
+        power: !formula current * voltage
+    functionality: !which shielding gas, functionality
+    effects:
+    -   hardening
+    -   reduced fatigue strength
+    -   shrinkage
+    -   annealing
+    -   warpage
+    -   bad appearance
+    -   cracks
+    -   porosity
+    -   reduced corrosion resistance
+    weldability: !which workpiece material, weldability
+    parameters:
+        workpiece thickness:
+            feasible: 0.02..2.5in
+            typical: 0.125..1in
+        electrode material:
+            #usually similar to workpiece material
+        filler material:
+            manganese silicon:
+                shielding gas: carbon dioxide
+            aluminum:
+                shielding gas: helium or argon
+            steel:
+                shielding gas: carbon dioxide
+            powder core:
+                functionality:
+                -   specialized welding applications
+            oxidizer:
+                functionality:
+                -   rusty surfaces
+                -   semikilled steel
+                -   rimmed steel #what's this?
+        workpiece material:
+            mild steel:
+                weldability:
+                    feasible: 2.4..3.7 stars
+                    typical: 2.8..3.3 stars
+            cast iron:
+                weldability:
+                    feasible: 1.3..3.1 stars
+                    typical: 2.1..2.5 stars
+            stainless:
+                weldability:
+                    feasible: 2.3..3.7 stars
+                    typical: 2.7..3.2 stars
+            aluminum:
+                weldability:
+                    feasible: 2.8..3.9 stars
+                    typical: 3.2..3.7 stars
+            copper:
+                weldability:
+                    feasible: 2.0..3.6 stars
+                    typical: 2.6..2.95stars
+            magnesium:
+                weldability:
+                    feasible: 2.6..3.6 stars
+                    typical: 3.2..3.5 stars
+            titanium:
+                weldability:
+                    feasible: 1.2..3.1 stars
+                    typical: 1.9..2.5 stars
+        shielding gas: #gases can be mixed.. how to represent this?
+            argon:
+                functionality:
+                -   lower voltage
+                -   high quality
+                -   easy starting
+                -   stable arc
+            helium:
+                functionality:
+                -   high speed
+                -   small heat affected zone
+            carbon dioxide:
+                functionality:
+                -   good penetration
+                -   low cost
+                -   high speed
+        weld geometry: #hmmm. i know it's in a book, but this is all wrong
+            lap:
+                traverse rate: 60ipm
+                electrode rate: 234ipm
+                electrode diameter: 0.0625in
+                current: 380A
+            butt:
+                traverse rate: 7ipm
+                electrode rate: 400ipm
+                electrode diameter: 0.045in
+                current: 275A
+            tee:
+                traverse rate: 16ipm
+                electrode rate: 300ipm
+                electrode diameter: 0.045in
+                current: 200A
+            edge:
+                traverse rate: 
+                electrode rate: 
+                electrode diameter: 
+            corner:
+                traverse rate: 10ipm
+                electrode rate: 30..160ipm
+                electrode diameter: 0.030in
+                current: 80..85A
+            circumferential corner:
+                traverse rate: 45ipm
+                electrode rate: 500ipm
+                electrode diameter: 0.045in
+                current: 280..300A
+            circumferential modified butt: #wtf is this
+                traverse rate: 46.6ipm
+                electrode rate: 340..380ipm
+                electrode diameter: 0.030
+                current: 170..190A
+        current:
+        voltage:
+        traverse rate: !which weld geometry, traverse rate
+        electrode rate: !which weld geometry, electrode rate
+        electrode diameter: !which weld geometry, electrode diameter
+    safety:
+    -   UV radiation
+    -   hot parts
+    -   smoke
+    -   sparks
+    
