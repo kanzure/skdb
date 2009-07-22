@@ -15,6 +15,7 @@ import os
 #os.environ['CSF_GraphicShr'] = r"/usr/lib/libTKOpenGl.so"
 import time
 import random
+import copy
 import numpy
 import wx
 import OCC.gp
@@ -222,6 +223,14 @@ def mate_parts(event=None):
     print "k = ", interface.k
     print "total_parts[0].transform = ", total_parts[0].transform
     toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(interface.point[0],interface.point[1],interface.point[2]), OCC.gp.gp_Dir(interface.i[0],interface.i[1],interface.i[2]), OCC.gp.gp_Dir(interface.k[0],interface.k[1],interface.k[2])) #(point, x vector, z vector)
+    #let's keep it simple for now
+    #toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(0,0,0), OCC.gp.gp_Dir(1,0,0), OCC.gp.gp_Dir(0,0,1))
+    
+    #switch them
+    temp = copy.copy(fromCoordinateSystem1)
+    fromCoordinateSystem1 = copy.copy(toCoordinateSystem2)
+    toCoordinateSystem2 = temp
+    
     #first 3 values of the first column = x
     #first 3 values of the second column = y
     #first 3 values of the third column = z
