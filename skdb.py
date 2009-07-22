@@ -112,17 +112,21 @@ class UnitError(Exception): pass
 class NaNError(Exception): pass
 
 
+#build the new db for our custom units
+f1 = open('/usr/share/misc/units.dat').read()
+f2 = open('supplemental_units.dat').read()
+f3 = open('combined.dat', 'w')
+f3.write(f1+f2)
+f3.close()
+
 class Unit(yaml.YAMLObject):
     yaml_tag = "!unit"
-    '''try to preserve the original units, and provide a wrapper to the GNU units program
-    first you need to do this:
-    cat /usr/share/misc/units.dat > combined.dat
-    cat supplemental_units.dat >> combined.dat'''
+    '''try to preserve the original units, and provide a wrapper to the GNU units program'''
     units_call = "units -f combined.dat -t " #export LOCALE=en_US; ?
     def __init__(self, string):
         #simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
         self.string = str(string)
-        if not self.check(): raise UnitError, string
+        self.simplify() #has no side effects, just raise any exceptions early
         #e_number = '([+-]?\d*\.?\d*([eE][+-]?\d+)?)' #engineering notation
         #match = re.match(e_number + '?(\D*)$', string) #i dunno wtf i was trying to do here
         #match = re.match(e_number + '?(.*)$', string)
@@ -226,7 +230,7 @@ class Unit(yaml.YAMLObject):
         if string is None: string = self.string
         rval = os.popen(self.__class__.units_call + "'" + self.sanitize(string) + "'").read().rstrip('\n')
         if self.units_happy(string, rval): return rval
-        else: raise UnitError
+        else: raise UnitError, self.string
 
     def check(self):
         try: self.simplify()
