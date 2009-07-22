@@ -202,8 +202,8 @@ def mate_parts(event=None):
     i, j, k = interface.i, interface.k, interface.j
     
     o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
-    o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
-    o_vx_vec = OCC.gp.gp_Dir(j[0], j[1], j[2])
+    #o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
+    #o_vx_vec = OCC.gp.gp_Dir(j[0], j[1], j[2])
     # pymates.move(pymates.total_parts[1], 5,5,-10, 0,0,1, -1,0,1)
     
     ##Build original shape
@@ -220,6 +220,7 @@ def mate_parts(event=None):
     print "i = ", interface.i
     print "j = ", interface.j, "(not used)"
     print "k = ", interface.k
+    print "total_parts[0].transform = ", total_parts[0].transform
     toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(interface.point[0],interface.point[1],interface.point[2]), OCC.gp.gp_Dir(interface.i[0],interface.i[1],interface.i[2]), OCC.gp.gp_Dir(interface.k[0],interface.k[1],interface.k[2])) #(point, x vector, z vector)
     #first 3 values of the first column = x
     #first 3 values of the second column = y
@@ -236,6 +237,12 @@ def mate_parts(event=None):
     #my_brep_transformation = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(original_shape, transformation)
     #transformed_shape = my_brep_transformation.Shape()
     ##now display original_shape and transformed_shape
+
+    #In [117]: pymates.total_parts[0].interfaces
+    #Out[117]: [Interface(name=hole,units=4N,geometry=circle,point=[5, 5, 10],i=[1, 0, -1],j=[0, 0, 0],k=[-1, 0, 0])]
+    #In [118]: pymates.total_parts[1].interfaces
+    #Out[118]: [Interface(name=peg-end,units=4N,geometry=circle,point=[0, 0, 0],i=[1, 0, 1],j=[1, 1, 1],k=[1, 1, 1])]
+
 
     #if not cross_product == array([0,0,0]): #what should be done?
     #    print "they were not orthogonal"
@@ -314,6 +321,17 @@ def show_part_mate(part_mate_object):
 
 def start():
     OCC.Display.wxSamplesGui.display.Create()
+
+def restart(): #EraseAll
+    '''EraseAll'''
+    OCC.Display.wxSamplesGui.display.EraseAll()
+    return
+
+def supermate_parts():
+    restart()
+    demo()
+    mate_parts()
+    return
 
 def exit(event=None):
     import sys; sys.exit()
