@@ -351,14 +351,18 @@ def transform_point(x,y,z,color='YELLOW'):
     point2 = interface2.point
     i1, j1, k1 = interface1.i, interface1.j, interface1.k
     i2, j2, k2 = interface2.i, interface2.j, interface2.k
-    fromCoordinateSystem1 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(point1[0],point1[1],point1[2]), OCC.gp.gp_Dir(i1[0],i1[1],i1[2]), OCC.gp.gp_Dir(k1[0],k1[1],k1[2]))
-    toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(point2[0],point2[1],point2[2]), OCC.gp.gp_Dir(i2[0],i2[1],i2[2]), OCC.gp.gp_Dir(k2[0],k2[1],k2[2]))
-    transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
+    #fromCoordinateSystem1 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(point1[0],point1[1],point1[2]), OCC.gp.gp_Dir(i1[0],i1[1],i1[2]), OCC.gp.gp_Dir(k1[0],k1[1],k1[2]))
+    #toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(point2[0],point2[1],point2[2]), OCC.gp.gp_Dir(i2[0],i2[1],i2[2]), OCC.gp.gp_Dir(k2[0],k2[1],k2[2]))
+    #transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
+    #now try: pymates.transform_point(0,0,0)
+    occ_point1 = OCC.gp.gp_Pnt(point1[0],point1[1],point1[2])
+    occ_point2 = OCC.gp.gp_Pnt(point2[0],point2[1],point2[2])
+    transformation.SetTranslation(occ_point2, occ_point1)
     brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
     brep_transform.Perform(mysphere.Shape())  #(total_parts[1].shapes[0])
     resulting_shape = brep_transform.Shape()
     OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
-
+    return brep_transform
 
 def supermate_parts():
     restart()
