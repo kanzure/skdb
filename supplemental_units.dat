@@ -12,3 +12,7 @@ brinell ! #a unit of hardness.. doubt it's really the basic type though
 piece ! #basic unit of functionality or material
 quantity 1 piece
 qty 1 piece
+
+ipm inches/min
+sfm feet/min
+sfpm sfm
