@@ -317,7 +317,7 @@ def show_new_interface_point(x,y,z,color='RED'):
 def show_cone_at(x,y,z,color='YELLOW'):
     mycone = OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(x,y,z)
     OCC.Display.wxSamplesGui.display.DisplayColoredShape(mycone.Shape(), color=color)
-    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
+    #OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
 def add_part_mate(part_1_interface, part_2_interface):
@@ -337,10 +337,13 @@ def restart(): #EraseAll
     OCC.Display.wxSamplesGui.display.EraseAll()
     return
 
+def nontransform_point(x,y,z,color='YELLOW'):
+    return show_new_interface_point(x,y,z,color=color)
+
 def transform_point(x,y,z,color='YELLOW'):
     #draw a (small) sphere (maybe eventually a cone to show direction if I figure out the correct parameters to OCC.BRepPrimAPI.BRepPrimAPI_MakeCone())
     #then transform it in the same way that mate_parts() transforms everything
-    mysphere = OCC.BrepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(x,y,z), 1.0)
+    mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(x,y,z), 1.0)
     transformation = OCC.gp.gp_Trsf()
     interface1 = total_parts[0].interfaces[0]
     interface2 = total_parts[1].interfaces[0]
@@ -348,11 +351,11 @@ def transform_point(x,y,z,color='YELLOW'):
     point2 = interface2.point
     i1, j1, k1 = interface1.i, interface1.j, interface1.k
     i2, j2, k2 = interface2.i, interface2.j, interface2.k
-    fromCoordinateSystem1 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(point1[0],point1[1],point1[2]), OCC.gp.gp_Dir(i1[0],i1[1],i1[2]), OCC.gp.gp_Dir(k1[0],k1[1],k1[2])
+    fromCoordinateSystem1 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(point1[0],point1[1],point1[2]), OCC.gp.gp_Dir(i1[0],i1[1],i1[2]), OCC.gp.gp_Dir(k1[0],k1[1],k1[2]))
     toCoordinateSystem2 = OCC.gp.gp_Ax3(OCC.gp.gp_Pnt(point2[0],point2[1],point2[2]), OCC.gp.gp_Dir(i2[0],i2[1],i2[2]), OCC.gp.gp_Dir(k2[0],k2[1],k2[2]))
     transformation.SetTransformation(fromCoordinateSystem1, toCoordinateSystem2)
     brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
-    brep_transform.Perform(total_parts[1].shapes[0])
+    brep_transform.Perform(mysphere.Shape())  #(total_parts[1].shapes[0])
     resulting_shape = brep_transform.Shape()
     OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
 
