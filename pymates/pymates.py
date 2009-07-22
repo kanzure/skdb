@@ -50,13 +50,15 @@ class Part(yaml.YAMLObject):
             result = OCC.Display.wxSamplesGui.display.DisplayShape(self.shapes)
             if type(result) == type([]): self.ais_shapes = result[0]
             else: self.ais_shapes = result
-        i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
-        self.transform = [
-            [i[0], j[0], k[0], point[0]],
-            [i[1], j[1], k[1], point[1]],
-            [i[2], j[2], k[2], point[2]],
-            [0, 0, 0, 1]
-            ]
+        #i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
+        x,z,point = self.interfaces[0].x,self.interfaces[0].z,self.interfaces[0].point
+        #y = self.interfaces[0].y
+        #self.transform = [
+        #    [i[0], j[0], k[0], point[0]],
+        #    [i[1], j[1], k[1], point[1]],
+        #    [i[2], j[2], k[2], point[2]],
+        #    [0, 0, 0, 1]
+        #    ]
         return
     def __repr__(self):
         return "%s(description=%s, created=%s, files=%s, interfaces=%s)" % (self.__class__.__name__, self.description, self.created, self.files, self.interfaces)
@@ -90,9 +92,9 @@ class Interface(yaml.YAMLObject):
     def __init__(self, name="generic interface name", units=None, geometry=None, point=[0,0,0], i=[0,0,0], j=[0,0,0], k=[0,0,0]):
         self.name, self.units, self.geometry, self.point, self.i, self.j, self.k = name, units, geometry, points, numpy.matrix(i), numpy.matrix(j), numpy.matrix(k)
     def __repr__(self):
-        return "Interface(name=%s,units=%s,geometry=%s,point=%s,i=%s,j=%s,k=%s)" % (self.name, self.units, self.geometry, self.point, self.i, self.j, self.k)
+        return "Interface(name=%s,units=%s,geometry=%s,point=%s,x=%s,y=%s,z=%s)" % (self.name, self.units, self.geometry, self.point, self.x, self.y, self.z)
     def yaml_repr(self):
-        return "name: %s\nunits: %s\ngeometry: %s\npoint: %s\ni: %s\nj: %s\nk: %s" % (self.name, self.units, self.geometry, self.point, self.i, self.j, self.k)
+        return "name: %s\nunits: %s\ngeometry: %s\npoint: %s\nx: %s\ny: %s\nz: %s" % (self.name, self.units, self.geometry, self.point, self.x, self.y, self.z)
     #@classmethod
     #def to_yaml(cls, dumper, data):
     #    return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data))
@@ -179,7 +181,6 @@ def load_cad_file(event=None, filename=""):
 def mate_parts(event=None):
     #mate all of the parts in the workspace
     #see transform_point()
-    #TODO: use SetRotation()
     if len(total_parts) < 1: return #meh
     part1 = total_parts[0]
     part2 = total_parts[1]
@@ -189,11 +190,21 @@ def mate_parts(event=None):
     point2 = interface2.point
     occ_point1 = OCC.gp.gp_Pnt(point1[0], point1[1], point1[2])
     occ_point2 = OCC.gp.gp_Pnt(point2[0], point2[1], point2[2])
+    
+    pivot_point = OCC.gp.gp_Pnt(0,0,0) #rotate about the origin, right?
+    x_rotation = OCC.gp.gp_Dir(1,0,0) #OCC.gp.gp_Dir(interface2.x[0], interface2.x[1], interface2.x[2])
+    y_rotation = OCC.gp.gp_Dir(0,1,0) #OCC.gp.gp_Dir(interface2.j[0], interface2.j[1], interface2.j[2])
+    z_rotation = OCC.gp.gp_Dir(0,0,1) #OCC.gp.gp_Dir(interface2.k[0], interface2.k[1], interface2.k[2])
     transformation = OCC.gp.gp_Trsf()
+    transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, x_rotation),interface2.x)
+    #transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, y_rotation),180)
+    transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, z_rotation),interface2.z)
     transformation.SetTranslation(occ_point2, occ_point1)
+
     brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
     brep_transform.Perform(part2.shapes[0])
     resulting_shape = brep_transform.Shape()
+
     OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
     return brep_transform
 
