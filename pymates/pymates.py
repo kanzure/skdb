@@ -192,9 +192,9 @@ def mate_parts(event=None):
     transformation = OCC.gp.gp_Trsf()
     transformation.SetTranslation(occ_point2, occ_point1)
     brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
-    brep_transform.Perform(part1.shapes[0])
+    brep_transform.Perform(part2.shapes[0])
     resulting_shape = brep_transform.Shape()
-    OCC.Display.wxSamplesGui.display.DisplayShapes(resulting_shape)
+    OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
     return brep_transform
 
 def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
