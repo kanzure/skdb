@@ -5,8 +5,6 @@ import yaml
 import re
 import os
 from string import Template
-import re
-import copy
 
 debug = False
 
@@ -51,13 +49,23 @@ sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to d
 
 class FennObject(yaml.YAMLObject):
     '''so i dont repeat generic yaml stuff everywhere'''
+    def __setstate__(self, attrs):
+        for (k,v) in attrs.items():
+            k = re.sub(' ', '_', k) #replace spaces with underscores because "foo.the attr" doesn't work
+            self.__setattr__(k,v)
     @classmethod
     def to_yaml(cls, dumper, data):
         if hasattr(cls, 'yaml_repr'):
             tmp = cls.yaml_repr(data)
+            return dumper.represent_scalar(cls.yaml_tag, tmp)
         else: 
+            #i want to return the default yaml dump; but how?       
+            #cls.to_yaml = yaml.YAMLObject.to_yaml
+            #return cls.to_yaml(dumper, data)
+            ##return dumper.represent_mapping(cls.yaml_tag, data)
             tmp = cls.__repr__(data)
-        return dumper.represent_scalar(cls.yaml_tag, tmp)
+            return dumper.represent_scalar(cls.yaml_tag, tmp)
+
     @classmethod
     def from_yaml(cls, loader, node):
         '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
@@ -119,7 +127,7 @@ f3 = open('combined.dat', 'w')
 f3.write(f1+f2)
 f3.close()
 
-class Unit(yaml.YAMLObject):
+class Unit(FennObject):
     yaml_tag = "!unit"
     '''try to preserve the original units, and provide a wrapper to the GNU units program'''
     units_call = "units -f combined.dat -t " #export LOCALE=en_US; ?
@@ -254,7 +262,7 @@ class Unit(yaml.YAMLObject):
         '''return the unit portion of the unit string'''
         return 'not yet implemented, sorry!'
 
-class Uncertainty(FennObject, Unit):
+class Uncertainty(Unit):
     '''predicted range of error in the measurement'''
     yaml_tag = "!uncertainty" #ehh.. going to do something with this eventually
     yaml_pattern = '^\+-' + sci + '\s*(\D?.*)$' #+-, number, units
@@ -318,13 +326,17 @@ class RuntimeSwitch(FennObject):
 class Formula(FennObject, str):
     yaml_tag = '!formula'
 
-
-class Process(yaml.YAMLObject):
+class Geometry(FennObject):
+    yaml_tag = '!geometry'
+    
+class Process: #(FennObject):
     yaml_tag = '!process'
     def __init__(self, name):
+        self.name, self.classification, self.mechanism, self.geometry, self.surface_finish, self.consumables, self.functionality, self.effects, self.parameters, self.safety = None, None, None, None, None, None, None, None, None, None
         self.name = name
-    def __repr__(self):
-        return "Process(%s)" % (self.name)
+
+    #def __repr__(self):
+        #return "Process(%s)" % (self.name)
     
 
 class Material(Package):

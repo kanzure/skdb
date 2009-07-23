@@ -8,7 +8,7 @@ source: manufacturing processes reference guide, 1993 first edition. todd, allen
 
 template: !process
     name:
-    type:
+    classification:
     mechanism:
     geometry:
         tolerance:
@@ -115,7 +115,7 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
         
 arbor milling: !process
     name: arbor milling #really this is just endmilling supported at both ends and you can stack cutters
-    type: process, shaping, mass-reducing, mechanical, reducing, multi-point, milling
+    classification: process, shaping, mass-reducing, mechanical, reducing, multi-point, milling
     mechanism: rotating toothed cutter supported axially at both ends is fed into the workpiece at a controlled rate
     geometry: #!geometry 
         primitive: revolute #like a candlestick. used to calculate swept volume of tool path
@@ -303,7 +303,7 @@ arbor milling: !process
 band filing: !process
     #there really wasn't much data on this
     name: band filing
-    type: shaping, mass reducing, mechanical, reducing, multi-point, filing
+    classification: shaping, mass reducing, mechanical, reducing, multi-point, filing
     mechanism: a prismatic multipoint cutter mounted on a metal belt is fed into the work
     geometry:
         primitive: prism
@@ -333,7 +333,7 @@ band filing: !process
 
 band sawing: !process
     name: band sawing
-    type: shaping, mass-reducing, mechanical, reducing, multipoint, sawing
+    classification: shaping, mass-reducing, mechanical, reducing, multipoint, sawing
     mechanism: a moving flexible tensioned metal loop with teeth is fed into the workpiece at a controlled rate
     geometry:
         primitive: rectangle
@@ -393,7 +393,7 @@ band sawing: !process
 
 internal broaching: &internal_broaching !process 
     name: internal broaching
-    type: shaping, mass-reducing, mechanical, reducing, multi-point, broaching
+    classification: shaping, mass-reducing, mechanical, reducing, multi-point, broaching
     mechanism: a tapered cutter is fed into a hole in one pass
     geometry:
         primitive: prismatic or helical
@@ -528,7 +528,7 @@ internal broaching: &internal_broaching !process
 
 external broaching: !process
     name: external broaching
-    type: shaping, mass-reducing, mechanical, reducing, multi-point, broaching
+    classification: shaping, mass-reducing, mechanical, reducing, multi-point, broaching
     mechanism: a tapered cutter is fed across a workpiece in one pass
     similar: *internal_broaching
     functionality:
@@ -559,7 +559,7 @@ external broaching: !process
 
 superfinishing: !process #somehow i think there isnt quite enough info here
     name: superfinishing
-    type: shaping, mass-reducing, mechanical, reducing, abrasive #is this right?
+    classification: shaping, mass-reducing, mechanical, reducing, abrasive #is this right?
     mechanism: abrasive surface and oil act as hydrodynamic bearing; surface asperities contact abrasive and are cut
     geometry:
         primitive: cylinder or sphere or cone or plane
@@ -591,7 +591,7 @@ superfinishing: !process #somehow i think there isnt quite enough info here
 
 gas cutting: !process
     name: gas flame cutting
-    type: shaping, mass-reducing, thermal, torch cutting, gas cutting
+    classification: shaping, mass-reducing, thermal, torch cutting, gas cutting
     mechanism: ferrous workpiece is heated and then oxidized. gas flow then blows the liquid metal out of the cut
     geometry:
         primitive: cylinder
@@ -689,7 +689,7 @@ gas cutting: !process
 
 laser cutting: !process
     name: laser beam cutting
-    type: shaping, mass-reducing, thermal, high energy beam machining
+    classification: shaping, mass-reducing, thermal, high energy beam machining
     mechanism: focused coherent light heats workpiece to melting or vaporization, then shielding gas blows the melted material out of the cut
     geometry: 
         primitive: hyperboloid
@@ -789,7 +789,7 @@ laser cutting: !process
     
 mig: !process
     name: MIG welding
-    type: shaping, joining, thermal, welding, electric arc, gas metal
+    classification: shaping, joining, thermal, welding, electric arc, gas metal
     mechanism: a wire electrode surrounded by inert gas is heated to melting by an electric arc passing through it
     geometry:
         primitive: sphere
@@ -926,4 +926,4 @@ mig: !process
     -   hot parts
     -   smoke
     -   sparks
-    
+    -   metal fumes
