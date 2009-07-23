@@ -116,7 +116,7 @@ function editLoc(id) {
 function addSearchResult(id, lat, lon, name, loc, website) {
 	str = "<tr>";
 	str += "<td>" + name + "</td><td>" + loc + "</td>";
-	{%if userauthed%}str+= "<td><a href=\"#\" onclick=\"editLoc(" + id + ");\">Edit</a></td>";{%endif%}
+	/* {%if userauthed%}str+= "<td><a href=\"#\" onclick=\"editLoc(" + id + ");\">Edit</a></td>";{%endif%} */
 	str += "</tr>";
 	$('#searchresults_table').append(str);
 }

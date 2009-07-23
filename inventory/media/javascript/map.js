@@ -13,6 +13,10 @@ function Map() {
 	
 	return {
         
+		getMap: function() {
+			return map;
+		},
+	
 		init: function(element, mlat, mlon, mzoom) {
 
 			// Where to focus at first
@@ -34,6 +38,8 @@ function Map() {
 				controls:[
 					new OpenLayers.Control.Navigation(),
 					new OpenLayers.Control.PanZoomBar(),
+					new OpenLayers.Control.MousePosition(),
+					new OpenLayers.Control.LayerSwitcher(),
 				],
 				maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
 				maxResolution: 156543.0399,
@@ -118,7 +124,7 @@ function Map() {
 			var icon = new OpenLayers.Icon('http://www.openstreetmap.org/openlayers/img/marker.png',size,offset);
 			var point = new OpenLayers.LonLat(lon, lat).transform(map.displayProjection, map.projection);
 			var marker = new OpenLayers.Marker(point, icon);
-			var m = marker.attributes;
+			// var m = marker.attributes;
 			// m.lat = lat;
 			// m.lon = lon;
 			// m.name = name;
