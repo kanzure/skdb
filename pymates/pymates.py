@@ -232,7 +232,7 @@ def transform_point(x,y,z,color='YELLOW'):
     OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
     return brep_transform
 
-def supermate_parts():
+def supermate_parts(event=None):
     restart()
     demo()
     mate_parts()
@@ -247,5 +247,6 @@ if __name__ == '__main__':
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', demo)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', mate_parts)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', supermate_parts)
+    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', show_interface_points)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', exit)
     OCC.Display.wxSamplesGui.start_display()

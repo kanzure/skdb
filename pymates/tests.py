@@ -57,7 +57,9 @@ class TestPymates(unittest.TestCase):
         trsf.SetRotation(rotation_axis, rotation_angle)
         #translate (move) the peg
         trsf.SetTranslation(pt1, pt2)
-        trsf.Perform(peg_shape) #does this modify peg_shape?
+        brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(trsf)
+        brep_transform.Perform(peg_shape)
+        resulting_shape = brep_transform.Shape()
         #test translation
         xyz = trsf._CSFDB_Getgp_Trsfloc()
         x,y,z = xyz.X(), xyz.Y(), xyz.Z()
