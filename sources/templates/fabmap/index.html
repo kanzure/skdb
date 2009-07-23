@@ -9,7 +9,9 @@
 {%block scripts%}
 	<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
 	<script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+	<!-- <script src="/media/javascript/OpenLayers/lib/OpenLayers/Control/DragMarker.js"></script> -->
 	<script src="/media/javascript/map.js"></script>
+	<script src="/media/javascript/latlonselector.js"></script>
 	<script src="/media/javascript/dialogs.js"></script>
 	<script src="/media/javascript/site.js"></script>
 {%endblock%}
@@ -25,7 +27,9 @@
 
 	function init() {
 		map = Map();
+		sel = LatLonSelector();
 		map.init("map");
+		sel.init(map);
 		search("");
 	}
 
