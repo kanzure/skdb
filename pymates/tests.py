@@ -46,7 +46,7 @@ class TestPymates(unittest.TestCase):
         peg.shapes = [OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(10.,1.,float(cone_height)).Shape()]
         peg_shape = peg.shapes[0]
         trsf = OCC.gp.gp_Trsf()
-        trsf = OCC.gp.gp_Trsf()
+        #set up some points to make a translation vector
         pt1 = OCC.gp.gp_Pnt(0,0,0)
         pt2 = OCC.gp.gp_Pnt(1,1,5)
         #rotate the peg
@@ -57,13 +57,23 @@ class TestPymates(unittest.TestCase):
         trsf.SetRotation(rotation_axis, rotation_angle)
         #translate (move) the peg
         trsf.SetTranslation(pt1, pt2)
-        trsf.Perform(peg_shape)
-        top_loc = OCC.TopLoc.TopLoc_Location(trsf)
-        #peg_shape.Location(top_loc) #trsf.Perform()?
+        trsf.Perform(peg_shape) #does this modify peg_shape?
+        #test translation
+        xyz = trsf._CSFDB_Getgp_Trsfloc()
+        x,y,z = xyz.X(), xyz.Y(), xyz.Z()
+        xyz2 = pt1.XYZ()
+        old_x, old_y, old_z = xyz2.X(), xyz2.Y(), xyz2.Z()
+        self.assertFalse( (x,y,z) == (old_x,old_y,old_z) )
+        #TODO: test rotation
+        
+        ##top_loc = OCC.TopLoc.TopLoc_Location(trsf)
+        ##peg_shape.Location(top_loc) #trsf.Perform()?
+
         #now make a cut in the block
         #FIXME: is this a perfect cut? is there some tolerance? is it within six sigma?
         cut = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(block.shapes[0],peg.shapes[0]).Shape()
         OCC.Display.wxSamplesGui.display.DisplayShape(cut)
+        #pause
         raw_input("pause unit tests and wait for user input")
         return
     def test_interface(self):
@@ -104,6 +114,7 @@ class TestPymates(unittest.TestCase):
         self.assertTrue(x == block_interface.point[0])
         self.assertTrue(y == block_interface.point[1])
         self.assertTrue(z == block_interface.point[2])
+        #TODO: test rotation
         return
 
 if __name__ == '__main__':
