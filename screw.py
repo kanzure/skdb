@@ -27,6 +27,9 @@ class Screw(skdb.Component):
         #thread.__init__()
         self.thread, self.length, self.grade = thread, length, grade
         if self.thread.length is None: self.thread.length = self.length
+        assert self.length.compatible('m')
+        for (k,v) in {'pitch': 'rev/in', 'diameter': 'in', 'tensile_area': 'in^2'}.items():
+            assert getattr(self.thread, k).compatible(v)
         #note these tables vary from source to source; might want to check if it really matters to you
         
     def max_force(self):
