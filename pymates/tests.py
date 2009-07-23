@@ -4,6 +4,8 @@ import unittest
 import pymates
 import OCC.gp
 import OCC.BRepBuilderAPI
+import OCC.BRepPrimAPI
+import OCC.BRepAlgoAPI
 
 class TestPrimitives(unittest.TestCase):
     def test_primitive_shape(self):
@@ -20,12 +22,36 @@ class TestGeom(unittest.TestCase):
 
 class TestPymates(unittest.TestCase):
     def test_part(self):
-        #test pymates.Part
         #test models/blockhole.yaml
-        pass
+
+        #clear the screen
+        pymates.restart()
+        #reset all the parts
+        pymates.total_parts = []
+        #make a new interface
+        block_interface = pymates.Interface(name="a hole", point=[0,5,0], x=-90, z=90)
+        #make the part
+        block = pymates.Part(description='a rectangular prism',created="2009-07-22",interfaces=[block_interface])
+        #make some geometry
+        length = 5
+        width = 20
+        height = 10
+        block.shapes = [OCC.BRepPrimAPI.BRepPrimAPI_MakeBox(length, width, height).Shape()]
+        #see pythonOCC/samples/Level1/TopologyOperations/topology_operations.py
+        cone_height = 9 #height of the cone
+        #make a new interface
+        peg_interface = pymates.Interface(name="a surface", point=[0,0,cone_height], x=-90,z=90)
+        #make a peg
+        peg = pymates.Part(description='a conical peg',created="2009-07-22",interfaces=[peg_interface])
+        peg.shapes = [OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(0.,10.,float(cone_height)).Shape()]
+        #now make a cut in the block
+        cut = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(block.shapes[0],peg.shapes[0]).Shape()
+        OCC.Display.wxSamplesGui.display.DisplayShape(cut)
+        #raw_input("pause here for user input")
+        return
     def test_interface(self):
         pass
-    def test_rotation(self):
+    def test_translation(self):
         pymates.restart()
         pymates.demo()
         pymates.mate_parts()
@@ -36,12 +62,9 @@ class TestPymates(unittest.TestCase):
         pymates.total_parts = []
         #load block/peg part mating demo
         pymates.demo()
-        block = pymates.total_parts[0]
-        peg = pymates.total_parts[1]
-        block_interface = block.interfaces[0]
-        peg_interface = peg.interfaces[0]
-        block_point = block_interface.point
-        peg_point = peg_interface.point
+        (block, peg) = pymates.total_parts
+        block_interface, peg_interface = block.interfaces[0], peg.interfaces[0]
+        block_point, peg_point = block_interface.point, peg_interface.point
         occ_point1 = OCC.gp.gp_Pnt(block_point[0], block_point[1], block_point[2])
         occ_point2 = OCC.gp.gp_Pnt(peg_point[0], peg_point[1], peg_point[2])
         pivot_point = OCC.gp.gp_Pnt(0, 0, 0)
@@ -59,8 +82,11 @@ class TestPymates(unittest.TestCase):
         trsf = top_loc.Transformation()
         xyz = trsf._CSFDB_Getgp_Trsfloc()
         x,y,z = xyz.X(), xyz.Y(), xyz.Z()
-        print "resulting location (x = ", x, ", y = ", y, ", z = ", z, ")"
+        #print "resulting location (x = ", x, ", y = ", y, ", z = ", z, ")"
         #OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
+        self.assertTrue(x == block_interface.point[0])
+        self.assertTrue(y == block_interface.point[1])
+        self.assertTrue(z == block_interface.point[2])
         return
 
 if __name__ == '__main__':

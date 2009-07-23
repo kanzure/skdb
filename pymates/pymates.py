@@ -37,7 +37,7 @@ class Part(yaml.YAMLObject):
     '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.
     should a part without an interface be invalid?'''
     yaml_tag = '!part'
-    def __init__(self, description="description", created=time.localtime(), files=[], interfaces={}):
+    def __init__(self, name="part name", description="description", created=time.localtime(), files=[], interfaces={}):
         self.description, self.created, self.files, self.interfaces = description, created, files, interfaces
     def load_CAD(self):
         if len(self.files) == 0: return #no files to load
@@ -52,18 +52,11 @@ class Part(yaml.YAMLObject):
             else: self.ais_shapes = result
         #i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
         x,z,point = self.interfaces[0].x,self.interfaces[0].z,self.interfaces[0].point
-        #y = self.interfaces[0].y
-        #self.transform = [
-        #    [i[0], j[0], k[0], point[0]],
-        #    [i[1], j[1], k[1], point[1]],
-        #    [i[2], j[2], k[2], point[2]],
-        #    [0, 0, 0, 1]
-        #    ]
         return
     def __repr__(self):
-        return "%s(description=%s, created=%s, files=%s, interfaces=%s)" % (self.__class__.__name__, self.description, self.created, self.files, self.interfaces)
+        return "%s(name=%s, description=%s, created=%s, files=%s, interfaces=%s)" % (self.__class__.__name__, self.name, self.description, self.created, self.files, self.interfaces)
     def yaml_repr(self):
-       return "description: %s\ncreated: %s\nfiles: %s\ninterfaces: %s" % (self.description, self.created, self.files, self.interfaces)
+       return "name: %s\ndescription: %s\ncreated: %s\nfiles: %s\ninterfaces: %s" % (self.name, self.description, self.created, self.files, self.interfaces)
     #def __setstate__(self, attrs):
         ##print "Part.__setstate__ says attrs = ", attrs
         #for (k,v) in attrs.items():
@@ -89,8 +82,8 @@ class Interface(yaml.YAMLObject):
     '''"units" should be what is being transmitted through the interface, not about the structure.
     a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry'''
     yaml_tag = '!interface'
-    def __init__(self, name="generic interface name", units=None, geometry=None, point=[0,0,0], i=[0,0,0], j=[0,0,0], k=[0,0,0]):
-        self.name, self.units, self.geometry, self.point, self.i, self.j, self.k = name, units, geometry, points, numpy.matrix(i), numpy.matrix(j), numpy.matrix(k)
+    def __init__(self, name="generic interface name", units=None, geometry=None, point=[0,0,0], x=0, y=0, z=0):
+        self.name, self.units, self.geometry, self.point, self.x, self.y, self.z = name, units, geometry, point, x, y, z
     def __repr__(self):
         return "Interface(name=%s,units=%s,geometry=%s,point=%s,x=%s,y=%s,z=%s)" % (self.name, self.units, self.geometry, self.point, self.x, self.y, self.z)
     def yaml_repr(self):
