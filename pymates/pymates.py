@@ -6,6 +6,8 @@
 #pymates.mate_parts()
 #optionally, pymates.move(pymates.total_parts[0],x,y,z,i,i,i,j,j,j)
 
+#FIXME: pymates should not depend on OCC.Display
+
 #see ~/local/pythonOCC/samples/Level2/DataExchange/import_step_multi.py
 #see ~/local/pythonOCC/samples/Level1/TopologyTransformation/mirror.py
 
@@ -124,53 +126,6 @@ def demo(event=None):
     total_parts.append(blockhole)
     total_parts.append(peg)
 
-def demo2(event=None, part=Part()):
-    '''reposition the part to be at one of the interfaces of the part. this replaces move_parts().'''
-    if not part.interfaces or len(part.interfaces) == 0:
-        if len(total_parts) == 0: return #can't do anything about that, can we
-        part = total_parts[0]
-        if len(part.interfaces) == 0: return #ok I give up
-    #select the first interface
-    interface = part.interfaces[part.interfaces.keys()[0]][0]
-    point = interface[part.interfaces.keys()[0]][0].point
-    i = interface.i
-    j = interface.j
-    k = interface.k
-    o_point = OCC.gp.gp_Pnt(point[0], point[1], point[2])
-    o_n_vec = OCC.gp.gp_Dir(i[0], i[1], i[2])
-    o_vx_vec = OCC.gp.gp_Dir(j[0], j[1], j[2])
-    ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
-    the_transform = OCC.gp.gp_Trsf()
-    #myax = OCC.gp.gp_Ax3( blah )
-    #myax.Transform(the_transform)
-    the_transform.SetTransformation(ax3)
-    the_toploc = OCC.TopLoc.TopLoc_Location(the_transform)
-    #import OCC.AIS
-    #OCC.AIS.Handle_AIS_InteractiveObject()
-    OCC.Display.wxSamplesGui.display.Context.SetLocation(part.ais_shapes, the_toploc)
-    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
-    return
-
-def load_cad_file(event=None, filename=""):
-    '''deprecated'''
-    pass
-    if not filename or filename == "":
-        #popup menu selector for finding a filename
-        filename = wx.FileSelector()
-        #FIXME: this assumes that the path is relative to the curdir- i.e. in skdb/pymates/models/ or at least skdb/pymates/
-        #figure out relative path for STEPImporter
-        fullpath = os.path.realpath(os.path.curdir)
-        filename = filename.replace(fullpath + "/","")
-    #load the STEP file
-    my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(str(filename))
-    my_step_importer.ReadFile()
-    the_shapes = my_step_importer.GetShapes()
-    the_compound = my_step_importer.GetCompound()
-    #don't forget to get the return value and append it to total_shapes
-    #FIXME: don't be so lame re: use of globals.
-    ais_shapes = OCC.Display.wxSamplesGui.display.DisplayShape(the_shapes)
-    total_parts.append(ais_shapes[0]) #sorry
-
 def mate_parts(event=None):
     #mate all of the parts in the workspace
     #see transform_point()
@@ -213,38 +168,6 @@ def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
-def move_parts(event=None):
-    if len(total_parts) == 0: return
-    if len(total_parts) == 1: working_part = total_parts[0]
-    else: working_part = total_parts[random.randrange(0,len(total_parts))]
-
-    #gp_Dir, gce_MakeDir, Geom_Direction: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Dir.html
-    #gp_Ax3: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Ax3.html
-    #gp_Ax3 (const gp_Pnt &P, const gp_Dir &N, const gp_Dir &Vx)
-    #gp_Ax3 (const gp_Pnt &P, const gp_Dir &V)
-    #see pythonOCC/samples/Level1/Animation/animation.py
-
-    point = OCC.gp.gp_Pnt(0,0,0)
-    n_vec = OCC.gp.gp_Dir(0,0,1)
-    tempvar = [1,1,1] #[-1,0,0] #[0,-1,0]
-    #TODO: check whether or not tempvar is valid
-    vx_vec = OCC.gp.gp_Dir(tempvar[0],tempvar[1],tempvar[1])
-    ax3 = OCC.gp.gp_Ax3(point, n_vec, vx_vec)
-    the_transform = OCC.gp.gp_Trsf()
-    the_transform.SetTransformation(ax3)
-    the_toploc = OCC.TopLoc.TopLoc_Location(the_transform)
-    OCC.Display.wxSamplesGui.display.Context.SetLocation(working_shape, the_toploc)
-    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
-    return
-
-def show_interface_points():
-    for each in total_parts:
-        interface = each.interfaces[0]
-        mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2]), 2.0)
-        OCC.Display.wxSamplesGui.display.DisplayColoredShape(mysphere.Shape(), color='RED')
-    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
-    return
-
 def show_new_interface_point(x,y,z,color='RED'):
     mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(x,y,z), 2.0)
     OCC.Display.wxSamplesGui.display.DisplayColoredShape(mysphere.Shape(), color=color)
@@ -255,6 +178,15 @@ def show_cone_at(x,y,z,color='YELLOW'):
     mycone = OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(x,y,z)
     OCC.Display.wxSamplesGui.display.DisplayColoredShape(mycone.Shape(), color=color)
     #OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
+    return
+
+#wtf where did this go?
+def show_interface_points(event=None):
+    for each in total_parts:
+       interface = each.interfaces[0]
+       mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2]), 2.0)
+       OCC.Display.wxSamplesGui.display.Context.DisplayColoredShape(mysphere.Shape(), color='RED')
+    OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
 def add_part_mate(part_1_interface, part_2_interface):
@@ -269,7 +201,7 @@ def show_part_mate(part_mate_object):
 def start():
     OCC.Display.wxSamplesGui.display.Create()
 
-def restart(): #EraseAll
+def restart(event=None): #EraseAll
     '''EraseAll'''
     OCC.Display.wxSamplesGui.display.EraseAll()
     return
@@ -312,10 +244,9 @@ def exit(event=None):
 
 if __name__ == '__main__':
     OCC.Display.wxSamplesGui.add_menu("do stuff")
+    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', restart)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', demo)
-    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', demo2)
-    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', load_cad_file)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', mate_parts)
-    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', move_parts)
+    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', supermate_parts)
     OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', exit)
     OCC.Display.wxSamplesGui.start_display()
