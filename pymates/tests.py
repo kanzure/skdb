@@ -26,7 +26,7 @@ class TestPymates(unittest.TestCase):
 
         #clear the screen
         pymates.restart()
-        #reset all the parts
+        #reset all parts
         pymates.total_parts = []
         #make a new interface
         block_interface = pymates.Interface(name="a hole", point=[0,5,0], x=-90, z=90)
@@ -38,16 +38,25 @@ class TestPymates(unittest.TestCase):
         height = 10
         block.shapes = [OCC.BRepPrimAPI.BRepPrimAPI_MakeBox(length, width, height).Shape()]
         #see pythonOCC/samples/Level1/TopologyOperations/topology_operations.py
-        cone_height = 9 #height of the cone
+        cone_height = 4 #height of the cone
         #make a new interface
         peg_interface = pymates.Interface(name="a surface", point=[0,0,cone_height], x=-90,z=90)
-        #make a peg
-        peg = pymates.Part(description='a conical peg',created="2009-07-22",interfaces=[peg_interface])
-        peg.shapes = [OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(0.,10.,float(cone_height)).Shape()]
+        #make the peg
+        peg = pymates.Part(description="a conical peg",created="2009-07-22",interfaces=[peg_interface])
+        peg.shapes = [OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(10.,1.,float(cone_height)).Shape()]
+        #move the peg
+        peg_shape = peg.shapes[0]
+        trsf = OCC.gp.gp_Trsf()
+        pt1 = OCC.gp.gp_Pnt(0,0,0)
+        pt2 = OCC.gp.gp_Pnt(1,1,5)
+        trsf.SetTranslation(pt1, pt2)
+        top_loc = OCC.TopLoc.TopLoc_Location(trsf)
+        peg_shape.Location(top_loc)
         #now make a cut in the block
+        #FIXME: is this a perfect cut? is there some tolerance? is it within six sigma?
         cut = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(block.shapes[0],peg.shapes[0]).Shape()
         OCC.Display.wxSamplesGui.display.DisplayShape(cut)
-        #raw_input("pause here for user input")
+        raw_input("pause unit tests and wait for user input")
         return
     def test_interface(self):
         pass
