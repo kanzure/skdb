@@ -6,3 +6,4 @@ short variable names that are english words
 no unnecessary positional arguments, use named arguments
 
 not loading yaml files and dumping the output and then editing it
+pull before you commit, so as not to generate spurious merge commits
