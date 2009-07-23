@@ -93,6 +93,7 @@ class TestUnits(unittest.TestCase):
         
         
 class TestScrew(unittest.TestCase):
+    import screw
     def test_conversions(self):
             screw = skdb.load(open('screw.yaml'))['screw'] #yaml.load(open('screw.yaml'))['screw']
             #print yaml.dump(screw)

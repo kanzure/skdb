@@ -1,4 +1,5 @@
 import skdb
+from string import Template
 
 class Screw(skdb.Component):
     yaml_tag = "!screw"
@@ -31,9 +32,9 @@ class Screw(skdb.Component):
     def max_force(self):
         s = Template('$area*$strength')
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.proof_load[self.grade])
-        return Unit(string).to('lbf') 
+        return skdb.Unit(string).to('lbf') 
   
     def breaking_force(self):
         s = Template('$area*$strength')
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.tensile_strength[self.grade])
-        return Unit(string).to('lbf')
+        return skdb.Unit(string).to('lbf')
