@@ -55,10 +55,13 @@ class TestPymates(unittest.TestCase):
         brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
         brep_transform.Perform(peg.shapes[0])
         resulting_shape = brep_transform.Shape()
+        top_loc = resulting_shape.Location()
+        trsf = top_loc.Transformation()
+        xyz = trsf._CSFDB_Getgp_Trsfloc()
+        x,y,z = xyz.X(), xyz.Y(), xyz.Z()
+        print "resulting location (x = ", x, ", y = ", y, ", z = ", z, ")"
         #OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
-        print type(resulting_shape)
-        
-        pass
+        return
 
 if __name__ == '__main__':
     pymates.start()
