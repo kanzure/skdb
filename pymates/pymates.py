@@ -180,12 +180,11 @@ def show_cone_at(x,y,z,color='YELLOW'):
     #OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
-#wtf where did this go?
 def show_interface_points(event=None):
     for each in total_parts:
        interface = each.interfaces[0]
        mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2]), 2.0)
-       OCC.Display.wxSamplesGui.display.Context.DisplayColoredShape(mysphere.Shape(), color='RED')
+       OCC.Display.wxSamplesGui.display.DisplayColoredShape(mysphere.Shape(), color='RED')
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
