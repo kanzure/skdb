@@ -44,14 +44,22 @@ class TestPymates(unittest.TestCase):
         #make the peg
         peg = pymates.Part(description="a conical peg",created="2009-07-22",interfaces=[peg_interface])
         peg.shapes = [OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(10.,1.,float(cone_height)).Shape()]
-        #move the peg
         peg_shape = peg.shapes[0]
+        trsf = OCC.gp.gp_Trsf()
         trsf = OCC.gp.gp_Trsf()
         pt1 = OCC.gp.gp_Pnt(0,0,0)
         pt2 = OCC.gp.gp_Pnt(1,1,5)
+        #rotate the peg
+        rotation_point = pt1
+        rotation_dir = OCC.gp.gp_Dir(0,0,1) #arbitrary choice for test
+        rotation_axis = OCC.gp.gp_Ax1(rotation_point, rotation_dir)
+        rotation_angle = 90 #degrees (arbitrary choice for test)
+        trsf.SetRotation(rotation_axis, rotation_angle)
+        #translate (move) the peg
         trsf.SetTranslation(pt1, pt2)
+        trsf.Perform(peg_shape)
         top_loc = OCC.TopLoc.TopLoc_Location(trsf)
-        peg_shape.Location(top_loc)
+        #peg_shape.Location(top_loc) #trsf.Perform()?
         #now make a cut in the block
         #FIXME: is this a perfect cut? is there some tolerance? is it within six sigma?
         cut = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(block.shapes[0],peg.shapes[0]).Shape()
