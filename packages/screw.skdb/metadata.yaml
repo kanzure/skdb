@@ -23,23 +23,15 @@ source data:
 generated data:
 - screw.step
 dependencies:
-    #there are different ways to build a screw
-    #each one requires a different set of build/runtime/software dependencies (etc.)
+    assembly: !assembly
+        - screwdriver=0.0.1 #but this varies with respect to which type of screw head interface. (FIXME)
+    #options of different dependencies to choose from:
     typical: !dependency-set
         - !build
           - screw-cutting lathe #http://en.wikipedia.org/wiki/Screw-cutting_lathe
-        - !runtime
-          - electrical network
     unusual: !dependency-set
         - !build
           - turret lathe #http://en.wikipedia.org/wiki/Turret_lathe
     unusual_2: !dependency-set
         - !build
           - screw machine #http://en.wikipedia.org/wiki/Screw_machine
-          - arduino board
-        - !runtime
-          - electrical network
-          #what about programming the arduino? are those requirements "runtime"?
-        - !software
-          - arduino firmware
-          - arduino programmer
