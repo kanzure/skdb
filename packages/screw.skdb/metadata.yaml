@@ -6,6 +6,43 @@ urls:
   - 'http://adl.serveftp.org/skdb/'
   - 'http://github.com/kanzure/skdb/'
 created: '2009-07-23'
+
+name: screw
+
+description: #package description
+    exerts a force at the compression face, used for part mating; is a fastener when used with a nut.
+
+#there are different ways to build a screw
+#each one requires a different set of build_dependencies, runtime_dependencies, software_dependencies, etc.
+
+#dependencies:
+#    build_dependencies:
+#        typical: !dependency-set
+#            - screw-cutting lathe #http://en.wikipedia.org/wiki/Screw-cutting_lathe
+#        unusual: !dependency-set
+#            - turret lathe #http://en.wikipedia.org/wiki/Turret_lathe
+#        unusual_2: !dependency-set
+#            - screw machine #http://en.wikipedia.org/wiki/Screw_machine
+
+dependencies:
+    typical: !dependency-set
+        - !build
+          - screw-cutting lathe #http://en.wikipedia.org/wiki/Screw-cutting_lathe
+        - !runtime
+          - electrical network
+    unusual: !dependency-set
+        - !build
+          - turret lathe #http://en.wikipedia.org/wiki/Turret_lathe
+    unusual_2: !dependency-set
+        - !build
+          - screw machine #http://en.wikipedia.org/wiki/Screw_machine
+          - arduino board
+        - !runtime
+          - electrical network
+        - !software
+          - arduino firmware
+          - arduino programmer
+
 classes: 
 - screw.Screw
 
@@ -15,4 +52,4 @@ source data:
 - screw.yaml
 
 generated data:
-- screw.stp
+- screw.step
