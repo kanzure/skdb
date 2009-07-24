@@ -213,7 +213,7 @@ def equationsFromCutsets(g,cutsets): # KCL (Kirchhoff's Current Law)
                                 for through in throughvars:
                                         if(through>0): # put it on the left
                                                 equationLeft = equationLeft + through + " + "
-                                        else: equationRight = equationRight + through " + "
+                                        else: equationRight = equationRight + through + " + "
                 equation = equationLeft + " 0 = " + equationRight + " 0" # KCL (Kirchhoff's Current Law)
                 equations.append(equation)                
         return equations
@@ -247,7 +247,7 @@ class TestMisc(unittest.TestCase):
         def test_separateGraphs(self):
                 # there should be countGraphs(g) number of graphs returned by separateGraphs(g)
                 g = pygraph.graph()
-                g.add_nodes(range(1,11)
+                g.add_nodes(range(1,11))
                 for each in range(1,10):
                         g.add_edge(each,each+1)
                 gcut1 = makeCut([1,2],g)

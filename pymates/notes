@@ -165,3 +165,100 @@ find the inverse of B
 B dot B^-1 = identity matrix 
 Kramer's rule? (see Wikipedia)
 http://stackoverflow.com/questions/211160/python-inverse-of-a-matrix
+
+
+
+
+
+>>> import numpy
+... 
+>>> 
+>>> import OCC.gp
+>>> OCC.gp.gp_Ax3(
+... )
+<OCC.gp.gp_Ax3; proxy of <Swig Object of type 'gp_Ax3 *' at 0x20006600> >
+>>> OCC.gp.gp_Ax3()
+<OCC.gp.gp_Ax3; proxy of <Swig Object of type 'gp_Ax3 *' at 0x20006664> >
+>>> OCC.gp.gp_Ax3(1)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+  File "/usr/lib/python2.5/site-packages/OCC/gp.py", line 4726, in __init__
+    this = _gp.new_gp_Ax3(*args)
+NotImplementedError: Wrong number of arguments for overloaded function 'new_gp_Ax3'.
+  Possible C/C++ prototypes are:
+    gp_Ax3()
+    gp_Ax3(gp_Ax2 const &)
+    gp_Ax3(gp_Pnt const &,gp_Dir const &,gp_Dir const &)
+    gp_Ax3(gp_Pnt const &,gp_Dir const &)
+
+>>> OCC.gp.gp_Rotation(1)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: 'int' object is not callable
+>>> OCC.gp.gp_Rotation
+1
+>>> A = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 10], [0, 0, 0, 1]]
+>>> B = [[1, 0, 0, 5], [0, 1, 0, 5], [0, 0, 1, -10], 0, 0, 0, 1]]
+  File "<input>", line 1
+    B = [[1, 0, 0, 5], [0, 1, 0, 5], [0, 0, 1, -10], 0, 0, 0, 1]]
+                                                                ^
+SyntaxError: invalid syntax
+>>> B = [[1, 0, 0, 5], [0, 1, 0, 5], [0, 0, 1, -10], [0, 0, 0, 1]]
+>>> A = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 10], [0, 0, 0, 1]]
+>>> B = [[1, 0, 0, 5], [0, 1, 0, 5], [0, 0, 1, -10], [0, 0, 0, 1]]
+>>> Am = numpy.matrix(A)
+>>> Bm = numpy.matrix(B)
+>>> Am * Bm.I
+matrix([[  1.,   0.,   0.,  -5.],
+        [  0.,   1.,   0.,  -5.],
+        [  0.,   0.,   1.,  20.],
+        [  0.,   0.,   0.,   1.]])
+>>> B = [[1, 0, 0, 5], [0, 1, 0, 5], [0, 0, 1, 0], [0, 0, 0, 1]]
+>>> Bm = numpy.matrix(B)
+>>> Am * Bm.I
+matrix([[  1.,   0.,   0.,  -5.],
+        [  0.,   1.,   0.,  -5.],
+        [  0.,   0.,   1.,  10.],
+        [  0.,   0.,   0.,   1.]])
+>>> A = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 10], [0, 0, 0, 1]]
+>>> B = [[1, 0, 0, 5], [0, 1, 0, 5], [0, 0, 1, 0], [0, 0, 0, 1]]
+>>> B = [[1, 0, 0, 5], [0, 1, 0, 5], [0, 0, 1, 0], [0, 0, 0, 1]]
+>>> A = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 10], [0, 0, 0, 1]]
+>>> B = [[1, 0, 0, 5], [0, 1, 0, 5], [0, 0, 1, 0], [0, 0, 0, 1]]
+>>> Am = numpy.matrix(A)
+>>> Bm = numpy.matrix(B)
+>>> T = Am * Bm.I
+>>> Bprime = "" #swith the signs of the central two columns
+>>> Aprime = "" #switch the signs of the central two columns
+>>> #A * inverse of Bprime
+>>> T = Am * Bm.inverse 
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+AttributeError: 'matrix' object has no attribute 'inverse'
+>>> T = Am * Bm_prime
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+NameError: name 'Bm_prime' is not defined
+>>> Bm_prime = B(-y,-z)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+NameError: name 'y' is not defined
+>>> T = A * Bm_prime.inverse
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+NameError: name 'Bm_prime' is not defined
+>>> #apply T to the part that "A" was on
+>>> OCC.gp.gp_Trsf(1)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+  File "/usr/lib/python2.5/site-packages/OCC/gp.py", line 3573, in __init__
+    this = _gp.new_gp_Trsf(*args)
+NotImplementedError: Wrong number of arguments for overloaded function 'new_gp_Trsf'.
+  Possible C/C++ prototypes are:
+    gp_Trsf()
+    gp_Trsf(gp_Trsf2d const &)
+
+>>> exit()
+
+
+

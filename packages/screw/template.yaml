@@ -1,0 +1,26 @@
+author: 'ben lipkowitz'
+license: 'GPL2+'
+urls: 
+
+screw: !screw
+ interfaces: #or should this go in screw.py?
+    - !interface
+        name: compression-face
+        units: N
+    - !interface
+        name: torque-spline
+        units: N*m/rev
+ grade: string
+ length: in
+ thread: !thread
+    interfaces:
+        - !interface
+        name: thread-tighten
+        units: N
+        - !interface
+        name: thread-loosen
+        units: N
+    diameter: in
+    form: string 
+    pitch: rev/in
+

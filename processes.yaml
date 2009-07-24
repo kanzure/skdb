@@ -8,7 +8,7 @@ source: manufacturing processes reference guide, 1993 first edition. todd, allen
 
 template: !process
     name:
-    type:
+    classification:
     mechanism:
     geometry:
         tolerance:
@@ -34,7 +34,8 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
         feasible: 0.0001 .. 0.002in/min  
     geometry: 
         primitive: cone #!geometry #what angle?
-        sweep: path
+        path:
+        -   parallel to workpiece face
         tolerance:
             typical: +-0.005in
             feasible: +-0.001in
@@ -114,19 +115,19 @@ abrasive jet: !process #eventually this will be something like skdb.Shaping.Redu
         
 arbor milling: !process
     name: arbor milling #really this is just endmilling supported at both ends and you can stack cutters
-    type: process, shaping, mass-reducing, mechanical, reducing, multi-point, milling
+    classification: process, shaping, mass-reducing, mechanical, reducing, multi-point, milling
     mechanism: rotating toothed cutter supported axially at both ends is fed into the workpiece at a controlled rate
     geometry: #!geometry 
-        primitive: swept revolute #like a candlestick. used to calculate swept volume of tool path
-        sweep: radial path #path can only be in the plane perpendicular to cutter's axis of rotation
+        primitive: revolute #like a candlestick. used to calculate swept volume of tool path
+        path:
+        -   path perpendicular to axis
+        -   axis parallel to workpiece opposite face
         #cutters can be ganged.. where do i put this?
         length:
             typical: 0.2..5in
             feasible: &width_of_cut 0.03..20in
         radius:
             typical: 1.5 .. 10in
-        constraints:
-            angle:
         tolerance:
             typical: +-0.005
             feasible: +-0.001
@@ -145,6 +146,9 @@ arbor milling: !process
     -   prismatic geometry
     -   !which tool material, functionality #hmm
     machinability: !which workpiece material, machinability
+    effects:
+    -   surface stress
+    -   untempered martensitic layer 0.001in in heat treated alloy steels #blargh
     parameters:
         depth of cut:
             typical: 0.05 .. 0.25in
@@ -163,9 +167,6 @@ arbor milling: !process
         rigidity: #this includes the machine, workpiece, clamps, and tool bit rigidity
             static: #mostly affects deflection or absolute uncompensated accuracy
             dynamic: #affects maximum cutting rate vs surface finish, tool life, etc
-        effects:
-            -   surface stress
-            -   untempered martensitic layer 0.001in in heat treated alloy steels #blargh
         tool geometry: !which workpiece material, tool geometry
         tooth count:
             typical: 10 .. 20 teeth/rev #i just made up these values
@@ -302,11 +303,13 @@ arbor milling: !process
 band filing: !process
     #there really wasn't much data on this
     name: band filing
-    type: shaping, mass reducing, mechanical, reducing, multi-point, filing
+    classification: shaping, mass reducing, mechanical, reducing, multi-point, filing
     mechanism: a prismatic multipoint cutter mounted on a metal belt is fed into the work
     geometry:
         primitive: prism
-        sweep: perpendicular #direction of cutting really depends on the tool bit geometry
+        path:
+        -   under 90 degrees to previous segment #direction of cutting really depends on the tool bit geometry
+        -   axis perpendicular to workpiece opposite face
     tolerance:
     surface finish: "fine"
     functionality:
@@ -330,14 +333,15 @@ band filing: !process
 
 band sawing: !process
     name: band sawing
-    type: shaping, mass-reducing, mechanical, reducing, multipoint, sawing
+    classification: shaping, mass-reducing, mechanical, reducing, multipoint, sawing
     mechanism: a moving flexible tensioned metal loop with teeth is fed into the workpiece at a controlled rate
     geometry:
-        primitive: parallelepiped
-        sweep: perpendicular +- some angle related to radius of curvature
-        constraints: 
+        primitive: rectangle
+        path: 
+        -   roll = 90 deg
+        -   perpendicular to rectangle or tangent arc
         -   geometry must extend above and below workpiece
-        -   !formula minimum radius of curvature = something * blade width
+        -   !formula arc radius > something * blade width
         tolerance: 
             typical: 0.05 .. 0.1 in
             feasible: 0.02 .. 0.3 in
@@ -389,13 +393,12 @@ band sawing: !process
 
 internal broaching: &internal_broaching !process 
     name: internal broaching
-    type: shaping, mass-reducing, mechanical, reducing, multi-point, broaching
+    classification: shaping, mass-reducing, mechanical, reducing, multi-point, broaching
     mechanism: a tapered cutter is fed into a hole in one pass
     geometry:
         primitive: prismatic or helical
-        sweep: axial with rotation
-        constraints:
-        -   axis parallel to machine
+        path:
+        -   axis parallel to workpiece face
         -   helix angle < 20 deg #yah i made this up.. isnt a tap just a helical broach?
         tolerance:
             typical: +-0.002in
@@ -525,7 +528,7 @@ internal broaching: &internal_broaching !process
 
 external broaching: !process
     name: external broaching
-    type: shaping, mass-reducing, mechanical, reducing, multi-point, broaching
+    classification: shaping, mass-reducing, mechanical, reducing, multi-point, broaching
     mechanism: a tapered cutter is fed across a workpiece in one pass
     similar: *internal_broaching
     functionality:
@@ -556,12 +559,12 @@ external broaching: !process
 
 superfinishing: !process #somehow i think there isnt quite enough info here
     name: superfinishing
-    type: shaping, mass-reducing, mechanical, reducing, abrasive #is this right?
+    classification: shaping, mass-reducing, mechanical, reducing, abrasive #is this right?
     mechanism: abrasive surface and oil act as hydrodynamic bearing; surface asperities contact abrasive and are cut
     geometry:
-        primitive: cylinder, sphere, cone, plane
-        sweep: null #superfinishing just makes a cylinder "more cylindrical" etc
-        location: axis of rotation
+        primitive: cylinder or sphere or cone or plane
+        path: 
+        -   colinear with workpiece face axis #superfinishing just makes a cylinder "more cylindrical" etc
         tolerance: -0.0002 .. -0.0008in
     effect: removes smeared surface layer
     surface finish:
@@ -588,11 +591,12 @@ superfinishing: !process #somehow i think there isnt quite enough info here
 
 gas cutting: !process
     name: gas flame cutting
-    type: shaping, mass-reducing, thermal, torch cutting, gas cutting
+    classification: shaping, mass-reducing, thermal, torch cutting, gas cutting
     mechanism: ferrous workpiece is heated and then oxidized. gas flow then blows the liquid metal out of the cut
     geometry:
         primitive: cylinder
-        sweep: parallel to workpiece
+        path: 
+        -   parallel to workpiece face
         diameter: 1/16 .. 1/4 in #kerf
         tolerance:
             typical: +- 1/8 in
@@ -685,11 +689,12 @@ gas cutting: !process
 
 laser cutting: !process
     name: laser beam cutting
-    type: shaping, mass-reducing, thermal, high energy beam machining
+    classification: shaping, mass-reducing, thermal, high energy beam machining
     mechanism: focused coherent light heats workpiece to melting or vaporization, then shielding gas blows the melted material out of the cut
     geometry: 
         primitive: hyperboloid
-        sweep: parallel to workpiece
+        path: 
+        -   parallel to workpiece face
         diameter: !which beam, diameter #hmmm. beam has no choices, i.e. this varies continuously
         tolerance:
             typical: +- 0.001in
@@ -780,3 +785,145 @@ laser cutting: !process
     -   toxic fumes
     -   dust
     -   compressed gases
+    
+    
+mig: !process
+    name: MIG welding
+    classification: shaping, joining, thermal, welding, electric arc, gas metal
+    mechanism: a wire electrode surrounded by inert gas is heated to melting by an electric arc passing through it
+    geometry:
+        primitive: sphere
+        post-operation: fillet edges
+        diameter: !formula electrode rate*pi*(electrode diameter)^2/traverse rate #TODO unit check this formula
+        tolerance: 
+    surface finish:        
+        typical: 250..1000 microinches
+        feasible: 100..1100 microinches
+    consumables:
+        gas: !which shielding gas, flow rate
+        electrode: !which weld geometry, feed rate
+        power: !formula current * voltage
+    functionality: !which shielding gas, functionality
+    effects:
+    -   hardening
+    -   reduced fatigue strength
+    -   shrinkage
+    -   annealing
+    -   warpage
+    -   bad appearance
+    -   cracks
+    -   porosity
+    -   reduced corrosion resistance
+    weldability: !which workpiece material, weldability
+    parameters:
+        workpiece thickness:
+            feasible: 0.02..2.5in
+            typical: 0.125..1in
+        electrode material:
+            #usually similar to workpiece material
+        filler material:
+            manganese silicon:
+                shielding gas: carbon dioxide
+            aluminum:
+                shielding gas: helium or argon
+            steel:
+                shielding gas: carbon dioxide
+            powder core:
+                functionality:
+                -   specialized welding applications
+            oxidizer:
+                functionality:
+                -   rusty surfaces
+                -   semikilled steel
+                -   rimmed steel #what's this?
+        workpiece material:
+            mild steel:
+                weldability:
+                    feasible: 2.4..3.7 stars
+                    typical: 2.8..3.3 stars
+            cast iron:
+                weldability:
+                    feasible: 1.3..3.1 stars
+                    typical: 2.1..2.5 stars
+            stainless:
+                weldability:
+                    feasible: 2.3..3.7 stars
+                    typical: 2.7..3.2 stars
+            aluminum:
+                weldability:
+                    feasible: 2.8..3.9 stars
+                    typical: 3.2..3.7 stars
+            copper:
+                weldability:
+                    feasible: 2.0..3.6 stars
+                    typical: 2.6..2.95stars
+            magnesium:
+                weldability:
+                    feasible: 2.6..3.6 stars
+                    typical: 3.2..3.5 stars
+            titanium:
+                weldability:
+                    feasible: 1.2..3.1 stars
+                    typical: 1.9..2.5 stars
+        shielding gas: #gases can be mixed.. how to represent this?
+            argon:
+                functionality:
+                -   lower voltage
+                -   high quality
+                -   easy starting
+                -   stable arc
+            helium:
+                functionality:
+                -   high speed
+                -   small heat affected zone
+            carbon dioxide:
+                functionality:
+                -   good penetration
+                -   low cost
+                -   high speed
+        weld geometry: #hmmm. i know it's in a book, but this is all wrong
+            lap:
+                traverse rate: 60ipm
+                electrode rate: 234ipm
+                electrode diameter: 0.0625in
+                current: 380A
+            butt:
+                traverse rate: 7ipm
+                electrode rate: 400ipm
+                electrode diameter: 0.045in
+                current: 275A
+            tee:
+                traverse rate: 16ipm
+                electrode rate: 300ipm
+                electrode diameter: 0.045in
+                current: 200A
+            edge:
+                traverse rate: 
+                electrode rate: 
+                electrode diameter: 
+            corner:
+                traverse rate: 10ipm
+                electrode rate: 30..160ipm
+                electrode diameter: 0.030in
+                current: 80..85A
+            circumferential corner:
+                traverse rate: 45ipm
+                electrode rate: 500ipm
+                electrode diameter: 0.045in
+                current: 280..300A
+            circumferential modified butt: #wtf is this
+                traverse rate: 46.6ipm
+                electrode rate: 340..380ipm
+                electrode diameter: 0.030
+                current: 170..190A
+        current:
+        voltage:
+        traverse rate: !which weld geometry, traverse rate
+        electrode rate: !which weld geometry, electrode rate
+        electrode diameter: !which weld geometry, electrode diameter
+    safety:
+    -   UV radiation
+    -   hot parts
+    -   smoke
+    -   sparks
+    -   metal fumes

@@ -25,6 +25,7 @@ item:
   condition: (scrap fixable rusty moldy dusty hacked used new assimilated waxed polished)
   allocation-status: (dependency project plz-ask for-grabs junk)
   circulation-status: (storage in-use loaned missing)
+  manufacturer-name:
   manufacturer-number:
   datasheet or manual or msds:
   photograph: (actual representative stock)

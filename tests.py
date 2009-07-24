@@ -83,7 +83,9 @@ class TestUnits(unittest.TestCase):
         self.assertFalse(skdb.Unit('-1') < skdb.Unit('1'))
         
         self.assertTrue(skdb.Unit('0') >= skdb.Unit('0'))
-        
+    def test_supplemental_units(self):
+        self.assertTrue(skdb.Unit('man').check())
+        self.assertTrue(skdb.Unit('5*teeth').compatible('tooth'))
         
     def test_somethingorother(self): #is this even desirable?
         self.assertTrue(skdb.Unit('1') > 0.9)
@@ -91,6 +93,7 @@ class TestUnits(unittest.TestCase):
         
         
 class TestScrew(unittest.TestCase):
+    import screw
     def test_conversions(self):
             screw = skdb.load(open('screw.yaml'))['screw'] #yaml.load(open('screw.yaml'))['screw']
             #print yaml.dump(screw)

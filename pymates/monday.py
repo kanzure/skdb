@@ -8,8 +8,18 @@ peg = pymates.Part(name="peg", cadfile="http://adl.serveftp.org/lab/models/peg.i
 block = pymates.Part(metadata_filename="models/block-with-holes.yaml", cadfile="models/block-with-holes.iges")
 peg = pymates.Part(metadata_filename="models/peg.yaml", cadfile="models/peg.iges")
 
-possibilities = pymates.compatibility(block, peg, block.ports[1], peg.ports[3])
-possibilities = pymates.compatibility(block, peg, block.ports[5], peg.ports[0])
+block_interface = block.interfaces[block.interfaces.keys()[0]]
+peg_interface = peg.interfaces[peg.interfaces.keys()[0]]
+
+possibilities = pymates.compatibility(block, peg, block_interface, peg_interface)
+
+#mix it up
+block_interface = block.interfaces[block.interfaces.keys()[1]]
+peg_interface = peg.interfaces[peg.interfaces.keys()[1]]
+
+possibilities = pymates.compatibility(block, peg, block_interface, peg_interface)
+
+#find all possibilities
 possibilities = pymates.compatibility(block, peg)
 
 for each in possibilities:

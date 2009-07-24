@@ -2,8 +2,16 @@ PCR can be carried out by hand or by machine.
 
 process is what happens to matter, energy, and information
 
-sequence is a set of steps that are performed by a machine in order to 
-carry out a process
+a step is a mechanism ("the technical aspects of doing something")
+
+a step can be a machine, OEM part, or parameters to a process
+(different mechanisms that satisfy the same parameters to a process
+might be interchangeable and could be evaluated)
+
+sequence is a set of steps that are performed by (or contained within)
+a machine (or multiple machines) in order to carry out a process
+
+an assembly of a sequence tells you how to put the mechanisms together
 
 the intent of PCR is to amplify a section of DNA; this is the 
 functionality of the PCR process
