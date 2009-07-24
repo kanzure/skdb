@@ -6,7 +6,7 @@ class Thread(skdb.Package):
     '''examples: ballscrews, pipe threads, bolts - NOT any old helix'''
     def __init__(self, diameter, pitch, gender='male', length=None, form="UN"):
         self.diameter, self.pitch, self.form = skdb.Unit(diameter), skdb.Unit(pitch), form
-        self.gender, self.length, self.form
+        self.gender, self.length, self.form = gender, length, form
         self.interfaces = [
                 (pitch_diameter, 'in'), # conversion function .. so this is wrong.
                 (minor_diameter, 'in'),
