@@ -4,8 +4,8 @@ from string import Template
 
 #build the new db for our custom units
 f1 = open('/usr/share/misc/units.dat').read()
-f2 = open('supplemental_units.dat').read()
-f3 = open('combined.dat', 'w')
+f2 = open(os.path.join(os.path.dirname(__file__), 'supplemental_units.dat')).read()
+f3 = open(os.path.join(os.path.dirname(__file__), 'combined.dat'), 'w')
 f3.write(f1+f2)
 f3.close()
 
