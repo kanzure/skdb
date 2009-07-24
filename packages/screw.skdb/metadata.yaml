@@ -22,9 +22,9 @@ source data:
 - screw.yaml
 generated data:
 - screw.step
+see also:
+- screwdriver #another package might depend on both screw and screwdriver
 dependencies:
-    assembly: !assembly
-        - screwdriver=0.0.1 #but this varies with respect to which type of screw head interface. (FIXME)
     #options of different dependencies to choose from:
     typical: !dependency-set
         - !build
