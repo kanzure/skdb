@@ -7,6 +7,7 @@ urls:
 
 screw: !screw
  grade: '3'
+ material: AISI 1010
  length: 1in
  thread: !thread
     diameter: 1/4*in

@@ -26,12 +26,11 @@ see also:
 - screwdriver #another package might depend on both screw and screwdriver
 dependencies:
     #options of different dependencies to choose from:
-    typical: !dependency-set
-        - !build
-          - screw-cutting lathe #http://en.wikipedia.org/wiki/Screw-cutting_lathe
-    unusual: !dependency-set
-        - !build
-          - turret lathe #http://en.wikipedia.org/wiki/Turret_lathe
-    unusual_2: !dependency-set
-        - !build
-          - screw machine #http://en.wikipedia.org/wiki/Screw_machine
+    build:
+        - or:
+            -  threading
+            -  thread forming
+            -  thread milling
+        - or:
+            -  bar stock
+            -  wire
