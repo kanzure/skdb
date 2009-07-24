@@ -19,7 +19,7 @@ template: template.yaml
 classes: 
 - screw.Screw
 source data:
-- screw.yaml
+- data.yaml
 generated data:
 - screw.step
 see also:
