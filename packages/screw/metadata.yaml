@@ -30,8 +30,11 @@ dependencies:
     build:
         - or:
             -  threading
-            -  thread forming
+            -  thread rolling
             -  thread milling
+            -  thread whirling
         - or:
             -  bar stock
-            -  wire
+            -  and:
+                - wire
+                - cold heading
