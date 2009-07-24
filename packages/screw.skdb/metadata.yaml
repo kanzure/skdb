@@ -39,6 +39,7 @@ dependencies:
           - arduino board
         - !runtime
           - electrical network
+          #what about programming the arduino? are those requirements "runtime"?
         - !software
           - arduino firmware
           - arduino programmer
