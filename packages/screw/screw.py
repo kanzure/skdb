@@ -1,6 +1,13 @@
 import skdb
 from string import Template
 
+__author__ = "ben lipkowitz, bryan bishop"
+__license__ = "GPL"
+__version__ = "0.0.1"
+__maintainer__ = "ben lipkowitz"
+__email__ = "fenn@sd.lonestar.org"
+__status__ = "Development"
+
 class Screw(skdb.Component):
     yaml_tag = "!screw"
     '''a screw by itself isn't a fastener, it needs a nut of some sort'''
