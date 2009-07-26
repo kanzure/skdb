@@ -19,6 +19,15 @@ description: #package description
 template: template.yaml
 classes: 
 - screw.Screw
+    methods:
+    - screw.Screw.max_force: !function
+        - describes: failure mode
+        - description: permanent set - an elongation from which it will not recover when the force is removed
+        - returns: !unit lbf
+    - screw.Screw.breaking_force: !function
+        - describes: failure mode
+        - description: breaking - a fracture from which it will not recover when the force is removed
+        - returns: !unit lbf
 source data:
 - data.yaml
 generated data:
