@@ -2,7 +2,7 @@
 #occ_shell.py: display a simple GUI that doesn't take over your python session
 #
 #how to get an interactive interpreter with pythonOCC running:
-#ipython -wthread -c "import shell" -i
+#ipython -wthread -c "import occ_shell as shell" -i
 #
 #>>>shell.start()
 #how to get something you have clicked on:
