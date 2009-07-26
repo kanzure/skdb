@@ -18,7 +18,7 @@ description: #package description
     exerts a force at the compression face, used for part mating; is a fastener when used with a nut.
 template: template.yaml
 classes: 
-- screw.Screw
+- screw.Screw:
     methods:
     - screw.Screw.max_force: !function
         - describes: failure mode
