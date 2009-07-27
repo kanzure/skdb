@@ -1,0 +1,6 @@
+
+2009-07-27:
+    * read STEP ISO 10303
+        * figure out how to add a feature to the file (instead of using pymates/models/blockhole.yaml)
+    * use tags/names for geometories in pymates/models/blockhole.yaml
+    * unit tests for part mating

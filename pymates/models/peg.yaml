@@ -19,5 +19,5 @@ peg: !part
         #tag the geometry (simple primitives only please)
         geometry: 'circle' #!circle
         point: [0, 0, 0] #xyz
-        x: 0 #deg
-        z: 180 #deg
+        x: 180 #deg
+        z: 0 #deg
