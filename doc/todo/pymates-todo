@@ -4,3 +4,21 @@
         * figure out how to add a feature to the file (instead of using pymates/models/blockhole.yaml)
     * use tags/names for geometories in pymates/models/blockhole.yaml
     * unit tests for part mating
+    * shaft in a lego brick:
+        * slop (a distance)
+           * the minimum distance between those two surfaces
+           * whereas intersection is the maximum distance between those two interfaces
+        * play
+        * sine distance function
+            * circular peg in a square hole
+            * zero: perfect fit
+            * positive: a little bit of slop
+            * negative: interference fit
+            * distances between two surfaces in OpenCASCADE
+                * in which case you need faces
+         * Constructive Solid Geometry
+            * any volume leftover?
+         * put the block into a bigger block and get the "mold"
+            * amount of space remaining
+            * do the subtraction again and get the space remaining - to get the slop
+         * distances between faces v. solid geometry approach
