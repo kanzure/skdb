@@ -23,5 +23,18 @@ sweep out a shape for any given process (this is what would be "hacked" off a wo
 
 The trick is that you do not want to define what an "arc" or "plane" or "..." is for each process.
 
+There are certain toolpath swept volumes that are *bad* for the tool or process. Detect and avoid these.
+
+error detection v. generating good solutions
+    generating good solutions: ("look for a surface that has a diameter greater than the drill bit diameter")
+
+free body diagram for breaking a tool bit. You have a force here, a force here, and there is a symmetry.
+
+You don't always avoid asymmetrical force distributions on the tool bit. Are there any free body diagrams that describe how to break tools?
+
+how do you draw time-varying free body diagrams anyway?
+
+Along a tool path, there are free body diagrams at every instance. Or you can just do discrete approximate sampling. 
+
 GraphSynth approach:
     There is a tree of possibilities. The seed is a description of the workpiece with a global label saying "let's bandsaw this thing". Process, workpiece, and location on the workpiece. Given these three pieces of information, what can you do? There are some higher level rules that pick between processes; then we break it up into rule sets. Band saw rule set, whatever. All of these potential solutions are just "make a line" and "make an arc". There is only one rule set active at any time- each rule set corresponds to a certain manufacturing process. 
