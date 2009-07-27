@@ -46,7 +46,7 @@ class Screw(skdb.Component):
         return skdb.Unit(string).to('lbf') 
   
     def breaking_force(self):
-    '''load screw can withstand without breaking, in lbf'''
+        '''load screw can withstand without breaking, in lbf'''
         s = Template('$area*$strength')
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.tensile_strength[self.grade])
         return skdb.Unit(string).to('lbf')
