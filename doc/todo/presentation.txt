@@ -6,9 +6,12 @@ Matt Bohm (main coder for the UMR repository)
 Rob Stone
 
 topics to cover:
-    - skdb
+    - existing ontology
+        - data migration
+    - discarded solutions (and why)
     - python
     - YAML
+        - multifile vs SQL
         - PyYAML
     - XMLRPC
     - OpenCASCADE
@@ -17,3 +20,10 @@ topics to cover:
         - djangit
     - pymates
     - git
+    - toolchains
+        - validation and package management
+        - CAM integration
+    - user scenarios
+        - skdb apt-get scenario
+        - skdb distributed development w/djangit
+        - skdb pretend
