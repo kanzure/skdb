@@ -1,16 +1,19 @@
 due: 2009-07-13/14
 
-Matt Bohm (main coder for it)
+Matt Bohm (main coder for the UMR repository)
     - request his dissertation
     - why were previous methods adopted
 Rob Stone
 
 topics to cover:
-    - YAML
     - skdb
-    - OpenCASCADE
-    - djangit
-    - django
     - python
+    - YAML
+        - PyYAML
+    - XMLRPC
+    - OpenCASCADE
+        - pythonOCC
+    - django
+        - djangit
     - pymates
-
+    - git
