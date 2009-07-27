@@ -151,6 +151,7 @@ process:
           sizing: *coining
           hobbing: *coining
           thread forming:
+          thread rolling:
           knurling:
         local:
           bending:
