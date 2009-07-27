@@ -1,0 +1,94 @@
+{%extends "base.html" %}
+{%block title%}The Digital Manufacturing Equipment Database{%endblock%}
+{%block subtitle%}the tools you need to change the world{%endblock%}
+
+{%block localstyles%}
+	<link rel="stylesheet" href="/media/css/fabmap.css"/>
+{%endblock%}
+
+{%block scripts%}
+	<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+	<script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+	<!-- <script src="/media/javascript/OpenLayers/lib/OpenLayers/Control/DragMarker.js"></script> -->
+	<script src="/media/javascript/map.js"></script>
+	<script src="/media/javascript/latlonselector.js"></script>
+	<script src="/media/javascript/dialogs.js"></script>
+	<script src="/media/javascript/site.js"></script>
+{%endblock%}
+
+{%block localscript%}
+
+	var layerLabs;
+	var icon;
+	var locatorToggled = false;
+	var locateMarker;
+
+	var map;
+
+	function init() {
+		map = Map();
+		sel = LatLonSelector();
+		map.init("map");
+		sel.init(map);
+		search("");
+	}
+
+{%endblock%}
+
+{%block navigation%}
+<div class="box">
+	<input type="text" id="q" style="width: 160px;"/>
+	<input type="button" onclick="search();" value="Search"/>
+</div>
+
+{% if userauthed %}
+<a href="#" onclick="showDialog($('#addSiteDialog'))">Add a site</a>
+<a href="#" onclick="showDialog($('#viewSitesDialog'))">Manage your sites</a>
+<a href="/accounts/logout">Logout</a>
+{% else %}
+<a href="/accounts/login?next=/dmed/">Login</a>
+{% endif %}
+
+{%endblock%}
+
+{%block maincontent%}
+<div class="mapdialog" id="addSiteDialog">
+	<table id="addsiteform">
+	{{addsiteform.as_table}}
+	</table>
+	<input type="button" value="Save" onclick="newSite();"/>
+	<input type="button" value="Cancel" onclick="hideDialog($('#addSiteDialog'));"/>
+</div>
+
+<div class="mapdialog" id="editSiteDialog">
+	<table id="editsiteform">
+	{{editsiteform.as_table}}
+	</table>
+	<input type="button value="Save" onclick="saveSite();"/>
+	<input type="button" value="Cancel" onclick="hideDialog($('#editSiteDialog'));"/>
+</div>
+
+
+<div>
+<b>Quick locations:</b>
+
+<a href="javascript:quickLocation(23, 0, 2);">World</a>
+<a href="javascript:quickLocation(65 , -19, 6);">Iceland</a>
+<a href="javascript:quickLocation(57.984808,14.941406, 3);">Europe</a>
+<a href="javascript:quickLocation(-24.527135,-66.445312, 3);">South America</a>
+<a href="javascript:quickLocation(1.757537,15.996094, 3);">Africa</a>
+<a href="javascript:quickLocation(66.51326,105.46875, 3);">Russia</a>
+<a href="javascript:quickLocation(37.857507,105.380859, 4);">China</a>
+<a href="javascript:quickLocation(-25.562265,134.648438,4);">Australia</a>
+<a href="javascript:quickLocation(37.579413,-95.537109,4);">USA</a>
+
+</div>
+
+<div id="map" style="width: 800px; height: 500px"></div>
+
+<div id="searchresults">
+	<table id="searchresults_table">
+	</table>
+</div>
+
+{%endblock%}

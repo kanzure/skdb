@@ -1,0 +1,21 @@
+<!DOCTYPE site PUBLIC "http://www.tangiblebit.com/dtd/site-0.1.dtd">
+<?xml version="1.0"?>
+<site id="{{site.id}}">
+	<datetime>{{time}}</datetime>
+	<name>{{site.site.name}}</name>
+	<locname>{{site.site.locname}}</locname>
+	<longitude>{{site.site.longitude}}</longitude>
+	<latitude>{{site.site.latitude}}</latitude>
+	<website>{{site.site.website}}</website>
+	<access>{{site.site.access}}</access>
+	<equipment>{% for eq in site.equipment %}
+		<equipment-item>
+			<type>{{eq.type}}</type>
+			<maker>{{eq.maker}}</maker>
+			<notes>{{eq.notes}}</notes>
+			<capabilities>{%for cap in eq.capabilities %}
+				<capability>{{cap}}</capability>
+			{%endfor%}</capabilities>
+		</equipment-item>
+	{% endfor %}</equipment>
+</site>

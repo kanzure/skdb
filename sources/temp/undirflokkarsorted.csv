@@ -1,0 +1,465 @@
+00,101,Embætti forseta Íslands
+00,201,Alþingi
+00,205,Framkvæmdir á Alþingisreit
+00,207,Rannsókn á falli íslensku bankanna á árinu 2008
+00,301,Ríkisstjórn
+00,401,Hæstiréttur
+00,610,Umboðsmaður Alþingis
+00,620,Ríkisendurskoðun
+01,101,Forsætisráðuneyti, aðalskrifstofa
+01,190,Ýmis verkefni
+01,199,Ráðstöfunarfé
+01,201,Fasteignir forsætisráðuneytis
+01,203,Fasteignir Stjórnarráðsins
+01,231,Norræna ráðherranefndin
+01,241,Umboðsmaður barna
+01,251,Þjóðmenningarhúsið
+01,253,Vest-norrænt menningarhús í Kaupmannahöfn
+01,255,Gljúfrasteinn - Hús skáldsins
+01,261,Óbyggðanefnd
+01,271,Ríkislögmaður
+01,401,Hagstofa Íslands
+01,902,Þjóðgarðurinn á Þingvöllum
+01,996,Íslenska upplýsingasamfélagið, sameiginleg verkefni ráðuneyta
+02,101,Menntamálaráðuneyti, aðalskrifstofa
+02,199,Ráðstöfunarfé
+02,201,Háskóli Íslands
+02,202,Tilraunastöð Háskólans að Keldum
+02,203,Raunvísindastofnun Háskólans
+02,209,Stofnun Árna Magnússonar í íslenskum fræðum
+02,210,Háskólinn á Akureyri
+02,216,Landbúnaðarháskóli Íslands
+02,217,Hólaskóli - Háskólinn á Hólum
+02,223,Námsmatsstofnun
+02,225,Háskólinn á Bifröst
+02,227,Háskólinn í Reykjavík
+02,228,Listaháskóli Íslands
+02,231,Rannsóknamiðstöð Íslands
+02,234,Ritlauna- og rannsóknasjóður prófessora
+02,235,Markáætlun á sviði vísinda og tækni
+02,236,Rannsóknasjóður
+02,238,Tækjasjóður
+02,239,Rannsóknarnámssjóður
+02,269,Háskóla- og vísindastofnanir, viðhald og stofnkostnaður
+02,299,Háskóla- og rannsóknastarfsemi
+02,301,Menntaskólinn í Reykjavík
+02,302,Menntaskólinn á Akureyri
+02,303,Menntaskólinn að Laugarvatni
+02,304,Menntaskólinn við Hamrahlíð
+02,305,Menntaskólinn við Sund
+02,306,Menntaskólinn á Ísafirði
+02,307,Menntaskólinn á Egilsstöðum
+02,308,Menntaskólinn í Kópavogi
+02,309,Kvennaskólinn í Reykjavík
+02,316,Fasteignir framhaldsskóla
+02,318,Framhaldsskólar, stofnkostnaður
+02,319,Framhaldsskólar, almennt
+02,350,Fjölbrautaskólinn í Breiðholti
+02,351,Fjölbrautaskólinn Ármúla
+02,352,Flensborgarskóli
+02,353,Fjölbrautaskóli Suðurnesja
+02,354,Fjölbrautaskóli Vesturlands
+02,355,Framhaldsskólinn í Vestmannaeyjum
+02,356,Fjölbrautaskóli Norðurlands vestra
+02,357,Fjölbrautaskóli Suðurlands
+02,358,Verkmenntaskóli Austurlands
+02,359,Verkmenntaskólinn á Akureyri
+02,360,Fjölbrautaskólinn í Garðabæ
+02,361,Framhaldsskólinn í A-Skaftafellssýslu
+02,362,Framhaldsskólinn á Húsavík
+02,363,Framhaldsskólinn á Laugum
+02,365,Borgarholtsskóli
+02,367,Fjölbrautaskóli Snæfellinga
+02,368,Menntaskóli Borgarfjarðar
+02,369,Menntaskólinn Hraðbraut
+02,370,Framhaldsskólinn í Mosfellsbæ
+02,372,Framhaldsskóli við utanverðan Eyjafjörð
+02,430,Samskiptamiðstöð heyrnarlausra og heyrnarskertra
+02,441,Fullorðinsfræðsla fatlaðra
+02,451,Símenntun og fjarkennsla
+02,504,Tækniskólinn
+02,516,Iðnskólinn í Hafnarfirði
+02,541,Hússtjórnarskólinn í Reykjavík
+02,551,Hússtjórnarskólinn Hallormsstað
+02,581,Verslunarskóli Íslands
+02,720,Grunnskólar, almennt
+02,725,Námsgagnastofnun
+02,872,Lánasjóður íslenskra námsmanna
+02,884,Jöfnun á námskostnaði
+02,901,Fornleifavernd ríkisins
+02,902,Þjóðminjasafn Íslands
+02,903,Þjóðskjalasafn Íslands
+02,905,Landsbókasafn Íslands - Háskólabókasafn
+02,906,Listasafn Einars Jónssonar
+02,907,Listasafn Íslands
+02,908,Kvikmyndasafn Íslands
+02,909,Blindrabókasafn Íslands
+02,911,Náttúruminjasafn Íslands
+02,918,Safnasjóður
+02,919,Söfn, ýmis framlög
+02,965,Tónlistar- og ráðstefnuhús í Reykjavík
+02,969,Menningarstofnanir, viðhald og stofnkostnaður
+02,971,Ríkisútvarpið
+02,972,Íslenski dansflokkurinn
+02,973,Þjóðleikhúsið
+02,974,Sinfóníuhljómsveit Íslands
+02,977,Höfundarréttargjöld
+02,978,Listasjóðir
+02,979,Húsafriðunarnefnd
+02,980,Listskreytingasjóður
+02,981,Kvikmyndamiðstöð Íslands
+02,982,Listir, framlög
+02,983,Ýmis fræðistörf
+02,984,Norræn samvinna
+02,985,Rammaáætlanir ESB um menntun, rannsóknir og tækniþróun
+02,988,Æskulýðsmál
+02,989,Ýmis íþróttamál
+02,999,Ýmislegt
+03,101,Utanríkisráðuneyti, aðalskrifstofa
+03,111,Þýðingamiðstöð utanríkisráðuneytis
+03,190,Ýmis verkefni
+03,199,Ráðstöfunarfé
+03,214,Varnarmálastofnun
+03,300,Sendiráð Íslands
+03,390,Þróunarsamvinnustofnun Íslands
+03,391,Þróunarmál og alþjóðleg hjálparstarfsemi
+03,401,Alþjóðastofnanir
+03,611,Útflutningsráð Íslands
+04,101,Sjávarútvegs- og landbúnaðarráðuneyti, aðalskrifstofa
+04,190,Ýmis verkefni
+04,199,Ráðstöfunarfé
+04,215,Fiskistofa
+04,217,Verðlagsstofa skiptaverðs
+04,234,Matvælastofnun
+04,331,Héraðs- og Austurlandsskógar
+04,332,Suðurlandsskógar
+04,334,Vesturlandsskógar
+04,335,Skjólskógar á Vestfjörðum
+04,336,Norðurlandsskógar
+04,401,Hafrannsóknastofnunin
+04,405,Veiðimálastofnun
+04,411,Matvælarannsóknir
+04,413,Verkefnasjóður sjávarútvegsins
+04,415,Sjóður til síldarrannsókna
+04,417,Rannsóknasjóður til að auka verðmæti sjávarfangs
+04,421,Bygging rannsóknastofnana sjávarútvegsins
+04,423,Skrifstofa rannsóknastofnana atvinnuveganna
+04,481,Rannsóknir háskóla í þágu landbúnaðar
+04,483,Landgræðsla og skógrækt í þágu landbúnaðar
+04,487,Hagþjónusta landbúnaðarins
+04,801,Greiðslur vegna mjólkurframleiðslu
+04,805,Greiðslur vegna sauðfjárframleiðslu
+04,807,Greiðslur vegna grænmetisframleiðslu
+04,811,Bændasamtök Íslands
+04,818,Búnaðarsjóður
+04,821,Framleiðnisjóður landbúnaðarins
+04,827,Fóðursjóður
+04,828,Garðávaxtasjóður
+04,831,Jarðasjóður og Jarðeignir ríkisins
+04,843,Fiskræktarsjóður
+04,851,Greiðslur vegna riðuveiki
+04,891,Sérstakar greiðslur í landbúnaði
+06,101,Dóms- og kirkjumálaráðuneyti, aðalskrifstofa
+06,102,Stjórnartíðindi
+06,103,Lagasafn
+06,106,Þjóðskrá
+06,111,Kosningar
+06,190,Ýmis verkefni
+06,199,Ráðstöfunarfé
+06,201,Hæstiréttur
+06,210,Héraðsdómstólar
+06,231,Málskostnaður í opinberum málum
+06,232,Opinber réttaraðstoð
+06,235,Bætur brotaþola
+06,251,Persónuvernd
+06,300,Héraðssaksóknari
+06,301,Ríkissaksóknari
+06,303,Ríkislögreglustjóri
+06,305,Lögregluskóli ríkisins
+06,309,Sérstakur saksóknari samkvæmt lögum nr. 135/2008
+06,310,Lögreglustjórinn á höfuðborgarsvæðinu
+06,312,Lögreglustjórinn á Suðurnesjum
+06,325,Samræmd neyðarsvörun
+06,341,Áfengis- og fíkniefnamál
+06,390,Ýmis löggæslu- og öryggismál
+06,391,Húsnæði löggæslustofnana
+06,395,Landhelgisgæsla Íslands
+06,396,Landhelgissjóður Íslands
+06,397,Schengen-samstarf
+06,398,Útlendingastofnun
+06,411,Sýslumaðurinn í Reykjavík
+06,412,Sýslumaðurinn á Akranesi
+06,413,Sýslumaðurinn í Borgarnesi
+06,414,Sýslumaður Snæfellinga
+06,415,Sýslumaðurinn í Búðardal
+06,416,Sýslumaðurinn á Patreksfirði
+06,417,Sýslumaðurinn í Bolungarvík
+06,418,Sýslumaðurinn á Ísafirði
+06,419,Sýslumaðurinn á Hólmavík
+06,420,Sýslumaðurinn á Blönduósi
+06,421,Sýslumaðurinn á Sauðárkróki
+06,422,Sýslumaðurinn á Siglufirði
+06,424,Sýslumaðurinn á Akureyri
+06,425,Sýslumaðurinn á Húsavík
+06,426,Sýslumaðurinn á Seyðisfirði
+06,428,Sýslumaðurinn á Eskifirði
+06,429,Sýslumaðurinn á Höfn í Hornafirði
+06,430,Sýslumaðurinn í Vík í Mýrdal
+06,431,Sýslumaðurinn á Hvolsvelli
+06,432,Sýslumaðurinn í Vestmannaeyjum
+06,433,Sýslumaðurinn á Selfossi
+06,434,Sýslumaðurinn í Reykjanesbæ
+06,436,Sýslumaðurinn í Hafnarfirði
+06,437,Sýslumaðurinn í Kópavogi
+06,490,Ýmis rekstrarkostnaður sýslumannsembætta
+06,491,Húsnæði og búnaður sýslumanna
+06,501,Fangelsismálastofnun ríkisins
+06,591,Fangelsisbyggingar
+06,701,Þjóðkirkjan
+06,705,Kirkjumálasjóður
+06,707,Kristnisjóður
+06,733,Kirkjugarðar
+06,735,Sóknargjöld
+06,736,Jöfnunarsjóður sókna
+07,101,Félags- og tryggingamálaráðuneyti, aðalskrifstofa
+07,190,Ýmis verkefni
+07,199,Ráðstöfunarfé
+07,205,Leiguíbúðir
+07,207,Varasjóður húsnæðismála
+07,302,Ríkissáttasemjari
+07,313,Jafnréttisstofa
+07,331,Vinnueftirlit ríkisins
+07,400,Barnaverndarstofa
+07,505,Öldrunarstofnanir, almennt
+07,515,Framkvæmdasjóður aldraðra
+07,700,Málefni fatlaðra
+07,701,Málefni fatlaðra, Reykjavík
+07,702,Málefni fatlaðra, Reykjanesi
+07,703,Málefni fatlaðra, Vesturlandi
+07,704,Málefni fatlaðra, Vestfjörðum
+07,705,Málefni fatlaðra, Norðurlandi vestra
+07,706,Málefni fatlaðra, Norðurlandi eystra
+07,707,Málefni fatlaðra, Austurlandi
+07,708,Málefni fatlaðra, Suðurlandi
+07,711,Styrktarfélag vangefinna
+07,720,Skálatúnsheimilið, Mosfellsbæ
+07,722,Sólheimar í Grímsnesi
+07,750,Greiningar- og ráðgjafarstöð ríkisins
+07,755,Þjónustu- og þekkingarmiðstöð fyrir blinda og sjónskerta 
+07,795,Framkvæmdasjóður fatlaðra
+07,821,Tryggingastofnun ríkisins
+07,825,Bætur samkvæmt lögum um félagslega aðstoð
+07,827,Lífeyristryggingar
+07,831,Eftirlaunasjóður aldraðra
+07,980,Vinnumálastofnun
+07,981,Vinnumál
+07,982,Ábyrgðasjóður launa
+07,983,Foreldrar langveikra eða alvarlega fatlaðra barna
+07,984,Atvinnuleysistryggingasjóður
+07,985,Félagsmálaskóli alþýðu
+07,987,Tryggingasjóður sjálfstætt starfandi einstaklinga
+07,989,Fæðingarorlof
+07,999,Félagsmál, ýmis starfsemi
+08,101,Heilbrigðisráðuneyti, aðalskrifstofa
+08,199,Ráðstöfunarfé
+08,202,Sjúkratryggingastofnun
+08,206,Sjúkratryggingar
+08,208,Slysatryggingar
+08,209,Sjúklingatrygging
+08,301,Landlæknir
+08,305,Lýðheilsustöð
+08,324,Heyrnar- og talmeinastöð Íslands
+08,326,Sjónstöð Íslands
+08,327,Geislavarnir ríkisins
+08,340,Málefni fatlaðra
+08,358,Sjúkrahúsið á Akureyri
+08,373,Landspítali
+08,376,Bygging hátæknisjúkrahúss á lóð Landspítalans
+08,379,Sjúkrahús, óskipt
+08,383,Sjúkrahótel
+08,384,Rjóður, hvíldarheimili fyrir börn
+08,386,Vistun ósakhæfra afbrotamanna
+08,388,Samtök áhugamanna um áfengisvandamálið
+08,397,Lyfjastofnun
+08,399,Heilbrigðismál, ýmis starfsemi
+08,401,Öldrunarstofnanir, almennt
+08,405,Hrafnista, Reykjavík
+08,406,Hrafnista, Hafnarfirði
+08,407,Grund, Reykjavík
+08,408,Sunnuhlíð, Kópavogi
+08,409,Hjúkrunarheimilið Skjól
+08,410,Hjúkrunarheimilið Eir
+08,411,Garðvangur, Garði
+08,412,Hjúkrunarheimilið Skógarbær
+08,413,Hjúkrunarheimilið Droplaugarstöðum
+08,414,Hjúkrunarheimilið Lundur, Hellu
+08,415,Hjúkrunarheimilið Hulduhlíð, Eskifirði
+08,416,Hjúkrunarheimilið Hornbrekka, Ólafsfirði
+08,417,Hjúkrunarheimilið Naust, Þórshöfn
+08,418,Seljahlíð, Reykjavík
+08,421,Víðines
+08,423,Höfði, Akranesi
+08,424,Dvalarheimili aldraðra Borgarnesi
+08,425,Dvalarheimili aldraðra Stykkishólmi
+08,426,Fellaskjól, Grundarfirði
+08,427,Jaðar, Ólafsvík
+08,428,Fellsendi, Búðardal
+08,429,Barmahlíð, Reykhólum
+08,433,Dalbær, Dalvík
+08,434,Samningur við Akureyrarbæ um öldrunarþjónustu
+08,436,Uppsalir, Fáskrúðsfirði
+08,437,Samningur við Sveitarfélagið Hornafjörð um öldrunarþjónustu
+08,438,Klausturhólar, Kirkjubæjarklaustri
+08,439,Hjallatún, Vík
+08,440,Kumbaravogur, Stokkseyri
+08,441,Ás/Ásbyrgi, Hveragerði
+08,442,Hraunbúðir, Vestmannaeyjum
+08,443,Holtsbúð, Garðabæ
+08,444,Vífilsstaðir, Garðabæ
+08,447,Sóltún, Reykjavík
+08,460,Dvalarrými aldraðra, önnur
+08,470,Vesturhlíð, Reykjavík
+08,472,Hlíðabær, Reykjavík
+08,473,Lindargata, Reykjavík
+08,474,Dagvist og endurhæfingarstöð MS-sjúklinga
+08,475,Múlabær, Reykjavík
+08,476,Fríðuhús, Reykjavík
+08,477,Dagvistun aldraðra, aðrar
+08,478,Vistheimilið Bjarg
+08,479,Hlaðgerðarkot
+08,491,Reykjalundur, Mosfellsbæ
+08,492,Heilsustofnun Náttúrulækningafélags Íslands
+08,493,Sjálfsbjörg, hjúkrunar- og endurhæfingarstofnun
+08,494,Hlein
+08,500,Heilsugæslustöðvar, almennt
+08,501,Sjúkraflutningar
+08,506,Heilsugæsla á höfuðborgarsvæðinu
+08,508,Miðstöð heimahjúkrunar á höfuðborgarsvæðinu
+08,515,Heilsugæslustöðin Lágmúla í Reykjavík
+08,517,Læknavaktin
+08,553,Samningur við Akureyrarbæ um heilsugæslu
+08,588,Heilsugæslustöðin í Salahverfi í Kópavogi
+08,700,Heilbrigðisstofnanir
+08,711,Heilbrigðisstofnunin Akranesi
+08,716,Heilbrigðisstofnun Vesturlands
+08,721,Heilbrigðisstofnunin Patreksfirði
+08,726,Heilbrigðisstofnun Vestfjarða
+08,735,Heilbrigðisstofnunin Hólmavík
+08,741,Heilbrigðisstofnunin Hvammstanga
+08,746,Heilbrigðisstofnunin Blönduósi og Sauðárkróki
+08,756,Heilbrigðisstofnunin Dalvíkur- og Fjallabyggð
+08,761,Heilbrigðisstofnun Þingeyinga
+08,777,Heilbrigðisstofnun Austurlands
+08,779,Heilbrigðisstofnun Suð-Austurlands
+08,781,Heilbrigðisstofnunin Vestmannaeyjum
+08,787,Heilbrigðisstofnun Suðurlands
+08,791,Heilbrigðisstofnun Suðurnesja
+08,795,St. Jósefsspítali, Sólvangur
+09,101,Fjármálaráðuneyti, aðalskrifstofa
+09,103,Fjársýsla ríkisins
+09,199,Ráðstöfunarfé
+09,201,Ríkisskattstjóri
+09,202,Skattstofan í Reykjavík
+09,203,Skattstofa Vesturlands
+09,204,Skattstofa Vestfjarða
+09,205,Skattstofa Norðurlands vestra
+09,206,Skattstofa Norðurlands eystra
+09,207,Skattstofa Austurlands
+09,208,Skattstofa Suðurlands
+09,209,Skattstofa Vestmannaeyja
+09,211,Skattstofa Reykjaness
+09,212,Skatta- og tollamál, ýmis útgjöld
+09,214,Yfirskattanefnd
+09,215,Skattrannsóknarstjóri ríkisins
+09,250,Innheimtukostnaður
+09,262,Tollstjórinn í Reykjavík
+09,381,Lífeyrisskuldbindingar, eftirlaun
+09,391,Jöfnun á örorkubyrði almennra lífeyrissjóða
+09,393,Endurhæfingarsjóður
+09,402,Fasteignaskrá Íslands
+09,405,Fasteignagjöld af húsnæði ríkisins
+09,481,Útgjöld samkvæmt heimildarákvæðum
+09,711,Afskriftir skattkrafna
+09,721,Fjármagnstekjuskattur
+09,811,Barnabætur
+09,821,Vaxtabætur
+09,831,Uppbætur á eftirlaun lífeyrisþega
+09,901,Framkvæmdasýsla ríkisins
+09,905,Ríkiskaup
+09,973,Tapaðar kröfur og tjónabætur
+09,976,Lánaumsýsla ríkissjóðs
+09,980,Rekstrarfélag stjórnarráðsbygginga við Arnarhól
+09,981,Ýmsar fasteignir ríkissjóðs
+09,984,Fasteignir ríkissjóðs
+09,985,Fyrrum varnarsvæði við Keflavíkurflugvöll
+09,989,Launa- og verðlagsmál
+09,990,Ríkisstjórnarákvarðanir
+09,991,Aðflutningsgjöld af útflutningi notaðra ökutækja
+09,994,Virðisaukaskattur ríkisstofnana af tölvuvinnslu
+09,999,Ýmislegt
+10,101,Samgönguráðuneyti, aðalskrifstofa
+10,190,Ýmis verkefni
+10,199,Ráðstöfunarfé
+10,211,Rekstur Vegagerðarinnar
+10,212,Samgönguverkefni
+10,251,Umferðarstofa
+10,281,Rannsóknanefnd umferðarslysa
+10,335,Siglingastofnun Íslands
+10,336,Hafnarframkvæmdir
+10,381,Rannsóknanefnd sjóslysa
+10,471,Flugmálastjórn Íslands
+10,475,Flugvellir og flugleiðsöguþjónusta
+10,481,Rannsóknanefnd flugslysa
+10,512,Póst- og fjarskiptastofnunin
+10,513,Jöfnunarsjóður alþjónustu
+10,521,Fjarskiptasjóður
+10,801,Jöfnunarsjóður sveitarfélaga
+10,811,Bjargráðasjóður
+11,101,Iðnaðarráðuneyti, aðalskrifstofa
+11,199,Ráðstöfunarfé
+11,205,Nýsköpunarmiðstöð Íslands
+11,240,Iðnaðarrannsóknir og stóriðja
+11,242,Tækniþróunarsjóður
+11,245,Samtök iðnaðarins
+11,251,Endurgreiðslur vegna kvikmyndagerðar á Íslandi
+11,299,Iðja og iðnaður, framlög
+11,301,Orkustofnun
+11,371,Orkusjóður
+11,373,Niðurgreiðslur á húshitun
+11,375,Jöfnun kostnaðar við dreifingu raforku
+11,399,Ýmis orkumál
+11,401,Byggðaáætlun
+11,411,Byggðastofnun
+11,501,Ferðamálastofa
+11,599,Ýmis ferðamál
+12,101,Viðskiptaráðuneyti, aðalskrifstofa
+12,190,Ýmis verkefni
+12,199,Ráðstöfunarfé
+12,402,Fjármálaeftirlitið
+12,411,Samkeppniseftirlitið
+12,421,Neytendastofa
+12,425,Talsmaður neytenda
+12,431,Einkaleyfastofan
+12,811,Flutningssjóður olíuvara
+14,101,Umhverfisráðuneyti, aðalskrifstofa
+14,190,Ýmis verkefni
+14,199,Ráðstöfunarfé
+14,202,Náttúrurannsóknastöðin við Mývatn
+14,211,Umhverfisstofnun
+14,212,Vatnajökulsþjóðgarður
+14,231,Landgræðsla ríkisins
+14,241,Skógrækt ríkisins
+14,243,Hekluskógar
+14,281,Styrkir til fráveitna sveitarfélaga
+14,287,Úrvinnslusjóður
+14,289,Endurvinnslan hf.
+14,301,Skipulagsstofnun
+14,303,Skipulagsmál sveitarfélaga
+14,310,Landmælingar Íslands
+14,321,Brunamálastofnun ríkisins
+14,381,Ofanflóðasjóður
+14,401,Náttúrufræðistofnun Íslands
+14,403,Náttúrustofur
+14,407,Stofnun Vilhjálms Stefánssonar
+14,412,Veðurstofa Íslands
+19,801,Vaxtagjöld ríkissjóðs

@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<title>Sources</title>
+	<link rel="stylesheet" href="/media/css/style.css"/>
+{%block localstyles%}
+{%endblock%}
+	<script src="/media/javascript/jquery.js"></script>
+{%block scripts%}
+	<script src="/media/javascript/script.js"></script>
+{%endblock%}
+	<script>
+{%block localscript%}
+		function init() {}
+{%endblock%}
+	</script>
+</head>
+<body onload="init();">
+
+	<div id="titleblock">
+		<div id="title">{%block title %}Sources{%endblock%}</div>
+		<div id="subtitle">{%block subtitle %}A source for datasets{%endblock%}</div>
+			
+		<div id="status">
+		{%block status %}{%endblock%}
+		</div>
+	</div>
+
+{%block statushelpers%}
+	<div onclick="hideStatus();" id="statusbox" class="dialog" style="text-align: center;"></div>
+	<div id="progressbox" class="dialog" style="text-align: center;"><br/><img src="/media/img/progress.gif"/><br/><div id="progressmsg"></div><br/></div>
+{%endblock%}
+	
+	<div id="yfirflokkar">
+{%block navigation %}
+{%endblock%}
+	</div>
+
+	<div id="maincontent">
+{%block maincontent %}
+	<div class="topblock" id="flhelp_block">
+		<h1>Intro</h1>
+		
+		<p>...</p>
+	</div>
+{%endblock%}	
+	</div>
+
+</body>
+</html>
