@@ -12,7 +12,7 @@ class Screw(skdb.Component):
     yaml_tag = "!screw"
     '''a screw by itself isn't a fastener, it needs a nut of some sort'''
     ##i suppose this stuff should go in a screws.yaml file or something, along with standard diameters
-    proof_load = {#grade:load, proof load is defined as load bolt can withstand without permanent set
+    proof_load = {#grade:load
         '1':'33ksi',
         '2':'55ksi',
         '3':'85ksi',
@@ -20,7 +20,7 @@ class Screw(skdb.Component):
         '7':'105ksi',
         '8':'120ksi',
         }
-    tensile_strength = {#grade:load, tensile strength is defined as load bolt can withstand without breaking
+    tensile_strength = {#grade:load
         '1':'60ksi',
         '2':'74ksi',
         '3':'110ksi',
@@ -40,11 +40,13 @@ class Screw(skdb.Component):
         #note these tables vary from source to source; might want to check if it really matters to you
         
     def max_force(self):
+        '''load screw can withstand without permanent set, in lbf'''
         s = Template('$area*$strength')
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.proof_load[self.grade])
         return skdb.Unit(string).to('lbf') 
   
     def breaking_force(self):
+    '''load screw can withstand without breaking, in lbf'''
         s = Template('$area*$strength')
         string = s.safe_substitute(area=self.thread.tensile_area(), strength=Screw.tensile_strength[self.grade])
         return skdb.Unit(string).to('lbf')

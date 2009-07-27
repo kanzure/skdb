@@ -7,27 +7,15 @@ urls:
 - 'git://fennetic.net/git/skdb.git/'
 
 name: screw
-implements: fastening #a process name here
+functionality: fastening #a process name here
 created: 2008-11-16
 updated: 2009-07-24
 version: 0.0.1
-version_history:
-    0.0.0: 2009-07-23
-    0.0.1: 2009-07-24
 description: #package description
-    exerts a force at the compression face, used for part mating; is a fastener when used with a nut.
+    a typical screw found at a hardware store.
 template: template.yaml
 classes: 
-- screw.Screw:
-    methods:
-    - screw.Screw.max_force: !function
-        - describes: failure mode
-        - description: permanent set - an elongation from which it will not recover when the force is removed
-        - returns: !unit lbf
-    - screw.Screw.breaking_force: !function
-        - describes: failure mode
-        - description: breaking - a fracture from which it will not recover when the force is removed
-        - returns: !unit lbf
+- screw.Screw
 source data:
 - data.yaml
 generated data:
@@ -36,6 +24,8 @@ see also:
 - screwdriver #another package might depend on both screw and screwdriver
 dependencies:
     #options of different dependencies to choose from:
+    software:
+        - threads #screw.py needs classes from threads.py
     build:
         - or:
             -  threading
@@ -47,3 +37,5 @@ dependencies:
             -  and:
                 - wire
                 - cold heading
+    use:
+        - null #a screw doesn't need anything to function properly
