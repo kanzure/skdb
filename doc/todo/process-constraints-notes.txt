@@ -1,0 +1,27 @@
+so that we don't reinvent the wheel for geometrical constraints in tool paths
+
+* given these processes, here are some shapes that are possible to make (random blobs with pieces hacked out of them)
+* 'line of sight' constraints describing where the tool can or cannot move
+
+three coordinate systems:
+    * cartesian
+    * spherical
+    * cylindrical (use this one?)
+        * asimuth angle
+        * sweep angle
+
+how do you convert from 3deg to 10in?
+
+radius of curvature of the tool (for a toolpath)
+
+sweep out a shape for any given process (this is what would be "hacked" off a wordpiece):
+    * point
+    * arc
+    * line
+    * plane
+.. so call what the result of a milling machine's "plane sweep" would be on a given input workpiece shape.
+
+The trick is that you do not want to define what an "arc" or "plane" or "..." is for each process.
+
+GraphSynth approach:
+    There is a tree of possibilities. The seed is a description of the workpiece with a global label saying "let's bandsaw this thing". Process, workpiece, and location on the workpiece. Given these three pieces of information, what can you do? There are some higher level rules that pick between processes; then we break it up into rule sets. Band saw rule set, whatever. All of these potential solutions are just "make a line" and "make an arc". There is only one rule set active at any time- each rule set corresponds to a certain manufacturing process. 
