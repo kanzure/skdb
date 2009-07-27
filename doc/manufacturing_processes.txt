@@ -1,0 +1,363 @@
+==Casting==
+
+*Centrifugal casting
+*Continuous casting
+*Die casting
+*Evaporative-pattern casting
+**Full-mold casting
+**Lost-foam casting
+*Investment casting (lost wax casting)
+**Lost-foam casting
+*Low pressure
+*Permanent mold casting
+*Plastic mold
+*Sand casting
+*Shell molding
+*Slush or slurry
+*Spray forming
+
+==Molding==
+
+*Powder metallurgy
+**Compaction plus sintering
+**Hot isostatic pressing
+**Metal injection molding
+**Spray forming
+*Plastics (see also rapid-prototyping)
+**Injection molding|Injection
+**Compression
+**Transfer
+**Extrusion
+**Blow molding
+**Dip Molding
+**Rotational molding
+**Thermoforming
+**Laminating
+**Expandable bead
+**Foam
+**Rotomolding
+**Vacuum plug assist
+**Pressure plug assist
+**Matched mold
+*Shrink fitting
+*Shrink wrapping
+
+==Forming==
+*End tube forming
+**Tube beading
+*Forging
+**Smith (metalwork)|Smith
+**Hammer forge
+**Drop forge
+**Machine press|Press
+**Impact (see also Extrusion)
+**Upset
+**No draft
+**High-energy-rate
+**Cored
+**Incremental
+**Powder (substance)
+*Rolling (metalworking) (Thick plate and sheet metal)
+**Cold rolling
+**Hot rolling
+**Sheet metal
+**Shape
+**wiktionary:ring|Ring
+**Transverse
+**Orbital
+**Cross-rolling
+**Screw thread|Thread
+*Extrusion
+*Machine press|Pressing
+**Embossing
+**Stretch forming
+**Die (manufacturing) (Blanking)
+**Drawing (manufacturing) (pulling sheet metal. wire, bar or tube)
+***Bulging
+***Necking
+***Nosing
+***Oil-canning
+**Deep drawing (sinks, auto body)
+*Bending
+**Hemming
+*Shearing (metalworking)
+**Piercing (metalworking)
+***Trimming
+***Piercing (metalworking) (Shaving)
+***Notching
+***Perforating
+***Nibbling
+***Dinking operation
+***Lancing (shearing)
+***Cutoff (metalworking)
+**Stamping
+***Stamping (metalworking)
+***Leather stamping
+***Progressive stamping
+**Coining (metalworking)
+**Straight shearing
+***Slitting
+*Miscellaneous other
+**Redrawing 
+**Ironing (metalworking)
+**Flattening
+**Swaging
+**Metal spinning
+**Peening
+**Guerin process
+**Wheelon process
+**Magnetic pulse
+**Explosive forming
+**Electroforming
+**Staking (manufacturing)
+**Seaming
+**Flanging
+**Straightening
+**Decambering
+**Cold sizing
+**Hubbing
+
+==Machining==
+
+*Milling machine
+**Grist mill
+**Hammer mill
+**Ball mill
+**Buhrstone mill
+**Disc mill
+**Saw mill
+**Steel mill
+***Blast furnace
+***Smelting
+***Refining
+***Casting
+***Reduction mill
+***Annealing (metallurgy)
+***Pickling
+***Passivate
+***Coating
+*Milling machine
+**Cut
+**Shearing (metalworking)
+**Shredder (device)
+**Fiberize
+**Pulverize
+**Crusher
+***Jaw crusher
+***Gyratory crusher
+***Rollers
+***Edge runner
+**Granulate
+**Crack
+**Rub
+**Curl
+**Fluff
+**Twist
+**Husk
+**Blend
+**Refine
+**Atomize
+**Centrifugal disintegration
+**Peripheral (slab)
+**Face
+**Chemical
+*Turning
+**Lathe
+**Facing
+**Boring (mechanical) (also Single pass bore finishing)
+**Metal spinning (flow turning)
+**Knurling
+**Hard turning
+**Cutoff (parting)
+*Drilling
+**Reamer
+**Countersink
+**Taps and dies
+*Sawing
+**File (tool)
+*Broach (metalworking)
+*Shaping (metalworking)
+**Horizontal
+**Vertical
+**Special purpose
+*Planing (shaping)
+**Double housing
+**Open-side
+**Edge or plate
+**Pit-type
+**Abrasive jet machining
+**Water jet  ting
+**Abrasive belt
+*Honing (metalworking)|Honing (Sharpening)
+**Electro-chemical grinding
+*Finishing
+**Abrasive blasting (sand blasting)
+**Buffing
+**Burnishing (metalworking)
+**Electroplating
+**Electropolishing
+**Etching
+**Linishing
+**Mass finishing
+***Tumble finishing|Tumbling (barrel finishing)
+****Spindle finishing
+***Vibratory finishing
+**Plating
+**Polishing
+**Superfinishing
+**Wire brushing
+*Wood router|Routing
+*Hobbing
+*Ultrasonic machining|Ultrasonic
+*Electrical discharge
+*Electron beam machining
+*Electrochemical
+*Chemical
+*Photochemistry
+*Laser beam
+** CO2 Laser cutter
+** Argon Laser cutter
+*Grinding (abrasive cutting)
+*Gashing
+
+==Joining==
+*Welding
+**Arc welding|Arc
+***Manual metal arc welding|Manual metal
+***Shielded metal
+***Gas metal
+****Pulsed
+****Short circuit
+****Electrogas
+****Spray transfer
+***Gas tungsten
+***Flux-cored
+***Submerged arc welding|Submerged
+***Plasma arc
+***Carbon arc
+***Stud
+***Electroslag
+***Atomic hydrogen
+***Plasma-MIG (metal inert gas)
+***Impregnated tape
+**Oxy-fuel welding and cutting|Oxyfuel gas
+***oxygen|Oxy-acetylene gas
+***Methylacetylene propadiene (MAPP)
+***Air-acetylene
+***Oxyhydrogen
+***Pressure gas
+****Carbon dioxide|CO<SUB>2</SUB>
+**Resistance welding|Resistance
+***Spot welding
+***Shot welding
+**Projection
+**Seaming (metalworking)|Seam
+**Flash butt (flash)
+**Upset (butt)
+**Percussion (manufacturing)
+**Solid state (manufacturing)|Solid state
+***Ultrasonic
+***Explosive
+***Diffusion
+****Machine press|Hot press
+****Isostatic hot gas
+****Vacuum furnace
+***Friction welding
+***Inertia
+***Forge
+***Cold welding
+***Roll
+**Electron beam welding
+**Laser welding
+**Pencil
+***How Pencil made
+***Solid state (manufacturing)|Solid state
+***Axial-flow gas
+***Cross-flow gas
+**Thermite
+**Induction welding|Induction
+***Low frequency (50-450 Hz)
+***High frequency (induction resistance; 200-450 kHz)
+**Other types of welding
+***Friction welding
+***Heated metal plate
+***Solvent
+***Dielectric
+***Magnetics
+***Ultrasonic
+***Radio frequency welding
+***High frequency resistance
+***Electromagnetic
+***Flow
+***Resistance welding
+***Infrared
+***Vacuum
+***Hot-air-welding
+*Brazing
+**Torch
+**Induction heating|Induction
+**Furnace
+**Dip
+*Soldering
+**Iron
+**Hot plate
+**Oven
+**Induction heating
+**Dip
+**Wave
+**Ultrasonic
+*Sintering
+*Adhesive bonding
+**Thermosetting plastic
+**Epoxy
+**Modified epoxy
+**Phenolics
+**Polyurethane
+**Adhesive alloys
+**Miscellaneous other powders, liquids, solids, and tapes
+*Fastener|Fastening wood and metal
+**nail (engineering)|Nailing
+**Screwing
+** (By material fastened)
+***Machine (Metal)
+***Wood Screws
+** (By slot type)
+***Phillips ("Plus sign" in Canada)
+***Straight ("Minus sign in Canada)
+** (By shape)
+***Round head
+***Flat head
+***Box head
+***Hex
+***Lag
+**Nuts and bolting
+**Riveting
+**Pining
+***Cotter pin|Cotter
+***Groove (machining)|Groove
+***Tapered
+***Roll
+***Retaining rings
+***Quick-release
+*Stitching
+*Stapling
+*Press fitting
+
+==Rapid manufacturing==
+*Stereolithography
+*Selective laser sintering
+*Fused deposition modeling
+*Three dimensional printing
+*Laminated object manufacturing
+*Laser engineered net shaping
+
+==Other trades==
+*Mining
+**quarrying
+**Blasting
+*Woodworking
+**Joinery (see also joining above)
+***Lapping
+***Morticing
+***Wood routing (see above)
+***Biscuit (woodworking)
