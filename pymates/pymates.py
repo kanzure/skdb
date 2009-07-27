@@ -40,7 +40,7 @@ class Part(yaml.YAMLObject):
     should a part without an interface be invalid?'''
     yaml_tag = '!part'
     def __init__(self, name="part name", description="description", created=time.localtime(), files=[], interfaces={}):
-        self.description, self.created, self.files, self.interfaces = description, created, files, interfaces
+        self.name, self.description, self.created, self.files, self.interfaces = name, description, created, files, interfaces
     def load_CAD(self):
         if len(self.files) == 0: return #no files to load
         #FIXME: assuming STEP
