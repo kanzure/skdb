@@ -1,213 +1,213 @@
 body {
-	margin:			0px;
+        margin:                 0px;
 }
 
 #titleblock {
-	top:				0px;
-	left:				0px;
-	height:			100px;
-	background:		#e8f1eb;
-	margin-bottom:	10px;
-	border-bottom:	3px solid #008132;
+        top:                            0px;
+        left:                           0px;
+        height:                 100px;
+        background:             #e8f1eb;
+        margin-bottom:  10px;
+        border-bottom:  3px solid #008132;
 }
 
 #title {
-	padding:			10px;
-	font-size:			40px;
+        padding:                        10px;
+        font-size:                      40px;
 }
 
 #subtitle {
-	font-size:			18px;
-	padding-left:		160px;
+        font-size:                      18px;
+        padding-left:           160px;
 }
 
 #status {
-	position:			absolute;
-	top:				20px;
-	right:			10px;
+        position:                       absolute;
+        top:                            20px;
+        right:                  10px;
 }
 
 #statustotal, #statuspercent {
-	font-weight:		bold;
+        font-weight:            bold;
 }
 
 #yfirflokkar {
-	width:	260px;
-	position:	absolute;
-	left:		10px;
-	
+        width:  260px;
+        position:       absolute;
+        left:           10px;
+        
 }
 
 #yfirflokkar a {
-	cursor:		pointer;
-	display:		block;
-	background:	#e8f1eb;
-	border:		1px solid #008132;
-	border-right:	0px;
-	margin-bottom:	10px;
-	color:		#000000;
-	text-decoration: none;
-	padding:		8px;
+        cursor:         pointer;
+        display:                block;
+        background:     #e8f1eb;
+        border:         1px solid #008132;
+        border-right:   0px;
+        margin-bottom:  10px;
+        color:          #000000;
+        text-decoration: none;
+        padding:                8px;
 }
 
 #yfirflokkar a.selected {
-	background:	#c1e7d0;
+        background:     #c1e7d0;
 }
 
 #yfirflokkar .box {
-	display:		block;
-	background:	#e8f1eb;
-	border:		1px solid #008132;
-	border-right:	0px;
-	margin-bottom:	10px;
-	color:		#000000;
-	text-decoration: none;
-	padding:		8px;
+        display:                block;
+        background:     #e8f1eb;
+        border:         1px solid #008132;
+        border-right:   0px;
+        margin-bottom:  10px;
+        color:          #000000;
+        text-decoration: none;
+        padding:                8px;
 
 }
 
 #maincontent {
-	position:	absolute;
-	width:	1400px;
-	min-height:	800px;
-	left:		270px;
-	border-left:	3px solid #008132;
-	padding-left:	10px;
+        position:       absolute;
+        width:  1400px;
+        min-height:     800px;
+        left:           270px;
+        border-left:    3px solid #008132;
+        padding-left:   10px;
 }
 
 h1 {
-	font-size:		24px;
+        font-size:              24px;
 }
 
 h2 {
-	font-size:		18px;
+        font-size:              18px;
 }
 
 .topblock {
-	display:		none;
+        display:                none;
 }
 
 .item {
-	border-bottom:	1px dotted #008132;
-	padding-top:		8px;
-	padding-bottom:	4px;
+        border-bottom:  1px dotted #008132;
+        padding-top:            8px;
+        padding-bottom: 4px;
 }
 
 .changed {
-	background:	#f1e8dd;
+        background:     #f1e8dd;
 }
 
 
 .itemname {
-	position:		absolute;
-	left:			70px;
-	display:		inline;
-	width:		870px;
+        position:               absolute;
+        left:                   70px;
+        display:                inline;
+        width:          870px;
 }
 
 .itemcode {
-	position:		relative;
-	display:		inline;
-	width:		70px;
+        position:               relative;
+        display:                inline;
+        width:          70px;
 }
 
 .itemvalue {
-	position:		absolute;
-	display:		inline;
-	left:			850px;
-	width:		150px;
+        position:               absolute;
+        display:                inline;
+        left:                   850px;
+        width:          150px;
 }
 
 .itemreset {
-	position:		absolute;
-	display:		inline;
-	visibility:		hidden;
-	left:			980px;
-	width:		20px;
+        position:               absolute;
+        display:                inline;
+        visibility:             hidden;
+        left:                   980px;
+        width:          20px;
 }
 
 .itemsuggestions {
-	position:		absolute;
-	display:		inline;
-	left:			1004px;
-	width:		200px;
+        position:               absolute;
+        display:                inline;
+        left:                   1004px;
+        width:          200px;
 }
 
 .itemcomments {
-	position:		absolute;
-	display:		inline;
-	left:			1028px;
-	width:		200px;
+        position:               absolute;
+        display:                inline;
+        left:                   1028px;
+        width:          200px;
 }
 
 .itemvalue input {
-	background:	none;
-	width:		70px;
-	text-align:	right;
-	border:		1px solid #ffffff;
+        background:     none;
+        width:          70px;
+        text-align:     right;
+        border:         1px solid #ffffff;
 }
 
 .itemvalue input:hover, .itemvalue input:active, .itemvalue input:focus {
-	border:		1px solid #008132;
+        border:         1px solid #008132;
 }
 
 
 #loadbutton {
-	position:		absolute;
-	right:		890px;
-	top:			10px;
-	padding:		30px;
-	border:		1px solid #008132;
-	background:	#c1e7d0;
-	cursor:		pointer;
+        position:               absolute;
+        right:          890px;
+        top:                    10px;
+        padding:                30px;
+        border:         1px solid #008132;
+        background:     #c1e7d0;
+        cursor:         pointer;
 }
 
 
 #savebutton {
-	position:		absolute;
-	right:		700px;
-	top:			10px;
-	padding:		30px;
-	border:		1px solid #008132;
-	background:	#c1e7d0;
-	cursor:		pointer;
+        position:               absolute;
+        right:          700px;
+        top:                    10px;
+        padding:                30px;
+        border:         1px solid #008132;
+        background:     #c1e7d0;
+        cursor:         pointer;
 }
 
 .dialog {
-	position:		fixed;
-	display:		none;
-	width:		600px;
-	top:			150px;
-	left:			400px;
-	margin-left:	auto;
-	margin-right:	auto;
-	background:	#e8f1eb;
-	border:		3px solid #008132;
-	z-index:		10000;
+        position:               fixed;
+        display:                none;
+        width:          600px;
+        top:                    150px;
+        left:                   400px;
+        margin-left:    auto;
+        margin-right:   auto;
+        background:     #e8f1eb;
+        border:         3px solid #008132;
+        z-index:                10000;
 }
 
 .mapdialog {
-	position:		absolute;
-	display:		none;
-	width:			400px;
-	top:			0px;
-	left:			-3px;
-	margin-left:		auto;
-	margin-right:		auto;
-	background:		#e8f1eb;
-	border:			3px solid #008132;
-	z-index:		10000;
+        position:               absolute;
+        display:                none;
+        width:                  400px;
+        top:                    0px;
+        left:                   -3px;
+        margin-left:            auto;
+        margin-right:           auto;
+        background:             #e8f1eb;
+        border:                 3px solid #008132;
+        z-index:                10000;
 }
 
 .suggestionbox {
-	position:		fixed;
-	display:		none;
-	width:		600px;
-	top:			150px;
-	left:			400px;
-	margin-left:	auto;
-	margin-right:	auto;
-	background:	#e8f1eb;
-	border:		3px solid #008132;
-	z-index:		300;
+        position:               fixed;
+        display:                none;
+        width:          600px;
+        top:                    150px;
+        left:                   400px;
+        margin-left:    auto;
+        margin-right:   auto;
+        background:     #e8f1eb;
+        border:         3px solid #008132;
+        z-index:                300;
 }
