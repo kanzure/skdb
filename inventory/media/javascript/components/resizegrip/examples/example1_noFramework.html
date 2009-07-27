@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>BlueShoes ResizeGrip Example 1</title>
+
+<script type="text/javascript" src="../../../core/lang/Bs_Misc.lib.js"></script>
+<script type="text/javascript" src="../../../components/resizegrip/Bs_ResizeGrip.class.js"></script>
+<script>
+function init() {
+	rg = new Bs_ResizeGrip('myContainer');
+	rg.gripIcon = '../../../../images/windows/resizeWindow.gif'; 
+	rg.draw();
+	
+	rg2 = new Bs_ResizeGrip('myContainer2');
+	rg2.gripIcon = '../../../../images/windows/resizeWindow.gif'; 
+	rg2.draw();
+}
+</script>
+</head>
+
+<body onload="init();" bgcolor="white">
+
+<h1>BlueShoes ResizeGrip Example 1</h1>
+
+This is an example of the <a href="http://www.blueshoes.org/en/javascript/resizegrip/">BlueShoes Resize Grip</a>.<br><br>
+
+<div id="myContainer" style="position:absolute; width:200px; height:200px; border:2px outset; background-color:#D6D3CE;">
+foo foo foo foo foo foo <br>
+bar bar bar bar bar bar <br>
+la la la la la la la la<br>
+</div>
+
+<div id="myContainer2" style="z-index:5; position:absolute; overflow:auto; top:350px; left:10px; width:200px; height:200px; border:2px outset; background-color:#D6D3CE;">
+<!div id="myContainer2" style="overflow:auto; width:200px; height:200px; border:2px outset; background-color:#D6D3CE;">
+foo foo foo foo foo foo <br>
+bar bar bar bar bar bar <br>
+la la la la la la la la<br>
+foo foo foo foo foo foo <br>
+bar bar bar bar bar bar <br>
+la la la la la la la la<br>
+foo foo foo foo foo foo <br>
+bar bar bar bar bar bar <br>
+la la la la la la la la<br>
+foo foo foo foo foo foo <br>
+bar bar bar bar bar bar <br>
+la la la la la la la la<br>
+foofoofoofoofoofoo <br>
+bar bar bar bar bar bar <br>
+la la la la la la la la<br>
+</div>
+
+</body>
+</html>

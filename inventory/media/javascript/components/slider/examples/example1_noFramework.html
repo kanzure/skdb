@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+<title>JavaScript Bs_Slider example 1</title>
+
+<style>
+  .sliderInput {
+  	height:20;
+    width:40;
+  	font-family : Arial, Helvetica, sans-serif;
+  	font-size : 12px;
+  }
+  .smallTxt {
+    font-size: 12px;
+  }
+</style>
+
+<script type="text/javascript" src="../../../lib/LibCrossBrowser.js"></script>
+<script type="text/javascript" src="../../../lib/EventHandler.js"></script>
+<script type="text/javascript" src="../../../core/form/Bs_FormUtil.lib.js"></script>
+<script type="text/javascript" src="../Bs_Slider.class.js"></script>
+
+<script type="text/javascript"><!--
+function init(){
+  // - Slider 1 -----------------------------------------
+  mySlider = new Bs_Slider();
+  mySlider.attachOnChange(bsSliderChange);
+  mySlider.width         = 121;
+  mySlider.height        = 26;
+  mySlider.minVal        = 0;
+  mySlider.maxVal        = 10;
+  mySlider.valueInterval = 1;
+  mySlider.arrowAmount   = 2;
+  mySlider.valueDefault  = 4;
+  mySlider.imgDir        = '../img/';
+  mySlider.setBackgroundImage('bob/background.gif', 'no-repeat');
+  mySlider.setSliderIcon('bob/slider.gif', 13, 18);
+  mySlider.setArrowIconLeft('img/arrowLeft.gif', 16, 16);
+  mySlider.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  mySlider.useInputField = 2;
+  mySlider.styleValueFieldClass = 'sliderInput';
+  mySlider.colorbar = new Object();
+  mySlider.colorbar['color']           = 'blue';
+  mySlider.colorbar['height']          = 5;
+  mySlider.colorbar['widthDifference'] = -12;
+  mySlider.colorbar['offsetLeft']      = 5;
+  mySlider.colorbar['offsetTop']       = 9;
+  mySlider.drawInto('sliderDiv1');
+
+  // - Slider 2 -----------------------------------------
+  mySlider2 = new Bs_Slider();
+  mySlider2.attachOnChange(bsSliderChange);
+  mySlider2.width         = 121;
+  mySlider2.height        = 26;
+  mySlider2.minVal        = 10;
+  mySlider2.maxVal        = 25;
+  mySlider2.valueInterval = 0.5;
+  mySlider2.arrowAmount   = 0;
+  mySlider2.valueDefault  = 15;
+  mySlider2.imgDir        = '../img/';
+  mySlider2.setBackgroundImage('bob/background.gif', 'no-repeat');
+  mySlider2.setSliderIcon('bob/slider.gif', 13, 18);
+  mySlider2.setArrowIconLeft('img/arrowLeft.gif', 16, 16);
+  mySlider2.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  mySlider2.useInputField = 3;
+  mySlider2.styleValueFieldClass = 'sliderInput';
+  mySlider2.colorbar = new Object();
+  mySlider2.colorbar['color']           = 'orange';
+  mySlider2.colorbar['height']          = 5;
+  mySlider2.colorbar['widthDifference'] = -2;
+  mySlider2.colorbar['offsetLeft']      = 5;
+  mySlider2.colorbar['offsetTop']       = 9;
+  mySlider2.drawInto('sliderDiv2');
+  
+  // - Slider 3 -----------------------------------------
+  mySlider3 = new Bs_Slider();
+  mySlider3.attachOnChange(bsSliderChange);
+  mySlider3.width         = 121;
+  mySlider3.height        = 26;
+  mySlider3.minVal        = 0;
+  mySlider3.maxVal        = 1;
+  mySlider3.valueInterval = 0.02;
+  mySlider3.arrowAmount   = 0.1;
+  mySlider3.valueDefault  = 0.56;
+  mySlider3.imgDir   = '../img/';
+  mySlider3.setBackgroundImage('bob/background.gif', 'no-repeat');
+  mySlider3.setSliderIcon('bob/slider.gif', 13, 18);
+  mySlider3.setArrowIconLeft('img/arrowLeft.gif', 16, 16);
+  mySlider3.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  mySlider3.useInputField = 3;
+  mySlider3.styleValueFieldClass = 'sliderInput';
+  mySlider3.colorbar = new Object();
+  mySlider3.colorbar['color']           = 'green';
+  mySlider3.colorbar['height']          = 5;
+  mySlider3.colorbar['widthDifference'] = -12;
+  mySlider3.colorbar['offsetLeft']      = 5;
+  mySlider3.colorbar['offsetTop']       = 9;
+  mySlider3.drawInto('sliderDiv3');
+	
+  // - Slider 4 -----------------------------------------
+  mySlider4 = new Bs_Slider();
+  //mySlider4.attachOnSlideStart(bsSliderStart);
+  mySlider4.attachOnChange(bsSliderChange);
+  mySlider4.attachOnSlideEnd(bsSliderEnd);
+  mySlider4.width         = 121;
+  mySlider4.height        = 26;
+  mySlider4.minVal        = 0;
+  mySlider4.maxVal        = 2;
+  mySlider4.valueInterval = 0.05;
+  mySlider4.arrowAmount   = 0.1;
+  mySlider4.valueDefault  = 0.25;
+  mySlider4.imgDir        = '../img/';
+  mySlider4.setBackgroundImage('bob/background.gif', 'no-repeat');
+  mySlider4.setSliderIcon('bob/slider.gif', 13, 18);
+  mySlider4.setArrowIconLeft('img/arrowLeft.gif', 16, 16);
+  mySlider4.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  mySlider4.useInputField = 3;
+  mySlider4.styleValueFieldClass = 'sliderInput';
+  mySlider4.colorbar = new Object();
+  mySlider4.colorbar['color']           = 'magenta';
+  mySlider4.colorbar['height']          = 5;
+  mySlider4.colorbar['widthDifference'] = -12;
+  mySlider4.colorbar['offsetLeft']      = 5;
+  mySlider4.colorbar['offsetTop']       = 9;
+  mySlider4.drawInto('sliderDiv4');
+
+}
+
+/**
+* @param object sliderObj
+* @param int val (the value)
+*/
+function bsSliderChange(sliderObj, val, newPos){ 
+  document.test.attacedFieldValue.value = val;
+}
+/**
+* @param object sliderObj
+* @param int val (the value)
+*/
+function bsSliderStart(sliderObj, val, newPos){ 
+  alert('Started at '+ val +' (Pos:'+ newPos +')');
+}
+/**
+* @param object sliderObj
+* @param int val (the value)
+*/
+function bsSliderEnd(sliderObj, val, newPos){ 
+  sliderObj.valueInterval = 0.25;
+  sliderObj.setValue(newPos);
+  sliderObj.valueInterval = 0.05;
+  document.test.attacedFieldValue.value = sliderObj.getValue();
+}
+
+// --></script>
+
+</head>
+<body bgcolor="#FFFFFF" text="#3366AA" link="#0000EE" vlink="#551A8B" alink="#FF0000" onLoad="init();">
+
+<h1>JavaScript Bs_Slider example 1</h1>
+
+<form  name="test" id="test" action="http://www.blueshoes.org/postDump.php" method="post">
+  All sliders below have an "onChange"-event attached that calls an user-defined function ('bsSliderChange()') 
+  that updates this form field: <input type="text" name="attacedFieldValue" value="" size="6" style="background:yellow;">          
+	<br><br>
+	<input type="submit">
+</form>
+
+<table border="1" cellspacing="0" cellpadding="5">
+  <tr>
+    <th width="250" align="left">Sliders
+    </th>
+    <th align="left">Attributes 
+    </th>
+  </tr>
+  <tr>
+    <td valign="top">
+      <div id="sliderDiv1"></div>
+    </td>
+    <td class="smallTxt" valign="top">
+      <ul>
+        <li>number range: from 0-10</li>
+        <li>default value: 2</li>
+        <li>step: 1 (so only full numbers allowed)</li>
+        <li>arrow-click: moves 2</li>
+        <li>input-field: always visible as such</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <div id="sliderDiv2"></div>
+    </td>
+    <td class="smallTxt" valign="top">
+      <ul>
+        <li>number range: from 10-25</li>
+        <li>default value: 15</li>
+        <li>step: 0.5</li>
+        <li>arrow-click: no arrows displayed</li>
+        <li>input-field: visible as text, converts into input field onMouseOver</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <div id="sliderDiv3"></div>
+    </td>
+    <td class="smallTxt" valign="top">
+      <ul>
+        <li>number range: from 0-1</li>
+        <li>default value: 0.56</li>
+        <li>step: 0.02</li>
+        <li>arrow-click: moves 0.1</li>
+        <li>input-field: visible as text, converts into input field onMouseOver</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <div id="sliderDiv4"></div>
+    </td>
+    <td class="smallTxt" valign="top">
+      <ul>
+        <li>number range: from 0 - (+2)</li>
+        <li>default value: 0.25</li>
+        <li>step: 0.05</li>
+        <li>arrow-click: moves 0.1</li>
+        <li>input-field: visible as text, converts into input field onMouseOver</li>
+        <li>attached event: "attachOnSlideEnd()" that snaps to the next 0.25 step</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+</body></html>
+

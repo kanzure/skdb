@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+<title>JavaScript Bs_Slider example 5</title>
+
+<style>
+  .sliderInput {
+  	height:20;
+    width:30;
+  	font-family : Arial, Helvetica, sans-serif;
+  	font-size : 12px;
+  }
+</style>
+
+<script type="text/javascript" src="/_bsJavascript/core/lang/Bs_Misc.lib.js"></script>
+<script type="text/javascript" src="/_bsJavascript/lib/LibCrossBrowser.js"></script>
+<script type="text/javascript" src="/_bsJavascript/lib/EventHandler.js"></script>
+<script type="text/javascript" src="/_bsJavascript/core/form/Bs_FormUtil.lib.js"></script>
+<script type="text/javascript" src="/_bsJavascript/components/slider/Bs_Slider.class.js"></script>
+
+<script><!--
+function init(){
+  handleNr = 27;
+  arrowNr = 9;
+  bgNr = 11;
+  // - Slider 1 -----------------------------------------
+  mainSlider = new Bs_Slider();
+  mainSlider.width         = 300;
+  mainSlider.height        = 85;
+  mainSlider.minVal        = 0;
+  mainSlider.maxVal        = 50;
+  mainSlider.valueInterval = 1;
+  mainSlider.arrowAmount   = 2;
+  mainSlider.valueDefault  = 4;
+  mainSlider.imgDir   = '/_bsJavascript/components/slider/img/';
+  mainSlider.setBackgroundImage('random/backgrounds/bg'+bgNr+'.h.gif', 'no-repeat');
+  mainSlider.setSliderIcon('random/handles/handle'+handleNr+'.x.gif', 25, 25);
+  mainSlider.setArrowIconLeft('random/arrows/arrow'+arrowNr+'.left.gif', 30, 25);
+  mainSlider.setArrowIconRight('random/arrows/arrow'+arrowNr+'.right.gif', 30, 25);
+  mainSlider.useInputField = 2;
+  mainSlider.styleValueFieldClass = 'sliderInput';
+  mainSlider.colorbar = {color:'blue', height:10, widthDifference:-33, offsetLeft:5, offsetTop:10};
+  mainSlider.drawInto('sliderDivMain');
+
+  // - s0 -----------------------------------------
+  var sliderNr = 0;
+  s0 = new Bs_Slider();
+  s0.attachOnChange(slider_width);
+  s0.width = 121; s0.height= 26; s0.minVal= 100; s0.maxVal= 500;
+  s0.valueInterval = 1; s0.arrowAmount   = 0; s0.valueDefault  = mainSlider.width;
+  s0.imgDir   = '../img/';
+  s0.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s0.setSliderIcon('bob/slider.gif', 13, 18);
+  s0.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s0.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s0.useInputField = 2;
+  s0.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s0.styleValueFieldClass = 'sliderInput';
+  s0.drawInto('ID_s' + sliderNr);
+  
+
+  // - s1 -----------------------------------------
+  sliderNr++;
+  s1 = new Bs_Slider();
+  s1.attachOnChange(colbar_height);
+  s1.width = 121; s1.height= 26; s1.minVal= 1; s1.maxVal= 30;
+  s1.valueInterval = 1; s1.arrowAmount   = 0; s1.valueDefault  = mainSlider.colorbar['height'];
+  s1.imgDir   = '../img/';
+  s1.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s1.setSliderIcon('bob/slider.gif', 13, 18);
+  s1.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s1.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s1.useInputField = 2;
+  s1.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s1.styleValueFieldClass = 'sliderInput';
+  s1.drawInto('ID_s' + sliderNr);
+  
+  // - s2 -----------------------------------------
+  sliderNr++;
+  s2 = new Bs_Slider();
+  s2.attachOnChange(colbar_widthDifference);
+  s2.width = 121; s2.height= 26; s2.minVal= -50; s2.maxVal= 20;
+  s2.valueInterval = 1; s2.arrowAmount   = 0; s2.valueDefault  = mainSlider.colorbar['widthDifference'];
+  s2.imgDir   = '../img/';
+  s2.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s2.setSliderIcon('bob/slider.gif', 13, 18);
+  s2.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s2.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s2.useInputField = 2;
+  s2.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s2.styleValueFieldClass = 'sliderInput';
+  s2.drawInto('ID_s' + sliderNr);
+
+  // - s3 -----------------------------------------
+  sliderNr++;
+  s3 = new Bs_Slider();
+  s3.attachOnChange(colbar_offsetLeft);
+  s3.width = 121; s3.height= 26; s3.minVal= -20; s3.maxVal= 20;
+  s3.valueInterval = 1; s3.arrowAmount   = 0; s3.valueDefault  = mainSlider.colorbar['offsetLeft'];
+  s3.imgDir   = '../img/';
+  s3.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s3.setSliderIcon('bob/slider.gif', 13, 18);
+  s3.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s3.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s3.useInputField = 2;
+  s3.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s3.styleValueFieldClass = 'sliderInput';
+  s3.drawInto('ID_s' + sliderNr);
+
+  // - s4 -----------------------------------------
+  sliderNr++;
+  s4 = new Bs_Slider();
+  s4.attachOnChange(colbar_offsetTop);
+  s4.width = 121; s4.height= 26; s4.minVal= -20; s4.maxVal= 100;
+  s4.valueInterval = 1; s4.arrowAmount   = 0; s4.valueDefault  = mainSlider.colorbar['offsetTop'];
+  s4.imgDir   = '../img/';
+  s4.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s4.setSliderIcon('bob/slider.gif', 13, 18);
+  s4.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s4.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s4.useInputField = 2;
+  s4.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s4.styleValueFieldClass = 'sliderInput';
+  s4.drawInto('ID_s' + sliderNr);
+
+  // - s5 -----------------------------------------
+  sliderNr++;
+  s5 = new Bs_Slider();
+  s5.attachOnChange(slider_hight);
+  s5.width = 121; s5.height= 26; s5.minVal= 3; s5.maxVal= 100;
+  s5.valueInterval = 1; s5.arrowAmount   = 0; s5.valueDefault  = mainSlider.height;
+  s5.imgDir   = '../img/';
+  s5.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s5.setSliderIcon('bob/slider.gif', 13, 18);
+  s5.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s5.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s5.useInputField = 2;
+  s5.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s5.styleValueFieldClass = 'sliderInput';
+  s5.drawInto('ID_s' + sliderNr);
+
+  // - s6 -----------------------------------------
+  sliderNr++;
+  s6 = new Bs_Slider();
+  s6.attachOnChange(slider_minValue);
+  s6.width = 121; s6.height= 26; s6.minVal= mainSlider.minVal-50; s6.maxVal= mainSlider.minVal;
+  s6.valueInterval = 1; s6.arrowAmount   = 0; s6.valueDefault  = mainSlider.minVal;
+  s6.imgDir   = '../img/';
+  s6.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s6.setSliderIcon('bob/slider.gif', 13, 18);
+  s6.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s6.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s6.useInputField = 2;
+  s6.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s6.styleValueFieldClass = 'sliderInput';
+  s6.drawInto('ID_s' + sliderNr);
+
+  // - s7 -----------------------------------------
+  sliderNr++;
+  s7 = new Bs_Slider();
+  s7.attachOnChange(slider_maxValue);
+  s7.width = 121; s7.height= 26; s7.minVal= mainSlider.maxVal; s7.maxVal= mainSlider.maxVal+50;
+  s7.valueInterval = 1; s7.arrowAmount   = 0; s7.valueDefault  = mainSlider.maxVal;
+  s7.imgDir   = '../img/';
+  s7.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s7.setSliderIcon('bob/slider.gif', 13, 18);
+  s7.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s7.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s7.useInputField = 2;
+  s7.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s7.styleValueFieldClass = 'sliderInput';
+  s7.drawInto('ID_s' + sliderNr);
+
+  // - s8 -----------------------------------------
+  sliderNr++;
+  s8 = new Bs_Slider();
+  s8.attachOnChange(slider_handle);
+  s8.width = 121; s8.height= 26; s8.minVal= 1; s8.maxVal= 40;
+  s8.valueInterval = 1; s8.arrowAmount   = 0; s8.valueDefault  = handleNr;
+  s8.imgDir   = '../img/';
+  s8.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s8.setSliderIcon('bob/slider.gif', 13, 18);
+  s8.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s8.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s8.useInputField = 2;
+  s8.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s8.styleValueFieldClass = 'sliderInput';
+  s8.drawInto('ID_s' + sliderNr);
+  
+  // - s9 -----------------------------------------
+  sliderNr++;
+  s9 = new Bs_Slider();
+  s9.attachOnChange(slider_arrow);
+  s9.width = 121; s9.height= 26; s9.minVal= 1; s9.maxVal= 11;
+  s9.valueInterval = 1; s9.arrowAmount   = 0; s9.valueDefault  = arrowNr;
+  s9.imgDir   = '../img/';
+  s9.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s9.setSliderIcon('bob/slider.gif', 13, 18);
+  s9.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s9.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s9.useInputField = 2;
+  s9.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s9.styleValueFieldClass = 'sliderInput';
+  s9.drawInto('ID_s' + sliderNr);
+
+  // - s10 -----------------------------------------
+  sliderNr++;
+  s10 = new Bs_Slider();
+  s10.attachOnChange(slider_bg);
+  s10.width = 121; s10.height= 26; s10.minVal= 1; s10.maxVal= 12;
+  s10.valueInterval = 1; s10.arrowAmount   = 0; s10.valueDefault  = bgNr;
+  s10.imgDir   = '../img/';
+  s10.setBackgroundImage('bob/background.gif', 'no-repeat');
+  s10.setSliderIcon('bob/slider.gif', 13, 18);
+  s10.setArrowIconLeft('img/arrowLeft.gif', 16, 16); s10.setArrowIconRight('img/arrowRight.gif', 16, 16);
+  s10.useInputField = 2;
+  s10.colorbar = {color:'red', height:5, widthDifference:-3, offsetLeft:5, offsetTop:9};
+  s10.styleValueFieldClass = 'sliderInput';
+  s10.drawInto('ID_s' + sliderNr);
+}
+  
+/** s0
+*/
+function slider_width(sliderObj, val, newPos){ 
+  mainSlider.width = val;
+  mainSlider.drawInto('sliderDivMain');
+}
+/** s1
+*/
+function colbar_height(sliderObj, val, newPos){ 
+  mainSlider.colorbar['height'] = val;
+  mainSlider.drawInto('sliderDivMain');
+}
+/** s2
+*/
+function colbar_widthDifference(sliderObj, val, newPos){ 
+  mainSlider.colorbar['widthDifference'] = val;
+  mainSlider.drawInto('sliderDivMain');
+}
+/** s3
+*/
+function colbar_offsetLeft(sliderObj, val, newPos){ 
+  mainSlider.colorbar['offsetLeft'] = val;
+  mainSlider.drawInto('sliderDivMain');
+}
+/** s4
+*/
+function colbar_offsetTop(sliderObj, val, newPos){ 
+  mainSlider.colorbar['offsetTop'] = val;
+  mainSlider.drawInto('sliderDivMain');
+}
+/** s5
+*/
+function slider_hight(sliderObj, val, newPos){ 
+  mainSlider.height = val;
+  mainSlider.drawInto('sliderDivMain');
+}
+/** s6
+*/
+function slider_minValue(sliderObj, val, newPos){ 
+  if (val<sliderObj.maxVal) {
+    mainSlider.minVal = val;
+    mainSlider.drawInto('sliderDivMain');
+  }
+}
+/** s7
+*/
+function slider_maxValue(sliderObj, val, newPos){ 
+  if (val>sliderObj.minVal) {
+    mainSlider.maxVal = val;
+    mainSlider.drawInto('sliderDivMain');
+  }
+}
+/** s8
+*/
+function slider_handle(sliderObj, val, newPos){ 
+  mainSlider.setSliderIcon('random/handles/handle'+val+'.x.gif', 25, 25);
+  mainSlider.drawInto('sliderDivMain');
+}
+/** s9
+*/
+function slider_arrow(sliderObj, val, newPos){ 
+  mainSlider.setArrowIconLeft('random/arrows/arrow'+val+'.left.gif', 30, 25); 
+  mainSlider.setArrowIconRight('random/arrows/arrow'+val+'.right.gif', 30, 25);
+  mainSlider.drawInto('sliderDivMain');
+}
+/** s10
+*/
+function slider_bg(sliderObj, val, newPos){ 
+  mainSlider.setBackgroundImage('random/backgrounds/bg'+val+'.h.gif', 'no-repeat');
+  mainSlider.drawInto('sliderDivMain');
+}
+
+
+// --></script>
+
+</head>
+<body bgColor="white" text="#3366aa" link="#0000ee" alink="#ff0000" vlink="#551a8b" onLoad="init();">
+
+<h1>JavaScript Bs_Slider example 5</h1>
+
+<br>
+Feel free to play  ... :)
+<hr>
+<br>
+  <table>
+    <tr>
+      <td width="600" valign="top">
+        <table border="1">
+          <tr><td width="300">slider width:</td><td width="150"><div id="ID_s0"></div>&nbsp;</td></tr>
+          <tr><td width="300">color bar height:</td><td width="150"><div id="ID_s1"></div>&nbsp;</td></tr>
+          <tr><td width="300">color bar width difference:</td><td width="150"><div id="ID_s2"></div>&nbsp;</td></tr>
+          <tr><td width="300">color bar offset Left:</td><td width="150"><div id="ID_s3"></div>&nbsp;</td></tr>
+          <tr><td width="300">color bar offset Top:</td><td width="150"><div id="ID_s4"></div>&nbsp;</td></tr>
+          <tr><td width="300">slider hight:</td><td width="150"><div id="ID_s5"></div>&nbsp;</td></tr>
+          <tr><td width="300">slider min value:</td><td width="150"><div id="ID_s6"></div>&nbsp;</td></tr>
+          <tr><td width="300">slider max value:</td><td width="150"><div id="ID_s7"></div>&nbsp;</td></tr>
+          <tr><td width="300">image handle :</td><td width="150"><div id="ID_s8"></div>&nbsp;</td></tr>
+          <tr><td width="300">image arrow:</td><td width="150"><div id="ID_s9"></div>&nbsp;</td></tr>        
+          <tr><td width="300">image background:</td><td width="150"><div id="ID_s10"></div>&nbsp;</td></tr>        
+        </table>
+      </td>
+      <td width="200" valign="top">
+        <form  name="test" id="test" action="http://www.blueshoes.org/postDump.php" method="post">
+          <div id="sliderDivMain"></div>
+        	<br><br><br><br>
+        	<input type="submit">
+        </form>
+      </td>
+    </tr>
+  </table>
+</body></html>

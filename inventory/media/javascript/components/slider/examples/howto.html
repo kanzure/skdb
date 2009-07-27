@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+<title>JavaScript Bs_Slider HOWTO example</title>
+
+<script type="text/javascript" src="/_bsJavascript/lib/LibCrossBrowser.js"></script>
+<script type="text/javascript" src="/_bsJavascript/lib/EventHandler.js"></script>
+<script type="text/javascript" src="/_bsJavascript/core/form/Bs_FormUtil.lib.js"></script>
+<script type="text/javascript" src="/_bsJavascript/components/slider/Bs_Slider.class.js"></script>
+
+<script><!--
+function init(){
+  drawSliders();
+}
+
+function drawSliders() {
+	mySlider = new Bs_Slider();
+	mySlider.objectName = 'mySlider';
+	mySlider.attachOnChange(bsSliderChange);
+	mySlider.width         = 121;
+	mySlider.height        = 26;
+	mySlider.minVal        = 0;
+	mySlider.maxVal        = 10;
+	mySlider.valueInterval = 1;
+	mySlider.arrowAmount   = 2;
+	mySlider.valueDefault  = 4;
+	mySlider.imgDir   = '/_bsJavascript/components/slider/img/';
+	mySlider.setBackgroundImage('bob/background.gif', 'no-repeat');
+	mySlider.setSliderIcon('bob/slider.gif', 13, 18);
+	mySlider.setArrowIconLeft('img/arrowLeft.gif', 16, 16);
+	mySlider.setArrowIconRight('img/arrowRight.gif', 16, 16);
+	mySlider.useInputField = 2;
+	mySlider.styleValueFieldClass = 'sliderInput';
+	mySlider.colorbar = new Object();
+	mySlider.colorbar['color']           = 'blue';
+	mySlider.colorbar['height']          = 5;
+	mySlider.colorbar['widthDifference'] = -12;
+	mySlider.colorbar['offsetLeft']      = 5;
+	mySlider.colorbar['offsetTop']       = 9;
+	mySlider.draw('sliderDiv1');
+}
+
+/**
+* @param object sliderObj
+* @param int val (the value)
+*/
+function bsSliderChange(sliderObj, val, newPos) { 
+  document.f.t.value = val;
+}
+// --></script>
+
+</head>
+<body bgColor="white" text="#3366aa" link="#0000ee" alink="#ff0000" vlink="#551a8b" onLoad="init();">
+
+<h1>Bs_Slider HOWTO Example</h1>
+
+<div id="sliderDiv1"></div>
+<br><br><br><br>
+<form name="f">
+value: <input type="text" name="t" size="6" style="background:yellow;">
+</form>
+
+</body>
+
+</html>
