@@ -42,4 +42,4 @@ urlpatterns = patterns('',
 
 
 if settings.DEBUG:
-	urlpatterns += patterns('', (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/smari/www/tangiblebit.com/media'}),)
+        urlpatterns += patterns('', (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/smari/www/tangiblebit.com/media'}),)
