@@ -26,10 +26,32 @@ from OCC.gce import *
 from OCC.Precision import *
 from OCC.Display.wxSamplesGui import display
 
-#def arc():
-    #pass
+current = gp_Pnt2d(0,0)
 
-#current = (0,0)
+def random_line(scale=10):
+    global current
+    p1 = current  #should be a gp_Pnt2d
+    p2 = gp_Pnt2d(random.randint(0, scale), random.randint(0, scale))
+    v2 = gp_Vec2d(p1, p2)
+    current = p1.Translated(v2)
+    return GCE2d_MakeSegment(p1, p2).Value()
+
+def random_arc(scale=10):
+    global current
+    p1 = current  #should be a gp_Pnt2d
+    p2 = gp_Pnt2d(random.randint(0, scale), random.randint(0, scale))
+    p3 = gp_Pnt2d(random.randint(0, scale), random.randint(0, scale))
+    v3 = gp_Vec2d(p1, p3)
+    current = p1.Translated(v3)
+    return GCE2d_MakeArcOfCircle(p1, p2, p3).Value()
+
+def draw_random_line(event=None):
+    display.DisplayShape([make_edge2d(random_line())])
+
+def draw_random_arc(event=None):
+    display.DisplayShape([make_edge2d(random_arc())])
+random_line()
+random_arc()
 
 ##bandsaw tomfoolery
 #path = []
@@ -90,7 +112,6 @@ def init_display():
 
 def tangents(curve1, curve2, radius=2):
     '''only works for lines and circles atm'''
-    print type(curve1), type(curve2)
     #if type(curve1) == gp_Lin2d:
     QC = GccEnt.GccEnt().Unqualified(curve1)
     QL = GccEnt.GccEnt().Unqualified(curve2)
@@ -122,7 +143,7 @@ def tangents(curve1, curve2, radius=2):
 
     find_solns(TR)
 
-def line_arc_line_path(event=None):
+def draw_all_tangents(event=None):
     display.EraseAll()
     init_display()
     points = []
@@ -139,10 +160,12 @@ def line_arc_line_path(event=None):
     L = GCE2d_MakeSegment(points[3], points[4]).Value()
     #L = GccAna_Lin2d2Tan(points[3], points[4],Precision().Confusion()).ThisSolution(1)
     display.DisplayShape([make_edge2d(L)])
-    print type(points[3]), type(points[4])
     L_gp = gce_MakeLin2d(points[3], points[4]).Value() #yuck. same thing; tangent solver wants a line, not segment
     
     tangents(C_gp, L_gp, radius=2)
+
+def clear(event=None):
+    display.EraseAll()
 
 def exit(event=None):
     sys.exit() 
@@ -151,9 +174,11 @@ if __name__ == '__main__':
         from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display
         add_menu('demo')
         for f in [
-                    line_arc_line_path,
+                    draw_all_tangents,
+                    draw_random_line,
+                    draw_random_arc,
+                    clear,
                     exit
                     ]:
             add_function_to_menu('demo', f)
-        line_arc_line_path()
         start_display()
