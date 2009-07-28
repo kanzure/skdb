@@ -1,0 +1,31 @@
+re: pymates parts and assemblies
+.. which will eventually be moved out of skdb/pymates/ and into the real
+world.
+
+A part is atomic in the system. Any two given parts can potentially be
+connected ("mated") to one another with some amount of compatibility.
+
+Not all parts are able to mate with all other parts. Mate success, or
+compatibility, is dependent on shape, geometry, tolerances, and
+interface specifications.
+
+Any two given parts can potentially be connected ("mated") with another
+part in a number of different ways. When two parts are mated, a mate
+object is produced (pymates.Mate). A mate object explicitly defines
+which combination of two given parts is implied.
+
+Mate objects (pymates.Mate) can be mated with other mates.
+Mate objects (pymates.Mate) can be mated with other parts.
+
+A pipe that will be outputting 3kpsi should not be compatible with
+a pipe rated for taking 15psi (unless explicitly forced).
+
+An assembly is a collection of parts and particular mates between those
+parts. An assembly can be split into parts. An assembly can be split
+into mates.
+
+?? An assembly can be represented as the Head or Root "Mate" object.
+All other connecting mates to this "head" mate are said to be in the same
+assembly.
+
+An assembly can be a part.
