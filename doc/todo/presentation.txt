@@ -9,11 +9,14 @@ topics to cover:
     - existing ontology
         - data migration
     - discarded solutions (and why)
+        - why units are important
     - python
     - YAML
         - multifile vs SQL
         - PyYAML
     - XMLRPC
+        - fablab communication
+        - ordering
     - OpenCASCADE
         - pythonOCC
     - django
@@ -25,5 +28,15 @@ topics to cover:
         - CAM integration
     - user scenarios
         - skdb apt-get scenario
+            - apt-get install <software>
+            - comics (every presentation needs comic relief)
+                - sudo make me a sandwich robot
+                    - xkcd
+                    - Bre's video
+                - life cycle machine comic
         - skdb distributed development w/djangit
+            - new user comes across skdb or some subproject
+            - revision control
+                - "oh crap why did I overwrite that last good version"
+                - "what on earth were they thinking?"
         - skdb pretend
