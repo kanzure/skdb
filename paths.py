@@ -88,27 +88,14 @@ def init_display():
     myGroup = Prs3d_Root().CurrentGroup(aPresentation.Presentation()).GetObject()
 
 
-def circles2d_from_curves(event=None):
-    display.EraseAll()
-    init_display()
-    points = []
-    for i in range(5):
-        point = gp_Pnt2d(random.randint(0,10), random.randint(0,10))
-        points += [point]
-        make_text('P'+str(i), point, 6)
-        display.DisplayShape(make_vertex(point))
-    
-    C = gce_MakeCirc2d(points[0], points[1], points[2]).Value()
-
-    display.DisplayShape(make_edge2d(C))
-    
-    QC = GccEnt.GccEnt().Unqualified(C)
-                                                  
-    L = GccAna_Lin2d2Tan(points[3], points[4],Precision().Confusion()).ThisSolution(1)
-    display.DisplayShape([make_edge2d(GCE2d_MakeSegment(L, -2, 20).Value())])
-
-    QL = GccEnt.GccEnt().Unqualified(L)
-    radius = 2
+def tangents(curve1, curve2, radius=2):
+    '''only works for lines and circles atm'''
+    print type(curve1), type(curve2)
+    #if type(curve1) == gp_Lin2d:
+    curve1 = gce_MakeLin2d(curve1)
+    curve2 = gce_MakeCirc2d(curve2)
+    QC = GccEnt.GccEnt().Unqualified(curve1)
+    QL = GccEnt.GccEnt().Unqualified(curve2)
     TR = GccAna_Circ2d2TanRad(QC,QL,radius,Precision().Confusion())
     
     #TR = Geom2dGcc_Lin2d2Tan(QC, QL, Precision().Confusion()) #curve, curve, tol; or curve, point, tol
@@ -137,6 +124,27 @@ def circles2d_from_curves(event=None):
 
     find_solns(TR)
 
+def line_arc_line_path(event=None):
+    display.EraseAll()
+    init_display()
+    points = []
+    for i in range(5):
+        point = gp_Pnt2d(random.randint(0,10), random.randint(0,10))
+        points += [point]
+        make_text('P'+str(i), point, 6)
+        display.DisplayShape(make_vertex(point))
+    
+    C = GCE2d_MakeArcOfCircle(points[0], points[1], points[2]).Value()
+    display.DisplayShape(make_edge2d(C))
+    C_gp = gce_MakeCirc2d(points[0], points[1], points[2]) #ew. same thing; tangent solver wants a circle, not arc
+
+    L = GCE2d_MakeSegment(points[3], points[4]).Value()
+    #L = GccAna_Lin2d2Tan(points[3], points[4],Precision().Confusion()).ThisSolution(1)
+    display.DisplayShape([make_edge2d(L)])
+    L_gp = gce_MakeLin2d(points[3], points[4]) #yuck. same thing; tangent solver wants a line, not segment
+    
+    tangents(C_gp, L_gp, radius=2)
+
 def exit(event=None):
     sys.exit() 
 
@@ -144,9 +152,9 @@ if __name__ == '__main__':
         from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display
         add_menu('demo')
         for f in [
-                  circles2d_from_curves,
-                  exit
-                  ]:
+                    line_arc_line_path,
+                    exit
+                    ]:
             add_function_to_menu('demo', f)
-        circles2d_from_curves()
+        line_arc_line_path()
         start_display()
