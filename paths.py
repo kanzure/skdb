@@ -92,8 +92,6 @@ def tangents(curve1, curve2, radius=2):
     '''only works for lines and circles atm'''
     print type(curve1), type(curve2)
     #if type(curve1) == gp_Lin2d:
-    curve1 = gce_MakeLin2d(curve1)
-    curve2 = gce_MakeCirc2d(curve2)
     QC = GccEnt.GccEnt().Unqualified(curve1)
     QL = GccEnt.GccEnt().Unqualified(curve2)
     TR = GccAna_Circ2d2TanRad(QC,QL,radius,Precision().Confusion())
@@ -136,12 +134,13 @@ def line_arc_line_path(event=None):
     
     C = GCE2d_MakeArcOfCircle(points[0], points[1], points[2]).Value()
     display.DisplayShape(make_edge2d(C))
-    C_gp = gce_MakeCirc2d(points[0], points[1], points[2]) #ew. same thing; tangent solver wants a circle, not arc
+    C_gp = gce_MakeCirc2d(points[0], points[1], points[2]).Value() #ew. same thing; tangent solver wants a circle, not arc
 
     L = GCE2d_MakeSegment(points[3], points[4]).Value()
     #L = GccAna_Lin2d2Tan(points[3], points[4],Precision().Confusion()).ThisSolution(1)
     display.DisplayShape([make_edge2d(L)])
-    L_gp = gce_MakeLin2d(points[3], points[4]) #yuck. same thing; tangent solver wants a line, not segment
+    print type(points[3]), type(points[4])
+    L_gp = gce_MakeLin2d(points[3], points[4]).Value() #yuck. same thing; tangent solver wants a line, not segment
     
     tangents(C_gp, L_gp, radius=2)
 
