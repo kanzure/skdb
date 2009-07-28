@@ -64,35 +64,10 @@ def make_face(shape):
 
 
 def make_text(string, pnt, height):
-    '''
-    render a bunch of text
-    @param string: string to be rendered
-    @param pnt:    location of the string
-    @param myGroup:OCC.Graphic3d.Graphic3d_Group instance
-    @param height: max height
+    '''render a bunch of text at pnt's location
+    myGroup should be an OCC.Graphic3d.Graphic3d_Group instance; call init_display first
     '''
     global display
-    # returns a Handle_Visual3d_ViewManager instance
-    # the only thing is that you need the Visual3d class to make this work well
-    # now we have to make a presenation for a stupid sphere as a workaround to get to the object
-#    viewer = display.GetContext().GetObject().CurrentViewer().GetObject().Viewer()
-#    hstruct = Graphic3d_Structure(viewer)
-
-#===============================================================================
-#    STOOPID!!
-#     The reason for recreating is that myGroup is gone after an EraseAll call
-#===============================================================================
-    stupid_sphere = BRepPrimAPI_MakeSphere(1,1,1,1)
-    prs_sphere = AIS_Shape(stupid_sphere.Shape())   
-    d_ctx           = display.GetContext().GetObject()
-    prsMgr          = d_ctx.CollectorPrsMgr().GetObject()
-    d_ctx.Display(prs_sphere.GetHandle(), 1)
-    aPresentation   = prsMgr.CastPresentation(prs_sphere.GetHandle()).GetObject()
-    global myGroup
-    myGroup = Prs3d_Root().CurrentGroup(aPresentation.Presentation()).GetObject()
-#===============================================================================
-#    FINE
-#===============================================================================
     _string = TCollection_ExtendedString(string)
     if isinstance( pnt, gp.gp_Pnt2d):
         _vertex = Graphic3d_Vertex(pnt.X(), pnt.Y(), 0)
@@ -100,8 +75,22 @@ def make_text(string, pnt, height):
         _vertex = Graphic3d_Vertex(pnt.X(), pnt.Y(), pnt.Z())
     myGroup.Text(_string, _vertex, height)
 
+def init_display():
+    '''The reason for recreating is that myGroup is gone after an EraseAll call'''
+    global myGroup
+    # now we have to make a presenation for a stupid sphere as a workaround to get to the object
+    stupid_sphere = BRepPrimAPI_MakeSphere(1,1,1,1)
+    prs_sphere = AIS_Shape(stupid_sphere.Shape())   
+    d_ctx           = display.GetContext().GetObject()
+    prsMgr          = d_ctx.CollectorPrsMgr().GetObject()
+    d_ctx.Display(prs_sphere.GetHandle(), 1)
+    aPresentation   = prsMgr.CastPresentation(prs_sphere.GetHandle()).GetObject()
+    myGroup = Prs3d_Root().CurrentGroup(aPresentation.Presentation()).GetObject()
+
+
 def circles2d_from_curves(event=None):
     display.EraseAll()
+    init_display()
     points = []
     for i in range(5):
         point = gp_Pnt2d(random.randint(0,10), random.randint(0,10))
@@ -122,11 +111,8 @@ def circles2d_from_curves(event=None):
     radius = 2
     TR = GccAna_Circ2d2TanRad(QC,QL,radius,Precision().Confusion())
     
-    #QC2 = GccEnt.GccEnt().Inside(C)
-    #TR_internal = GccAna_Circ2d2TanRad(QC,QL,radius,Precision().Confusion())
-    
     #TR = Geom2dGcc_Lin2d2Tan(QC, QL, Precision().Confusion()) #curve, curve, tol; or curve, point, tol
-    def show_solns(TR):
+    def find_solns(TR):
         if TR.IsDone():
             NbSol = TR.NbSolutions()
             solutions = []
@@ -144,14 +130,12 @@ def circles2d_from_curves(event=None):
                 parsol,pararg = TR.Tangency2(k, pnt2)
                 display.DisplayShape(make_vertex(pnt2))
                 solutions += (circ, pnt1, pnt2)
-                            
+            return solutions
         else:
             print "TR didnt finish!"
             return
 
-    show_solns(TR)
-    #show_solns(TR_internal)
-
+    find_solns(TR)
 
 def exit(event=None):
     sys.exit() 
