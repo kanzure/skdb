@@ -19,6 +19,18 @@ class TestResolver(unittest.TestCase):
 
         print "\n\n\nyaml testing\n\n"
         print yaml.dump(g)
+    def test_dependency_again(self):
+        #say we don't have skdb.packages.screw or are not aware of it.
+        screw1 = skdb.pymates.Part(name="screw")
+        #choose from these: threading, thread rolling, thread milling, thread whirling
+        dependency_set_build = skdb.dep.dependency_set(type="options")
+        dependency_set_build.add("threading")
+        dependency_set_build.add("thread rolling")
+        dependency_set_build.add("thread milling")
+        dependency_set_build.add("thread whirling")
+        screw1.dependencies.add(type="build",set=dependency_set_build)
+        dependency_set_build2 = skdb.dep.dependency_set(type="options")
+
     def test_Resolver(self):
         pass
 
