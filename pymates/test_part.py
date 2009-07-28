@@ -6,7 +6,7 @@ import pymates
 
 class TestPart(unittest.TestCase):
     '''tests pymates.Part'''
-    def setUp(self):
+    def test_setUp(self):
         #put some variables here
         #TODO: define the following parts more thoroughly
         screw1 = pymates.Part(name="screw")
