@@ -4,8 +4,13 @@ from string import Template
 
 #build the new db for our custom units
 f1 = open('/usr/share/misc/units.dat').read()
-f2 = open(os.path.join(os.path.dirname(__file__), 'supplemental_units.dat')).read()
-f3 = open(os.path.join(os.path.dirname(__file__), 'combined.dat'), 'w')
+#print os.path.dirname(os.path.realpath(__file__))
+current_path = os.path.dirname(os.path.realpath(__file__))
+combined_dat_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'combined.dat')
+#print os.path.join(os.path.dirname(os.path.realpath(__file__)), 'supplemental_units.dat')
+#print os.path.join(os.path.dirname(os.path.realpath(__file__)), 'combined.dat')
+f2 = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'supplemental_units.dat')).read()
+f3 = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'combined.dat'), 'w')
 f3.write(f1+f2)
 f3.close()
 
@@ -20,7 +25,7 @@ class Unit(FennObject):
     sci = '([+-]?\d*.?\d+([eE][+-]?\d+)?)' #exp group leaves turds.. better way to do regex without parens?
     yaml_tag = "!unit"
     '''try to preserve the original units, and provide a wrapper to the GNU units program'''
-    units_call = "units -f combined.dat -t " #export LOCALE=en_US; ?
+    units_call = "units -f %s -t " % (combined_dat_path) #export LOCALE=en_US; ?
     def __init__(self, string):
         #simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
         self.string = str(string)

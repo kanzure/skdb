@@ -93,17 +93,17 @@ class TestUnits(unittest.TestCase):
         
         
 class TestScrew(unittest.TestCase):
-    import screw
+    import skdb.packages.screw.screw as screw
     def test_conversions(self):
-            screw = skdb.load(open('screw.yaml'))['screw'] #yaml.load(open('screw.yaml'))['screw']
+            screw1 = skdb.load(open('../packages/screw/data.yaml'))['screw'] #yaml.load(open('screw.yaml'))['screw']
             #print yaml.dump(screw)
-            self.assertEqual(screw.thread.clamping_force('20N*m/rev'), '354.02982*lbf')
-            self.assertEqual(screw.thread.clamping_force('100ft*lbf/rev'), '2400.0*lbf')
-            self.assertEqual(screw.thread.tensile_area(), '0.031820683*in^2')
-            self.assertEqual(screw.thread.minor_diameter(), '0.1850481*in')
-            self.assertEqual(screw.thread.pitch_diameter(), '0.21752041*in')
-            self.assertEqual(screw.max_force(), '2704.758*lbf')
-            self.assertEqual(screw.breaking_force(), '3500.275*lbf')
+            self.assertEqual(screw1.thread.clamping_force('20N*m/rev'), '354.02982*lbf')
+            self.assertEqual(screw1.thread.clamping_force('100ft*lbf/rev'), '2400.0*lbf')
+            self.assertEqual(screw1.thread.tensile_area(), '0.031820683*in^2')
+            self.assertEqual(screw1.thread.minor_diameter(), '0.1850481*in')
+            self.assertEqual(screw1.thread.pitch_diameter(), '0.21752041*in')
+            self.assertEqual(screw1.max_force(), '2704.758*lbf')
+            self.assertEqual(screw1.breaking_force(), '3500.275*lbf')
 
 class TestYaml(unittest.TestCase):
     

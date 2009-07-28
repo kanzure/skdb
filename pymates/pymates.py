@@ -15,7 +15,6 @@ import yaml
 import re
 import os
 #os.environ['CSF_GraphicShr'] = r"/usr/lib/libTKOpenGl.so"
-import time
 import random
 import copy
 import numpy
@@ -23,10 +22,12 @@ import wx
 import OCC.gp
 import OCC.BRepPrimAPI
 import OCC.BRepBuilderAPI
-import OCC.Display.wxSamplesGui
+#import OCC.Display.wxSamplesGui
 import OCC.Utils.DataExchange.STEP
 import geom
 import assembly
+from part import Part
+from interface import Interface
 
 total_parts = []
 
@@ -34,68 +35,6 @@ total_parts = []
 #class Circle(yaml.YAMLObject)
 #class Cylinder(yaml.YAMLObject)
 #class InterfaceGeom(yaml.YAMLObject):
-
-class Part(yaml.YAMLObject):
-    '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.
-    should a part without an interface be invalid?'''
-    yaml_tag = '!part'
-    def __init__(self, name="part name", description="description", created=time.localtime(), files=[], interfaces={}):
-        self.name, self.description, self.created, self.files, self.interfaces = name, description, created, files, interfaces
-    def load_CAD(self):
-        if len(self.files) == 0: return #no files to load
-        #FIXME: assuming STEP
-        for file in self.files:
-            my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(str(file))
-            my_step_importer.ReadFile()
-            self.shapes = my_step_importer.GetShapes()
-            self.compound = my_step_importer.GetCompound()
-            result = OCC.Display.wxSamplesGui.display.DisplayShape(self.shapes)
-            if type(result) == type([]): self.ais_shapes = result[0]
-            else: self.ais_shapes = result
-        #i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
-        x,z,point = self.interfaces[0].x,self.interfaces[0].z,self.interfaces[0].point
-        return
-    def __repr__(self):
-        return "%s(name=%s, description=%s, created=%s, files=%s, interfaces=%s)" % (self.__class__.__name__, self.name, self.description, self.created, self.files, self.interfaces)
-    def yaml_repr(self):
-       return "name: %s\ndescription: %s\ncreated: %s\nfiles: %s\ninterfaces: %s" % (self.name, self.description, self.created, self.files, self.interfaces)
-    #def __setstate__(self, attrs):
-        ##print "Part.__setstate__ says attrs = ", attrs
-        #for (k,v) in attrs.items():
-            ##self.__setattr__(each[0],each[1])
-            #if type(v) == Interface:
-                #v.name = k
-                #if hasattr(self, "interfaces"): self.interfaces[k] = v
-                #else:
-                    #self.interfaces = {}
-                    #self.interfaces[k] = v
-            #self.__setattr__(k,v)
-    #@classmethod
-    #def to_yaml(cls, dumper, data):
-    #    return dumper.represent_mapping(cls.yaml_tag, cls.yaml_repr(data))
-    #@classmethod
-    #def from_yaml(cls, loader, node):
-    #    print "from_yaml() says that loader = ", loader
-    #    data = loader.construct_mapping(node)
-    #    print "from_yaml() says that data = ", data
-    #    return cls(data)
-
-class Interface(yaml.YAMLObject):
-    '''"units" should be what is being transmitted through the interface, not about the structure.
-    a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry'''
-    yaml_tag = '!interface'
-    def __init__(self, name="generic interface name", units=None, geometry=None, point=[0,0,0], x=0, y=0, z=0):
-        self.name, self.units, self.geometry, self.point, self.x, self.y, self.z = name, units, geometry, point, x, y, z
-    def __repr__(self):
-        return "Interface(name=%s,units=%s,geometry=%s,point=%s,x=%s,y=%s,z=%s)" % (self.name, self.units, self.geometry, self.point, self.x, self.y, self.z)
-    def yaml_repr(self):
-        return "name: %s\nunits: %s\ngeometry: %s\npoint: %s\nx: %s\ny: %s\nz: %s" % (self.name, self.units, self.geometry, self.point, self.x, self.y, self.z)
-    #@classmethod
-    #def to_yaml(cls, dumper, data):
-    #    return dumper.represent_scalar(cls.yaml_tag, cls.yaml_repr(data))
-    #@classmethod
-    #def from_yaml(cls, loader, node):
-    #    return Interface("node name from from_yaml")
 
 #for cls in [Part, Interface]:
 #    yaml.add_implicit_resolver(cls.yaml_tag, cls.yaml_pattern)
@@ -121,8 +60,12 @@ def demo(event=None):
     print "peg is = ", dump(peg)
     #load the CAD?
     #load_cad_file(filename=blockhole.files[0])
-    blockhole.load_CAD()
-    peg.load_CAD()
+    shape = blockhole.load_CAD()
+    result = OCC.Display.wxSamplesGui.display.DisplayShape(shape)
+    blockhole.add_shape(result)
+    shape2 = peg.load_CAD()
+    result2 = OCC.Display.wxSamplesGui.display.DisplayShape(shape2)
+    peg.add_shape(result2)
     total_parts.append(blockhole)
     total_parts.append(peg)
 
@@ -198,6 +141,7 @@ def show_part_mate(part_mate_object):
     return
 
 def start():
+    import OCC.Display.wxSamplesGui
     OCC.Display.wxSamplesGui.display.Create()
 
 def restart(event=None): #EraseAll
