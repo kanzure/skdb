@@ -26,6 +26,8 @@ into mates.
 
 ?? An assembly can be represented as the Head or Root "Mate" object.
 All other connecting mates to this "head" mate are said to be in the same
-assembly.
+assembly. It's more like a graph. Parts can be involved in multiple mates
+in the same system, so branches become cycles (or something) so it's not
+merely a tree.
 
 An assembly can be a part.
