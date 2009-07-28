@@ -113,7 +113,7 @@ def circles2d_from_curves(event=None):
 
     display.DisplayShape(make_edge2d(C))
     
-    QC = GccEnt.GccEnt().Outside(C)
+    QC = GccEnt.GccEnt().Unqualified(C)
                                                   
     L = GccAna_Lin2d2Tan(points[3], points[4],Precision().Confusion()).ThisSolution(1)
     display.DisplayShape([make_edge2d(GCE2d_MakeSegment(L, -2, 20).Value())])
@@ -122,35 +122,36 @@ def circles2d_from_curves(event=None):
     radius = 2
     TR = GccAna_Circ2d2TanRad(QC,QL,radius,Precision().Confusion())
     
+    #QC2 = GccEnt.GccEnt().Inside(C)
+    #TR_internal = GccAna_Circ2d2TanRad(QC,QL,radius,Precision().Confusion())
+    
     #TR = Geom2dGcc_Lin2d2Tan(QC, QL, Precision().Confusion()) #curve, curve, tol; or curve, point, tol
-     
-    if TR.IsDone():
-        NbSol = TR.NbSolutions()
-        for k in range(1,NbSol+1):
-            circ = TR.ThisSolution(k)
-            display.DisplayShape(make_edge2d(circ))
-            # find the solution circle ( index, outvalue, outvalue, gp_Pnt2d )
-            pnt1 = gp_Pnt2d()
-            parsol,pararg = TR.Tangency1(k, pnt1)  #gross
-            # find the first tangent point                                    
-            pnt2 = gp_Pnt2d()
-            parsol,pararg = TR.Tangency2(k, pnt2)
-            # find the second tangent point     
-            pnt3 = gp_Pnt2d()                         
-            parsol,pararg = TR.Tangency1(k, pnt3)
-            # find the first tangent point                                    
-            display.DisplayShape(make_vertex(pnt3))#,"tangentpoint1",0,0.1,0,0.05)
-            #make_text("tangentpoint1", pnt3, 6)
-            
-            pnt4 = gp_Pnt2d()                         
-            parsol,pararg = TR.Tangency2(k, pnt4)
-            display.DisplayShape(make_vertex(pnt4))
-            #display.DisplayPoint(pnt4,"tangentpoint2",0,0.1,0,0.05)
-            #make_text("tangentpoint2", pnt4, 6)
-            # find the second tangent point                                         
-    else:
-        print "TR didnt finish!"
-        return
+    def show_solns(TR):
+        if TR.IsDone():
+            NbSol = TR.NbSolutions()
+            solutions = []
+            for k in range(1,NbSol+1):
+                circ = TR.ThisSolution(k)
+                display.DisplayShape(make_edge2d(circ))
+                # find the solution circle ( index, outvalue, outvalue, gp_Pnt2d )
+                pnt1 = gp_Pnt2d()
+                # find the first tangent point       
+                parsol,pararg = TR.Tangency1(k, pnt1)  #gross      
+                display.DisplayShape(make_vertex(pnt1))
+                
+                pnt2 = gp_Pnt2d()
+                # find the second tangent point     
+                parsol,pararg = TR.Tangency2(k, pnt2)
+                display.DisplayShape(make_vertex(pnt2))
+                solutions += (circ, pnt1, pnt2)
+                            
+        else:
+            print "TR didnt finish!"
+            return
+
+    show_solns(TR)
+    #show_solns(TR_internal)
+
 
 def exit(event=None):
     sys.exit() 
