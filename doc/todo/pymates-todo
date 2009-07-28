@@ -2,8 +2,13 @@
 2009-07-27:
     * read STEP ISO 10303
         * figure out how to add a feature to the file (instead of using pymates/models/blockhole.yaml)
+        # well that was a dead end. Solidworks, AutoCAD, and even PRO/E can't seem to do annotations with STEP ISO 10303 AP214.
     * use tags/names for geometories in pymates/models/blockhole.yaml
     * unit tests for part mating
+    * remove dependencies on OCC.Display, move them somewhere else
+    * more example parts: legos?
+        * attempt to extract data from LeoCAD and ldraw
+        * attempt to extract data from Regli's National Design Repository (lego VRML files)
     * shaft in a lego brick:
         * slop (a distance)
            * the minimum distance between those two surfaces
