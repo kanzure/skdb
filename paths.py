@@ -13,6 +13,11 @@ from OCC.GCPnts import *
 # for make_text
 from OCC.BRepPrimAPI import *
 from OCC.BRepBuilderAPI import *
+from OCC.BRepFilletAPI import *
+from OCC.BRep import *
+from OCC.TopExp import *
+from OCC.TopAbs import *
+from OCC.TopoDS import *
 from OCC.AIS import *
 from OCC.Prs3d import *
 from OCC.TCollection import *
@@ -50,8 +55,41 @@ def draw_random_line(event=None):
 
 def draw_random_arc(event=None):
     display.DisplayShape([make_edge2d(random_arc())])
-random_line()
-random_arc()
+
+def line_arc_line_path(event=None):
+    radius = 10
+    wire =  BRepBuilderAPI_MakeWire()
+    print "create edges"
+    for i in range(3):
+        edge = BRepBuilderAPI_MakeEdge2d(random_line()).Edge()
+        wire.Add(edge)
+    print "create face"
+    face = BRepBuilderAPI_MakeFace(wire.Wire())
+    fillet = BRepFilletAPI_MakeFillet2d(face.Face())
+    #print fillet.Status()
+    print "explore face"
+    explorer = TopExp_Explorer(face.Face(), TopAbs_VERTEX)
+    i=0
+    while explorer.More():
+        print "vertex: ", i
+        vertex = TopoDS().Vertex(explorer.Current())
+        make_vertex(BRep_Tool().Pnt(vertex))
+        #help( vertex.Location().Value())
+        fillet.AddFillet(vertex, radius)
+        fillet.Build()
+        print fillet.NbFillet()
+        #print fillet.IsDone()
+        #while not fillet.IsDone(): pass
+        explorer.Next()
+        i+=1
+
+    display.DisplayShape([face.Face()])
+    
+def random_cone(event=None):
+    for i in p1, p2, p3, p4:
+        i = gp_Pnt(random.uniform(0, 1), random.uniform(0, 1))
+        print i.Location()
+   
 
 ##bandsaw tomfoolery
 #path = []
@@ -64,12 +102,12 @@ random_arc()
 def make_edge2d(shape):
     spline = BRepBuilderAPI_MakeEdge2d(shape)
     spline.Build()
-    return spline.Shape()
+    return spline.Edge()
 
 def make_edge(shape):
     spline = BRepBuilderAPI_MakeEdge(shape)
     spline.Build()
-    return spline.Shape()
+    return spline.Edge()
 
 def make_vertex(pnt):
     if isinstance(pnt, gp.gp_Pnt2d):
@@ -77,12 +115,12 @@ def make_vertex(pnt):
     else: 
         vertex = BRepBuilderAPI_MakeVertex( pnt )
     vertex.Build()
-    return vertex.Shape()
+    return vertex.Vertex()
 
 def make_face(shape):
     face = BRepBuilderAPI_MakeFace(shape)
     face.Build()
-    return face.Shape()
+    return face.Face()
 
 
 def make_text(string, pnt, height):
@@ -177,8 +215,10 @@ if __name__ == '__main__':
                     draw_all_tangents,
                     draw_random_line,
                     draw_random_arc,
+                    line_arc_line_path,
                     clear,
                     exit
                     ]:
             add_function_to_menu('demo', f)
+        line_arc_line_path()
         start_display()
