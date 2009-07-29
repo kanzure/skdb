@@ -5,6 +5,7 @@
 
 import pymates
 
+pymates.start()
 pymates.demo()
 pymates.mate_parts()
 pymates.show_interface_points()
