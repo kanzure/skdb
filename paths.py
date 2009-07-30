@@ -1,7 +1,7 @@
 #process geometry framework
 #provides code to interpret geometrical constraints and carry out random operations
 
-import random, sys
+import random, sys, math
 
 from OCC.gp import *
 from OCC.Geom2d import *
@@ -160,26 +160,54 @@ def make_text(string, pnt, height):
         _vertex = Graphic3d_Vertex(pnt.X(), pnt.Y(), pnt.Z())
     myGroup.Text(_string, _vertex, height)
 
-from copy import copy
-
 def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
     trsf.SetTranslation(from_pnt, to_pnt)
     return BRepBuilderAPI_Transform(shape, trsf, True).Shape()
+
+def angle_to(x,y,z):                                                         
+    '''returns polar coordinates in radians to a point from the origin            
+    a rotates around the x-axis; b rotates around the y axis; r is the distance'''
+    azimuth = math.atan2(y, x) #longitude                                       
+    elevation = math.atan2(z, math.sqrt(x**2 + y**2))                              
+    radius = math.sqrt(x**2+y**2+z**2)                                                 
+    return((azimuth, elevation, radius))  
+    #glRotatef(az-90,0,0,1)                                                        
+    #glRotatef(el-90,1,0,0) 
+
+def point_shape(shape, origin):
+    '''rotates a shape to point along origin's direction. this function ought to be unnecessary'''
+    assert type(origin) == gp_Ax1
+    #ox, oy, oz = origin.Location().X(), origin.Location().Y(), origin.Location().Z() #ffs
+    ox, oy, oz = 0, 0, 0
+    dx, dy, dz = origin.Direction().X(), origin.Direction().Y(), origin.Direction().Z()
+    (az, el, rad) = angle_to(dx-ox, dy-oy, dz-oz)
+    print "az: %s, el: %s, rad: %s... dx: %s, dy: %s, dz %s)" % (az, el, rad, dx, dy, dz)
+    trsf = gp_Trsf()
+    #this may be in backwards order?
+    trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el-math.pi/2)
+    shape = BRepBuilderAPI_Transform(shape, trsf, True).Shape()
+    trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az-math.pi/2)
+    shape = BRepBuilderAPI_Transform(shape, trsf, True).Shape()
+
+    return shape
     
-def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None):
+    
+def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
     assert type(origin) == gp_Ax1
     body = BRepPrimAPI_MakeCylinder(0.05, 0.7).Shape()
     head = BRepPrimAPI_MakeCone(0.1,0.001,0.3).Shape()
     head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7)) #move cone to top of arrow
-    display.DisplayShape(head)
-    display.DisplayShape(body)
-    #trsf = gp_Trsf().SetTranslation(gp_Vec(gp_Pnt(0,0,0), origin.Location()))
-    
-    ##init_display()
-    #v = gp_Dir(gp_Vec(gp_Pnt(10,0,0), gp_Pnt(100,0,0)))
-    #Prs3d_Arrow().Draw(myPresentation.Presentation(), gp_Pnt(100,0,0), v, 0.20, 1.00)
+    #arrow = BRepAlgoAPI_Fuse(head, body).Shape()
+    head = point_shape(head, origin)
+    body = point_shape(body, origin)
+    head = move_shape(head, gp_Pnt(0,0,0), origin.Location())
+    body = move_shape(body, gp_Pnt(0,0,0), origin.Location())
+
+    display.DisplayColoredShape(head, color)
+    display.DisplayColoredShape(body, color)
+
     
 def make_arrow_to(dest=gp_Ax1(gp_Pnt(0,0,1), gp_Dir(0,0,1)), scale=1, text=None):
     pass
@@ -275,6 +303,16 @@ if __name__ == '__main__':
             add_function_to_menu('demo', f)
         #random_sweep()
         init_display()
-        make_arrow()
+        #a silly chain of arrows
+        make_arrow(origin=gp_Ax1(gp_Pnt(0,0,1), gp_Dir(1,1,1)))
+        display.DisplayShape(make_vertex(gp_Pnt(1,1,2)))
+        s=math.sqrt(3)/3
+        make_arrow(origin=gp_Ax1(gp_Pnt(s,s,s+1), gp_Dir(1,1,1)))
+        #typical origin symbol
+        display.DisplayShape(make_vertex(gp_Pnt(1,0,0)))
+        make_arrow(color='RED', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)))
+        make_arrow(color='GREEN', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,1,0)))
+        make_arrow(color='BLUE', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)))
+        
         start_display()
         
