@@ -9,80 +9,72 @@ This program is free software.
 '''
 import unittest
 
-class mate:
-    def __init__(self, part1interface, part2interface):
-        self.part1interface = part1interface
-        self.part2interface = part2interface
-        #part1.mate = self
-        #part2.mate = self
-    def apply(self):
-        self.part1interface.mate = self
-        self.part2interface.mate = self
-        return
-    def __repr__(self):
-        return "mate(%s, %s)" % (self.part1interface.part.name, self.part2interface.part.name)
-
-class mates:
-    def __init__(self, part1, part2):
-        self.part1 = part1
-        self.part2 = part2
-    def options(self):
-        #return a list of possible mates
-        local_options = []
-        for hole in self.part1.holes:
-            for peg in self.part2.pegs:
-                #do something
-                if not hole.mate and not peg.mate:
-                    local_options.append(mate(hole, peg))
-        for peg in self.part1.pegs:
-            for hole in self.part2.holes:
-                #do something
-                if not hole.mate and not peg.mate:
-                    local_options.append(mate(hole,peg))
-        return local_options
-
-class interface_mates():
+class Mate:
     def __init__(self, interface1, interface2):
+        assert hasattr(interface1, 'mated')
+        assert hasattr(interface2, 'mated')
         self.interface1 = interface1
         self.interface2 = interface2
-    def options(self):
-        return "not implemented"
+    def apply(self):
+        self.interface1.mated = self
+        self.interface2.mated = self
+        return
+    def __repr__(self):
+        return "mate(%s, %s)" % (self.interface1.part.name, self.interface2.part.name)
 
-class interface:
+def options(interface, parts):
+    '''what can this interface connect to?'''
+    parts = set(parts) #yay sets!
+    if interface.part in parts: parts.remove(interface.part) #unless it's really flexible
+    rval = set()
+    for part in parts:
+        for i in part.interfaces:
+            if i.compatible(interface) and interface.compatible(i):
+                rval.add(Mate(i, interface))
+    return rval
+
+class Interface:
     def __init__(self, part):
-        self.mate = None
+        self.mated = None
         self.part = part
-        pass
-    def mates(self, other_interface):
-        return interface_mates(self, other_interface).options()
 
-class hole(interface):
-    pass
+class Hole(Interface):
+    def compatible(self, other):
+        if isinstance(other, Peg): 
+            if not other.mated:
+                return True #ok so type based checking sucks. wah.
+        else: return False
 
-class peg(interface):
-    pass
+class Peg(Interface):
+    def compatible(self, other):
+        if isinstance(other, Hole):
+            if not other.mated:
+                return True
+        else: return False
 
-class lego:
-    def __init__(self, name, num_pegs=4, num_holes=1):
+class Lego:
+    def __init__(self, name, num_pegs=0, num_holes=0):
         self.name = name
-        self.holes = []
-        self.pegs = []
+        self.interfaces = []
         for each in range(num_holes):
-            new_hole = hole(self)
-            self.holes.append(new_hole)
+            new_hole = Hole(self)
+            self.interfaces.append(new_hole)
         for each in range(num_pegs):
-            new_peg = peg(self)
-            self.pegs.append(new_peg)
+            new_peg = Peg(self)
+            self.interfaces.append(new_peg)
     def mates(self, part):
         #how many options are there for different pegs and holes?
-        possibilities = mates(self, part).options()
+        possibilities = Mates(self, part).options()
         return possibilities
 
 class TestLego(unittest.TestCase):
     def test_lego(self):
-        brick = lego("brick", num_pegs=8, num_holes=2)
-        brick2 = lego("brick2", num_pegs=4, num_holes=1)
-        print brick.mates(brick2)
+        brick1 = Lego("brick1", num_pegs=4, num_holes=2)
+        brick2 = Lego("brick2", num_pegs=2, num_holes=1)
+        brick3 = Lego("brick3", num_holes=3)
+        brick4 = Lego("brick4", num_pegs=4)
+        #print brick1.interfaces[0].__class__.__name__
+        print options(brick1.interfaces[0], [brick1, brick2, brick3, brick4])
         pass
     def test_interface(self):
         pass
