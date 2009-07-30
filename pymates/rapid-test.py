@@ -8,5 +8,5 @@ import pymates
 pymates.start()
 pymates.demo()
 pymates.mate_parts()
-pymates.show_interface_points()
+pymates.show_interface_arrows()
 raw_input("I hate you")
