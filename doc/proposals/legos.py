@@ -37,6 +37,8 @@ class Interface:
     def __init__(self, part, hermaphroditic=False):
         self.mated = None
         self.part = part
+        self.point = None #for pymates compatibility
+        self.x, self.y, self.z = None, None, None #for pymates compatibility
         self.identifier = None #part's #identifier-th/st Interface
         self.hermaphroditic = hermaphroditic
     def compatible(self, other):

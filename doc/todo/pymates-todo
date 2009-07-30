@@ -37,17 +37,23 @@
             * python-graph dependency?
         * skdb/doc/proposals/legos.py unit tests
         * skdb/pymates/test_part.py tests
+    # code: visualization of arrows/vectors for "interface points"/"control points" (yay feedback)
+        # make_arrow() in skdb/paths.py
+        # show_all_arrows() in skdb/pymates/pymates.py
     * code: write pymates.compatibility()
         * incorporate type-checking first (see skdb/doc/proposals/legos.py for a start)
         * then move on to rotations and checking for alignment of "interface points"/"control points"
         * then move on to the algorithms
     * code: graph traversal of pymates.Assembly
+        * traversal
+        * searching for parts/mates
     * merges:
         * merge skdb/doc/proposals/assemblies.txt + skdb/doc/proposals/legos.py
         * merge skdb/doc/proposals/legos.py + skdb/pymates/pymates.py
         * merge tests with skdb/pymates/test_part.py and skdb/pymates/tests.py
     * play with legos:
         * see the lego IGES/STEP files
+            * not enough of them: model more lego bricks in HeeksCAD (save as IGES and STEP)
         * are the VRML parts of any use?
             * if so, see ldr2vrml
                 * generate LDR files for all parts from LDraw
