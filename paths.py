@@ -1,7 +1,7 @@
 #process geometry framework
 #provides code to interpret geometrical constraints and carry out random operations
 
-import random, sys, math
+import random, sys
 
 from OCC.gp import *
 from OCC.Geom2d import *
@@ -31,6 +31,8 @@ from OCC.GCE2d import *
 from OCC.gce import *
 from OCC.Precision import *
 from OCC.Display.wxSamplesGui import display
+
+import math #OCC.math gets in the way? wtf
 
 current = gp_Pnt2d(0,0)
 
@@ -207,10 +209,25 @@ def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1,
 
     display.DisplayColoredShape(head, color)
     display.DisplayColoredShape(body, color)
-
+    if text is not None:
+        make_text(text, origin.Location(), 6)
     
-def make_arrow_to(dest=gp_Ax1(gp_Pnt(0,0,1), gp_Dir(0,0,1)), scale=1, text=None):
+def make_arrow_to(event=None, dest=gp_Ax1(gp_Pnt(0,0,1), gp_Dir(0,0,1)), scale=1, text=None, color='YELLOW'):
     pass
+
+def make_arrows(event=None):
+    #a silly chain of arrows
+    make_arrow(origin=gp_Ax1(gp_Pnt(0,0,1), gp_Dir(1,1,1)))
+    display.DisplayShape(make_vertex(gp_Pnt(1,1,2)))
+    s=math.sqrt(3)/3
+    make_arrow(origin=gp_Ax1(gp_Pnt(s,s,s+1), gp_Dir(1,1,1)), text='hmm')
+    
+def make_coordinate_arrows(event=None):
+    #typical origin symbol
+    display.DisplayShape(make_vertex(gp_Pnt(1,0,0)))
+    make_arrow(color='RED', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)))
+    make_arrow(color='GREEN', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,1,0)))
+    make_arrow(color='BLUE', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)))
 
 def init_display():
     '''The reason for recreating is that myGroup is gone after an EraseAll call'''
@@ -297,22 +314,15 @@ if __name__ == '__main__':
                     random_cone,
                     random_sweep,
                     make_arrow,
+                    make_arrows,
+                    make_coordinate_arrows,
                     clear,
                     exit
                     ]:
             add_function_to_menu('demo', f)
         #random_sweep()
         init_display()
-        #a silly chain of arrows
-        make_arrow(origin=gp_Ax1(gp_Pnt(0,0,1), gp_Dir(1,1,1)))
-        display.DisplayShape(make_vertex(gp_Pnt(1,1,2)))
-        s=math.sqrt(3)/3
-        make_arrow(origin=gp_Ax1(gp_Pnt(s,s,s+1), gp_Dir(1,1,1)))
-        #typical origin symbol
-        display.DisplayShape(make_vertex(gp_Pnt(1,0,0)))
-        make_arrow(color='RED', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)))
-        make_arrow(color='GREEN', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,1,0)))
-        make_arrow(color='BLUE', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)))
-        
         start_display()
+
+
         
