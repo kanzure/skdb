@@ -8,12 +8,13 @@ from OCC.Geom2d import *
 from OCC.Geom2dAdaptor import *
 from OCC.Geom2dAPI import *
 from OCC.GCPnts import *
-
+from OCC.GC import *
 
 # for make_text
 from OCC.BRepPrimAPI import *
 from OCC.BRepBuilderAPI import *
 from OCC.BRepFilletAPI import *
+from OCC.BRepOffsetAPI import *
 from OCC.BRep import *
 from OCC.TopExp import *
 from OCC.TopAbs import *
@@ -58,17 +59,18 @@ def draw_random_arc(event=None):
 
 def line_arc_line_path(event=None):
     radius = 10
-    wire =  BRepBuilderAPI_MakeWire()
+    mkwire =  BRepBuilderAPI_MakeWire()
     print "create edges"
     for i in range(3):
         edge = BRepBuilderAPI_MakeEdge2d(random_line()).Edge()
-        wire.Add(edge)
+        mkwire.Add(edge)
+    wire = mkwire.Wire()
     print "create face"
-    face = BRepBuilderAPI_MakeFace(wire.Wire())
-    fillet = BRepFilletAPI_MakeFillet2d(face.Face())
+    face = BRepBuilderAPI_MakeFace(wire).Face()
+    fillet = BRepFilletAPI_MakeFillet2d(face)
     #print fillet.Status()
     print "explore face"
-    explorer = TopExp_Explorer(face.Face(), TopAbs_VERTEX)
+    explorer = TopExp_Explorer(face, TopAbs_VERTEX)
     i=0
     while explorer.More():
         print "vertex: ", i
@@ -83,13 +85,37 @@ def line_arc_line_path(event=None):
         explorer.Next()
         i+=1
 
-    display.DisplayShape([face.Face()])
+    display.DisplayShape([face])
+    return wire
     
 def random_cone(event=None):
-    for i in p1, p2, p3, p4:
-        i = gp_Pnt(random.uniform(0, 1), random.uniform(0, 1))
-        print i.Location()
-   
+    #p1, p2, p3, p4 = None, None, None, None #ew
+    #for i in p1, p2, p3, p4:
+        #i = gp_Pnt(random.uniform(0, 1), random.uniform(0, 1), random.uniform(0, 1))
+        #print i.Coord()
+    p1 = gp_Pnt(0,0,0)
+    p2 = gp_Pnt(0,0,1)
+    p3 = 1
+    p4 = 2
+    cone = gce_MakeCone(p1, p2, p3, p4).Value()
+    cone = BRepPrimAPI_MakeCone(gp.gp().XOY(), 1,1.1,1)
+    try: 
+        cone = BRepPrimAPI_MakeCone(gp.gp().XOY(), random.uniform(0,1), random.uniform(0,1), random.uniform(0,1)).Shape()
+        display.DisplayShape([cone])
+    except RuntimeError: cone = random_cone()
+    return cone
+    
+def sweep_path(path, shape):
+    print type(shape)
+    print type(path)
+    assert type(shape) == TopoDS_Shape
+    #assert type(path) == TopoDS_Wire #bah
+    sweep = BRepOffsetAPI_MakePipe(path, shape).Shape()
+    return sweep
+    
+def random_sweep(event=None):
+    display.DisplayShape([sweep_path( line_arc_line_path(), random_cone())])
+    
 
 ##bandsaw tomfoolery
 #path = []
@@ -121,7 +147,6 @@ def make_face(shape):
     face = BRepBuilderAPI_MakeFace(shape)
     face.Build()
     return face.Face()
-
 
 def make_text(string, pnt, height):
     '''render a bunch of text at pnt's location
@@ -216,9 +241,11 @@ if __name__ == '__main__':
                     draw_random_line,
                     draw_random_arc,
                     line_arc_line_path,
+                    random_cone,
+                    random_sweep,
                     clear,
                     exit
                     ]:
             add_function_to_menu('demo', f)
-        line_arc_line_path()
+        #random_sweep()
         start_display()
