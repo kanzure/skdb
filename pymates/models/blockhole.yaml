@@ -19,6 +19,6 @@ blockhole: !part
         #tag the geometry (simple primitives only please)
         geometry: 'circle' #!circle
         point: [5, 5, 10] #xyz
-        x: 180 #deg
-        z: 0 #deg
+        x: 0 #deg
+        z: 180 #deg
         #don't forget to turn one of them upside down
