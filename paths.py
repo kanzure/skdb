@@ -166,8 +166,6 @@ def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
     trsf.SetTranslation(from_pnt, to_pnt)
     return BRepBuilderAPI_Transform(shape, trsf, True).Shape()
-
-def rotate_shape(
     
 def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
