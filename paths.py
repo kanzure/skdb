@@ -124,7 +124,6 @@ def random_sweep(event=None):
     #path += random_line(current)
     #path += random_arc(current)
 
-
 def make_edge2d(shape):
     spline = BRepBuilderAPI_MakeEdge2d(shape)
     spline.Build()
@@ -150,7 +149,8 @@ def make_face(shape):
 
 def make_text(string, pnt, height):
     '''render a bunch of text at pnt's location
-    myGroup should be an OCC.Graphic3d.Graphic3d_Group instance; call init_display first
+    myGroup should be an OCC.Graphic3d.Graphic3d_Group instance.
+    call init_display before calling this function.
     '''
     global display
     _string = TCollection_ExtendedString(string)
@@ -160,17 +160,44 @@ def make_text(string, pnt, height):
         _vertex = Graphic3d_Vertex(pnt.X(), pnt.Y(), pnt.Z())
     myGroup.Text(_string, _vertex, height)
 
+from copy import copy
+
+def move_shape(shape, from_pnt, to_pnt):
+    trsf = gp_Trsf()
+    trsf.SetTranslation(from_pnt, to_pnt)
+    return BRepBuilderAPI_Transform(shape, trsf, True).Shape()
+
+def rotate_shape(
+    
+def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None):
+    '''draw a small arrow from origin to dest, labeled with 2d text'''
+    assert type(origin) == gp_Ax1
+    body = BRepPrimAPI_MakeCylinder(0.05, 0.7).Shape()
+    head = BRepPrimAPI_MakeCone(0.1,0.001,0.3).Shape()
+    head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7)) #move cone to top of arrow
+    display.DisplayShape(head)
+    display.DisplayShape(body)
+    #trsf = gp_Trsf().SetTranslation(gp_Vec(gp_Pnt(0,0,0), origin.Location()))
+    
+    ##init_display()
+    #v = gp_Dir(gp_Vec(gp_Pnt(10,0,0), gp_Pnt(100,0,0)))
+    #Prs3d_Arrow().Draw(myPresentation.Presentation(), gp_Pnt(100,0,0), v, 0.20, 1.00)
+    
+def make_arrow_to(dest=gp_Ax1(gp_Pnt(0,0,1), gp_Dir(0,0,1)), scale=1, text=None):
+    pass
+
 def init_display():
     '''The reason for recreating is that myGroup is gone after an EraseAll call'''
     global myGroup
+    global myPresentation
     # now we have to make a presenation for a stupid sphere as a workaround to get to the object
     stupid_sphere = BRepPrimAPI_MakeSphere(1,1,1,1)
     prs_sphere = AIS_Shape(stupid_sphere.Shape())   
     d_ctx           = display.GetContext().GetObject()
     prsMgr          = d_ctx.CollectorPrsMgr().GetObject()
     d_ctx.Display(prs_sphere.GetHandle(), 1)
-    aPresentation   = prsMgr.CastPresentation(prs_sphere.GetHandle()).GetObject()
-    myGroup = Prs3d_Root().CurrentGroup(aPresentation.Presentation()).GetObject()
+    myPresentation   = prsMgr.CastPresentation(prs_sphere.GetHandle()).GetObject()
+    myGroup = Prs3d_Root().CurrentGroup(myPresentation.Presentation()).GetObject()
 
 
 def tangents(curve1, curve2, radius=2):
@@ -243,9 +270,13 @@ if __name__ == '__main__':
                     line_arc_line_path,
                     random_cone,
                     random_sweep,
+                    make_arrow,
                     clear,
                     exit
                     ]:
             add_function_to_menu('demo', f)
         #random_sweep()
+        init_display()
+        make_arrow()
         start_display()
+        
