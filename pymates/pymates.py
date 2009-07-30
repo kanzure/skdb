@@ -132,6 +132,36 @@ def show_interface_points(event=None):
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
+def show_interface_arrows(event=None,arrow_length=3):
+    '''displays vectors pointing in the mating direction, for every part and every part's interface'''
+    for part in total_parts:
+        for interface in part.interfaces:
+            point = OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2])
+            rotx, rotz = interface.x, interface.z
+            #by default, the arrow starts at the origin and points to (0,0,arrow_length)
+            origin = OCC.gp.gp_Pnt(0,0,0)
+            endpoint = OCC.gp.gp_Pnt(0,0,arrow_length)
+            #arrow = OCC.gp.gp_Vec(origin, endpoint)
+            arrow = OCC.gp.gp_Lin(origin, OCC.gp.gp_Dir(0,0,1))
+            #some definitions
+            x_rotation = OCC.gp.gp_Dir(1,0,0)
+            y_rotation = OCC.gp.gp_Dir(0,1,0)
+            z_rotation = OCC.gp.gp_Dir(0,0,1)
+            #rotate, then translate
+            transformation = OCC.gp.gp_Trsf()
+            transformation.SetRotation(OCC.gp.gp_Ax1(origin, x_rotation), 390)
+            transformation.SetRotation(OCC.gp.gp_Ax1(origin, z_rotation), 54)
+            transformation.SetTranslation(origin, point) #might need to be switched?
+            new_origin = origin.Transformed(transformation)
+            new_endpoint = endpoint.Transformed(transformation)
+            arrow.Transform(transformation)
+            the_edge = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(origin, endpoint)
+            brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
+            brep_transform.Perform(the_edge.Edge())
+            resulting_edge = brep_transform.Shape()
+            OCC.Display.wxSamplesGui.display.DisplayColoredShape(resulting_edge,'BLACK')
+    return
+
 def add_part_mate(part_1_interface, part_2_interface):
     #mate interface 1 to interface 2 (move part 1)
     #return the ID of the shape transformation added to the part object
@@ -187,11 +217,17 @@ def exit(event=None):
     import sys; sys.exit()
 
 if __name__ == '__main__':
+    start() #import OCC.Display.wxSamplesGui
     OCC.Display.wxSamplesGui.add_menu("do stuff")
-    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', restart)
-    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', demo)
-    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', mate_parts)
-    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', supermate_parts)
-    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', show_interface_points)
-    OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', exit)
+
+    for f in [
+                restart,
+                demo,
+                mate_parts,
+                supermate_parts,
+                show_interface_points,
+                show_interface_arrows,
+                exit
+            ]:
+        OCC.Display.wxSamplesGui.add_function_to_menu('do stuff', f)
     OCC.Display.wxSamplesGui.start_display()
