@@ -5,9 +5,12 @@
         # well that was a dead end. Solidworks, AutoCAD, and even PRO/E can't seem to do annotations with STEP ISO 10303 AP214.
     * use tags/names for geometories in pymates/models/blockhole.yaml
     * unit tests for part mating
+        * turn skdb/doc/proposals/assemblies.txt into unit tests
     * more example parts: legos?
         * attempt to extract data from LeoCAD and ldraw
         * attempt to extract data from Regli's National Design Repository (lego VRML files)
+        * come up with a lego brick generator?
+        * integrate skdb/doc/proposals/legos.py with pymates/pymates.py
     * shaft in a lego brick:
         * slop (a distance)
            * the minimum distance between those two surfaces

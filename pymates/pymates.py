@@ -22,6 +22,7 @@ import wx
 import OCC.gp
 import OCC.BRepPrimAPI
 import OCC.BRepBuilderAPI
+import OCC.BRepAlgoAPI
 #import OCC.Display.wxSamplesGui
 import OCC.Utils.DataExchange.STEP
 import geom
