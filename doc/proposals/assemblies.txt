@@ -2,17 +2,19 @@ re: pymates parts and assemblies
 .. which will eventually be moved out of skdb/pymates/ and into the real
 world.
 
-A part is atomic in the system. Any two given parts can potentially be
-connected ("mated") to one another with some amount of compatibility.
+A part is atomic in the system. A part may have any number of interfaces.
+Any two given interfaces can potentially be connected ("mated") to one
+another with some amount of compatibility.
 
-Not all parts are able to mate with all other parts. Mate success, or
-compatibility, is dependent on shape, geometry, tolerances, and
-interface specifications.
+Not all interfaces are able to mate with all other interfaces. Mate
+success, or compatibility, is dependent on shape, geometry, tolerances,
+and interface specifications.
 
 Any two given parts can potentially be connected ("mated") with another
 part in a number of different ways. When two parts are mated, a mate
 object is produced (pymates.Mate). A mate object explicitly defines
-which combination of two given parts is implied.
+which combination of two given parts is implied (which of their
+interfaces are involved in the mate).
 
 Mate objects (pymates.Mate) can be mated with other mates.
 Mate objects (pymates.Mate) can be mated with other parts.

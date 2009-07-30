@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 """
-occ-pyldraw.py - an LDRAW to pythonOCC tool.
+occ_pyldraw.py - an LDRAW to pythonOCC tool.
+
+this is very, very slow. :( how can it be improved?
+    - see skdb/doc/proposals/occ_stl.py (which is also slow)
 
 Copyright (C) 2009 Bryan Bishop <kanzure@gmail.com>
 
@@ -21,55 +24,50 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import sys
-import cmdsyntax
 import numpy
+#import OCC.BRepBuilderAPI
+#import OCC.BRepPrimAPI
+#import OCC.gp
 from ldraw.geometry import Identity, Vector
 from ldraw.parts import Part, Parts, PartError, Quadrilateral, Triangle
 from ldraw.pieces import Piece
 from ldraw import __version__
-
+import copy
 #see second to last post here (Marcel Janer):
 #http://www.opencascade.org/org/forum/thread_9793/
-if __name__ == "__main__":
-
-    syntax = "<LDraw parts file> <LDraw file> <STL file> <camera position> [--sky <sky colour>]"
-    syntax_obj = cmdsyntax.Syntax(syntax)
-    matches = syntax_obj.get_args(sys.argv[1:])
+def draw_it(ldr,OCC):
+    parts_path = "/home/kanzure/local/ldraw/ldraw/even_more/LDRAW/parts.lst"
+    ldraw_path = ldr #might not be a path though (in this case, it's definitely *not* a path)
     
-    if len(matches) != 1:
-        sys.stderr.write("Usage: %s %s\n\n" % (sys.argv[0], syntax))
-        sys.stderr.write("ldr2stl.py (ldraw package version %s)\n" % __version__)
-        sys.stderr.write("Converts the LDraw file to an STL file.\n\n"
-                         "The camera position is a single x,y,z argument where each coordinate\n"
-                         "should be specified as a floating point number.\n"
-                         "The optional sky colour is a single red,green,blue argument where\n"
-                         "each component should be specified as a floating point number between\n"
-                         "0.0 and 1.0 inclusive.\n\n")
-        sys.exit(1)
-    
-    match = matches[0]
-    parts_path = match["LDraw parts file"]
-    ldraw_path = match["LDraw file"]
-    stl_path = match["STL file"]
-    camera_position = match["camera position"]
-    
-    parts = Parts(parts_path)
+    parts = Parts(parts_path, filename=False) #might not be a path though (ok, it handles this case now)
     
     try:
-        model = Part(ldraw_path)
+        model = Part(ldraw_path, filename=False)
     except PartError:
         sys.stderr.write("Failed to read LDraw file: %s\n" % ldraw_path)
         sys.exit(1)
     
     #pov_file.write('#include "colors.inc"\n\n')
-    writer = OCC_Writer(parts)
+    writer = OCC_Writer(parts,OCC)
     writer.write(model)
+    main_shape = OCC.TopoDS.TopoDS_Shape()
+    for shape in writer.all_shapes:
+        
+        main_shape = OCC.BRepAlgoAPI.BRepAlgoAPI_Fuse(copy.copy(main_shape), shape)
+        main_shape = copy.copy(main_shape).Shape()
+        #self.OCC.Display.wxSamplesGui.display.DisplayShape(face.Shape())
+    while main_shape.IsDone()==0:
+        print "blah2"
+    OCC.Display.wxSamplesGui.display.DisplayShape(main_shape.Shape())
 
 class OCC_Writer:
-    def __init__(self, parts):
+    def __init__(self, parts, OCC):
         self.parts = parts
+        self.OCC = OCC
+        self.all_shapes = []
         #create an empty mesh
-        self.occ_model = OCC.Utils.DataExchange.StlMesh.StlMesh_Mesh()
+        #FIXME: StlMesh can't be converted (easily)
+        #self.occ_model = OCC.Utils.DataExchange.StlMesh.StlMesh_Mesh()
 
 #http://www.opencascade.org/org/forum/thread_6904/
 #You can try creating edges for your triangles from your triangle
@@ -91,38 +89,71 @@ class OCC_Writer:
 #see also: pythonOCC/samples/Level1/TopologyBuilding/topology_building.py
 #in particular, edge(), wire(), and face()
 
-#OCC.GeomAPI.GeomAPI_PointsToBSplineSurface(
-##optional -> OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(some point)
-#edge1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(P1,P2)
-#wire1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeWire()
-#wire1.Add(ExistingWire1)
-#wire1.Add(edge1)
-#wire1.Wire() <- shape object
-#wire1.Edge() <- shape object
-#wire1.Vertex() <- shape object
-#my_face = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeFace(wire1)
-##optional?
-#BRepLib.BuildCurves3d(my_face.Face())
-
-    def draw(self):
-        #aMesh = MeshVS_Mesh()
-        my_mesh = OCC.MeshVS.MeshVS_Mesh()
-        #aDS = XSDRAWSTLVRML_DataSource( aStlMesh )
-
-        #aMesh.SetDataSource(aDS)
-        
-        #aMesh.AddBuilder( MeshVS_MeshPrsBuilder(aMesh), True)
-        #aMesh.GetDrawer().SetBoolean(MeshVS_DA_DisplayNodes, False)
-        #aMesh.GetDrawer().SetBoolean(MeshVS_DA_ShowEdges, False)
-        #aMesh.GetDrawer().SetBoolean(MeshVS_DA_FrontMaterial, DEFAULT_MATERIAL)
-        #aMesh.SetColor(Quantity_NOC_AZURE)
-        #aMesh.SetDisplayMode(MeshVS_DMF_Shading) #mode as default
-        #aMesh.SetHilightMode(MeshVS_DMF_WireFrame) #wireframe as default hilight mode
-        #myDoc.m_AISContext.Display(aMesh)
-
-
-
     def write(self, model, current_matrix=Identity(), current_position=Vector(0,0,0), level=0):
+        '''write the model to the OpenCASCADE API'''
+        for obj in model.objects:
+            if isinstance(obj, Piece):
+                part = self.parts.part(code=obj.part)
+                if part:
+                    matrix = obj.matrix
+                    blah = current_position + current_matrix * obj.position
+                    self.write(part, current_matrix * matrix, blah, level+1)
+                else: 
+                    sys.stderr.write("Part not found: %s\n" % obj.part)
+            elif isinstance(obj, Triangle):
+                p1 = current_matrix * obj.p1 + current_position
+                p2 = current_matrix * obj.p2 + current_position
+                p3 = current_matrix * obj.p3 + current_position
+                if abs((p3 - p1).cross(p2-p1)) !=0:
+                    self._write_triangle(p1, p2, p3)
+            elif isinstance(obj, Quadrilateral):
+                p1 = current_matrix * obj.p1 + current_position
+                p2 = current_matrix * obj.p2 + current_position
+                p3 = current_matrix * obj.p3 + current_position
+                p4 = current_matrix * obj.p4 + current_position
+                if abs((p3-p1).cross(p2-p1)) != 0:
+                    self._write_triangle(p1,p2,p3)
+                if abs((p3-p1).cross(p4-p1)) != 0:
+                    self._write_triangle(p3, p4, p1)
+        #return self.occ_model
+    def _write_triangle(self, v1, v2, v3):
+        p1 = self.OCC.gp.gp_Pnt(v1.x,v1.y,v1.z)
+        p2 = self.OCC.gp.gp_Pnt(v2.x,v2.y,v2.z)
+        p3 = self.OCC.gp.gp_Pnt(v3.x,v3.y,v3.z)
+        vec1 = numpy.matrix([v1.x-v2.x,v1.y-v2.y,v1.z-v2.z])
+        vec2 = numpy.matrix([v2.x-v3.x,v2.y-v3.y,v2.z-v3.z])
+        normal_vector = numpy.cross(vec1, vec2)
+
+        #OCC.GeomAPI.GeomAPI_PointsToBSplineSurface(
+        ##optional -> OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(some point)
+        #edge1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(P1,P2)
+        edge1 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(p1,p2)
+        edge2 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(p2,p3)
+        edge3 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(p1,p3)
+        #wire1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeWire()
+        wire1 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeWire()
+        #wire1.Add(ExistingWire1)
+        #wire1.Add(edge1)
+        wire1.Add(edge1.Edge())
+        wire1.Add(edge2.Edge())
+        wire1.Add(edge3.Edge())
+        #wire1.Wire() <- shape object
+        #wire1.Edge() <- shape object
+        #wire1.Vertex() <- shape object
+        #my_face = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeFace(wire1.Wire())
+        face1 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeFace(wire1.Wire())
+        geom_surface = self.OCC.BRep.BRep_Tool().Surface(face1.Face()) #returns Handle_Geom_Surface
+        shell1 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShell(geom_surface)
+        #TODO: make shells from the faces
+        #shell1 = self.OCC.BRepPrimAPI.BRepPrimAPI_MakePrism(wire1.Shape(), self.OCC.gp.gp_Vec(normal_vector.item(0),normal_vector.item(1),normal_vector.item(2)))
+        #TODO: create solids from the shells (thanks Rob Bachrach)
+        #self.OCC.Display.wxSamplesGui.display.DisplayShape(face1.Shape())
+        self.all_shapes.append(face1.Face())
+
+        return face1
+
+
+    def write_old(self, model, current_matrix=Identity(), current_position=Vector(0,0,0), level=0):
         for obj in model.objects:
             if isinstance(obj, Piece):
                 part = self.parts.part(code=obj.part)
@@ -148,7 +179,7 @@ class OCC_Writer:
                     self._write_triangle(p3, p4, p1)
         return self.occ_model
 
-    def _write_triangle(self, v1, v2, v3):
+    def _write_triangle_old(self, v1, v2, v3):
         self.minimum = Vector(min(self.minimum.x, v1.x, v2.x, v3.x), min(self.minimum.y, -v1.y, -v2.y, -v3.y), min(self.minimum.z, v1.z, v2.z, v3.z))
         self.maximum = Vector(max(self.maximum.x, v1.x, v2.x, v3.x), max(self.maximum.y, -v1.y, -v2.y, -v3.y), max(self.maximum.z, v1.z, v2.z, v3.z))
         #normal vector = cross product of any two of the edges
