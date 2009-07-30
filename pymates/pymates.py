@@ -1,20 +1,34 @@
 #!/usr/bin/python
+"""
+Bryan Bishop <kanzure@gmail.com>
+2009
+
+pymates: part mating for skdb.
+
+things you can do to run this:
+    * python pymates.py
+    * python rapid-test.py
+    * ./shell.sh
+        see the notes below (you need to run pymates.start() ASAP once ipython is done initiating)
+        it's like running ipython -wthread -c "import pymates" -i
+"""
 #pymates
 #ipython -wthread -c "import pymates" -i
 #pymates.start()
 #pymates.demo()
 #pymates.mate_parts()
+##the previous three lines can be replaced with: pymates.supermate_parts()
+#pymates.show_interface_arrows()
 #optionally, pymates.move(pymates.total_parts[0],x,y,z,i,i,i,j,j,j)
-
-#FIXME: pymates should not depend on OCC.Display
 
 #see ~/local/pythonOCC/samples/Level2/DataExchange/import_step_multi.py
 #see ~/local/pythonOCC/samples/Level1/TopologyTransformation/mirror.py
 
+#os.environ['CSF_GraphicShr'] = r"/usr/lib/libTKOpenGl.so"
+
 import yaml
 import re
 import os
-#os.environ['CSF_GraphicShr'] = r"/usr/lib/libTKOpenGl.so"
 import random
 import copy
 import numpy
@@ -23,7 +37,6 @@ import OCC.gp
 import OCC.BRepPrimAPI
 import OCC.BRepBuilderAPI
 import OCC.BRepAlgoAPI
-#import OCC.Display.wxSamplesGui
 import OCC.Utils.DataExchange.STEP
 import OCC.GC
 import OCC.Geom
@@ -34,28 +47,25 @@ from interface import Interface
 
 total_parts = []
 
-# the following aren't our responsibility, actually (pythonOCC?)
-#class Circle(yaml.YAMLObject)
-#class Cylinder(yaml.YAMLObject)
-#class InterfaceGeom(yaml.YAMLObject):
-
-#for cls in [Part, Interface]:
-#    yaml.add_implicit_resolver(cls.yaml_tag, cls.yaml_pattern)
-
 def compatibility(part1, part2):
     '''find all possible combinations of part1 and part2 (for each interface/port) and check each compatibility'''
     return []
+
 def compatibility(part1port, part2port):
     '''note that an interface/port object refers to what it is on. so you don't have to pass the parts.'''
     return []
 
 def load(foo):
+    '''load a yaml string'''
     return yaml.load(foo)
 
 def dump(foo):
+    '''dump an object as yaml'''
     return yaml.dump(foo, default_flow_style=False)
 
 def demo(event=None):
+    '''standard pymates demo: loads a YAML file, parses it into a pymates.Part(), then gets all the pymates.Interface() objects, etc.
+    - also loads up CAD data'''
     print "loading the file .. it looks like this:"
     blockhole = load(open("models/blockhole.yaml"))["blockhole"]
     peg = load(open("models/peg.yaml"))["peg"]
@@ -73,7 +83,7 @@ def demo(event=None):
     total_parts.append(peg)
 
 def mate_parts(event=None):
-    #mate all of the parts in the workspace
+    '''mate the first and second part in total_parts. rotates first about x, then about z.'''
     #see transform_point()
     if len(total_parts) < 1: return #meh
     part1 = total_parts[0]
@@ -115,18 +125,21 @@ def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
     return
 
 def show_new_interface_point(x,y,z,color='RED'):
+    '''displays an interface point (sphere) at a certain location, with a certain color'''
     mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(x,y,z), 2.0)
     OCC.Display.wxSamplesGui.display.DisplayColoredShape(mysphere.Shape(), color=color)
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
 def show_cone_at(x,y,z,color='YELLOW'):
+    '''displays a cone at a certain position'''
     mycone = OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(x,y,z)
     OCC.Display.wxSamplesGui.display.DisplayColoredShape(mycone.Shape(), color=color)
     #OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
 def show_interface_points(event=None):
+    '''draws spheres for the first interface point on the first interface of all parts'''
     for each in total_parts:
        interface = each.interfaces[0]
        mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2]), 2.0)
@@ -135,12 +148,13 @@ def show_interface_points(event=None):
     return
 
 def make_edge(shape):
-    print "make_edge(shape), shape = ", shape
+    '''make an edge from an OCC.Geom.Handle_Geom_Curve'''
     spline = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(shape)
     spline.Build()
     return spline.Shape()
 
 def make_vertex(pnt):
+    '''show a vertex in 3D space based off of either an OCC.gp.gp_Pnt2d() or an OCC.gp.gp_Pnt()'''
     if isinstance(pnt, OCC.gp.gp_Pnt2d):
         vertex = OCC.BrepBuilderAPI.BRepBuilderAPI_MakeVertex( OCC.gp.gp_Pnt(pnt.X(), pnt.Y(), 0)) 
     else: 
@@ -148,9 +162,8 @@ def make_vertex(pnt):
     vertex.Build()
     return vertex.Vertex()
 
-
 def show_interface_arrows(event=None,arrow_length=5,rotx2=-180,rotz2=10):
-    '''displays vectors pointing in the mating direction, for every part and every part's interface'''
+    '''displays vectors pointing in the mating direction, for every part and every part's interfaces'''
     color_counter = 0
     colors = [
                 'RED',
@@ -161,7 +174,10 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=-180,rotz2=10):
              ]
     for part in total_parts:
         for interface in part.interfaces:
-            color = colors[color_counter]
+            try:
+                color = colors[color_counter]
+            except KeyError:
+                color = "RED"
             point = OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2])
             point2 = OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2]+arrow_length)
             old_pt2 = copy.copy(point2)
@@ -169,8 +185,8 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=-180,rotz2=10):
             x_dir = OCC.gp.gp_Dir(1,0,0)
             y_dir = OCC.gp.gp_Dir(0,1,0)
             z_dir = OCC.gp.gp_Dir(0,0,1)
-            point2.Rotate(OCC.gp.gp_Ax1(point, x_dir), rotx2) #rotx) #0
-            point2.Rotate(OCC.gp.gp_Ax1(point, z_dir), rotz2) #rotz) #-90
+            point2.Rotate(OCC.gp.gp_Ax1(point, x_dir), rotx) #rotx) #0
+            point2.Rotate(OCC.gp.gp_Ax1(point, z_dir), rotz) #rotz) #-90
             print "point = (%d, %d, %d)" % (point.XYZ().X(), point.XYZ().Y(), point.XYZ().Z())
             print "point2 = (%d, %d, %d)" % (point2.XYZ().X(), point2.XYZ().Y(), point2.XYZ().Z())
             #print "hm = (%d, %d, %d)" % (hm.XYZ().X(), hm.XYZ().Y(), hm.XYZ().Z())
@@ -186,31 +202,24 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=-180,rotz2=10):
             
     return
 
-def add_part_mate(part_1_interface, part_2_interface):
-    #mate interface 1 to interface 2 (move part 1)
-    #return the ID of the shape transformation added to the part object
-    return
-
-def show_part_mate(part_mate_object):
-    #look at the part_mate_object and DisplayShape() the shape with the correct coordinate system
-    return
-
 def start():
+    '''call this immediately once opening up pymates in a shell session (like ipython)'''
     import OCC.Display.wxSamplesGui
     OCC.Display.wxSamplesGui.display.Create()
 
 def restart(event=None): #EraseAll
-    '''EraseAll - also removes all parts (be careful)'''
+    '''clears the screen/workspace of all objects. also removes all parts (be careful).'''
     total_parts = []
     OCC.Display.wxSamplesGui.display.EraseAll()
     return
 
 def nontransform_point(x,y,z,color='YELLOW'):
+    '''plot a sphere in 3D, figure out where objects are going.'''
     return show_new_interface_point(x,y,z,color=color)
 
 def transform_point(x,y,z,color='YELLOW'):
-    #draw a (small) sphere (maybe eventually a cone to show direction if I figure out the correct parameters to OCC.BRepPrimAPI.BRepPrimAPI_MakeCone())
-    #then transform it in the same way that mate_parts() transforms everything
+    '''draw a (small) sphere (maybe eventually a cone to show direction if I figure out the correct parameters to OCC.BRepPrimAPI.BRepPrimAPI_MakeCone())
+    then transform it in the same way that mate_parts() transforms everything'''
     mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(x,y,z), 1.0)
     transformation = OCC.gp.gp_Trsf()
     interface1 = total_parts[0].interfaces[0]
@@ -233,12 +242,14 @@ def transform_point(x,y,z,color='YELLOW'):
     return brep_transform
 
 def supermate_parts(event=None):
+    '''a handy shortcut for calling restart(), demo(), and mate_parts() in that order'''
     restart()
     demo()
     mate_parts()
     return
 
 def exit(event=None):
+    '''exit this program'''
     import sys; sys.exit()
 
 if __name__ == '__main__':
