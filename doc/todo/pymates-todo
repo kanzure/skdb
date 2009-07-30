@@ -1,8 +1,5 @@
 
 2009-07-27:
-    * read STEP ISO 10303
-        * figure out how to add a feature to the file (instead of using pymates/models/blockhole.yaml)
-        # well that was a dead end. Solidworks, AutoCAD, and even PRO/E can't seem to do annotations with STEP ISO 10303 AP214.
     * use tags/names for geometories in pymates/models/blockhole.yaml
     * unit tests for part mating
         * turn skdb/doc/proposals/assemblies.txt into unit tests
@@ -29,3 +26,23 @@
             * amount of space remaining
             * do the subtraction again and get the space remaining - to get the slop
          * distances between faces v. solid geometry approach
+    * read STEP ISO 10303
+        * figure out how to add a feature to the file (instead of using pymates/models/blockhole.yaml)
+        # well that was a dead end. Solidworks, AutoCAD, and even PRO/E can't seem to do annotations with STEP ISO 10303 AP214.
+
+2009-07-30:
+    * unit tests for part mating
+        * turn skdb/doc/proposals/assemblies.txt into unit tests
+        * legos.py unit tests
+    * merges
+        * merge skdb/doc/proposals/assemblies.txt + skdb/doc/proposals/legos.py
+        * merge skdb/doc/proposals/legos.py + skdb/pymates/pymates.py
+    * play with legos:
+        * see the lego IGES/STEP files
+        * are the VRML parts of any use?
+            * if so, see ldr2vrml
+                * generate ldr files for all parts from LDraw
+                * run ldr2vrml on all of these ldr files
+        * pyldraw: interactive visualization of legos in python interpreter session + OpenCASCADE
+            * alternatively: OpenGL rendering of the STL files (ldr2stl.py)
+        * pov2rib: figure out antlr, play with dot g files

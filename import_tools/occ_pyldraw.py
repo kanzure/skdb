@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 """
-occ-pyldraw.py - an LDRAW to pythonOCC tool.
+occ_pyldraw.py - an LDRAW to pythonOCC tool.
+
+this is very, very slow. :( how can it be improved?
+    - see skdb/doc/proposals/occ_stl.py (which is also slow)
 
 Copyright (C) 2009 Bryan Bishop <kanzure@gmail.com>
 
@@ -22,34 +25,46 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 import numpy
-import OCC.BRepBuilderAPI
-import OCC.gp
+#import OCC.BRepBuilderAPI
+#import OCC.BRepPrimAPI
+#import OCC.gp
 from ldraw.geometry import Identity, Vector
 from ldraw.parts import Part, Parts, PartError, Quadrilateral, Triangle
 from ldraw.pieces import Piece
 from ldraw import __version__
-
+import copy
 #see second to last post here (Marcel Janer):
 #http://www.opencascade.org/org/forum/thread_9793/
-def draw_it(ldr):
+def draw_it(ldr,OCC):
     parts_path = "/home/kanzure/local/ldraw/ldraw/even_more/LDRAW/parts.lst"
     ldraw_path = ldr #might not be a path though (in this case, it's definitely *not* a path)
     
     parts = Parts(parts_path, filename=False) #might not be a path though (ok, it handles this case now)
     
     try:
-        model = Part(ldraw_path)
+        model = Part(ldraw_path, filename=False)
     except PartError:
         sys.stderr.write("Failed to read LDraw file: %s\n" % ldraw_path)
         sys.exit(1)
     
     #pov_file.write('#include "colors.inc"\n\n')
-    writer = OCC_Writer(parts)
+    writer = OCC_Writer(parts,OCC)
     writer.write(model)
+    main_shape = OCC.TopoDS.TopoDS_Shape()
+    for shape in writer.all_shapes:
+        
+        main_shape = OCC.BRepAlgoAPI.BRepAlgoAPI_Fuse(copy.copy(main_shape), shape)
+        main_shape = copy.copy(main_shape).Shape()
+        #self.OCC.Display.wxSamplesGui.display.DisplayShape(face.Shape())
+    while main_shape.IsDone()==0:
+        print "blah2"
+    OCC.Display.wxSamplesGui.display.DisplayShape(main_shape.Shape())
 
 class OCC_Writer:
-    def __init__(self, parts):
+    def __init__(self, parts, OCC):
         self.parts = parts
+        self.OCC = OCC
+        self.all_shapes = []
         #create an empty mesh
         #FIXME: StlMesh can't be converted (easily)
         #self.occ_model = OCC.Utils.DataExchange.StlMesh.StlMesh_Mesh()
@@ -74,14 +89,15 @@ class OCC_Writer:
 #see also: pythonOCC/samples/Level1/TopologyBuilding/topology_building.py
 #in particular, edge(), wire(), and face()
 
-    def write(self, model, current_matrix=Identity(), current_postion=Vector(0,0,0), level=0):
+    def write(self, model, current_matrix=Identity(), current_position=Vector(0,0,0), level=0):
         '''write the model to the OpenCASCADE API'''
         for obj in model.objects:
             if isinstance(obj, Piece):
                 part = self.parts.part(code=obj.part)
                 if part:
                     matrix = obj.matrix
-                    self.write(part, current_matrix * matrix, current_position + current_matrix * obj.position, level+1)
+                    blah = current_position + current_matrix * obj.position
+                    self.write(part, current_matrix * matrix, blah, level+1)
                 else: 
                     sys.stderr.write("Part not found: %s\n" % obj.part)
             elif isinstance(obj, Triangle):
@@ -99,11 +115,11 @@ class OCC_Writer:
                     self._write_triangle(p1,p2,p3)
                 if abs((p3-p1).cross(p4-p1)) != 0:
                     self._write_triangle(p3, p4, p1)
-        return self.occ_model
+        #return self.occ_model
     def _write_triangle(self, v1, v2, v3):
-        p1 = OCC.gp.gp_Pnt(v1.x,v1.y,v1.z)
-        p2 = OCC.gp.gp_Pnt(v2.x,v2.y,v2.z)
-        p3 = OCC.gp.gp_Pnt(v3.x,v3.y,v3.z)
+        p1 = self.OCC.gp.gp_Pnt(v1.x,v1.y,v1.z)
+        p2 = self.OCC.gp.gp_Pnt(v2.x,v2.y,v2.z)
+        p3 = self.OCC.gp.gp_Pnt(v3.x,v3.y,v3.z)
         vec1 = numpy.matrix([v1.x-v2.x,v1.y-v2.y,v1.z-v2.z])
         vec2 = numpy.matrix([v2.x-v3.x,v2.y-v3.y,v2.z-v3.z])
         normal_vector = numpy.cross(vec1, vec2)
@@ -111,11 +127,11 @@ class OCC_Writer:
         #OCC.GeomAPI.GeomAPI_PointsToBSplineSurface(
         ##optional -> OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(some point)
         #edge1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(P1,P2)
-        edge1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(p1,p2)
-        edge2 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(p2,p3)
-        edge3 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(p1,p3)
+        edge1 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(p1,p2)
+        edge2 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(p2,p3)
+        edge3 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(p1,p3)
         #wire1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeWire()
-        wire1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeWire()
+        wire1 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeWire()
         #wire1.Add(ExistingWire1)
         #wire1.Add(edge1)
         wire1.Add(edge1.Edge())
@@ -125,12 +141,16 @@ class OCC_Writer:
         #wire1.Edge() <- shape object
         #wire1.Vertex() <- shape object
         #my_face = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeFace(wire1.Wire())
-        face1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeFace(wire1.Wire())
+        face1 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeFace(wire1.Wire())
+        geom_surface = self.OCC.BRep.BRep_Tool().Surface(face1.Face()) #returns Handle_Geom_Surface
+        shell1 = self.OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShell(geom_surface)
         #TODO: make shells from the faces
-        shell1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakePrism(wire1.Shape(), OCC.gp.gp_Vec(normal_vector.item(0),normal_vector.item(1),normal_vector.item(2)))
+        #shell1 = self.OCC.BRepPrimAPI.BRepPrimAPI_MakePrism(wire1.Shape(), self.OCC.gp.gp_Vec(normal_vector.item(0),normal_vector.item(1),normal_vector.item(2)))
         #TODO: create solids from the shells (thanks Rob Bachrach)
+        #self.OCC.Display.wxSamplesGui.display.DisplayShape(face1.Shape())
+        self.all_shapes.append(face1.Face())
 
-        return face1.Shape()
+        return face1
 
 
     def write_old(self, model, current_matrix=Identity(), current_position=Vector(0,0,0), level=0):
