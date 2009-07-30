@@ -25,6 +25,8 @@ import OCC.BRepBuilderAPI
 import OCC.BRepAlgoAPI
 #import OCC.Display.wxSamplesGui
 import OCC.Utils.DataExchange.STEP
+import OCC.GC
+import OCC.Geom
 import geom
 import assembly
 from part import Part
@@ -132,34 +134,56 @@ def show_interface_points(event=None):
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
 
-def show_interface_arrows(event=None,arrow_length=3):
+def make_edge(shape):
+    print "make_edge(shape), shape = ", shape
+    spline = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(shape)
+    spline.Build()
+    return spline.Shape()
+
+def make_vertex(pnt):
+    if isinstance(pnt, OCC.gp.gp_Pnt2d):
+        vertex = OCC.BrepBuilderAPI.BRepBuilderAPI_MakeVertex( OCC.gp.gp_Pnt(pnt.X(), pnt.Y(), 0)) 
+    else: 
+        vertex = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex( pnt )
+    vertex.Build()
+    return vertex.Vertex()
+
+
+def show_interface_arrows(event=None,arrow_length=5,rotx2=-180,rotz2=10):
     '''displays vectors pointing in the mating direction, for every part and every part's interface'''
+    color_counter = 0
+    colors = [
+                'RED',
+                'GREEN',
+                'BLUE',
+                'ORANGE',
+                'PURPLE',
+             ]
     for part in total_parts:
         for interface in part.interfaces:
+            color = colors[color_counter]
             point = OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2])
+            point2 = OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2]+arrow_length)
+            old_pt2 = copy.copy(point2)
             rotx, rotz = interface.x, interface.z
-            #by default, the arrow starts at the origin and points to (0,0,arrow_length)
-            origin = OCC.gp.gp_Pnt(0,0,0)
-            endpoint = OCC.gp.gp_Pnt(0,0,arrow_length)
-            #arrow = OCC.gp.gp_Vec(origin, endpoint)
-            arrow = OCC.gp.gp_Lin(origin, OCC.gp.gp_Dir(0,0,1))
-            #some definitions
-            x_rotation = OCC.gp.gp_Dir(1,0,0)
-            y_rotation = OCC.gp.gp_Dir(0,1,0)
-            z_rotation = OCC.gp.gp_Dir(0,0,1)
-            #rotate, then translate
-            transformation = OCC.gp.gp_Trsf()
-            transformation.SetRotation(OCC.gp.gp_Ax1(origin, x_rotation), 390)
-            transformation.SetRotation(OCC.gp.gp_Ax1(origin, z_rotation), 54)
-            transformation.SetTranslation(origin, point) #might need to be switched?
-            new_origin = origin.Transformed(transformation)
-            new_endpoint = endpoint.Transformed(transformation)
-            arrow.Transform(transformation)
-            the_edge = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(origin, endpoint)
-            brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
-            brep_transform.Perform(the_edge.Edge())
-            resulting_edge = brep_transform.Shape()
-            OCC.Display.wxSamplesGui.display.DisplayColoredShape(resulting_edge,'BLACK')
+            x_dir = OCC.gp.gp_Dir(1,0,0)
+            y_dir = OCC.gp.gp_Dir(0,1,0)
+            z_dir = OCC.gp.gp_Dir(0,0,1)
+            point2.Rotate(OCC.gp.gp_Ax1(point, x_dir), rotx2) #rotx) #0
+            point2.Rotate(OCC.gp.gp_Ax1(point, z_dir), rotz2) #rotz) #-90
+            print "point = (%d, %d, %d)" % (point.XYZ().X(), point.XYZ().Y(), point.XYZ().Z())
+            print "point2 = (%d, %d, %d)" % (point2.XYZ().X(), point2.XYZ().Y(), point2.XYZ().Z())
+            #print "hm = (%d, %d, %d)" % (hm.XYZ().X(), hm.XYZ().Y(), hm.XYZ().Z())
+            #assert not old_pt2 == point2
+            #assert not hm == point2
+            #assert not hm == old_pt2
+            curve = OCC.GC.GC_MakeSegment(point, point2).Value()
+            #my_curve = blah.BasisCurve()
+            vert = make_vertex(point2)
+            OCC.Display.wxSamplesGui.display.DisplayColoredShape(vert, color)
+            OCC.Display.wxSamplesGui.display.DisplayColoredShape(make_edge(OCC.Geom.Handle_Geom_Curve(curve)), color)
+            color_counter = color_counter+1
+            
     return
 
 def add_part_mate(part_1_interface, part_2_interface):
@@ -168,7 +192,7 @@ def add_part_mate(part_1_interface, part_2_interface):
     return
 
 def show_part_mate(part_mate_object):
-    #look at the part_mate_object and DisplayShape() the shape with the right coordinate system
+    #look at the part_mate_object and DisplayShape() the shape with the correct coordinate system
     return
 
 def start():
@@ -176,7 +200,8 @@ def start():
     OCC.Display.wxSamplesGui.display.Create()
 
 def restart(event=None): #EraseAll
-    '''EraseAll'''
+    '''EraseAll - also removes all parts (be careful)'''
+    total_parts = []
     OCC.Display.wxSamplesGui.display.EraseAll()
     return
 
