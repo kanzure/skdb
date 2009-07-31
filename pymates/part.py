@@ -22,7 +22,7 @@ class Part(yaml.YAMLObject):
             self.shapes = my_step_importer.GetShapes()
             self.compound = my_step_importer.GetCompound()
         #i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
-        x,z,point = self.interfaces[0].x,self.interfaces[0].z,self.interfaces[0].point
+        x,y,point = self.interfaces[0].x,self.interfaces[0].y,self.interfaces[0].point
         return self.shapes
     def add_shape(self, result):
         '''add a shape to self.ais_shapes. this isn't as exciting as you think it is.'''

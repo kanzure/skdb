@@ -30,7 +30,6 @@ import yaml
 import re
 import os
 import random
-import math
 import copy
 import numpy
 import wx
@@ -103,7 +102,7 @@ def mate_parts(event=None):
     transformation = OCC.gp.gp_Trsf()
     transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, x_rotation),interface2.x)
     #transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, y_rotation),180)
-    transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, z_rotation),interface2.z)
+    transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, y_rotation),interface2.y)
     transformation.SetTranslation(occ_point2, occ_point1)
 
     brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
@@ -163,7 +162,7 @@ def make_vertex(pnt):
     vertex.Build()
     return vertex.Vertex()
 
-def show_interface_arrows(event=None,arrow_length=5,rotx2=-180,rotz2=10):
+def show_interface_arrows(event=None,arrow_length=5,rotx2=None,roty2=None):
     '''displays vectors pointing in the mating direction, for every part and every part's interfaces'''
     color_counter = 0
     colors = [
@@ -171,49 +170,38 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=-180,rotz2=10):
                 'GREEN',
                 'BLUE',
                 'ORANGE',
-                'PURPLE',
+                #'PURPLE',
              ]
     for part in total_parts:
         for interface in part.interfaces:
             try:
                 color = colors[color_counter]
-            except KeyError:
+            except IndexError:
                 color = "RED"
             point = OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2])
             point2 = OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2]+arrow_length)
             old_pt2 = copy.copy(point2)
-            rotx, rotz = interface.x, interface.z
+            interface.convert()
+            rotx, roty = interface.x, interface.y
+            if not rotx2 == None and not roty2 == None:
+                rotx, roty = rotx2, roty2
+            print "rotx = %s\nroty = %s" % (rotx, roty)
             x_dir = OCC.gp.gp_Dir(1,0,0)
             y_dir = OCC.gp.gp_Dir(0,1,0)
             z_dir = OCC.gp.gp_Dir(0,0,1)
-            transform = OCC.gp.gp_Trsf()
-            transform.SetRotation(OCC.gp.gp_Ax1(point, x_dir), rotx2)
-            point2 = point2.Transformed(transform)
-            transform2 = OCC.gp.gp_Trsf()
-            transform2.SetRotation(OCC.gp.gp_Ax1(point, z_dir), rotz2)
-            point2 = point2.Transformed(transform2)
-            #point2.Rotate(OCC.gp.gp_Ax1(point, x_dir), 0) #rotx) #0
-            #point2.Rotate(OCC.gp.gp_Ax1(point, z_dir), math.pi/2 + .05) #rotz) #-90
+            point2.Rotate(OCC.gp.gp_Ax1(point, x_dir), rotx) #rotx) #0
+            point2.Rotate(OCC.gp.gp_Ax1(point, y_dir), roty) #rotz) #-90
             print "point = (%d, %d, %d)" % (point.XYZ().X(), point.XYZ().Y(), point.XYZ().Z())
             print "point2 = (%d, %d, %d)" % (point2.XYZ().X(), point2.XYZ().Y(), point2.XYZ().Z())
-            #print "point3 = (%d, %d, %d)" % (point3.XYZ().X(), point3.XYZ().Y(), point3.XYZ().Z())
             #print "hm = (%d, %d, %d)" % (hm.XYZ().X(), hm.XYZ().Y(), hm.XYZ().Z())
             #assert not old_pt2 == point2
             #assert not hm == point2
             #assert not hm == old_pt2
             curve = OCC.GC.GC_MakeSegment(point, point2).Value()
-            my_curve = OCC.Geom.Handle_Geom_Curve(curve).GetObject()
             #my_curve = blah.BasisCurve()
             vert = make_vertex(point2)
-            my_edge = make_edge(OCC.Geom.Handle_Geom_Curve(curve))
-            transform.SetRotation(OCC.gp.gp_Ax1(point, x_dir), rotx2)
-            brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transform)
-            brep_transform.Perform(my_edge)
-            transform.SetRotation(OCC.gp.gp_Ax1(point, z_dir), rotz2)
-            brep_transform.Perform(my_edge)
-
             OCC.Display.wxSamplesGui.display.DisplayColoredShape(vert, color)
-            OCC.Display.wxSamplesGui.display.DisplayColoredShape(my_edge, color)
+            OCC.Display.wxSamplesGui.display.DisplayColoredShape(make_edge(OCC.Geom.Handle_Geom_Curve(curve)), color)
             color_counter = color_counter+1
             
     return

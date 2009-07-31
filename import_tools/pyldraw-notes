@@ -1,0 +1,59 @@
+#!/usr/bin/bash
+#http://www.boddie.org.uk/david/Projects/Python/ldraw/
+#http://www.boddie.org.uk/david/Projects/Python/ldraw/Software/ldraw-0.10.tar.bz2
+#http://python-ldraw.alioth.debian.org/
+
+#get povray (for rendering)
+sudo apt-get install povray povray-doc povray-examples povray-includes
+
+#get the python cmdsyntax module
+easy_install cmdsyntax
+
+mkdir -p ~/local/ldraw/pyldraw/
+cd ~/local/ldraw/pyldraw/
+hg clone http://hg.debian.org/hg/python-ldraw/main
+cd main
+sudo python setup.py install
+
+#put it somewhere more useful
+ln -s tools/ldr2pov.py ldr2pov.py
+
+#get the "unix files"
+wget http://www.ldraw.org/Downloads-req-getit-lid-32.html
+mkdir unix
+mv unix-complete.tgz unix/
+cd unix/
+tar -zxf unix-complete.tgz
+
+#you shouldn't have to do this part.
+#it regenerates "parts.lst"
+cd LDRAW/
+wine mklist.exe
+#press N
+#might not work. meh.
+#now go back up to unix/
+cd ../
+
+#go back up
+cd ../
+
+#ipython
+#from ldraw.parts import Parts
+#parts = Parts("unix/LDRAW/parts.lst")
+#cowboy_hat = parts.Hats["Hat Cowboy"]
+#head = parts.Heads["Head with Solid Stud"]
+#figure = Person()
+#print figure.head(Yellow, 35)
+#print figure.hat(Black, "3901") # Hair Male
+
+#generate ldraw (dot ldr) file
+python examples/figures.py > temp.ldr
+
+#generate povray (dot pov) file
+./ldr2pov.py unix/LDRAW/parts.lst temp.ldr temp.pov 160.0,80.0,-240.0
+
+#convert from dot pov to dot png
+povray +Itemp.pov +FN16 +Otemp.png +Q6
+
+#view temp.png in your favorite image viewer
+#have fun :-)
