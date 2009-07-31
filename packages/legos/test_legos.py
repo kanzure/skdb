@@ -3,7 +3,7 @@ from legos import Lego
 from skdb.pymates import pymates #pymates.options() needed
 import unittest
 
-class TestLego(unittest.TestCase):
+class TestLegos(unittest.TestCase):
     def test_equations(self):
         pass
 
@@ -30,7 +30,7 @@ class TestLego(unittest.TestCase):
         results = pymates.options(brick1.interfaces[0], bricklist)
         #print results
      
-        self.assertTrue(has_no_peg_peg_hole_hole(results))
+        self.assertTrue(pymates.has_no_peg_peg_hole_hole(results))
 
         #have to convert a set to a list to get to the elements
         list(results)[0].apply()
@@ -40,7 +40,7 @@ class TestLego(unittest.TestCase):
         results2 = pymates.options(brick1.interfaces[1], bricklist)
         #print results2
 
-        self.assertTrue(has_no_peg_peg_hole_hole(results2))
+        self.assertTrue(pymates.has_no_peg_peg_hole_hole(results2))
         #list(results2)[0].apply()
 
         pass

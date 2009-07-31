@@ -9,13 +9,13 @@ urls:
 
 dimensions:
     spacing of stud centers: 8mm
+    stud pitch: 7.985mm #spacing of stud centers
     block height: 9.6mm #or 9.582mm
     stud diameter: 5mm #or 4.5mm (or 4.84mm according to stud_height=1.82mm)
     stud height: 1.7mm #or 1.86mm (or 1.82mm and stud_diameter=4.84mm)
     brick wall thickness: 1.5mm #underside (encloses the hollow cavity)
     outer diameter of cylinders: 6.31mm #found on underside of bricks
     cylinder wall thickness: 0.657mm
-    stud pitch: 7.985mm #what?
     plate height: 3.194mm
         #plate_height = 3.2mm according to http://www.ldraw.org/Article218.html
     plate wall depth: 2.25mm

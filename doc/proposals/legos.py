@@ -67,7 +67,7 @@ class Peg(Interface):
     def __repr__(self):
         return "Peg(part=%s,id=%s)" % (self.part.name, self.identifier)
 
-class Lego:
+class Lego(pymates.Part):
     def __init__(self, name, num_pegs=0, num_holes=0):
         self.name = name
         self.interfaces = []

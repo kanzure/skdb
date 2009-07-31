@@ -49,8 +49,9 @@
         * searching for parts/mates
     * merges:
         * merge skdb/doc/proposals/assemblies.txt + skdb/doc/proposals/legos.py
-        * merge skdb/doc/proposals/legos.py + skdb/pymates/pymates.py
+        # merge skdb/doc/proposals/legos.py + skdb/pymates/pymates.py
         * merge tests with skdb/pymates/test_part.py and skdb/pymates/tests.py
+    # make a 'legos' package in skdb/packages/ for Lego, Hole, and Peg interfaces (right?)
     * play with legos:
         * see the lego IGES/STEP files
             * not enough of them: model more lego bricks in HeeksCAD (save as IGES and STEP)
