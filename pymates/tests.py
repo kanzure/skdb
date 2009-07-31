@@ -102,7 +102,8 @@ class TestPymates(unittest.TestCase):
         z_rotation = OCC.gp.gp_Dir(0, 0, 1)
         transformation = OCC.gp.gp_Trsf()
         transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, x_rotation), peg_interface.x)
-        transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, z_rotation), peg_interface.z)
+        #FIXME: do a BRepBuilderAPI_Transform here?
+        transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, y_rotation), peg_interface.y)
         transformation.SetTranslation(occ_point2, occ_point1)
         brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
         brep_transform.Perform(peg.shapes[0])
