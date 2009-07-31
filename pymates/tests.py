@@ -81,6 +81,7 @@ class TestPymates(unittest.TestCase):
     def test_interface(self):
         pass
     def test_translation(self):
+        pymates.start()
         pymates.restart()
         pymates.demo()
         pymates.mate_parts()

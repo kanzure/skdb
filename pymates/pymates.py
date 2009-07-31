@@ -236,6 +236,7 @@ def start():
 def restart(event=None): #EraseAll
     '''clears the screen/workspace of all objects. also removes all parts (be careful).'''
     total_parts = []
+    import OCC.Display.wxSamplesGui
     OCC.Display.wxSamplesGui.display.EraseAll()
     return
 
