@@ -41,9 +41,9 @@ import OCC.Utils.DataExchange.STEP
 import OCC.GC
 import OCC.Geom
 import geom
-import assembly
+from assembly import Assembly
 from part import Part
-from interface import Interface
+from interface import Interface#, Hole, Peg
 
 total_parts = []
 
@@ -81,6 +81,17 @@ def demo(event=None):
     peg.add_shape(result2)
     total_parts.append(blockhole)
     total_parts.append(peg)
+
+def options(interface, parts):
+    '''what can this interface connect to?'''
+    parts = set(parts) #yay sets!
+    if interface.part in parts: parts.remove(interface.part) #unless it's really flexible
+    rval = set()
+    for part in parts:
+        for i in part.interfaces:
+            if i.compatible(interface) and interface.compatible(i):
+                rval.add(Mate(i, interface))
+    return rval
 
 def mate_parts(event=None):
     '''mate the first and second part in total_parts. rotates first about x, then about z.'''
