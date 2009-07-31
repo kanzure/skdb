@@ -1,0 +1,35 @@
+maintainer: 'bryan bishop <kanzure@gmail.com>'
+license: 'GPL2+'
+urls:
+- 'http://www.me.utexas.edu/~adl/'
+- 'http://adl.serveftp.org/skdb.git/'
+- 'git://fennetic.net/git/skdb.git/'
+
+name: legos
+functionality: joining #a process name here
+created: 2009-07-31
+version: 0.0.1
+description: #package description
+    all sorts of lego bricks
+template: template.yaml
+classes: 
+- legos.Lego
+- peg.Peg
+- hole.Hole
+source data:
+- data.yaml
+generated data:
+- models/ #step files generated and placed in there?
+dependencies:
+    #options of different dependencies to choose from:
+    build:
+        - or:
+            - injection molding
+            - fuse deposition modeling
+            - solid laser sintering #meh
+        - or:
+            - ABS plastic stock
+            - latex
+    use:
+        - null #a lego doesn't need anything to function properly
+

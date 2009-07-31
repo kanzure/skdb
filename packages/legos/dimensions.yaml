@@ -1,0 +1,50 @@
+author: 'bryan bishop <kanzure@gmail.com>'
+license: 'GPL2+'
+description: "lego dimensions metadata. maybe the 'tests' section can be used somehow?"
+urls:
+    - 'http://www.lugnet.com/~330/FAQ/Build/dimensions'
+    - 'http://snively.blogspot.com/2009/04/lego-minifig-dimensions.html'
+    - 'http://sparxmind.com/lego-woes/'
+    - 'http://nicjasno.com/forum/viewtopic.php?t=653'
+
+dimensions:
+    spacing of stud centers: 8mm
+    block height: 9.6mm #or 9.582mm
+    stud diameter: 5mm #or 4.5mm (or 4.84mm according to stud_height=1.82mm)
+    stud height: 1.7mm #or 1.86mm (or 1.82mm and stud_diameter=4.84mm)
+    brick wall thickness: 1.5mm #underside (encloses the hollow cavity)
+    outer diameter of cylinders: 6.31mm #found on underside of bricks
+    cylinder wall thickness: 0.657mm
+    stud pitch: 7.985mm #what?
+    plate height: 3.194mm
+        #plate_height = 3.2mm according to http://www.ldraw.org/Article218.html
+    plate wall depth: 2.25mm
+    tube inner diameter: 5mm #what?
+    tube outer diameter: 6.6mm #what?
+equations:
+    height of brick: $spacing_of_stud_centers * 6/5
+    thickness of brick walls: ($spacing_of_stud_centers - $stud_diameter)/2
+    height of studs: $height_of_brick/3 - $thickness_of_brick_walls
+    outer diameter of cylinders: sqrt(2) * $spacing_of_stud_centers - $stud_diameter
+    cylinder wall thickness: ($outer_diameter_of_cylinders - $stud_diameter)/2
+    stud spacing: $spacing_of_stud_centers - $stud_diameter/2 #from edge of brick to nearest point on stud perimeter (0.5mm? needs groundtruthing)
+    #FIXME: the following are only valid for 2x2 bricks or larger (not one-stud pieces)
+    block length: $spacing_of_stud_centers * $peg_count_lengthwise + 2*$stud_spacing
+    block width: $spacing_of_stud_centers * $peg_count_widthwise + 2*$stud_spacing
+    assertions:
+    - !assertEquals
+        #three plates stacked on top of each other == 1 brick height (9.582mm)
+        1: $height_of_brick
+        2: 3*$plate_height
+tests:
+    #this next test is according to: http://sparxmind.com/lego-woes/
+    - !lego #but what about a lego that isn't a block? should this be "!legoblock"?
+        #TODO: when a legos.Lego object loads itself up, it should check if its data makes sense.
+        #for a 2x2 brick, the height is ~9.58mm, length and width are both ~16mm
+        #"size" gives a dimension for the lego block generator to work with, so you don't need to write down all peg/hole interfaces
+        size: 2x2
+        # "~1mm" indicates "approximately 1 millimeter"
+        block height: ~9.58mm
+        block length: ~16mm
+        block width: ~16mm
+

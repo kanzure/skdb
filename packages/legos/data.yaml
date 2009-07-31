@@ -1,0 +1,43 @@
+author: 'ben lipkowitz'
+license: 'GPL2+'
+urls: 
+- 'http://heybryan.org/mediawiki/index.php/Skdb'
+- 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=screw.yaml'
+- 'git://fennetic.net/git/skdb.git/'
+
+#1FLU = 1 * "fundamental lego unit"
+
+brick: !lego
+ name: brick
+ description: 2x2 brick
+ size: 2x2 #the Lego class should be able to generate the interfaces from this information.
+ material: ABS plastic #acrylonitrile butadiene styrene
+ #re: tolerances. http://www.lego.com/info/pdf/LEGO_company_profile_UK.pdf
+ #http://www.lugnet.com/~330/FAQ/Build/dimensions
+ width: 8.0mm +- 2microns #6:5 (width:height)
+ height: 9.582mm +- 2microns #6:5 (width:height)
+ depth: 10mm +- 2microns
+ interfaces:
+    - !Peg
+        name: peg1
+        geometry: cylinder #this is not necessary since a Peg interface should know its geometry
+        files: #this is not necessary since a Peg interface can generate CAD
+         - 'models/peg.step'
+        height: 1.7mm
+        diameter: 5mm
+        point: [8, 8, 0.85] #center of stud's cylinder (z = cylinder_height/2 = 0.85)
+        #point it upwards (of course, Peg should know this too)
+        x: -180deg
+        y: -180deg
+    - !Peg
+        name: peg2
+        point: [8, 16, 0.85]
+    - !Peg
+        name: peg3
+        point: [16, 8, 0.85]
+    - !Peg
+        name: peg4
+        point: [16, 16, 0.85]
+    - !Hole
+        name: hole1
+
