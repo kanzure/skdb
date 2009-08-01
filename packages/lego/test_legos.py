@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from legos import Lego
+from lego import Lego
 from skdb.pymates import pymates #pymates.options() needed
 import unittest
 
