@@ -7,6 +7,9 @@ import os
 from string import Template
 
 from units import Unit, Range, Uncertainty, UnitError, NaNError
+from interface import Interface
+from part import Part
+from mate import Mate
 from yamlcrap import FennObject
 
 debug = False

@@ -42,9 +42,7 @@ import OCC.GC
 import OCC.Geom
 import geom
 from assembly import Assembly
-from part import Part
-from interface import Interface
-from mate import Mate
+from skdb import Part, Interface, Mate
 
 total_parts = []
 
@@ -75,7 +73,7 @@ def dump(foo):
     return yaml.dump(foo, default_flow_style=False)
 
 def demo(event=None):
-    '''standard pymates demo: loads a YAML file, parses it into a pymates.Part(), then gets all the pymates.Interface() objects, etc.
+    '''standard pymates demo: loads a YAML file, parses it into a skdb.Part(), then gets all the skdb.Interface() objects, etc.
     - also loads up CAD data'''
     print "loading the file .. it looks like this:"
     blockhole = load(open("models/blockhole.yaml"))["blockhole"]
@@ -92,17 +90,6 @@ def demo(event=None):
     peg.add_shape(result2)
     total_parts.append(blockhole)
     total_parts.append(peg)
-
-def options(interface, parts):
-    '''what can this interface connect to?'''
-    parts = set(parts) #yay sets!
-    if interface.part in parts: parts.remove(interface.part) #unless it's really flexible
-    rval = set()
-    for part in parts:
-        for i in part.interfaces:
-            if i.compatible(interface) and interface.compatible(i):
-                rval.add(Mate(i, interface))
-    return rval
 
 def mate_parts(event=None):
     '''mate the first and second part in total_parts. rotates first about x, then about z.'''

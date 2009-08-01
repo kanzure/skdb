@@ -1,7 +1,7 @@
 #!/usr/bin/python
-from skdb.pymates import Part
+from skdb import Part
 from string import Template
-from interfaces import Peg, Hole
+from interface import Peg, Hole
 
 __author__ = "bryan bishop"
 __license__ = "GPL2+"

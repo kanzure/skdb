@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from lego import Lego
-from skdb.pymates import pymates #pymates.options() needed
+from skdb import Part 
 import unittest
 
 class TestLegos(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestLegos(unittest.TestCase):
         #print brick1.interfaces[0].__class__.__name__
         bricklist = [brick1, brick2, brick3, brick4, brick5]
 
-        results = pymates.options(brick1.interfaces[0], bricklist)
+        results = brick1.interfaces[0].options(bricklist)
         #print results
      
         self.assertTrue(pymates.has_no_peg_peg_hole_hole(results))

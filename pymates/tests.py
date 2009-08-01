@@ -6,6 +6,7 @@ import OCC.gp
 import OCC.BRepBuilderAPI
 import OCC.BRepPrimAPI
 import OCC.BRepAlgoAPI
+from skdb import Part, Interface
 
 class TestPrimitives(unittest.TestCase):
     def test_primitive_shape(self):
@@ -29,7 +30,7 @@ class TestPymates(unittest.TestCase):
         #reset all parts
         pymates.total_parts = []
         #make a new interface
-        block_interface = pymates.Interface(name="a hole", point=[0,5,0], x=-90, z=90)
+        block_interface = skdb.Interface(name="a hole", point=[0,5,0], x=-90, z=90)
         #make the part
         block = pymates.Part(description='a rectangular prism',created="2009-07-22",interfaces=[block_interface])
         #make some geometry
@@ -40,9 +41,9 @@ class TestPymates(unittest.TestCase):
         #see pythonOCC/samples/Level1/TopologyOperations/topology_operations.py
         cone_height = 4 #height of the cone
         #make a new interface
-        peg_interface = pymates.Interface(name="a surface", point=[0,0,cone_height], x=-90,z=90)
+        peg_interface = skdb.Interface(name="a surface", point=[0,0,cone_height], x=-90,z=90)
         #make the peg
-        peg = pymates.Part(description="a conical peg",created="2009-07-22",interfaces=[peg_interface])
+        peg = skdb.Part(description="a conical peg",created="2009-07-22",interfaces=[peg_interface])
         peg.shapes = [OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(10.,1.,float(cone_height)).Shape()]
         peg_shape = peg.shapes[0]
         trsf = OCC.gp.gp_Trsf()

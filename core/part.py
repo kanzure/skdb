@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#defines pymates.part.Part
+#defines skdb.Part
 import yaml
 import time
 from mate import Mate
