@@ -1,0 +1,64 @@
+wget http://www.opennovation.org/ubuntu/opennovation.key
+sudo apt-key add opennovation.key
+echo "deb http://www.opennovation.org/ubuntu jaunty main contrib non-free" | sudo tee -a /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get install libopencascade-dev scons python-psyco swig checkinstall
+
+#you might not need all of these
+sudo apt-get install libopencascade-visualization-dev libopencascade-ocaf-dev \
+  opencascade-wok opencascade-draw scons python-gccxml gccxml 
+svn co svn://svn.gna.org/svn/pythonocc/trunk pythonOCC
+cd pythonOCC/src/
+#point swig to the right include dirs
+sed -i 's|/usr/local/inc|/usr/include/opencascade|' SConstruct
+sed -i 's|/usr/local/lib|/usr/lib|' SConstruct
+sed -i 's|/usr/local/inc|/usr/include/opencascade|' environment.py
+sed -i 's|/usr/local/lib|/usr/lib|' environment.py
+#these aren't in the svn for some reason
+mkdir ../build
+mkdir ../build/OCC
+#these files aren't included in debian packages
+sed -i 's/#include<BRepTest.hxx>//' SWIG_src_modular_linux_darwin/BRep_headers.i
+sed -i 's/#include<GeometryTest.hxx>//' SWIG_src_modular_linux_darwin/BRep*
+sed -i 's/#include<GeometryTest.hxx>//' SWIG_src_modular_linux_darwin/Shape*
+sed -i 's/#include<GeomliteTest.hxx>//' SWIG_src_modular_linux_darwin/BRep*
+sed -i 's/#include<GeomliteTest.hxx>//' SWIG_src_modular_linux_darwin/Shape*
+sed -i 's/#include<Viewer2dTest.*.hxx>//' SWIG_src_modular_linux_darwin/Viewer*
+sed -i 's/#include<ViewerTest.*.hxx>//' SWIG_src_modular_linux_darwin/Viewer*
+sed -i 's/#include<TopOpeBRepDS_tools.hxx>//' SWIG_src_modular_linux_darwin/LocOpe*
+sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>//' SWIG_src_modular_linux_darwin/TopOpe*
+
+cp SWIG_src_modular_win32/TopOpeBRep* SWIG_src_modular_linux_darwin/ 
+cp SWIG_src_modular_win32/LocOpe* SWIG_src_modular_linux_darwin/
+cp SWIG_src_modular_win32/LocOpe* SWIG_src_modular_linux_darwin/
+cp SWIG_src_modular_win32/BRepFeat.i SWIG_src_modular_linux_darwin/BRepFeat.i
+
+export CASROOT=/home/kanzure/local/opencascade/OpenCASCADE6.3.0/ros/
+
+#you may have to edit environment.py re: /usr/local/include/ and other weird ubuntu-only paths
+sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>/#include\"TopOpeBRepDS_tools.hxx\"/' SWIG_src_modular_linux_darwin/TopOpe*
+sed -i 's/#include.?"TopOpeBRepDS_tools.hxx"/\\#include<TopOpeBRepDS_tools.hxx>/ SWIG_src_modular_linux_darwin/TopOpe*
+sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>/#include\"TopOpeBRepDS_tools.hxx\"/' SWIG_src_modular_linux_darwin/LocOpe*
+sed -i 's/#include.?"TopOpeBRepDS_tools.hxx"/\\#include<TopOpeBRepDS_tools.hxx>/ SWIG_src_modular_linux_darwin/LocOpe*
+
+#also for SWIG_src_modular_linux_darwin/TopOpeBRep_dependencies.i 
+
+#should take twenty minutes or so
+time scons mode=build OCC_INCLUDE_PATH=/usr/include OCC_CONFIG_H_PATH=/usr/include/opencascade OCC_LIBRARY_PATH=/usr/lib
+
+#time sudo checkinstall scons mode=install #this ought to work eh?
+
+cp ../build/OCC/* OCC/
+cp -r Display/ OCC/
+sudo mv OCC/ /usr/share/pyshared/
+sudo ln -s /usr/share/pyshared/OCC /usr/lib/python2.6/dist-packages/OCC
+
+#todo: figure out wx.aui location
+#/usr/lib/python2.6/dist-packages/wx-2.8-gtk2-unicode/wx/aui.py
+#if you get "wx.aui" not found:
+sudo rm -f /usr/lib/python2.5/site-packages/wx.pth
+sudo echo "wx-2.8-gtk2-unicode" >> /usr/lib/python2.5/site-packages/wx.pth
+
+#make some of the samples/Level1/ stuff run.
+export CSF_GraphicShr=/usr/lib/libTKOpenGl.so
+
