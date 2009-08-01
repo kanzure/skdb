@@ -1,8 +1,4 @@
-let's say that git clone skdb to ~/code/
-so now ~/code/skdb/ exists. 
+let's say your skdb source code is in ~/code/skdb/
+append this to your ~/.bashrc so that skdb is available as a module without installing:
 
-it is helpful to append this to your .bashrc:
-
-export PYTHONPATH=~/code/
-
-this way, skdb can be treated as a module.
+export PYTHONPATH=$PYTHONPATH:~/code/
