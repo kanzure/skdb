@@ -1,0 +1,8 @@
+let's say that git clone skdb to ~/code/
+so now ~/code/skdb/ exists. 
+
+it is helpful to append this to your .bashrc:
+
+export PYTHONPATH=~/code/
+
+this way, skdb can be treated as a module.
