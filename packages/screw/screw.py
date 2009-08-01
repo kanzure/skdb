@@ -1,5 +1,6 @@
 import skdb
 import skdb.pymates
+from skdb import Part, Thread
 from string import Template
 
 __author__ = "ben lipkowitz, bryan bishop"
@@ -9,7 +10,7 @@ __maintainer__ = "ben lipkowitz"
 __email__ = "fenn@sd.lonestar.org"
 __status__ = "Development"
 
-class Screw(skdb.pymates.Part):
+class Screw(Part):
     yaml_tag = "!screw"
     '''a screw by itself isn't a fastener, it needs a nut of some sort'''
     ##i suppose this stuff should go in a screws.yaml file or something, along with standard diameters

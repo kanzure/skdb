@@ -64,7 +64,7 @@ class Connection:
         self.interface2.connected = self
         return
     def __repr__(self):
-        return "Mate(%s, %s)" % (self.interface1, self.interface2)
+        return "Connection(%s, %s)" % (self.interface1, self.interface2)
 
 class Mate(Connection):
     '''wtf is a Mate anyway? presumably there's some geometry involved?'''

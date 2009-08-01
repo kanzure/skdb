@@ -1,15 +1,16 @@
 #!/usr/bin/python
 import unittest
 import copy
-import skdb.Part
+from skdb import Part
+import skdb.pymates as pymates
 
 class TestPart(unittest.TestCase):
-    '''tests skdb.Part'''
+    '''tests Part'''
     def test_part_compatibility(self):
-        screw1 = skdb.Part(name="screw")
-        bearing1 = skdb.Part(name="bearing")
-        lego1 = skdb.Part(name="lego brick")
-        lego2 = skdb.Part(name="lego 16x8 breadboard")
+        screw1 = Part(name="screw")
+        bearing1 = Part(name="bearing")
+        lego1 = Part(name="lego brick")
+        lego2 = Part(name="lego 16x8 breadboard")
         #screw1+screw1 #assert exception
         #bearing1+bearing1 #assert exception
         #.. or should (screw1+screw1) be an assembly with

@@ -3,6 +3,7 @@
 
 import unittest
 import skdb
+from skdb import Thread, Unit
 
 class TestUnits(unittest.TestCase):
     def test_nounits(self):
