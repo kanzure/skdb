@@ -1,16 +1,15 @@
 #!/usr/bin/python
-'''tests pymates.Part'''
 import unittest
 import copy
-import pymates
+import skdb.Part
 
 class TestPart(unittest.TestCase):
-    '''tests pymates.Part'''
+    '''tests skdb.Part'''
     def test_part_compatibility(self):
-        screw1 = pymates.Part(name="screw")
-        bearing1 = pymates.Part(name="bearing")
-        lego1 = pymates.Part(name="lego brick")
-        lego2 = pymates.Part(name="lego 16x8 breadboard")
+        screw1 = skdb.Part(name="screw")
+        bearing1 = skdb.Part(name="bearing")
+        lego1 = skdb.Part(name="lego brick")
+        lego2 = skdb.Part(name="lego 16x8 breadboard")
         #screw1+screw1 #assert exception
         #bearing1+bearing1 #assert exception
         #.. or should (screw1+screw1) be an assembly with
@@ -59,10 +58,10 @@ class TestPart(unittest.TestCase):
         #in the case of the screw, test the package methods?
         pass
     def test_legos(self):
-        import skdb.packages.legos
+        import skdb.packages.lego
         hole_count = 1
         peg_count = 4
-        lego1 = skdb.packages.legos.Lego("brick",num_pegs=peg_count,num_holes=hole_count)
+        lego1 = skdb.packages.lego.Lego("brick",num_pegs=peg_count,num_holes=hole_count)
         self.assertTrue(len(lego1.holes()) == hole_count)
         self.assertTrue(len(lego1.pegs()) == peg_count)
         return
