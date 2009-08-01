@@ -3,6 +3,7 @@
 import yaml
 import time
 import OCC.Utils.DataExchange.STEP
+from mate import Mate
 
 class Part(yaml.YAMLObject):
     '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.
@@ -29,6 +30,18 @@ class Part(yaml.YAMLObject):
         if type(result) == type([]): self.ais_shapes = result[0]
         else: self.ais_shapes = result
         return
+    def options(self, part):
+        '''what can this part connect to?'''
+        interface_list = set(part.interfaces)
+        if self in interface_list: interface_list.remove(self) #unless this part is really flexible
+        rval = set()
+        for interface in interface_list:
+                for j in self.interfaces:
+                    if interface.compatible(j) and j.compatible(interface):
+                        rval.add(Mate(interface, j))
+        return rval
+    def __add__(self, other):
+        return list(self.options(other))
     def __repr__(self):
         return "%s(name=%s, description=%s, created=%s, files=%s, interfaces=%s)" % (self.__class__.__name__, self.name, self.description, self.created, self.files, self.interfaces)
     def yaml_repr(self):

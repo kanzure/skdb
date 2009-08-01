@@ -18,6 +18,16 @@ class Interface(yaml.YAMLObject):
         if not other.mated:
             return True
         else: return False
+    def options(self, parts):
+        '''what can this interface connect to?'''
+        parts = set(parts) #yay sets!
+        if self.part in parts: parts.remove(self.part) #unless it's really flexible
+        rval = set()
+        for part in parts:
+            for i in part.interfaces:
+                if i.compatible(self) and self.compatible(i):
+                    rval.add(Mate(i, self))
+        return rval     
     def convert(self):
         '''convert from degrees to radians for rotational information'''
         if not hasattr(self, "degrees"):

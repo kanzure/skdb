@@ -8,7 +8,11 @@ class Peg(Interface):
                 return True
         else: return False
     def __repr__(self):
-        return "Peg(part=%s,id=%s)" % (self.part.name, self.identifier)
+        if not hasattr(self,"part") or self.part == None:
+            part_name = "None"
+        else:
+            part_name = self.part.name
+        return "Peg(part=%s,id=%s)" % (part_name, self.identifier)
 
 class Hole(Interface):
     def compatible(self, other):
@@ -17,5 +21,9 @@ class Hole(Interface):
                 return True #ok so type based checking sucks. wah.
         else: return False
     def __repr__(self):
-        return "Hole(part=%s,id=%s)" % (self.part.name, self.identifier)
+        if not hasattr(self,"part") or self.part == None:
+            part_name = "None"
+        else:
+            part_name = self.part.name
+        return "Hole(part=%s,id=%s)" % (part_name, self.identifier)
 

@@ -16,8 +16,8 @@ class TestPart(unittest.TestCase):
         #.. or should (screw1+screw1) be an assembly with
         #.. no options for how to put the parts together?
 
-        self.assertTrue((screw1+bearing1).parts.contains(screw1))
-        self.assertTrue((screw1+bearing1).parts.contains(bearing1))
+        self.assertTrue((screw1+bearing1).count(screw1))
+        self.assertTrue((screw1+bearing1).count(bearing1))
         self.assertTrue(pymates.compatibility(screw1,bearing1)==1)
         self.assertTrue(pymates.compatibility(bearing1,screw1)==1)
         self.assertFalse(pymates.compatibility(screw1,copy.copy(screw1))==1)

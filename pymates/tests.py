@@ -76,7 +76,7 @@ class TestPymates(unittest.TestCase):
         cut = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(block.shapes[0],peg.shapes[0]).Shape()
         OCC.Display.wxSamplesGui.display.DisplayShape(cut)
         #pause
-        raw_input("pause unit tests and wait for user input")
+        #raw_input("pause unit tests and wait for user input")
         return
     def test_interface(self):
         pass
