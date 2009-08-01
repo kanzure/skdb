@@ -270,7 +270,8 @@ def exit(event=None):
     import sys; sys.exit()
 
 if __name__ == '__main__':
-    start() #import OCC.Display.wxSamplesGui
+    import OCC.Display.wxSamplesGui
+    start()
     OCC.Display.wxSamplesGui.add_menu("do stuff")
 
     for f in [
