@@ -46,16 +46,6 @@ from skdb import Part, Interface, Mate
 
 total_parts = []
 
-def has_no_peg_peg_hole_hole(results):
-    '''returns True if there is no peg-to-peg and no hole-to-hole connections in a list of potential Mate objects'''
-    result = True
-    for each in results:
-        #this check is only valid for pegs and holes
-        #other connectors might be hermaphrodites
-        if each.interface1.__class__.__name__ == each.interface2.part.__class__.__name__ and not each.interface1.hermaphroditic:
-            result = False
-    return result
-
 def compatibility(part1, part2):
     '''find all possible combinations of part1 and part2 (for each interface/port) and check each compatibility'''
     return []

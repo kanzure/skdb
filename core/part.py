@@ -2,7 +2,7 @@
 #defines skdb.Part
 import yaml
 import time
-from mate import Mate
+from interface import Mate
 
 class Part(yaml.YAMLObject):
     '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.

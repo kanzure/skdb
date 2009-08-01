@@ -1,7 +1,20 @@
 #!/usr/bin/python
-from lego import Lego
+from lego import Lego, Peg, Hole
 from skdb import Part 
 import unittest
+
+def init_legos(): #why can't i do this in test_lego?
+        global bricklist
+        print "hi!"
+        brick1 = Lego("brick1", num_pegs=4, num_holes=2)
+        brick2 = Lego("brick2", num_pegs=2, num_holes=1)
+        brick3 = Lego("brick3", num_holes=3)
+        brick4 = Lego("brick4", num_pegs=4)
+        brick5 = Lego("brick5", num_pegs=0, num_holes=0)
+        #print brick1.interfaces[0].__class__.__name__
+        bricklist = [brick1, brick2, brick3, brick4, brick5]
+
+init_legos()
 
 class TestLegos(unittest.TestCase):
     def test_equations(self):
@@ -16,45 +29,28 @@ class TestLegos(unittest.TestCase):
         pass
     
     def test_lego(self):
-        brick1 = Lego("brick1", num_pegs=4, num_holes=2)
+        brick1 = bricklist[0]
         self.assertTrue(len(brick1.interfaces) == 6)
         self.assertTrue(len(brick1.pegs()) == 4)
         self.assertTrue(len(brick1.holes()) == 2)
-        brick2 = Lego("brick2", num_pegs=2, num_holes=1)
-        brick3 = Lego("brick3", num_holes=3)
-        brick4 = Lego("brick4", num_pegs=4)
-        brick5 = Lego("brick5", num_pegs=0, num_holes=0)
-        #print brick1.interfaces[0].__class__.__name__
-        bricklist = [brick1, brick2, brick3, brick4, brick5]
-
-        results = brick1.interfaces[0].options(bricklist)
+    def test_options(self):
+        expected = "paste good results here"
+        results = bricklist[0].interfaces[0].options(bricklist)
+        self.assertEqual(results, expected)
         #print results
-     
-        self.assertTrue(pymates.has_no_peg_peg_hole_hole(results))
-
-        #have to convert a set to a list to get to the elements
-        list(results)[0].apply()
-        #there should be no more options involving brick1's interface0
-        self.assertTrue(len(pymates.options(brick1.interfaces[0], bricklist)) == 0)
-
-        results2 = pymates.options(brick1.interfaces[1], bricklist)
-        #print results2
-
-        self.assertTrue(pymates.has_no_peg_peg_hole_hole(results2))
-        #list(results2)[0].apply()
-
-        pass
-
-    #def test_conversions(self):
-    #         screw1 = screw.skdb.load(open('data.yaml'))['screw'] #yaml.load(open('screw.yaml'))['screw']
-    #         #print yaml.dump(screw)
-    #         self.assertEqual(screw1.thread.clamping_force('20N*m/rev'), '354.02982*lbf')
-    #         self.assertEqual(screw1.thread.clamping_force('100ft*lbf/rev'), '2400.0*lbf')
-    #         self.assertEqual(screw1.thread.tensile_area(), '0.031820683*in^2')
-    #         self.assertEqual(screw1.thread.minor_diameter(), '0.1850481*in')
-    #         self.assertEqual(screw1.thread.pitch_diameter(), '0.21752041*in')
-    #         self.assertEqual(screw1.max_force(), '2704.758*lbf')
-    #         self.assertEqual(screw1.breaking_force(), '3500.275*lbf')
+    def test_options_peg_peg_hole_hole(self):
+        '''good ol' O(n^2) checking. if you're going to be a useless test, might as well do a good job at it'''
+        for brick in bricklist:
+            #self.assertFalse(brick.interfaces[0].__class__ == brick.interfaces[0].connected.__class__)
+            for interface in brick.interfaces:
+                for opt in interface.options(bricklist):
+                    if1, if2 = opt.interface1, opt.interface2
+                    self.assertFalse(if1.__class__ == Peg and if1.connected.__class__ == Peg)
+                    self.assertFalse(if1.__class__ == Hole and if2.connected.__class__ == Hole)
+    def test_all_filled_up(self):
+        '''there should be no more options involving brick1's interface0'''
+        ##TODO connect all bricks in bricklist here
+        self.assertTrue(len(bricklist[0].interfaces[0].options(bricklist)) == 0)
 
 if __name__ == '__main__':
     unittest.main()
