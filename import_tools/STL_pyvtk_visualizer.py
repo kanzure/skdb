@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+#https://svn.cscs.ch/pv-meshless/trunk/VTK/Examples/Rendering/Python/CADPart.py
 # This simple example shows how to do basic rendering and pipeline
 # creation. It also demonstrates the use of the LODActor.
 
