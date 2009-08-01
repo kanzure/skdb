@@ -48,24 +48,28 @@
         * traversal
         * searching for parts/mates
     * merges:
-        * merge skdb/doc/proposals/assemblies.txt + skdb/doc/proposals/legos.py
+        * merge skdb/doc/proposals/assemblies.txt + skdb/pymates/
         # merge skdb/doc/proposals/legos.py + skdb/pymates/pymates.py
-        * merge tests with skdb/pymates/test_part.py and skdb/pymates/tests.py
     # make a 'legos' package in skdb/packages/ for Lego, Hole, and Peg interfaces (right?)
     * play with legos:
-        * see the lego IGES/STEP files
+        # see the lego IGES/STEP files
             * not enough of them: model more lego bricks in HeeksCAD (save as IGES and STEP)
         * are the VRML parts of any use?
             * if so, see ldr2vrml
                 * generate LDR files for all parts from LDraw
                 * run ldr2vrml on all of these LDR files
         * pyldraw: interactive visualization of legos in python interpreter session + OpenCASCADE
-            * alternatively: OpenGL rendering of the STL files (ldr2stl.py)
+            * alternatively: OpenGL rendering of the STL files (ldr2stl.py) (see pyopengl)
+            # vpython loading of STL files (slow)
             * fix slow loading of STL files in OpenCASCADE
                 * skdb/doc/proposals/occ_stl.py (slow)
                 * skdb/import_tools/occ_pyldraw.py (also slow)
+            * are the STEP/IGES files named the same as the parts are in the LDraw part library?
         * pov2rib: figure out antlr, play with dot g files
             * generate povray parser
+                * figure out antlr
+                * figure out pyparsing
+                * convert from BNF->g grammar?
             * make something like pypov (the python-povray library that lets you use classes to generate povray objects)
             * write a wrapper for pypov: export to IGES/STEP instead of povray.
                 * ex: when pypov.Circle() is called, call the OpenCASCADE BRepPrimAPI_MakeCircle method
