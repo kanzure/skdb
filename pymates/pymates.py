@@ -32,7 +32,15 @@ import os
 import random
 import copy
 import numpy
-from skdb import load, dump
+import wx
+import OCC.gp
+import OCC.BRepPrimAPI
+import OCC.BRepBuilderAPI
+import OCC.BRepAlgoAPI
+import OCC.Utils.DataExchange.STEP
+import OCC.GC
+import OCC.Geom
+import geom
 from assembly import Assembly
 from part import Part
 from interface import Interface
@@ -40,10 +48,35 @@ from mate import Mate
 
 total_parts = []
 
+def has_no_peg_peg_hole_hole(results):
+    '''returns True if there is no peg-to-peg and no hole-to-hole connections in a list of potential Mate objects'''
+    result = True
+    for each in results:
+        #this check is only valid for pegs and holes
+        #other connectors might be hermaphrodites
+        if each.interface1.__class__.__name__ == each.interface2.part.__class__.__name__ and not each.interface1.hermaphroditic:
+            result = False
+    return result
+
+def compatibility(part1, part2):
+    '''find all possible combinations of part1 and part2 (for each interface/port) and check each compatibility'''
+    return []
+
+def compatibility(part1port, part2port):
+    '''note that an interface/port object refers to what it is on. so you don't have to pass the parts.'''
+    return []
+
+def load(foo):
+    '''load a yaml string'''
+    return yaml.load(foo)
+
+def dump(foo):
+    '''dump an object as yaml'''
+    return yaml.dump(foo, default_flow_style=False)
+
 def demo(event=None):
     '''standard pymates demo: loads a YAML file, parses it into a pymates.Part(), then gets all the pymates.Interface() objects, etc.
     - also loads up CAD data'''
-    import OCC.Display.wxSamplesGui
     print "loading the file .. it looks like this:"
     blockhole = load(open("models/blockhole.yaml"))["blockhole"]
     peg = load(open("models/peg.yaml"))["peg"]
@@ -73,9 +106,6 @@ def options(interface, parts):
 
 def mate_parts(event=None):
     '''mate the first and second part in total_parts. rotates first about x, then about z.'''
-    import OCC.gp
-    import OCC.BRepBuilderAPI
-    import OCC.Display.wxSamplesGui
     #see transform_point()
     if len(total_parts) < 1: return #meh
     part1 = total_parts[0]
@@ -105,9 +135,6 @@ def mate_parts(event=None):
     return brep_transform
 
 def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
-    import OCC.gp
-    import OCC.TopLoc
-    import OCC.Display.wxSamplesGui
     o_point = OCC.gp.gp_Pnt(x,y,z)
     o_n_vec = OCC.gp.gp_Dir(i1,i2,i3)
     o_vx_vec = OCC.gp.gp_Dir(j1,j2,j3)
@@ -121,8 +148,6 @@ def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
 
 def show_new_interface_point(x,y,z,color='RED'):
     '''displays an interface point (sphere) at a certain location, with a certain color'''
-    import OCC.BRepPrimAPI
-    import OCC.Display.wxSamplesGui
     mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(x,y,z), 2.0)
     OCC.Display.wxSamplesGui.display.DisplayColoredShape(mysphere.Shape(), color=color)
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
@@ -130,8 +155,6 @@ def show_new_interface_point(x,y,z,color='RED'):
 
 def show_cone_at(x,y,z,color='YELLOW'):
     '''displays a cone at a certain position'''
-    import OCC.BRepPrimAPI
-    import OCC.Display.wxSamplesGui
     mycone = OCC.BRepPrimAPI.BRepPrimAPI_MakeCone(x,y,z)
     OCC.Display.wxSamplesGui.display.DisplayColoredShape(mycone.Shape(), color=color)
     #OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
@@ -139,8 +162,6 @@ def show_cone_at(x,y,z,color='YELLOW'):
 
 def show_interface_points(event=None):
     '''draws spheres for the first interface point on the first interface of all parts'''
-    import OCC.BRepPrimAPI
-    import OCC.Display.wxSamplesGui
     for each in total_parts:
        interface = each.interfaces[0]
        mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2]), 2.0)
@@ -150,15 +171,12 @@ def show_interface_points(event=None):
 
 def make_edge(shape):
     '''make an edge from an OCC.Geom.Handle_Geom_Curve'''
-    import OCC.BRepBuilderAPI
     spline = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(shape)
     spline.Build()
     return spline.Shape()
 
 def make_vertex(pnt):
     '''show a vertex in 3D space based off of either an OCC.gp.gp_Pnt2d() or an OCC.gp.gp_Pnt()'''
-    import OCC.gp
-    import OCC.BRepBuilderAPI
     if isinstance(pnt, OCC.gp.gp_Pnt2d):
         vertex = OCC.BrepBuilderAPI.BRepBuilderAPI_MakeVertex( OCC.gp.gp_Pnt(pnt.X(), pnt.Y(), 0)) 
     else: 
@@ -168,10 +186,6 @@ def make_vertex(pnt):
 
 def show_interface_arrows(event=None,arrow_length=5,rotx2=None,roty2=None):
     '''displays vectors pointing in the mating direction, for every part and every part's interfaces'''
-    import OCC.gp
-    import OCC.GC
-    import OCC.Geom
-    import OCC.Display.wxSamplesGui
     color_counter = 0
     colors = [
                 'RED',
@@ -233,10 +247,6 @@ def nontransform_point(x,y,z,color='YELLOW'):
 def transform_point(x,y,z,color='YELLOW'):
     '''draw a (small) sphere (maybe eventually a cone to show direction if I figure out the correct parameters to OCC.BRepPrimAPI.BRepPrimAPI_MakeCone())
     then transform it in the same way that mate_parts() transforms everything'''
-    import OCC.BRepPrimAPI
-    import OCC.BRepBuilderAPI
-    import OCC.gp
-    import OCC.Display.wxSamplesGui
     mysphere = OCC.BRepPrimAPI.BRepPrimAPI_MakeSphere(OCC.gp.gp_Pnt(x,y,z), 1.0)
     transformation = OCC.gp.gp_Trsf()
     interface1 = total_parts[0].interfaces[0]

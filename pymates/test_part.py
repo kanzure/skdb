@@ -59,10 +59,10 @@ class TestPart(unittest.TestCase):
         #in the case of the screw, test the package methods?
         pass
     def test_legos(self):
-        import skdb.packages.lego
+        import skdb.packages.legos
         hole_count = 1
         peg_count = 4
-        lego1 = skdb.packages.lego.Lego("brick",num_pegs=peg_count,num_holes=hole_count)
+        lego1 = skdb.packages.legos.Lego("brick",num_pegs=peg_count,num_holes=hole_count)
         self.assertTrue(len(lego1.holes()) == hole_count)
         self.assertTrue(len(lego1.pegs()) == peg_count)
         return
