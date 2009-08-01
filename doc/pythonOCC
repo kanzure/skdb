@@ -1,3 +1,10 @@
+#Some notes for setting up pythonOCC on debian or ubuntu. this actually doesn't work, but it will get you most of the way there.
+
+#you may have to do something like this (why?)
+#export CASROOT=/home/kanzure/local/opencascade/OpenCASCADE6.3.0/ros/
+
+#you may have to edit environment.py re: /usr/local/include/ and other weird ubuntu-only paths
+
 wget http://www.opennovation.org/ubuntu/opennovation.key
 sudo apt-key add opennovation.key
 echo "deb http://www.opennovation.org/ubuntu jaunty main contrib non-free" | sudo tee -a /etc/apt/sources.list
@@ -33,9 +40,6 @@ cp SWIG_src_modular_win32/LocOpe* SWIG_src_modular_linux_darwin/
 cp SWIG_src_modular_win32/LocOpe* SWIG_src_modular_linux_darwin/
 cp SWIG_src_modular_win32/BRepFeat.i SWIG_src_modular_linux_darwin/BRepFeat.i
 
-export CASROOT=/home/kanzure/local/opencascade/OpenCASCADE6.3.0/ros/
-
-#you may have to edit environment.py re: /usr/local/include/ and other weird ubuntu-only paths
 sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>/#include\"TopOpeBRepDS_tools.hxx\"/' SWIG_src_modular_linux_darwin/TopOpe*
 sed -i 's/#include.?"TopOpeBRepDS_tools.hxx"/\\#include<TopOpeBRepDS_tools.hxx>/ SWIG_src_modular_linux_darwin/TopOpe*
 sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>/#include\"TopOpeBRepDS_tools.hxx\"/' SWIG_src_modular_linux_darwin/LocOpe*
@@ -50,11 +54,10 @@ time scons mode=build OCC_INCLUDE_PATH=/usr/include OCC_CONFIG_H_PATH=/usr/inclu
 
 cp ../build/OCC/* OCC/
 cp -r Display/ OCC/
+cp -r ../Utils/ OCC/
 sudo mv OCC/ /usr/share/pyshared/
 sudo ln -s /usr/share/pyshared/OCC /usr/lib/python2.6/dist-packages/OCC
 
-#todo: figure out wx.aui location
-#/usr/lib/python2.6/dist-packages/wx-2.8-gtk2-unicode/wx/aui.py
 #if you get "wx.aui" not found:
 sudo rm -f /usr/lib/python2.5/site-packages/wx.pth
 sudo echo "wx-2.8-gtk2-unicode" >> /usr/lib/python2.5/site-packages/wx.pth
