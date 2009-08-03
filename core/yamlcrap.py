@@ -10,17 +10,9 @@ class FennObject(yaml.YAMLObject):
             self.post_setstate_hook()
     @classmethod
     def to_yaml(cls, dumper, data):
-        if hasattr(cls, 'yaml_repr'):
-            tmp = cls.yaml_repr(data)
+        if hasattr(data, 'yaml_repr'):
+            return dumper.represent_scalar(data.yaml_tag, data.yaml_repr())
             #yaml_type is used to determine whether or not it is a scalar or a mapping (you set this)
-            if hasattr(cls,"yaml_type"):
-                if cls.yaml_type == "scalar":
-                    return dumper.represent_scalar(cls.yaml_tag, tmp)
-                elif cls.yaml_type == "mapping":
-                    return dumper.represent_mapping(cls.yaml_tag, data)
-                else: assert False, "yaml_type must be either \"scalar\" or \"mapping\""
-            else:
-                return dumper.represent_scalar(cls.yaml_tag, tmp)
         else: 
             #return the default yaml dump
             if len(data.__dict__) > 0: return dumper.represent_mapping(cls.yaml_tag, data.__dict__.iteritems())
@@ -33,21 +25,16 @@ class FennObject(yaml.YAMLObject):
             if cls.yaml_type == "scalar":
                 data = loader.construct_scalar(node)
             elif cls.yaml_type == "mapping":
-                data = loader.construct_mapping(node)
+                data = loader.construct_mapping(node) #will this break path_resolver?
                 rval = cls()
-                #replace self's information with the loaded_package information
+                #stuff data into object's attributes
                 for (key, value) in data.iteritems():
                     if value is not None:
                         setattr(rval, key, value)
-                
-            else: assert False, "yaml_type must be either \"scalar\" or \"mapping\""
+                return rval
+            else: raise ValueError, "yaml_type must be either \"scalar\" or \"mapping\""
         else: 
             data = loader.construct_scalar(node)
-        if hasattr(cls, 'yaml_pattern') and hasattr(cls, 'yaml_parse_args') and cls.yaml_parse_args == True:
-            match = re.search(cls.yaml_pattern, data)
-            if match:
-                return cls(match.groups()) #i guess this will stuff the regex groups into the positional args #TODO unit test
-        else:
             return cls(data)
 
 class Dummy(object):
