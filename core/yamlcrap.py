@@ -6,6 +6,8 @@ class FennObject(yaml.YAMLObject):
         for (k,v) in attrs.items():
             k = re.sub(' ', '_', k) #replace spaces with underscores because "foo.the attr" doesn't work
             self.__setattr__(k,v)
+        if hasattr(self, post_setstate_hook):
+            self.post_setstate_hook()
     @classmethod
     def to_yaml(cls, dumper, data):
         if hasattr(cls, 'yaml_repr'):
