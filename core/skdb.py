@@ -63,8 +63,6 @@ class Package(FennObject):
         if hasattr(self, 'classes') and self.classes:
             #what?
             pass
-
-
     def load(self, content):
         '''loads some yaml (not necessarily into type Package)
         it's kind of fishy since a package is multiple files at the moment.'''
@@ -74,17 +72,16 @@ class Package(FennObject):
         return yaml.dump(self)
     def dump_metadata(self):
         '''dump only the content for or from metadata.yaml'''
-        pass
+        raise NotImplementedError
     def dump_template(self):
         '''dump only the content for or from template.yaml'''
-        pass
+        raise NotImplementedError
     def dump_data(self):
         '''dump only the content for or from data.yaml'''
-        pass
+        raise NotImplementedError
     def makes_sense(self):
         '''checks for whether or not the package data makes sense'''
-        assert False, "makes_sense is not yet implemented"
-        pass
+        raise NotImplementedError
     def open(self, path=None):
         if path == None:
             path = self.unix_name
@@ -92,22 +89,20 @@ class Package(FennObject):
         assert hasattr(settings,"paths")
         assert settings.paths.has_key("SKDB_PACKAGE_DIR") #FIXME: load up from environmental variables or global skdb config
         #the path must actually exist
-        #assert(os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK))
-        assert not (os.listdir(settings.paths["SKDB_PACKAGE_DIR"]).count(path) == 0)
+        assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK)
         package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)
         self.package_path = package_path
         #must have the required files
         required_files = ["metadata.yaml", "template.yaml", "data.yaml"] #maybe last one should be s/path/self\.name/?
         for file in required_files:
-            assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
+            assert os.access(os.path.join(settings.paths['SKDB_PACKAGE_DIR'], path, file), os.F_OK)
         #TODO: load metadata, load template
         #self = yaml.load(..) didn't work wtf?
         #replace self's information with the loaded_package information
         loaded_package = yaml.load(open(os.path.join(package_path, "metadata.yaml")))
-        for key in loaded_package.keys():
-            value = loaded_package[key]
-            if not loaded_package[key] == None:
-                self.__dict__[key] = value
+        for (key, value) in loaded_package.iteritems():
+            if value is not None:
+                setattr(self, key, value)
         return loaded_package #just in case
 
 class Distribution(FennObject):
