@@ -1,4 +1,4 @@
-import yaml
+import yaml, re
 
 class FennObject(yaml.YAMLObject):
     '''so i dont repeat generic yaml stuff everywhere'''
@@ -14,12 +14,9 @@ class FennObject(yaml.YAMLObject):
             tmp = cls.yaml_repr(data)
             return dumper.represent_scalar(cls.yaml_tag, tmp)
         else: 
-            #i want to return the default yaml dump; but how?       
-            #cls.to_yaml = yaml.YAMLObject.to_yaml
-            #return cls.to_yaml(dumper, data)
-            ##return dumper.represent_mapping(cls.yaml_tag, data)
-            tmp = cls.__repr__(data)
-            return dumper.represent_scalar(cls.yaml_tag, tmp)
+            #return the default yaml dump
+            if len(data.__dict__) > 0: return dumper.represent_mapping(cls.yaml_tag, data.__dict__.iteritems())
+            else: return dumper.represent_scalar(cls.yaml_tag, data)
 
     @classmethod
     def from_yaml(cls, loader, node):
