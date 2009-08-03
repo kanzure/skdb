@@ -3,7 +3,21 @@ license: 'GPL2+'
 urls: 
 
 screw: !screw
+ thread: !thread 
+    interfaces:
+        - !interface &thread_tighten
+        name: thread-tighten
+        units: N
+        - !interface &thread_loosen
+        name: thread-loosen
+        units: N
+    diameter: in
+    form: string 
+    pitch: rev/in
+
  interfaces: #or should this go in screw.py?
+    - *thread_tighten
+    - *thread_loosen
     - !interface
         name: compression-face
         units: N
@@ -12,15 +26,3 @@ screw: !screw
         units: N*m/rev
  grade: string
  length: in
- thread: !thread
-    interfaces:
-        - !interface
-        name: thread-tighten
-        units: N
-        - !interface
-        name: thread-loosen
-        units: N
-    diameter: in
-    form: string 
-    pitch: rev/in
-
