@@ -29,3 +29,29 @@ class FennObject(yaml.YAMLObject):
                 return cls(match.groups()) #i guess this will stuff the regex groups into the positional args #TODO unit test
         else:
             return cls(data)
+
+class Dummy(object):
+    def __init__(self, node):
+        if hasattr(node, 'iteritems'):
+            for (k,v) in node.iteritems(): setattr(self, k,v)
+        else: self = node
+    @staticmethod
+    def multi_constructor(loader, tag_suffix, node):
+        print yaml.dump(node)
+        data = loader.construct_scalar(node)
+        if type(node) == yaml.ScalarNode:
+            data = loader.construct_scalar(node)
+        if type(node) == yaml.MappingNode:
+            data = loader.construct_mapping(node)
+        #else: raise TypeError, node#, 'i dont know what to do with this node'
+        print '---------------'
+        print yaml.dump(data)
+        return Dummy(data)
+        
+#foo = yaml.load_all('!!python/object:skdb.tag_hack \n tags: "!hello"\n---\n test: !hello\n  1234')
+
+class tag_hack:
+    '''allows loading of a template file containing tags that do not exist yet'''
+    def __setstate__ (self, attrs):
+        for i in attrs['tags']:
+            yaml.add_multi_constructor('!', Dummy.multi_constructor)

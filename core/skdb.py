@@ -9,7 +9,7 @@ from string import Template
 from units import Unit, Range, Uncertainty, UnitError, NaNError
 from interface import Interface, Connection, Mate
 from part import Part
-from yamlcrap import FennObject
+from yamlcrap import FennObject, Dummy, tag_hack
 from threads import Thread
 import settings
 
