@@ -34,6 +34,12 @@ class FennObject(yaml.YAMLObject):
                 data = loader.construct_scalar(node)
             elif cls.yaml_type == "mapping":
                 data = loader.construct_mapping(node)
+                rval = cls()
+                #replace self's information with the loaded_package information
+                for (key, value) in data.iteritems():
+                    if value is not None:
+                        setattr(rval, key, value)
+                
             else: assert False, "yaml_type must be either \"scalar\" or \"mapping\""
         else: 
             data = loader.construct_scalar(node)
