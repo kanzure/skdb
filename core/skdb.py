@@ -62,7 +62,7 @@ class Package(yaml.YAMLObject):
         #the path must actually exist
         assert not (os.listdir(settings.paths["SKDB_PACKAGE_DIR"]).count(path) == 0)
         #must have the required files
-        required_files = ["metadata.yaml", "template.yaml", "data.yaml", path+".py"] #maybe last one should be s/path/self\.name/?
+        required_files = ["metadata.yaml", "template.yaml", "data.yaml"] #maybe last one should be s/path/self\.name/?
         for file in required_files:
             assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
         #TODO: load metadata, load template
