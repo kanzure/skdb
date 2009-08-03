@@ -11,6 +11,7 @@ from interface import Interface, Connection, Mate
 from part import Part
 from yamlcrap import FennObject
 from threads import Thread
+import settings
 
 debug = False
 
