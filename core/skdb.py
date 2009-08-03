@@ -20,6 +20,16 @@ debug = False
 #class Cylinder(yaml.YAMLObject)
 #class InterfaceGeom(yaml.YAMLObject):
 
+def check_unix_name(name):
+    '''returns True if name (string) is a valid unix_name
+    allowed characters in a unix_name are: a-z, 0-9, - and _'''
+    return name.isalpha()
+
+def open_package(unix_name):
+    '''returns a package loaded from the filesystem
+    see settings.paths['SKDB_PACKAGES_DIR'] btw'''
+    return Package(unix_name).open()
+
 class Contributor(yaml.YAMLObject):
     '''used in package metadata'''
     yaml_tag='!contributor'
@@ -37,12 +47,26 @@ class Package(yaml.YAMLObject):
         self.name = name
         self.unix_name = unix_name
         if unix_name == None:
-            #TODO: complain if it's not a valid "unix name"
             self.unix_name = name
+            assert check_unix_name(self.unix_name)
+        self.package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],self.unix_name)
         self.license = license
         self.urls = urls
         self.contributors = contributors
+        #self = self.open(self.unix_name)
         #TODO inherit from some pretty container class
+    def __setstate__(self, attrs):
+        for (k,v) in self.attrs:
+            k = re.sub(' ', '_', k) #replace spaces with underscores because "foo.the attr" doesn't work
+            if k == "template":
+                #load the template
+                loaded_template = yaml.load(open(os.path.join(package_path, v))) #v is probably "template.yaml"
+                self.template = loaded_template
+            self.__setattr__(k,v)
+        #load up the classes
+        if hasattr(self,"classes"):
+
+
     def load(self, content):
         '''loads some yaml (not necessarily into type Package)
         it's kind of fishy since a package is multiple files at the moment.'''
@@ -59,21 +83,33 @@ class Package(yaml.YAMLObject):
     def dump_data(self):
         '''dump only the content for or from data.yaml'''
         pass
+    def makes_sense(self):
+        '''checks for whether or not the package data makes sense'''
+        assert False, "makes_sense is not yet implemented"
+        pass
     def open(self, path=None):
-        if path == None: path = self.unix_name
-        #else: pass #TODO: check if the named parameter references a valid unix_name
+        if path == None:
+            path = self.unix_name
+        assert check_unix_name(path)
         assert hasattr(settings,"paths")
         assert settings.paths.has_key("SKDB_PACKAGE_DIR") #FIXME: load up from environmental variables or global skdb config
         #the path must actually exist
         assert not (os.listdir(settings.paths["SKDB_PACKAGE_DIR"]).count(path) == 0)
         package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)
+        self.package_path = package_path
         #must have the required files
         required_files = ["metadata.yaml", "template.yaml", "data.yaml"] #maybe last one should be s/path/self\.name/?
         for file in required_files:
             assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
         #TODO: load metadata, load template
         #self = yaml.load(..) didn't work wtf?
-        return yaml.load(open(os.path.join(package_path, "metadata.yaml")))
+        #replace self's information with the loaded_package information
+        loaded_package = yaml.load(open(os.path.join(package_path, "metadata.yaml")))
+        for key in loaded_package.__dict__.keys():
+            value = loaded_package.__dict__[key]
+            if not loaded_package.__dict__[key] == None:
+                self.__dict__[key] = value
+        return loaded_package #just in case
 
 class Distribution(FennObject):
     yaml_path = ['typical', 'feasible']
