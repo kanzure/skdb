@@ -41,7 +41,7 @@ class Contributor(yaml.YAMLObject):
 class Author(Contributor):
     yaml_tag='!author'
 
-class Package(yaml.YAMLObject):
+class Package(FennObject):
     yaml_tag='!package'
     def __init__(self, name, unix_name=None, license=None, urls=None, contributors=None):
         self.name = name
@@ -55,16 +55,14 @@ class Package(yaml.YAMLObject):
         self.contributors = contributors
         #self = self.open(self.unix_name)
         #TODO inherit from some pretty container class
-    def __setstate__(self, attrs):
-        for (k,v) in self.attrs:
-            k = re.sub(' ', '_', k) #replace spaces with underscores because "foo.the attr" doesn't work
-            if k == "template":
-                #load the template
-                loaded_template = yaml.load(open(os.path.join(package_path, v))) #v is probably "template.yaml"
-                self.template = loaded_template
+    def post_setstate_hook(self):
+        if hasattr(self, 'template') and self.template:
+            loaded_template = yaml.load(open(os.path.join(package_path, template))) #template is probably "template.yaml"
+            self.template = loaded_template
             self.__setattr__(k,v)
-        #load up the classes
-        if hasattr(self,"classes"):
+        if hasattr(self, 'classes') and self.classes:
+            #what?
+            pass
 
 
     def load(self, content):
@@ -94,6 +92,7 @@ class Package(yaml.YAMLObject):
         assert hasattr(settings,"paths")
         assert settings.paths.has_key("SKDB_PACKAGE_DIR") #FIXME: load up from environmental variables or global skdb config
         #the path must actually exist
+        #assert(os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK))
         assert not (os.listdir(settings.paths["SKDB_PACKAGE_DIR"]).count(path) == 0)
         package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)
         self.package_path = package_path
@@ -105,9 +104,9 @@ class Package(yaml.YAMLObject):
         #self = yaml.load(..) didn't work wtf?
         #replace self's information with the loaded_package information
         loaded_package = yaml.load(open(os.path.join(package_path, "metadata.yaml")))
-        for key in loaded_package.__dict__.keys():
-            value = loaded_package.__dict__[key]
-            if not loaded_package.__dict__[key] == None:
+        for key in loaded_package.keys():
+            value = loaded_package[key]
+            if not loaded_package[key] == None:
                 self.__dict__[key] = value
         return loaded_package #just in case
 
@@ -219,7 +218,6 @@ def dump(value, filename=None):
         return retval
     #some stdout call here might not be a bad idea
 
-package = 'blah'
 def main():
     #basic self-test demo
     package = load(open('tags.yaml'))
