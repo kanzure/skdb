@@ -84,28 +84,6 @@ class Package(FennObject):
     def makes_sense(self):
         '''checks for whether or not the package data makes sense'''
         raise NotImplementedError
-    def open(self, path=None):
-        if path == None:
-            path = self.unix_name
-        assert check_unix_name(path)
-        assert hasattr(settings,"paths")
-        assert settings.paths.has_key("SKDB_PACKAGE_DIR") #FIXME: load up from environmental variables or global skdb config
-        #the path must actually exist
-        assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK)
-        package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)
-        self.package_path = package_path
-        #must have the required files
-        required_files = ["metadata.yaml", "template.yaml", "data.yaml"] #maybe last one should be s/path/self\.name/?
-        for file in required_files:
-            assert os.access(os.path.join(settings.paths['SKDB_PACKAGE_DIR'], path, file), os.F_OK)
-        #TODO: load metadata, load template
-        #self = yaml.load(..) didn't work wtf?
-        #replace self's information with the loaded_package information
-        loaded_package = yaml.load(open(os.path.join(package_path, "metadata.yaml")))
-        for (key, value) in loaded_package.iteritems():
-            if value is not None:
-                setattr(self, key, value)
-        return loaded_package #just in case
 
 class Distribution(FennObject):
     yaml_path = ['typical', 'feasible']
