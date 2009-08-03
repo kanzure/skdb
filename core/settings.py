@@ -10,15 +10,13 @@ import os
 try:
     SKDB_PACKAGE_DIR = os.environ["SKDB_PACKAGE_DIR"]
 except KeyError, err:
-    #err.message is "SKDB_PACKAGE_DIR"
-    #hacker's setting: ../packages/
-    basename = os.path.basename(__file__)
-    realpath = os.path.realpath(__file__)
-    current_filename_len = len(os.path.basename(realpath))
-    folder = realpath[:-current_filename_len]
-    current_foldername_len = len(os.path.basename(os.path.dirname(folder)))
-    parentfolder = folder[:-current_foldername_len - len(os.path.sep)]
-    SKDB_PACKAGE_DIR = os.path.join(parentfolder,"packages")
+    #this basically does "cd ../packages" from settings.py (__file__ is the path to settings.py)
+    sep = os.path.sep
+    path = os.path.realpath(__file__).split(sep)
+    path.pop()
+    path.pop()
+    path.append('packages/')
+    SKDB_PACKAGE_DIR = sep.join(path)
 
 paths = {
         'SKDB_PACKAGE_DIR': SKDB_PACKAGE_DIR,
