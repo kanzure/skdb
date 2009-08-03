@@ -1,7 +1,7 @@
 #from skdb import Unit, Package
 import yaml
 from string import Template
-from skdb import Unit
+from units import Unit
 
 #used to inherit from skdb.Package but that no longer works?
 class Thread(yaml.YAMLObject):

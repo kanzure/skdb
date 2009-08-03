@@ -87,4 +87,5 @@
     * [eventually] add list of compliant/rigid faces to the YAML metadata for a part
     * generate instructions to make a lego assembly
         * generate images (frame by frame)
+            # wrote "stepper", a STEP file viewer. it sucks, unless there's some way to make screenshots other than the way InteractiveViewer.py does it
     * "make spacebase"

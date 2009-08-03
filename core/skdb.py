@@ -33,13 +33,41 @@ class Author(Contributor):
 class Package(yaml.YAMLObject):
     yaml_tag='!package'
     def __init__(self, name, unix_name=None, license=None, urls=None, contributors=None):
-        self.name =name
-        self.unix_name =unix_name # TODO: complain if it's not a valid "unix name"
+        self.name = name
+        self.unix_name = unix_name # TODO: complain if it's not a valid "unix name"
         self.license = license
         self.urls = urls
         self.contributors = contributors
-        self.contents = {}
         #TODO inherit from some pretty container class
+    def load(self, content):
+        '''loads some yaml (not necessarily into type Package)
+        it's kind of fishy since a package is multiple files at the moment.'''
+        return yaml.load(content)
+    def dump(self):
+        '''returns this object in yaml'''
+        return yaml.dump(self)
+    def dump_metadata(self):
+        '''dump only the content for or from metadata.yaml'''
+        pass
+    def dump_template(self):
+        '''dump only the content for or from template.yaml'''
+        pass
+    def dump_data(self):
+        '''dump only the content for or from data.yaml'''
+        pass
+    def open(self, path=None):
+        if path == None: path = self.name
+        assert hasattr(settings,"paths")
+        assert settings.paths.has_key("SKDB_PACKAGE_DIR") #FIXME: load up from environmental variables or global skdb config
+        #the path must actually exist
+        assert not (os.listdir(settings.paths["SKDB_PACKAGE_DIR"]).count(path) == 0)
+        #must have the required files
+        required_files = ["metadata.yaml", "template.yaml", "data.yaml", path+".py"] #maybe last one should be s/path/self\.name/?
+        for file in required_files:
+            assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
+        #TODO: load metadata, load template
+        assert False
+        pass
 
 class Distribution(FennObject):
     yaml_path = ['typical', 'feasible']
