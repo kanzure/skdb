@@ -25,36 +25,38 @@ def check_unix_name(name):
     allowed characters in a unix_name are: a-z, 0-9, - and _'''
     return name.isalpha()
 
-def open_package(unix_name):
+def open_package(path):
     '''returns a package loaded from the filesystem
     see settings.paths['SKDB_PACKAGES_DIR'] btw'''
-    return Package(unix_name).open()
-
-class Contributor(yaml.YAMLObject):
-    '''used in package metadata'''
-    yaml_tag='!contributor'
-    def __init__(self, name, email=None, url=None):
-        self.name = name
-        self.email = email
-        self.url = url
-
-class Author(Contributor):
-    yaml_tag='!author'
+    if path == None:
+        return None
+    assert check_unix_name(path)
+    assert hasattr(settings,"paths")
+    assert settings.paths.has_key("SKDB_PACKAGE_DIR")
+    assert not (os.listdir(settings.paths["SKDB_PACKAGE_DIR"]).count(path) == 0)
+    package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)
+    #must have the required files
+    required_files = ["metadata.yaml", "template.yaml", "data.yaml"]
+    for file in required_files:
+       assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
+    #TODO: load metadata, load template
+    loaded_package = yaml.load(open(os.path.join(package_path, "metadata.yaml")))
+    print "loaded_package = ", loaded_package
+    return loaded_package
 
 class Package(FennObject):
     yaml_tag='!package'
-    def __init__(self, name, unix_name=None, license=None, urls=None, contributors=None):
+    yaml_type="mapping"
+    def __init__(self, name=None, unix_name=None, license=None, urls=None):
         self.name = name
         self.unix_name = unix_name
         if unix_name == None:
             self.unix_name = name
+            print "name = ", name
             assert check_unix_name(self.unix_name)
         self.package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],self.unix_name)
         self.license = license
         self.urls = urls
-        self.contributors = contributors
-        #self = self.open(self.unix_name)
-        #TODO inherit from some pretty container class
     def post_setstate_hook(self):
         if hasattr(self, 'template') and self.template:
             loaded_template = yaml.load(open(os.path.join(package_path, template))) #template is probably "template.yaml"
@@ -85,30 +87,6 @@ class Package(FennObject):
         '''checks for whether or not the package data makes sense'''
         assert False, "makes_sense is not yet implemented"
         pass
-    def open(self, path=None):
-        if path == None:
-            path = self.unix_name
-        assert check_unix_name(path)
-        assert hasattr(settings,"paths")
-        assert settings.paths.has_key("SKDB_PACKAGE_DIR") #FIXME: load up from environmental variables or global skdb config
-        #the path must actually exist
-        #assert(os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK))
-        assert not (os.listdir(settings.paths["SKDB_PACKAGE_DIR"]).count(path) == 0)
-        package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)
-        self.package_path = package_path
-        #must have the required files
-        required_files = ["metadata.yaml", "template.yaml", "data.yaml"] #maybe last one should be s/path/self\.name/?
-        for file in required_files:
-            assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
-        #TODO: load metadata, load template
-        #self = yaml.load(..) didn't work wtf?
-        #replace self's information with the loaded_package information
-        loaded_package = yaml.load(open(os.path.join(package_path, "metadata.yaml")))
-        for key in loaded_package.keys():
-            value = loaded_package[key]
-            if not loaded_package[key] == None:
-                self.__dict__[key] = value
-        return loaded_package #just in case
 
 class Distribution(FennObject):
     yaml_path = ['typical', 'feasible']
