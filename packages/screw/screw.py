@@ -1,5 +1,4 @@
 import skdb
-import skdb.pymates
 from skdb import Part, Thread
 from string import Template
 
@@ -7,7 +6,7 @@ __author__ = "ben lipkowitz, bryan bishop"
 __license__ = "GPL"
 __version__ = "0.0.1"
 __maintainer__ = "ben lipkowitz"
-__email__ = "fenn@sd.lonestar.org"
+__email__ = 'no thank you, sir'
 __status__ = "Development"
 
 class Screw(Part):
