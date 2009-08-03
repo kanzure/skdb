@@ -12,7 +12,15 @@ class FennObject(yaml.YAMLObject):
     def to_yaml(cls, dumper, data):
         if hasattr(cls, 'yaml_repr'):
             tmp = cls.yaml_repr(data)
-            return dumper.represent_scalar(cls.yaml_tag, tmp)
+            #yaml_type is used to determine whether or not it is a scalar or a mapping (you set this)
+            if hasattr(cls,"yaml_type"):
+                if cls.yaml_type == "scalar":
+                    return dumper.represent_scalar(cls.yaml_tag, tmp)
+                elif cls.yaml_type == "mapping":
+                    return dumper.represent_mapping(cls.yaml_tag, data)
+                else: assert False, "yaml_type must be either \"scalar\" or \"mapping\""
+            else:
+                return dumper.represent_scalar(cls.yaml_tag, tmp)
         else: 
             #i want to return the default yaml dump; but how?       
             #cls.to_yaml = yaml.YAMLObject.to_yaml
@@ -24,7 +32,14 @@ class FennObject(yaml.YAMLObject):
     @classmethod
     def from_yaml(cls, loader, node):
         '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
-        data = loader.construct_scalar(node)
+        if hasattr(cls,"yaml_type"):
+            if cls.yaml_type == "scalar":
+                data = loader.construct_scalar(node)
+            elif cls.yaml_type == "mapping":
+                data = loader.construct_mapping(node)
+            else: assert False, "yaml_type must be either \"scalar\" or \"mapping\""
+        else: 
+            data = loader.construct_scalar(node)
         if hasattr(cls, 'yaml_pattern') and hasattr(cls, 'yaml_parse_args') and cls.yaml_parse_args == True:
             match = re.search(cls.yaml_pattern, data)
             if match:
