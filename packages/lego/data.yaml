@@ -20,15 +20,14 @@ brick: !lego
  interfaces:
     - !Peg
         name: peg1
-        geometry: cylinder #this is not necessary since a Peg interface should know its geometry
+        geometry: !cylinder #this is not necessary since a Peg interface should know its geometry
+            height: 1.7mm
+            diameter: 5mm
+        point: [8, 8, 0.85] #center of stud's cylinder (z = cylinder_height/2 = 0.85)
+        orientation: [0,0,1] #point the interface in this direction, wrt the geometry's coord frame at instantiation
         files: #this is not necessary since a Peg interface can generate CAD
          - 'models/peg.step'
-        height: 1.7mm
-        diameter: 5mm
-        point: [8, 8, 0.85] #center of stud's cylinder (z = cylinder_height/2 = 0.85)
         #point it upwards (of course, Peg should know this too)
-        x: -180deg
-        y: -180deg
     - !Peg
         name: peg2
         point: [8, 16, 0.85]
