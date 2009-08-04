@@ -13,7 +13,6 @@ __status__ = "Development"
 class Lego(Part):
     '''standard lego part'''
     yaml_tag = "!lego"
-    yaml_type = "mapping"
     def setup(self, name, num_pegs=0, num_holes=0):
         '''sets up a lego part'''
         self.name = name
