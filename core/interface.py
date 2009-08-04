@@ -37,7 +37,7 @@ class Interface(yaml.YAMLObject):
         if not self.part == None:
             part_name = self.part.name
         else: part_name = None
-        return "Interface("%s")" % (self.name)
+        return 'Interface("%s")' % (self.name)
     def yaml_repr(self):
         return "name: %s\nidentifier: %s\nhermaphroditic: %s\nunits: %s\ngeometry: %s\npoint: %s\nx: %s\ny: %s\nz: %s\npart: %s" % (self.name, self.identifier, self.hermaphroditic, self.units, self.geometry, self.point, self.x, self.y, self.z, self.part)
 
