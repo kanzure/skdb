@@ -143,7 +143,7 @@ class Formula(FennObject, str):
 class Geometry(FennObject):
     yaml_tag = '!geometry'
     
-class Process: #(FennObject):
+class Process(FennObject):
     yaml_tag = '!process'
     def __init__(self, name):
         self.name, self.classification, self.mechanism, self.geometry, self.surface_finish, self.consumables, self.functionality, self.effects, self.parameters, self.safety = None, None, None, None, None, None, None, None, None, None
