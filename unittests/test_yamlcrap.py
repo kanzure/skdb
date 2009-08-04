@@ -21,6 +21,16 @@ class Test_dummy_tags(unittest.TestCase):
         self.init_tags()
         data='!sometag 123'
         self.assertRaises(yaml.constructor.ConstructorError, skdb.load, self.preamble+data)
+    def test_only_dummy_tags_affected(self):
+        self.init_tags()
+        self.assertEqual(type(skdb.load('!!int 123')), int)
+        class Foo(yaml.YAMLObject):
+            yaml_tag='!foo'
+            def __init__(self, val): pass
+        data='!foo 123'
+        print self.preamble+data
+        test = skdb.load(self.preamble+data) #why does this fail?
+        self.assertEqual(type(test), Foo)
     def test_scalar_attrib(self):
         self.init_tags()
         data='!hello\n test: 1234'
