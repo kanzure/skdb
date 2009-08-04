@@ -11,9 +11,11 @@ __email__ = "kanzure@gmail.com"
 __status__ = "Development"
 
 class Lego(Part):
-    yaml_tag = "!lego"
     '''standard lego part'''
-    def __init__(self, name, num_pegs=0, num_holes=0):
+    yaml_tag = "!lego"
+    yaml_type = "mapping"
+    def setup(self, name, num_pegs=0, num_holes=0):
+        '''sets up a lego part'''
         self.name = name
         self.interfaces = []
         for each in range(num_holes):
