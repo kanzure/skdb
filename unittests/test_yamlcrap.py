@@ -1,22 +1,52 @@
-#!/usr/bin/python
-import unittest
-import yaml
-import skdb
+import unittest, yaml, skdb
 
-class TestTagHack(unittest.TestCase):
-    def test_tag_hack(self):
-        yaml_string = "!tag_hack\n tags:\n - first_fake_class\n - second_fake_class\n--- #doc2\ntest1: !first_fake_class\ntest2: !second_fake_class"
-        loader = yaml.load_all(yaml_string)
-        self.assertTrue(loader.next())
-        self.assertTrue(loader.next())
-        #for some reason the following doesn't work
-        #self.assertRaises(loader.next(), StopIteration)
-        try: loader.next()
-        except StopIteration:
-            #ok it passed
-            ""
-        else:
-            self.assertFalse(True, message="hello")
+class Test_dummy_tags(unittest.TestCase):
+    def init_tags(self):
+        self.preamble='!!python/object:skdb.tag_hack \n tags: "!hello"\n---\n' #init dummy tags
+        #self.preamble='!tag_hack \n tags: "hello"\n---\n' #init dummy tags
+    def test_default(self):
+        test = skdb.load('!!python/object:skdb.tag_hack \n tags: "!hello"\n---\n'+'!hello 1234')
+        self.assertEqual(type(test), skdb.Dummy)
+    def test_scalar_node(self):
+        self.init_tags()
+        data='!hello 1234'
+        test = skdb.load(self.preamble+data)
+        self.assertEqual(type(test), skdb.Dummy)
+    def test_run_again(self): #same as above
+        self.init_tags()
+        data='!hello 1234'
+        test = skdb.load(self.preamble+data)
+        self.assertEqual(type(test), skdb.Dummy)
+    def test_bad_tag(self):
+        self.init_tags()
+        data='!sometag 123'
+        self.assertRaises(yaml.constructor.ConstructorError, skdb.load, self.preamble+data)
+    def test_scalar_attrib(self):
+        self.init_tags()
+        data='!hello\n test: 1234'
+        test = skdb.load(self.preamble+data)
+        self.assertEqual(type(test), skdb.Dummy)
+        
+    def test_mapping_attrib(self):
+        self.init_tags()
+        data='!hello\ntest:\n  test:\n  zonk: 1234'
+        test = skdb.load(self.preamble+data)
+        self.assertEqual(type(test), skdb.Dummy)
+    def init_multiple(self):
+        self.preamble='!!python/object:skdb.tag_hack \n tags: ["!hello", "!hi", "!hola"]\n---\n'
+    def test_multiple_tags(self):
+        self.init_multiple()
+        data='- !hello 1234\n- !hi 5678'
+        test = skdb.load(self.preamble+data)
+        self.assertEqual(type(test[0]), skdb.Dummy)
+        self.assertEqual(type(test[1]), skdb.Dummy)
+    def test_nested_tags(self):
+        self.init_multiple()
+        data='!hello\ntest: !hi 5678'
+        test = skdb.load(self.preamble+data)
+        self.assertEqual(type(test), skdb.Dummy)
+        self.assertEqual(type(test.test), skdb.Dummy)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
+
