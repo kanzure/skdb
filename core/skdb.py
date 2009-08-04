@@ -4,7 +4,8 @@
 import yaml
 import re
 import os
-from string import Template
+from string import Template as string_template
+from template import Template
 
 from units import Unit, Range, Uncertainty, UnitError, NaNError
 from interface import Interface, Connection, Mate
@@ -40,14 +41,16 @@ def open_package(path):
     for file in required_files:
        assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
     #TODO: load metadata, load template
-    loaded_package = yaml.load(open(os.path.join(package_path, "metadata.yaml")))
+    loaded_package = yaml.load_all(open(os.path.join(package_path, "metadata.yaml")))
     print "loaded_package = ", loaded_package
     return loaded_package
 
 class Package(FennObject):
     yaml_tag='!package'
     yaml_type="mapping"
-    def __init__(self, name=None, unix_name=None, license=None, urls=None):
+    def __init__(self): #, name, unix_name, license, urls):
+        self.name, self.unix_name, self.package_path, self.license = None, None, None, None
+        return
         self.name = name
         self.unix_name = unix_name
         if unix_name == None:

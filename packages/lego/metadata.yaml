@@ -1,37 +1,62 @@
+#!tag_hack
+!!python/object:skdb.tag_hack
+tags:
+- lego #!mapping
+- Peg
+- Hole
+#- !scalar legounits
+---
 !package
-maintainer: 'bryan bishop <kanzure@gmail.com>'
-license: 'GPL2+'
-urls:
-- 'http://www.me.utexas.edu/~adl/'
-- 'http://adl.serveftp.org/skdb.git/'
-- 'git://fennetic.net/git/skdb.git/'
+ maintainer: 'bryan bishop <kanzure@gmail.com>'
+ license: 'GPL2+'
+ urls:
+ - 'http://www.me.utexas.edu/~adl/'
+ - 'http://adl.serveftp.org/skdb.git/'
+ - 'git://fennetic.net/git/skdb.git/'
 
-name: lego
-functionality: supporting #a process name here
-created: 2009-07-31
-version: 0.0.1
-description: #package description
+ name: lego
+ functionality: supporting #a process name here
+ created: 2009-07-31
+ version: 0.0.1
+ description: #package description
     all sorts of lego bricks
-template: template.yaml
-classes: 
-- lego.Lego
-- lego.Peg
-- lego.Hole
-source data:
-- data.yaml
-generated data:
-- models/ #step files generated and placed in there?
-dependencies:
+ #template: template.yaml
+ template: !template
+   part: !lego
+      interfaces:
+         - !Peg
+            geometry: string #FIXME: this should be a tag (not a string saying "string")
+            units: m*m 
+            count: unbounded #how do you say there are multiple possible Peg interfaces in a lego brick?
+         - !Hole
+            geometry: string
+            units: m*m 
+            count: unbounded
+   name: string
+   material: string #ex: ABS plastic
+   #dimensions are for the bounding box
+   width: mm #manufactured with a tolerance of +- 2microns
+   height: mm #+- 2microns
+   depth: mm #+- 2microns
+ classes: 
+ - lego.Lego
+ - lego.Peg
+ - lego.Hole
+ source data:
+ - data.yaml
+ generated data:
+ - models/ #step files generated and placed in there?
+ dependencies:
     #options of different dependencies to choose from:
     build:
-        - or:
-            - injection molding
-            - fuse deposition modeling
-            - selective laser sintering #meh
-        - or:
-            - ABS
-            - polypropylene
-            - HDPE
+       - or:
+             - injection molding
+             - fuse deposition modeling
+             - selective laser sintering #meh
+       - or:
+             - ABS
+             - polypropylene
+             - HDPE
     use:
-        - null #a lego doesn't need anything to function properly
+       - null #a lego doesn't need anything to function properly
 

@@ -38,14 +38,16 @@ class FennObject(yaml.YAMLObject):
             return cls(data)
 
 class Dummy(object):
+    yaml_type="mapping" #assume it's a mapping
     def __init__(self, node):
+        setattr(self,"yaml_type","mapping")
         if hasattr(node, 'iteritems'):
             for (k,v) in node.iteritems(): setattr(self, k,v)
         else: self = node
     @staticmethod
     def multi_constructor(loader, tag_suffix, node):
         print yaml.dump(node)
-        data = loader.construct_scalar(node)
+        #data = loader.construct_scalar(node)
         if type(node) == yaml.ScalarNode:
             data = loader.construct_scalar(node)
         if type(node) == yaml.MappingNode:
@@ -57,8 +59,14 @@ class Dummy(object):
         
 #foo = yaml.load_all('!!python/object:skdb.tag_hack \n tags: "!hello"\n---\n test: !hello\n  1234')
 
-class tag_hack:
-    '''allows loading of a template file containing tags that do not exist yet'''
+class tag_hack(yaml.YAMLObject):
+    '''allows loading of a template file containing tags that do not exist yet
+    currently assumes a mapping (not a scalar) tag type'''
+    yaml_tag="!tag_hack"
+    yaml_type="mapping" #assume it's a mapping
+    #FIXME: yaml input should specify scalar/mapping
+    def __init__(self):
+        pass
     def __setstate__ (self, attrs):
         for i in attrs['tags']:
-            yaml.add_multi_constructor('!', Dummy.multi_constructor)
+            yaml.add_multi_constructor('', Dummy.multi_constructor)
