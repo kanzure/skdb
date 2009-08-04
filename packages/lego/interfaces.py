@@ -1,27 +1,27 @@
 #!/usr/bin/python
+'''this file more or less describes the grammar used for constructing things out of Lego'''
 from skdb import Interface
+#not done. see http://mr-bucket.co.uk/GLIDE/LCD_File_Format.html#Implimentation
 
-class Peg(Interface):
-    def compatible(self, other):
-        if isinstance(other, Hole):
-                return True
-        else: return False
-    def __repr__(self):
+class Feature(Interface):
+    @classmethod
+    def __repr__(cls):
         if not hasattr(self,"part") or self.part == None:
             part_name = "None"
         else:
             part_name = self.part.name
-        return "Peg(part=%s,id=%s)" % (part_name, self.identifier)
+        return "%s(part=%s,name=%s)" % (cls.__name__, part_name, self.name)
 
-class Hole(Interface):
-    def compatible(self, other):
-        if isinstance(other, Peg):
-                return True #ok so type based checking sucks. wah.
-        else: return False
-    def __repr__(self):
-        if not hasattr(self,"part") or self.part == None:
-            part_name = "None"
-        else:
-            part_name = self.part.name
-        return "Hole(part=%s,id=%s)" % (part_name, self.identifier)
+class Edge(Feature):
+    def __init__(self):
+        self.complement=Edge
+
+class Stud(Feature):
+    def __init__(self):
+        self.complement = Hole
+
+class Antistud(Feature):
+    def __init__(self):
+        self.complement = Peg
+
 

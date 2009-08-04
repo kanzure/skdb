@@ -30,7 +30,7 @@ class TestPymates(unittest.TestCase):
         #reset all parts
         pymates.total_parts = []
         #make a new interface
-        block_interface = Interface(name="a hole", point=[0,5,0], x=-90, z=90)
+        block_interface = Interface(name="a hole", point=[0,5,0], orientation=[0,0,1], rotation=90) #i dont know the actual values
         #make the part
         block = Part(description='a rectangular prism',created="2009-07-22",interfaces=[block_interface])
         #make some geometry
