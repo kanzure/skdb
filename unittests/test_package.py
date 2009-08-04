@@ -10,6 +10,12 @@ class TestPackage(unittest.TestCase):
         '''tests skdb.open_package'''
         lego = skdb.open_package("lego")
         self.assertTrue(lego.makes_sense())
+        pass
+    def test_load(self):
+        '''tests skdb.load'''
+        lego = skdb.open_package("lego")
+        self.assertTrue(lego.makes_sense())
+        pass
     def test_generic_package_compatibile(self):
         '''this tests whether or not two packages are even generically compatible.
         what this means is that it does not check whether or not two parts are compatible,
