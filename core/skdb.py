@@ -41,7 +41,7 @@ def open_package(path):
     for file in required_files:
        assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
     #TODO: load metadata, load template
-    loaded_package = skdb.load(open(os.path.join(package_path, "metadata.yaml")))
+    loaded_package = load(open(os.path.join(package_path, "metadata.yaml")))
     return loaded_package
 
 class Package(FennObject):
