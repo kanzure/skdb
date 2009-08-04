@@ -1,8 +1,8 @@
 !!python/object:skdb.tag_hack
-mapping_tags:
-- lego
-- Peg
-- Hole
+tags:
+- "!lego"
+- "!Peg"
+- "!Hole"
 ---
 !package
  maintainer: 'bryan bishop <kanzure@gmail.com>'

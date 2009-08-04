@@ -1,6 +1,6 @@
 !!python:object/skdb.tag_hack
-mapping_tags:
-- screw
+tags:
+- "!screw"
 ---
 !package
 maintainer: 'fenn <fenn@sdf.lonestar.org>'
