@@ -46,15 +46,12 @@ class Dummy(object):
         else: self = node
     @staticmethod
     def multi_constructor(loader, tag_suffix, node):
-        print yaml.dump(node)
         #data = loader.construct_scalar(node)
         if type(node) == yaml.ScalarNode:
             data = loader.construct_scalar(node)
         if type(node) == yaml.MappingNode:
             data = loader.construct_mapping(node)
         #else: raise TypeError, node#, 'i dont know what to do with this node'
-        print '---------------'
-        print yaml.dump(data)
         return Dummy(data)
         
 #foo = yaml.load_all('!!python/object:skdb.tag_hack \n tags: "!hello"\n---\n test: !hello\n  1234')
