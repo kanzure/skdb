@@ -11,17 +11,17 @@ class TestPackage(unittest.TestCase):
         lego = skdb.open_package("lego")
         self.assertTrue(lego.makes_sense())
         pass
-     def test_load(self):
+    def test_load(self):
         '''tests skdb.load'''
-        lego = skdb.load("lego")
+        lego = skdb.open_package("lego")
         self.assertTrue(lego.makes_sense())
         pass
-     def test_generic_package_compatibile(self):
+    def test_generic_package_compatibile(self):
         '''this tests whether or not two packages are even generically compatible.
         what this means is that it does not check whether or not two parts are compatible,
         but instead checks whether or not two given packages are going to have compatible parts.'''
-        lego_package = skdb.load("lego")
-        lego_package2 = skdb.load("lego")
+        lego_package = skdb.open_package("lego")
+        lego_package2 = skdb.open_package("lego")
         self.assertTrue(lego_package.compatible(lego_package2))
         self.assertTrue(lego_package2.compatible(lego_package))
     def test_package_part(self):
@@ -30,7 +30,7 @@ class TestPackage(unittest.TestCase):
         peg_count = 4 #number of pegs the block should have
         hole_count = 1 #number of holes the block should have
         #load the package
-        lego_package = skdb.load("lego")
+        lego_package = skdb.open_package("lego")
         #make a lego part
         #TODO: Package should load up all classes and add them in to the current namespace (Package.Lego, Package.Hole, etc.)
         block = lego_package.Lego()
