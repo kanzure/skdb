@@ -181,13 +181,16 @@ class Bolt(Fastener):
         self.screw = screw
         self.nut = nut
 
+implicit_resolved=[]
 def load(string):
+    global implicit_resolved
     for cls in [Range, RuntimeSwitch, Formula, Uncertainty]: #only one at a time works so far?
-        if hasattr(cls, 'yaml_pattern'):
+        if hasattr(cls, 'yaml_pattern') and cls not in implicit_resolved:
             yaml.add_implicit_resolver(cls.yaml_tag, re.compile(cls.yaml_pattern))
+            implicit_resolved.append(cls)
     tmp = yaml.load_all(string)
     rval = tmp.next()
-    if type(rval) == tag_hack: return tmp.next()
+    if type(rval) == tag_hack: return tmp.next() #a document listing which tags to ignore comes before the real metadata
     else: return rval
 
 def dump(value, filename=None):
