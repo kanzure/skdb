@@ -42,8 +42,8 @@ def open_package(path):
        assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
     #TODO: load metadata, load template
     loaded_package = yaml.load_all(open(os.path.join(package_path, "metadata.yaml")))
-    print "loaded_package = ", loaded_package
-    return loaded_package
+    loaded_package.next()
+    return loaded_package.next()
 
 class Package(FennObject):
     yaml_tag='!package'
