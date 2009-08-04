@@ -42,8 +42,8 @@ def open_package(path):
        assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
     #TODO: load metadata, load template
     loaded_package = yaml.load_all(open(os.path.join(package_path, "metadata.yaml")))
-    loaded_package.next()
-    return loaded_package.next()
+    print "loaded_package = ", loaded_package
+    return loaded_package
 
 class Package(FennObject):
     yaml_tag='!package'
@@ -185,7 +185,10 @@ def load(string):
     for cls in [Range, RuntimeSwitch, Formula, Uncertainty]: #only one at a time works so far?
         if hasattr(cls, 'yaml_pattern'):
             yaml.add_implicit_resolver(cls.yaml_tag, re.compile(cls.yaml_pattern))
-    return yaml.load(string)
+    tmp = yaml.load_all(string)
+    rval = tmp.next()
+    if type(rval) == tag_hack: return tmp.next()
+    else: return rval
 
 def dump(value, filename=None):
     retval = yaml.dump(value, default_flow_style=False)
