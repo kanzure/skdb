@@ -32,41 +32,35 @@ class FennObject(yaml.YAMLObject):
                     if value is not None:
                         setattr(rval, key, value)
                 return rval
-            else: raise ValueError, "yaml_type must be either \"scalar\" or \"mapping\""
+            else: raise ValueError, "yaml_type must be either \"scalar\" or \"mapping\"; got: " + str(cls.yaml_type)
         else: 
             data = loader.construct_scalar(node)
             return cls(data)
 
 class Dummy(object):
-    yaml_type="mapping" #assume it's a mapping
     def __init__(self, node):
-        setattr(self,"yaml_type","mapping")
         if hasattr(node, 'iteritems'):
             for (k,v) in node.iteritems(): setattr(self, k,v)
         else: self = node
     @staticmethod
     def multi_constructor(loader, tag_suffix, node):
-        print yaml.dump(node)
-        #data = loader.construct_scalar(node)
         if type(node) == yaml.ScalarNode:
             data = loader.construct_scalar(node)
-        if type(node) == yaml.MappingNode:
+        elif type(node) == yaml.MappingNode:
             data = loader.construct_mapping(node)
-        #else: raise TypeError, node#, 'i dont know what to do with this node'
-        print '---------------'
-        print yaml.dump(data)
+        else: raise TypeError, 'I dont know what to do with this node: ' + str(node)
         return Dummy(data)
         
 #foo = yaml.load_all('!!python/object:skdb.tag_hack \n tags: "!hello"\n---\n test: !hello\n  1234')
 
-class tag_hack(yaml.YAMLObject):
-    '''allows loading of a template file containing tags that do not exist yet
-    currently assumes a mapping (not a scalar) tag type'''
+class tag_hack(FennObject):
+    '''allows loading of a template file containing tags that do not exist yet.
+     prepend something like this to the actual document: 
+    !tag_hack tags: ["!one", "!two", "!three"]\n---\n'''
     yaml_tag="!tag_hack"
     yaml_type="mapping" #assume it's a mapping
-    #FIXME: yaml input should specify scalar/mapping
     def __init__(self):
         pass
     def __setstate__ (self, attrs):
         for i in attrs['tags']:
-            yaml.add_multi_constructor('', Dummy.multi_constructor)
+            yaml.add_multi_constructor(i, Dummy.multi_constructor)
