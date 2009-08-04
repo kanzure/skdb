@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import unittest
 import copy
-from skdb import Part
+from skdb import Part, Package
 import skdb.pymates as pymates
 
 class TestPart(unittest.TestCase):

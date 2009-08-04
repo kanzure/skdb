@@ -1,10 +1,8 @@
-#!tag_hack
 !!python/object:skdb.tag_hack
-tags:
-- lego #!mapping
+mapping_tags:
+- lego
 - Peg
 - Hole
-#- !scalar legounits
 ---
 !package
  maintainer: 'bryan bishop <kanzure@gmail.com>'

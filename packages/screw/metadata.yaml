@@ -1,3 +1,7 @@
+!!python:object/skdb.tag_hack
+mapping_tags:
+- screw
+---
 !package
 maintainer: 'fenn <fenn@sdf.lonestar.org>'
 license: 'GPL2+'
@@ -10,11 +14,34 @@ urls:
 name: screw
 functionality: fastening #a process name here
 created: 2008-11-16
-updated: 2009-07-24
+updated: 2009-08-04
 version: 0.0.1
 description: #package description
     a typical screw found at a hardware store.
-template: template.yaml
+template: !template
+ screw: !screw
+    thread: !thread 
+        interfaces:
+            - !interface &thread_tighten
+            name: thread-tighten
+            units: N
+            - !interface &thread_loosen
+            name: thread-loosen
+            units: N
+    diameter: in
+    form: string 
+    pitch: rev/in
+    interfaces: #or should this go in screw.py?
+    - *thread_tighten
+    - *thread_loosen
+    - !interface
+        name: compression-face
+        units: N
+    - !interface
+        name: torque-spline
+        units: N*m/rev
+    grade: string
+    length: in
 classes: 
 - screw.Screw
 source data:

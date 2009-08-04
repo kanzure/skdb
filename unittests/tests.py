@@ -90,9 +90,7 @@ class TestUnits(unittest.TestCase):
         
     def test_somethingorother(self): #is this even desirable?
         self.assertTrue(skdb.Unit('1') > 0.9)
-        
-        
-        
+
 class TestScrew(unittest.TestCase):
     import skdb.packages.screw.screw as screw
     def test_conversions(self):
