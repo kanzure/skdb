@@ -60,14 +60,6 @@ class Package(FennObject):
         self.package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],self.unix_name)
         self.license = license
         self.urls = urls
-    def post_setstate_hook(self):
-        if hasattr(self, 'template') and self.template:
-            loaded_template = yaml.load(open(os.path.join(package_path, template))) #template is probably "template.yaml"
-            self.template = loaded_template
-            self.__setattr__(k,v)
-        if hasattr(self, 'classes') and self.classes:
-            #what?
-            pass
     def load(self, content):
         '''loads some yaml (not necessarily into type Package)
         it's kind of fishy since a package is multiple files at the moment.'''
