@@ -27,9 +27,8 @@ class Test_dummy_tags(unittest.TestCase):
         class Foo(yaml.YAMLObject):
             yaml_tag='!foo'
             def __init__(self, val): pass
-        data='!foo 123'
-        print self.preamble+data
-        test = skdb.load(self.preamble+data) #why does this fail?
+        data='!foo\nbar: 123'
+        test = skdb.load(self.preamble+data)
         self.assertEqual(type(test), Foo)
     def test_scalar_attrib(self):
         self.init_tags()
