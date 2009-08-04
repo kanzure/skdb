@@ -46,7 +46,6 @@ def open_package(path):
 
 class Package(FennObject):
     yaml_tag='!package'
-    yaml_type="mapping"
     def __init__(self): #, name, unix_name, license, urls):
         self.name, self.unix_name, self.package_path, self.license = None, None, None, None
         return

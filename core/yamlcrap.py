@@ -12,7 +12,6 @@ class FennObject(yaml.YAMLObject):
     def to_yaml(cls, dumper, data):
         if hasattr(data, 'yaml_repr'):
             return dumper.represent_scalar(data.yaml_tag, data.yaml_repr())
-            #yaml_type is used to determine whether or not it is a scalar or a mapping (you set this)
         else: 
             #return the default yaml dump
             if len(data.__dict__) > 0: return dumper.represent_mapping(cls.yaml_tag, data.__dict__.iteritems())
@@ -21,21 +20,21 @@ class FennObject(yaml.YAMLObject):
     @classmethod
     def from_yaml(cls, loader, node):
         '''see http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers'''
-        if hasattr(cls,"yaml_type"):
-            if cls.yaml_type == "scalar":
-                data = loader.construct_scalar(node)
-            elif cls.yaml_type == "mapping":
-                data = loader.construct_mapping(node) #will this break path_resolver?
-                rval = cls()
-                #stuff data into object's attributes
-                for (key, value) in data.iteritems():
-                    if value is not None:
-                        setattr(rval, key, value)
-                return rval
-            else: raise ValueError, "yaml_type must be either \"scalar\" or \"mapping\"; got: " + str(cls.yaml_type)
-        else: 
+        if type(node)==yaml.ScalarNode:
             data = loader.construct_scalar(node)
+            return cls(data) #assuming that the class has one positional arg
+        elif type(node) == yaml.MappingNode:
+            data = loader.construct_mapping(node) #will this break path_resolver?
+            rval = cls()
+            #stuff data into object's attributes
+            for (key, value) in data.iteritems():
+                if value is not None:
+                    setattr(rval, key, value)
+            return rval
+        elif type(node) == yaml.SequenceNode:
+            data = loader.construct_sequence(node)
             return cls(data)
+        else: raise ValueError, "node type must be scalar, mapping, or sequence; got: " + str(cls.yaml_type)
 
 class Dummy(object):
     def __init__(self, node):
@@ -58,7 +57,6 @@ class tag_hack(FennObject):
      prepend something like this to the actual document: 
     !tag_hack tags: ["!one", "!two", "!three"]\n---\n'''
     yaml_tag="!tag_hack"
-    yaml_type="mapping" #assume it's a mapping
     def __init__(self):
         pass
     def __setstate__ (self, attrs):
