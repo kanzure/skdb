@@ -7,11 +7,11 @@ screw: !screw
  thread: !thread 
     interfaces:
         - !interface &thread_tighten
-        name: thread-tighten
-        units: N
+          name: thread-tighten
+          units: N
         - !interface &thread_loosen
-        name: thread-loosen
-        units: N
+          name: thread-loosen
+          units: N
     diameter: in
     form: string 
     pitch: rev/in
