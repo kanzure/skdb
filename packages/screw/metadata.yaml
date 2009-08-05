@@ -3,7 +3,7 @@ tags:
 - "!screw"
 ---
 !package
-maintainer: 'fenn <fenn@sdf.lonestar.org>'
+maintainer: 'fenn <fenn@users.sf.net>'
 license: 'GPL2+'
 urls:
 - 'http://www.me.utexas.edu/~adl/'
