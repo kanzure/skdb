@@ -32,6 +32,7 @@ import os
 import random
 import copy
 import numpy
+import math
 import wx
 import OCC.gp
 import OCC.BRepPrimAPI
@@ -42,7 +43,7 @@ import OCC.GC
 import OCC.Geom
 import geom
 from assembly import Assembly
-from skdb import Part, Interface, Mate
+from skdb import Part, Interface, Mate, Unit
 
 total_parts = []
 
@@ -81,20 +82,49 @@ def demo(event=None):
     total_parts.append(blockhole)
     total_parts.append(peg)
 
-def mate_parts(event=None):
-    '''mate the first and second part in total_parts. rotates first about x, then about z.'''
-    #see transform_point()
-    if len(total_parts) < 1: return #meh
-    part1 = total_parts[0]
-    part2 = total_parts[1]
-    interface1 = part1.interfaces[0]
-    interface2 = part2.interfaces[0]
+def mate_interfaces(interface1, interface2):
+    return mate_parts(part1=interface1.part, part2=interface2.part, interface1=interface1, interface2=interface2)
+
+def convert_interface(interface2):
+    '''warning: this manipulates the input object'''
+    if not interface2.converted:
+        if type(interface2.x) != Unit:
+            interface2.x = Unit(str(interface2.x) + "deg")
+        if type(interface2.y) != Unit:
+            interface2.y = Unit(str(interface2.y) + "deg")
+        
+        interface2.x = interface2.x.conv_factor("radians")
+        interface2.y = interface2.y.conv_factor("radians")
+        interface2.converted = True
+    return
+
+def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=None):
+    if part1 == None and part2 == None:
+        if len(total_parts) < 1: return #meh
+        part1 = total_parts[0]
+        part2 = total_parts[1]
+    if interface1 == None and interface2 == None:
+        #default: first interface on both parts
+        interface1 = part1.interfaces[0]
+        interface2 = part2.interfaces[0]
+    else:
+        part1 = interface1.part
+        part2 = interface2.part
     point1 = interface1.point
     point2 = interface2.point
+
+    #some simple checks
+    #assert type(interface1.x) == Unit, "interface1.x should be of type skdb.Unit()"
+    #assert type(interface1.y) == Unit, "interface1.y should be of type skdb.Unit()"
+    #assert type(interface2.x) == Unit, "interface2.x should be of type skdb.Unit()"
+    #assert type(interface2.y) == Unit, "interface2.y should be of type skdb.Unit()"
+    convert_interface(interface1)
+    convert_interface(interface2)
+
     occ_point1 = OCC.gp.gp_Pnt(point1[0], point1[1], point1[2])
     occ_point2 = OCC.gp.gp_Pnt(point2[0], point2[1], point2[2])
     
-    pivot_point = OCC.gp.gp_Pnt(0,0,0) #rotate about the origin, right?
+    pivot_point = OCC.gp.gp_Pnt(0,0,0) #rotate about the origin
     x_rotation = OCC.gp.gp_Dir(1,0,0) #OCC.gp.gp_Dir(interface2.x[0], interface2.x[1], interface2.x[2])
     y_rotation = OCC.gp.gp_Dir(0,1,0) #OCC.gp.gp_Dir(interface2.j[0], interface2.j[1], interface2.j[2])
     z_rotation = OCC.gp.gp_Dir(0,0,1) #OCC.gp.gp_Dir(interface2.k[0], interface2.k[1], interface2.k[2])
@@ -105,7 +135,7 @@ def mate_parts(event=None):
     transformation.SetTranslation(occ_point2, occ_point1)
 
     brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
-    brep_transform.Perform(part2.shapes[0])
+    brep_transform.Perform(part2.shapes[0]) #shapes[0] is the original shape
     resulting_shape = brep_transform.Shape()
 
     OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
@@ -161,6 +191,26 @@ def make_vertex(pnt):
     vertex.Build()
     return vertex.Vertex()
 
+def angle_to(x,y,z):
+    '''returns polar coordinates in radians to a point from the origin            
+    a rotates around the x-axis; b rotates around the y axis; r is the distance'''
+    azimuth = math.atan2(y, x) #longitude                                       
+    elevation = math.atan2(z, math.sqrt(x**2 + y**2))    
+    radius = math.sqrt(x**2+y**2+z**2)    
+    return((azimuth, elevation, radius))
+
+def point_shape(origin):
+    '''rotates a shape to point along origin's direction. this function ought to be unnecessary'''
+    assert type(origin) == OCC.gp.gp_Ax1
+    #ox, oy, oz = origin.Location().X(), origin.Location().Y(), origin.Location().Z() #ffs
+    ox, oy, oz = 0, 0, 0
+    dx, dy, dz = origin.Direction().X(), origin.Direction().Y(), origin.Direction().Z()
+    (az, el, rad) = angle_to(dx-ox, dy-oy, dz-oz)
+    print "az: %s, el: %s, rad: %s... dx: %s, dy: %s, dz %s)" % (az, el, rad, dx, dy, dz) 
+    #el-math.pi/2
+    #az-math.pi/2
+    return (el, az)
+
 def show_interface_arrows(event=None,arrow_length=5,rotx2=None,roty2=None):
     '''displays vectors pointing in the mating direction, for every part and every part's interfaces'''
     color_counter = 0
@@ -173,6 +223,7 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=None,roty2=None):
              ]
     for part in total_parts:
         for interface in part.interfaces:
+            interface.part = part
             try:
                 color = colors[color_counter]
             except IndexError:
@@ -180,11 +231,34 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=None,roty2=None):
             point = OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2])
             point2 = OCC.gp.gp_Pnt(interface.point[0], interface.point[1], interface.point[2]+arrow_length)
             old_pt2 = copy.copy(point2)
-            interface.convert()
-            rotx, roty = interface.x, interface.y
+            rotx = None
+            roty = None
+            print "interface = ", interface
+            print "interface.converted = ", interface.converted
+            if (not interface.converted):
+                print "HELLO"
+                #convert from degrees to radians
+                interface.x = Unit(str(interface.x) + "deg") # + "deg")
+                interface.x = interface.x.conv_factor("radian")
+                interface.y = Unit(str(interface.y) + "deg") # + "deg")
+                interface.y = interface.y.conv_factor("radian")
+                interface.converted = True
+                #get the value
+                rotx, roty = interface.x, interface.y
+            elif hasattr(interface, "orientation"):
+                #convert from orientation to rotation
+                orientation = interface.orientation
+                (el, az) = point_shape(OCC.gp.gp_Ax1(orientation))
+                rotx = el
+                roty = az #er, not quite
+            else:
+                rotx = interface.x
+                roty = interface.y
+
             if not rotx2 == None and not roty2 == None:
                 rotx, roty = rotx2, roty2
             print "rotx = %s\nroty = %s" % (rotx, roty)
+
             x_dir = OCC.gp.gp_Dir(1,0,0)
             y_dir = OCC.gp.gp_Dir(0,1,0)
             z_dir = OCC.gp.gp_Dir(0,0,1)
