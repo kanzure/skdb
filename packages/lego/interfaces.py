@@ -12,6 +12,8 @@ class Joint:
 
 class SphericalJoint(Joint): pass
 
+class PlanarJoint(Joint): pass
+
 class RevoluteJoint(Joint): pass
 
 class PrismaticJoint(Joint): pass
@@ -40,9 +42,11 @@ class SnapFit(Feature):
     '''same as PressFit but with no friction, and a restorative force'''
     pass
 
-class Edge(Feature, PrismaticJoint):
+class Face(Feature, PlanarJoint):
     def __init__(self):
-        self.complement=[Edge, Tire]
+        self.complement=[Face, Tire]
+
+#class Edge to refer to the rim around each brick?
 
 class Stud(RevoluteJoint, PressFit):
     def __init__(self):
@@ -50,14 +54,35 @@ class Stud(RevoluteJoint, PressFit):
         self.example = 3005
         
 class AntiStud(RevoluteJoint, PressFit):
+    '''this typically has 3 or 4 contact points, but isn't round'''
     def __init__(self):
         self.complement = Stud
         self.example = 3005
-        
-class SingleAntiStud(AntiStud):
-    #self.example = 3062a
-    pass #something about fitting between 4 studs as well
 
+class StudHole(RevoluteJoint, PressFit):
+    def __init__(self):
+        self.complement = [Stud, AntiStudHole]
+        self.example = 4073
+
+class AntiStudHole(RevoluteJoint, PressFit):
+    ''''this occurs when there are 4 Studs or TechnicStuds in a square'''
+    def __init__(self):
+        self.complement = StudHole
+        self.example = 2654
+
+class TallStudHole(StudHole):
+    def __init__(self):
+        self.complement = [Stud, AntiStudHole]
+        self.example = '3062a'
+
+class TechnicStud(Stud):
+    pass
+
+class HollowStud(Stud, PrismaticJoint):
+    def __init__(self):
+        self.complement = [Rod, AntiStud]
+        self.example = '3062b'
+        
 class DuploStud(PressFit):
     def __init__(self):
         self.complement = DuploAntiStud
@@ -68,10 +93,15 @@ class DuploAntiStud(PressFit):
 
 class Rod(RevoluteJoint, PressFit):
     def __init__(self):
-        self.complement = Claw
+        self.complement = [Claw, RodHole, HollowStud]
         self.example = 3957
-        
-class Claw(RevoluteJoint, PressFit):
+
+class RodHole(RevoluteJoint, PressFit):
+    def __init__(self):
+        self.complement = Rod
+        self.example = '4081b'
+
+class Claw(RevoluteJoint, SnapFit, PressFit):
     def __init__(self):
         self.complement = Rod
         self.example = 6019
@@ -150,6 +180,38 @@ class TireOuter(GearJoint, Feature):
 class Hinge(SnapFit, RevoluteJoint):
     '''blah blah blah flexible kinematic constraint stuff goes here'''
     pass
+
+class SwivelTop(Hinge):
+    '''is this really a MinifigShoulder?'''
+    def __init__(self):
+        self.complement = SwivelBottom
+        self.example = 3679
+        
+class SwivelBottom(Hinge):
+    '''is this really a MinifigShoulderHole?'''
+    def __init__(self):
+        self.complement = SwivelTop
+        self.example = 3680
+
+class TurntableTop(Hinge):
+    def __init__(self):
+        self.complement = TurntableBottom
+        self.example = 3404
+
+class TurntableBottom(Hinge):
+    def __init__(self):
+        self.complement = TurntableTop
+        self.example = 3403
+
+class ScissorHingeTop(Hinge):
+    def __init__(self):
+        self.complement = ScissorHingeBottom
+        self.example = 2430
+
+class ScissorHingeBottom(Hinge):
+    def __init__(self):
+        self.complement = ScissorHingeTop
+        self.example = 2429
 
 class ElevationHingeHolder(Hinge):
     def __init__(self):
