@@ -39,7 +39,7 @@ class PressFit(Feature):
     pass
 
 class SnapFit(Feature):
-    '''same as PressFit but with no friction, and a restorative force'''
+    '''same as PressFit but with less friction, and a restorative force'''
     pass
 
 class Face(Feature, PlanarJoint):
@@ -59,29 +59,30 @@ class AntiStud(RevoluteJoint, PressFit):
         self.complement = Stud
         self.example = 3005
 
-class StudHole(RevoluteJoint, PressFit):
+class StudCup(RevoluteJoint, PressFit):
     def __init__(self):
-        self.complement = [Stud, AntiStudHole]
+        self.complement = [Stud, AntiStudCup]
         self.example = 4073
 
-class AntiStudHole(RevoluteJoint, PressFit):
+class AntiStudCup(RevoluteJoint, PressFit):
     ''''this occurs when there are 4 Studs or TechnicStuds in a square'''
     def __init__(self):
-        self.complement = StudHole
+        self.complement = StudCup
         self.example = 2654
 
-class TallStudHole(StudHole):
+class TallStudCup(StudCup):
     def __init__(self):
-        self.complement = [Stud, AntiStudHole]
+        self.complement = [Stud, AntiStudCup]
         self.example = '3062a'
 
 class TechnicStud(Stud):
     pass
 
-class HollowStud(Stud, PrismaticJoint):
+class HollowStud(Stud, PrismaticJoint): 
     def __init__(self):
+        assert isinstance(self, RevoluteJoint)
         self.complement = [Rod, AntiStud]
-        self.example = '3062b'
+        self.example = '3062b' #4081b
         
 class DuploStud(PressFit):
     def __init__(self):
@@ -93,13 +94,8 @@ class DuploAntiStud(PressFit):
 
 class Rod(RevoluteJoint, PressFit):
     def __init__(self):
-        self.complement = [Claw, RodHole, HollowStud]
+        self.complement = [Claw, HollowStud]
         self.example = 3957
-
-class RodHole(RevoluteJoint, PressFit):
-    def __init__(self):
-        self.complement = Rod
-        self.example = '4081b'
 
 class Claw(RevoluteJoint, SnapFit, PressFit):
     def __init__(self):
