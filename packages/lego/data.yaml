@@ -7,7 +7,7 @@ urls:
 
 #1FLU = 1 * "fundamental lego unit"
 parts:
- - !lego
+ - !lego &wah
   name: 2x2 round brick
   description: some crap i found in the national design repository
   size: 2x2 #the Lego class should be able to generate the interfaces from this
