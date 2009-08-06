@@ -12,6 +12,7 @@ dep/
 
 doc/
     instructions for how to use SKDB (maybe some day)
+
 doc/BOMs
     miscellaneous "required materials" lists for different fields of study (half-baked)
 
@@ -19,7 +20,7 @@ doc/proposals
     pseudo-code used by the developers to bounce ideas off each other
 
 icons/
-    generic representationss of manufacturing techniques. this will move soon
+    generic representations of manufacturing techniques. this will move soon
 
 import_tools/
     command line scripts that are used to convert from external file formats and databases
