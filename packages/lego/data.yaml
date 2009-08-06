@@ -84,7 +84,7 @@ parts:
     - !lego_feature
         name: peg1
         type: Stud
-        geometry: !cylinder #this is not necessary since a Peg interface should know its geometry
+        geometry: #!cylinder #this is not necessary since a Peg interface should know its geometry
             height: 1.7mm
             diameter: 5mm
         point: [8, 8, 0.85] #center of stud's cylinder (z = cylinder_height/2 = 0.85)
