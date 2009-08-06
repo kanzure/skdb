@@ -3,13 +3,27 @@
 import yaml
 import time
 from interface import Mate
+from yamlcrap import FennObject
 
-class Part(yaml.YAMLObject):
+class Part(FennObject):
     '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.
     should a part without an interface be invalid?'''
     yaml_tag = '!part'
+    name = ""
+    description = ""
+    created = ""
+    files = []
+    interfaces = [] #"it's not a dict because you can have multiple interfaces with the same name"
     def __init__(self, name=None, description=None, created=time.time(), files=[], interfaces={}):
         self.name, self.description, self.created, self.files, self.interfaces = name, description, created, files, interfaces
+        self.name = ""
+    def makes_sense(self):
+        '''checks whether or not this part makes sense
+        classes that inherit from Part should have their own makes_sense method.
+        returns True if the data loaded up for the part makes sense.
+        returns False if the data loaded up for the part does not make sense.
+        '''
+        return True
     def options(self, part):
         '''what can this part connect to?'''
         interface_list = set(part.interfaces)

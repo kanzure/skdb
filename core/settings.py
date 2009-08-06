@@ -21,3 +21,7 @@ except KeyError, err:
 paths = {
         'SKDB_PACKAGE_DIR': SKDB_PACKAGE_DIR,
         }
+
+def package_path(package_name):
+    '''returns the full package path'''
+    return os.path.join(SKDB_PACKAGE_DIR,package_name)

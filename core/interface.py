@@ -13,17 +13,18 @@ class Interface(yaml.YAMLObject):
         self.max_connections = max_connections
         self.connected = None
         self.identifier = None
+        self.complement = Interface #should be overwritten for specific problem domains
     def is_busy(self):
-        '''really really generic: it's compatible if it's the first one'''
         if self.connected >= self.max_connections: return True
         else: return False
     def compatible(self, other):
-        '''Returns True if other is complementary.This method should probably get overwritten for specific problem domains.'''
+        '''returns True if other is complementary. this method should probably get overwritten for specific problem domains.'''
         if isinstance(other, self.complement):
             return True
         else: return False
     def options(self, parts):
         '''what can this interface connect to?'''
+        #FIXME: what about options(self,interface)?
         parts = set(parts) #yay sets!
         if self.part in parts: parts.remove(self.part) #unless it's really flexible
         rval = set()
@@ -37,7 +38,7 @@ class Interface(yaml.YAMLObject):
         if not self.part == None:
             part_name = self.part.name
         else: part_name = None
-        return 'Interface("%s")' % (self.name)
+        return 'Interface("%s", part="%s")' % (self.name, part_name)
     def yaml_repr(self):
         return "name: %s\nidentifier: %s\nhermaphroditic: %s\nunits: %s\ngeometry: %s\npoint: %s\nx: %s\ny: %s\nz: %s\npart: %s" % (self.name, self.identifier, self.hermaphroditic, self.units, self.geometry, self.point, self.x, self.y, self.z, self.part)
 
@@ -56,6 +57,9 @@ class Connection:
         return "Connection(%s, %s)" % (self.interface1, self.interface2)
 
 class Mate(Connection):
-    '''wtf is a Mate anyway? presumably there's some geometry involved?'''
+    def apply(self):
+        '''apply this option for mating'''
+    def makes_sense(self):
+        return 1
     def __repr__(self):
-        return "Mate(%s, %s)" % (self.interface1, self.interface2)
+        return "Mating(%s, %s)" % (self.interface1, self.interface2)
