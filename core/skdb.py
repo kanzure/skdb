@@ -80,7 +80,7 @@ class Package(FennObject):
         self.package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],self.unix_name)
         self.license = license
         self.urls = urls
-    def load(self, content, only_classes=None:
+    def load(self, content, only_classes=None):
         '''loads some yaml (not necessarily into type Package)
         it's kind of fishy since a package is multiple files at the moment.'''
         returns = yaml.load(content)
