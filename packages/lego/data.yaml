@@ -12,7 +12,8 @@ parts:
   description: some crap i found in the national design repository
   size: 2x2 #the Lego class should be able to generate the interfaces from this
   material: ABS
-  cad_file: brick_thick_round.stp
+  files:
+  - brick_thick_round.stp
   interfaces:
     - !lego_feature
       origin: [-8.0, 0.0, -8.0]
