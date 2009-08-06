@@ -86,16 +86,24 @@ def mate_interfaces(interface1, interface2):
     return mate_parts(part1=interface1.part, part2=interface2.part, interface1=interface1, interface2=interface2)
 
 def convert_interface(interface2):
-    '''warning: this manipulates the input object'''
+    '''warning: this manipulates the input object
+    first checks if the interface2 has been converted from degrees to radians, or converted from the orientation vector to radians'''
     if not interface2.converted:
-        if type(interface2.x) != Unit:
-            interface2.x = Unit(str(interface2.x) + "deg")
-        if type(interface2.y) != Unit:
-            interface2.y = Unit(str(interface2.y) + "deg")
+        if not hasattr(interface2,"x"):
+            if type(interface2.x) != Unit:
+                interface2.x = Unit(str(interface2.x) + "deg")
+            if type(interface2.y) != Unit:
+                interface2.y = Unit(str(interface2.y) + "deg")
         
-        interface2.x = interface2.x.conv_factor("radians")
-        interface2.y = interface2.y.conv_factor("radians")
-        interface2.converted = True
+            interface2.x = interface2.x.conv_factor("radians")
+            interface2.y = interface2.y.conv_factor("radians")
+            interface2.converted = True
+        if hasattr(interface2, "orientation"):
+            orientation = interface2.orientation
+            (el, az) = point_shape(OCC.gp.gp_Ax1(orientation))
+            interface2.x = el
+            interface2.y = az
+            interface2.converted = True
     return
 
 def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=None):
