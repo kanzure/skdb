@@ -89,7 +89,7 @@ def convert_interface(interface2):
     '''warning: this manipulates the input object
     first checks if the interface2 has been converted from degrees to radians, or converted from the orientation vector to radians'''
     if not interface2.converted:
-        if not hasattr(interface2,"x"):
+        if hasattr(interface2,"x"):
             if type(interface2.x) != Unit:
                 interface2.x = Unit(str(interface2.x) + "deg")
             if type(interface2.y) != Unit:
