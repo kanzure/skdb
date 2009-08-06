@@ -25,6 +25,7 @@ class Discrete:
     pass
 
 class Feature(Interface):
+    yaml_tag='!lego_feature'
     def __repr__(self):
         try: part_name = self.part.name
         except AttributeError: part_name = None

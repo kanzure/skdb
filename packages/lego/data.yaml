@@ -6,20 +6,84 @@ urls:
 - 'git://fennetic.net/git/skdb.git/'
 
 #1FLU = 1 * "fundamental lego unit"
-
-brick: !lego
- name: brick
- description: 2x2 brick
- size: 2x2 #the Lego class should be able to generate the interfaces from this information.
- material: ABS plastic #acrylonitrile butadiene styrene
- #re: tolerances. http://www.lego.com/info/pdf/LEGO_company_profile_UK.pdf
- #http://www.lugnet.com/~330/FAQ/Build/dimensions
- width: 8.0mm +- 2microns #6:5 (width:height)
- height: 9.582mm +- 2microns #6:5 (width:height)
- depth: 10mm +- 2microns
- interfaces:
-    - !Peg
+parts:
+ - !lego
+  name: 2x2 round brick
+  description: some crap i found in the national design repository
+  size: 2x2 #the Lego class should be able to generate the interfaces from this
+  material: ABS
+  cad_file: brick_thick_round.stp
+  interfaces:
+    - !lego_feature
+      origin: [-8.0, 0.0, -8.0]
+      type: StudCup
+      x_vec: [-1.0, 0.0, 0.0]
+      y_vec: [-0.0, -0.0, -1.0]
+    - !lego_feature
+      origin: [-4.0, 0.0, -4.0]
+      type: AntiStud
+      x_vec: [-1.0, 0.0, 0.0]
+      y_vec: [-0.0, -0.0, -1.0]
+    - !lego_feature
+      origin: [-12.0, 0.0, -4.0]
+      type: AntiStud
+      x_vec: [-1.0, 0.0, 0.0]
+      y_vec: [-0.0, -0.0, -1.0]
+    - !lego_feature
+      origin: [-12.0, 0.0, -12.0]
+      type: AntiStud
+      x_vec: [-1.0, 0.0, 0.0]
+      y_vec: [-0.0, -0.0, -1.0]
+    - !lego_feature
+      origin: [-4.0, 0.0, -12.0]
+      type: AntiStud
+      x_vec: [-1.0, 0.0, 0.0]
+      y_vec: [-0.0, -0.0, -1.0]
+    - !lego_feature
+      origin: [-12.0, 9.5999999999999996, -4.0]
+      type: Stud
+      x_vec: [-1.0, 0.0, -0.0]
+      y_vec: [-0.0, -0.0, 1.0]
+    - !lego_feature
+      origin: [-4.0, 9.5999999999999996, -4.0]
+      type: Stud
+      x_vec: [-1.0, 0.0, -0.0]
+      y_vec: [-0.0, -0.0, 1.0]
+    - !lego_feature
+      origin: [-4.0, 9.5999999999999996, -12.0]
+      type: Stud
+      x_vec: [-1.0, 0.0, -0.0]
+      y_vec: [-0.0, -0.0, 1.0]
+    - !lego_feature
+      origin: [-12.0, 9.5999999999999996, -12.0]
+      type: Stud
+      x_vec: [-1.0, 0.0, -0.0]
+      y_vec: [-0.0, -0.0, 1.0]
+    - !lego_feature
+      origin: [-8.0, 9.5999999999999996, -8.0]
+      type: AntiStudCup
+      x_vec: [-1.0, 0.0, -0.0]
+      y_vec: [-0.0, -0.0, 1.0]
+    - !lego_feature
+      origin: [-8.0, 9.5999999999999996, -8.0]
+      type: AntiStudCup
+      x_vec: [-1.0, 0.0, -0.0]
+      y_vec: [-0.0, -0.0, 1.0]
+    
+ - !lego
+  name: brick
+  description: 2x2 brick
+  size: 2x2 #the Lego class should be able to generate the interfaces from this information.
+  material: ABS plastic #acrylonitrile butadiene styrene
+  #re: tolerances. http://www.lego.com/info/pdf/LEGO_company_profile_UK.pdf
+  #http://www.lugnet.com/~330/FAQ/Build/dimensions
+  width: 8.0mm +- 2microns #6:5 (width:height)
+  height: 9.582mm +- 2microns #6:5 (width:height)
+  depth: 10mm +- 2microns
+  interfaces:
+    - !lego_feature
         name: peg1
+        type: Stud
         geometry: !cylinder #this is not necessary since a Peg interface should know its geometry
             height: 1.7mm
             diameter: 5mm
@@ -28,15 +92,19 @@ brick: !lego
         files: #this is not necessary since a Peg interface can generate CAD
          - 'models/peg.step'
         #point it upwards (of course, Peg should know this too)
-    - !Peg
+    - !lego_feature
+        type: Stud
         name: peg2
         point: [8, 16, 0.85]
-    - !Peg
+    - !lego_feature
+        type: Stud
         name: peg3
         point: [16, 8, 0.85]
-    - !Peg
+    - !lego_feature
+        type: Stud
         name: peg4
         point: [16, 16, 0.85]
-    - !Hole
+    - !lego_feature
+        type: Stud
         name: hole1
 
