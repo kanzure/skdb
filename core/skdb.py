@@ -4,6 +4,7 @@
 import yaml
 import re
 import os
+import sys
 from string import Template as string_template
 from template import Template
 
@@ -27,6 +28,10 @@ def check_unix_name(name):
     return name.isalpha()
 
 def open_package(path):
+    '''just a synonym for load_package'''
+    return load_package(path)
+
+def load_package(path):
     '''returns a package loaded from the filesystem
     see settings.paths['SKDB_PACKAGES_DIR'] btw'''
     if path == None:
@@ -37,11 +42,29 @@ def open_package(path):
     assert not (os.listdir(settings.paths["SKDB_PACKAGE_DIR"]).count(path) == 0)
     package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)
     #must have the required files
-    required_files = ["metadata.yaml", "template.yaml", "data.yaml"]
+    required_files = ["metadata.yaml", "data.yaml"]
     for file in required_files:
        assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
     #TODO: load metadata, load template
     loaded_package = load(open(os.path.join(package_path, "metadata.yaml")))
+    #now load the class
+    for some_class in loaded_package.classes:
+        #if some_class is "some_file.MyClass" then
+        #filename = "some_file"
+        temp1 = some_class.split(".")
+        temp1.reverse()
+        filename = temp1.pop()
+        temp2 = some_class.split(".")
+        class_name = temp2.pop()
+        #if the class name is not already loaded into the globals,
+        if not class_name in globals().keys():
+            #append the package_path to the PYTHONPATH
+            sys.path.append(package_path)
+            #and set loaded_package.MyClass to what it should be
+            #this sets loaded_package.MyClass to the module
+            setattr(loaded_package, class_name, __import__(filename))
+            #this sets loaded_package.MyClass to really be MyClass this time
+            setattr(loaded_package, class_name, loaded_package.__getattribute__(class_name).__getattribute__(class_name))
     return loaded_package
 
 class Package(FennObject):
@@ -53,15 +76,25 @@ class Package(FennObject):
         self.unix_name = unix_name
         if unix_name == None:
             self.unix_name = name
-            print "name = ", name
             assert check_unix_name(self.unix_name)
         self.package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],self.unix_name)
         self.license = license
         self.urls = urls
-    def load(self, content):
+    def load(self, content, only_classes=None:
         '''loads some yaml (not necessarily into type Package)
         it's kind of fishy since a package is multiple files at the moment.'''
-        return yaml.load(content)
+        returns = yaml.load(content)
+        if not only_classes == None:
+            #only return the objects that are of type only_classes
+            #FIXME: allow "only_classes" to be a list
+            real_returns = []
+            for (k,v) in returns.items():
+                if str(type(v)) == only_classes: #there has to be a better way to do this
+                    #set the name attribute to the keyname
+                    v.name = k
+                    real_returns.append(v)
+            return real_returns
+        return returns
     def dump(self):
         '''returns this object in yaml'''
         return yaml.dump(self)
@@ -179,8 +212,13 @@ def load(string):
             yaml.add_implicit_resolver(cls.yaml_tag, re.compile(cls.yaml_pattern))
             implicit_resolved.append(cls)
     tmp = yaml.load_all(string)
-    rval = tmp.next()
-    if type(rval) == tag_hack: return tmp.next() #a document listing which tags to ignore comes before the real metadata
+    rval = tmp.next() #this might be tag_hack
+    if type(rval) == tag_hack:
+        other_return_value = tmp.next() #a document listing which tags to ignore comes before the real metadata
+        #now remove the tag_hack tags from the system
+        for tag in rval.tags:
+            rval.undo_tag_hack_for_tag(tag)
+        return other_return_value
     else: return rval
 
 def dump(value, filename=None):

@@ -10,10 +10,11 @@ class Thread(yaml.YAMLObject):
     def __init__(self, diameter, pitch, gender='male', length=None, form="UN"):
         self.diameter, self.pitch, self.form = Unit(diameter), Unit(pitch), form
         self.gender, self.length, self.form = gender, length, form
+        #wtf were we thinking?
         self.interfaces = [
-                (pitch_diameter, 'in'), # conversion function .. so this is wrong.
-                (minor_diameter, 'in'),
-                (clamping_force, 'lbf')]
+                (self.pitch_diameter, 'in'), # conversion function .. so this is wrong.
+                (self.minor_diameter, 'in'),
+                (self.clamping_force, 'lbf')]
     def pitch_diameter(self):
         assert self.form=="UN" and Unit(self.pitch).compatible('rev/inch'), "this only works for triangular threads atm"
         s = Template('($diameter)-0.6495919rev/($pitch)') #machinery's handbook 27ed page 1502

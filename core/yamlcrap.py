@@ -43,6 +43,11 @@ class Dummy(object):
         else: self = node
     @staticmethod
     def multi_constructor(loader, tag_suffix, node):
+        #if the real class is actually loaded, return it
+        #so search through the classes that inherit from YAMLObject and hasattr(blah,"yaml_type") and the right yaml_type
+        #if 
+        #    tag_hack.yaml_loader.yaml_constructors..
+        #    return .. the correct object .. 
         if type(node) == yaml.ScalarNode:
             data = loader.construct_scalar(node)
         elif type(node) == yaml.MappingNode:
@@ -57,8 +62,19 @@ class tag_hack(FennObject):
      prepend something like this to the actual document: 
     !tag_hack tags: ["!one", "!two", "!three"]\n---\n'''
     yaml_tag="!tag_hack"
+    tags=[]
     def __init__(self):
         pass
     def __setstate__ (self, attrs):
         for i in attrs['tags']:
             yaml.add_multi_constructor(i, Dummy.multi_constructor)
+            self.tags.append(i)
+    def undo_tag_hack_for_tag(self, tag):
+        '''undoes a tag hack for a particular tag'''
+        #for key in yaml.YAMLObject.yaml_loader.yaml_constructors.keys():
+        #    if not key == None:
+        #        if key[:1] == "!":
+        #            print key
+        self.yaml_loader.yaml_multi_constructors.__delitem__(tag)
+        self.tags.remove(tag)
+        return

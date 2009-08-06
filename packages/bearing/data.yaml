@@ -1,0 +1,9 @@
+author: 'bryan bishop'
+license: 'GPL2+'
+urls: 
+- 'http://adl.serveftp.org/skdb.git'
+
+bearing1: !bearing
+ inner_diameter: 4mm
+ outer_diameter: 8mm
+
