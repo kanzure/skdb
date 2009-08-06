@@ -3,7 +3,12 @@ import yaml
 import  sys
 from xml.dom import minidom
 ''''cat foo | heeks_coords.py' or 'heeks_coords.py foo.heeks' where foo.heeks
-    is a HeeksCAD file containing coordinate systems you wish to inspect'''
+    is a HeeksCAD file containing coordinate systems you wish to inspect.
+    the idea is that you locate a coordinate system on some geometry and name
+    it according to the interface type it represents.'''
+
+class yaml_dummy(yaml.YAMLObject):
+    yaml_tag='!interface'
 
 def parse_file(file):
     coords = []
@@ -22,10 +27,13 @@ def parse_coord(node):
         attr = node.attributes[key]
         tmp[key] = float("%.13f" %(float(attr.value))) #round down to 0 if < +-1e-13
     
-    return {'origin':[tmp['ox'], tmp['oy'], tmp['oz']],
+    dummy = yaml_dummy()
+    for (k,v) in {'point':[tmp['ox'], tmp['oy'], tmp['oz']],
             'x_vec':[tmp['xx'], tmp['xy'], tmp['xz']],
             'y_vec':[tmp['yx'], tmp['yy'], tmp['yz']],
-            'name':str(node.attributes['title'].value)}
+            'type':str(node.attributes['title'].value)}.iteritems():
+        setattr(dummy, k, v)
+    return dummy
 
 def main():
     rval = {}
@@ -34,6 +42,7 @@ def main():
     else:
         for i in sys.argv[1:]:
             rval[i] = parse_file(open(i))
+    print type(rval)
     print yaml.dump(rval)
     return rval
 
