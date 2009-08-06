@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from skdb import Part
 from string import Template
-from interfaces import Peg, Hole
+from interfaces import Stud, AntiStud 
 
 __author__ = "bryan bishop"
 __license__ = "GPL2+"
@@ -18,11 +18,11 @@ class Lego(Part):
         self.name = name
         self.interfaces = []
         for each in range(num_holes):
-            new_hole = Hole(self)
+            new_hole = AntiStud(self)
             new_hole.identifier = len(self.interfaces)
             self.interfaces.append(new_hole)
         for each in range(num_pegs):
-            new_peg = Peg(self)
+            new_peg = Stud(self)
             new_peg.identifier = len(self.interfaces)
             self.interfaces.append(new_peg)
     def pegs(self):
