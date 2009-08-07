@@ -19,29 +19,34 @@ parts:
       part: *wah
       point: [-8.0, 0.0, -8.0]
       type: StudCup
+      complement: AntiStudCup #todo: deleteme
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
       part: *wah
       point: [-4.0, 0.0, -4.0]
+      complement: Stud #todo: deleteme
       type: AntiStud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
       part: *wah
       point: [-12.0, 0.0, -4.0]
+      complement: Stud #todo: deleteme
       type: AntiStud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
       part: *wah
       point: [-12.0, 0.0, -12.0]
+      complement: Stud #todo: deleteme
       type: AntiStud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
       part: *wah
       point: [-4.0, 0.0, -12.0]
+      complement: Stud #todo: deleteme
       type: AntiStud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
@@ -49,36 +54,42 @@ parts:
       part: *wah
       point: [-12.0, 9.5999999999999996, -4.0]
       type: Stud
+      complement: AntiStud #todo: deleteme
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
       part: *wah
       point: [-4.0, 9.5999999999999996, -4.0]
       type: Stud
+      complement: AntiStud #todo: deleteme
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
       part: *wah
       point: [-4.0, 9.5999999999999996, -12.0]
       type: Stud
+      complement: AntiStud #todo: deleteme
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
       part: *wah
       point: [-12.0, 9.5999999999999996, -12.0]
       type: Stud
+      complement: AntiStud #todo: deleteme
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
       part: *wah
       point: [-8.0, 9.5999999999999996, -8.0]
       type: AntiStudCup
+      complement: StudCup #todo: deleteme
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
       part: *wah
       point: [-8.0, 9.5999999999999996, -8.0]
       type: AntiStudCup
+      complement: Stud #todo: deleteme
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     

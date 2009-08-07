@@ -1,195 +1,254 @@
-# this file more or less describes the grammar used for constructing things out of Lego
-#not done. see http://mr-bucket.co.uk/GLIDE/LCD_File_Format.html#Implimentation
-#for part examples see http://guide.lugnet.com/partsref/search.cgi?q: XXXX
+# this file more or less describes the grammar used for constructing things out of  Lego
+#not done. see http://mr-bucket.co.uk/GLIDE/LCD_File_Format.html# Implimentation
+#for part examples see http://guide.lugnet.com/partsref/search.cgi?q=XXXX
 #or http://img.lugnet.com/ld/XXXX.gif
 
-!UNFINISHED
--   type: Face
-    #class Edge to refer to the rim around each brick?
-    complement: [Face, Tire]
--   type: Stud
-    complement: AntiStud
+-   !lego_feature
+    type: face
+    #class  edge to refer to the rim around each brick?
+    complement: [face, tire]
+-   !lego_feature
+    type: stud
+    complement: anti stud
     example: 3005
--   type: AntiStud
+-   !lego_feature
+    type: anti stud
     # this typically has 3 or 4 contact points, but isn't round
-    complement: Stud
+    complement: stud
     example: 3005
--   type: StudCup
-    complement: [Stud, AntiStudCup]
+-   !lego_feature
+    type: stud cup
+    complement: [stud, anti stud cup]
     example: 4073
--   type: AntiStudCup
-    # 'this occurs when there are 4 Studs or TechnicStuds in a square
-    complement: StudCup
+-   !lego_feature
+    type: anti stud cup
+    # 'this occurs when there are 4 studs or technic studs in a square
+    complement: stud cup
     example: 2654
--   type: TallStudCup
-    complement: [Stud, AntiStudCup]
+-   !lego_feature
+    type: tall stud cup
+    complement: [stud, anti stud cup]
     example: '3062a'
--   type: TechnicStud
-    #TODO finish
--   type: HollowStud 
-    #assert isinstance( RevoluteJoint)
-    complement: [Rod, AntiStud]
+-   !lego_feature
+    type: technic stud
+    # t o d o finish
+-   !lego_feature
+    type: hollow stud 
+    #assert isinstance(  revolute joint)
+    complement: [rod, anti stud]
     example: '3062b' #4081b
--   type: DuploStud
-    complement: DuploAntiStud
--   type: DuploAntiStud
-    complement: DuploStud
--   type: Rod
-    complement: [Claw, HollowStud]
+-   !lego_feature
+    type: duplo stud
+    complement: duplo anti stud
+-   !lego_feature
+    type: duplo anti stud
+    complement: duplo stud
+-   !lego_feature
+    type: rod
+    complement: [claw, hollow stud]
     example: 3957
--   type: Claw
-    complement: Rod
+-   !lego_feature
+    type: claw
+    complement: rod
     example: 6019
--   type: Pin
-    complement: PinHole
+-   !lego_feature
+    type: pin
+    complement: pin hole
     example: 3673
--   type: StickyPin
-    #TODO finish
--   type: PinHole #egad
-    complement: Pin
+-   !lego_feature
+    type: sticky pin
+    # todo finish
+-   !lego_feature
+    type: pin hole #egad
+    complement: pin
     example: 3700
--   type: MiniPin
-    complement: MiniPinHole
+-   !lego_feature
+    type: mini pin
+    complement: mini pin hole
     example: 4488
--   type: MiniPinHole
-    complement: MiniPin
-    example: None #find one then!
--   type: ShortPin
-    complement: PlateHole
+-   !lego_feature
+    type: mini pin hole
+    complement: mini pin
+    example: none #find one then!
+-   !lego_feature
+    type: short pin
+    complement: plate hole
     example: 'that step file pin0 or whatever'
--   type: PlateHole
-    # add something about stacking two plates is compatible with Pin
-    complement: Shortpin
+-   !lego_feature
+    type: plate hole
+    # add something about stacking two plates is compatible with  pin
+    complement: shortpin
     example: '3709b'
--   type: TowBall
-    complement: TowBallSocket
+-   !lego_feature
+    type: tow ball
+    complement: tow ball socket
     example: 3184
--   type: TowBallSocket
-    complement: TowBall
+-   !lego_feature
+    type: tow ball socket
+    complement: tow ball
     example: 3183
--   type: Magnet
-    # do magnets have the same stubAxle as wheels?
-    complement: Magnet
+-   !lego_feature
+    type: magnet
+    # do magnets have the same stub axle as wheels?
+    complement: magnet
     example: 73092
--   type: WheelHolder
+-   !lego_feature
+    type: wheel holder
     # is this the same as 2607?
-    complement: WheelAxle
+    complement: wheel axle
     example: 8
--   type: WheelAxle #SnapFit?
-    complement: WheelHolder
+-   !lego_feature
+    type: wheel axle # snap fit?
+    complement: wheel holder
     example: 3464
--   type: WheelRim
-    complement: TireInner
+-   !lego_feature
+    type: wheel rim
+    complement: tire inner
     example: 3464
--   type: TireInner
-    complement: WheelRim
--   type: TireOuter
-    complement: Edge
--   type: SwivelTop
-    # is this really a MinifigShoulder?
-    complement: SwivelBottom
+-   !lego_feature
+    type: tire inner
+    complement: wheel rim
+-   !lego_feature
+    type: tire outer
+    complement: edge
+-   !lego_feature
+    type: swivel top
+    # is this really a  minifig shoulder?
+    complement: swivel bottom
     example: 3679
--   type: SwivelBottom
-    # is this really a MinifigShoulderHole?
-    complement: SwivelTop
+-   !lego_feature
+    type: swivel bottom
+    # is this really a  minifig shoulder hole?
+    complement: swivel top
     example: 3680
--   type: TurntableTop
-    complement: TurntableBottom
+-   !lego_feature
+    type: turntable top
+    complement: turntable bottom
     example: 3404
--   type: TurntableBottom
-    complement: TurntableTop
+-   !lego_feature
+    type: turntable bottom
+    complement: turntable top
     example: 3403
--   type: ScissorHingeTop
-    complement: ScissorHingeBottom
+-   !lego_feature
+    type: scissor hinge top
+    complement: scissor hinge bottom
     example: 2430
--   type: ScissorHingeBottom
-    complement: ScissorHingeTop
+-   !lego_feature
+    type: scissor hinge bottom
+    complement: scissor hinge top
     example: 2429
--   type: ElevationHingeHolder
-    complement: ElevationHinge
+-   !lego_feature
+    type: elevation hinge holder
+    complement: elevation hinge
     example: 3937
--   type: ElevationHinge
-    complement: ElevationHingeHolder
+-   !lego_feature
+    type: elevation hinge
+    complement: elevation hinge holder
     example: 3938
--   type: FlatHinge2
-    complement: FlatHinge3
+-   !lego_feature
+    type: flat hinge2
+    complement: flat hinge3
     example: 4276
--   type: FlatHinge3
-    complement: FlatHinge2
+-   !lego_feature
+    type: flat hinge3
+    complement: flat hinge2
     example: 2452
--   type: WideHingeM
-    complement: WideHingeF
+-   !lego_feature
+    type: wide hinge m
+    complement: wide hinge f
     example: 4315
--   type: WideHingeF
-    complement: WideHingeM
+-   !lego_feature
+    type: wide hinge f
+    complement: wide hinge m
     example: 2872
--   type: TrailerHingeM
-    complement: [TrailerHingeF, Claw]
+-   !lego_feature
+    type: trailer hinge m
+    complement: [trailer hinge f, claw]
     example: 3639
--   type: TrailerHingeF
-    complement: [TrailerHingeM, Rod]
+-   !lego_feature
+    type: trailer hinge f
+    complement: [trailer hinge m, rod]
     example: 3640
--   type: RoundHinge2
-    complement: RoundHinge3
+-   !lego_feature
+    type: round hinge 2
+    complement: round hinge 3
     example: 6048
--   type: RoundHinge3
-    complement: RoundHinge2
+-   !lego_feature
+    type: round hinge 3
+    complement: round hinge 2
     example: 6217
--   type: LockingHinge1
+-   !lego_feature
+    type: locking hinge 1
     # sorta iffy on these as i've never seen them
-    complement: LockingHinge2
+    complement: locking hinge 2
     example: 30364
--   type: LockingHinge2
-    complement: LockingHinge1
+-   !lego_feature
+    type: locking hinge 2
+    complement: locking hinge 1
     example: 30365
--   type: Axle
-    complement: [AntiAxle, PinHole]
+-   !lego_feature
+    type: axle
+    complement: [anti axle, pin hole]
     example: 3705
--   type: AntiAxle
-    complement: Axle
+-   !lego_feature
+    type: anti axle
+    complement: axle
     example: 32064
     angle: rev/4
--   type: ToothedJoint
-    # there are 16 possible mates between two ToothedJoint interfaces
-    complement: ToothedJoint
+-   !lego_feature
+    type: toothed joint
+    # there are 16 possible mates between two  toothed joint interfaces
+    complement: toothed joint
     example: 4263
     angle: rev/16 
--   type: MinifigNeck
-    complement: [MinifigNeckHole, AntiStud]
+-   !lego_feature
+    type: minifig neck
+    complement: [minifig neck hole, anti stud]
     example: 973
--   type: MinifigNeckHole
-    complement: [MinifigNeck, Stud]
+-   !lego_feature
+    type: minifig neck hole
+    complement: [minifig neck, stud]
     example: 'standard lego head'
--   type: MinifigBackpack #not actually a PressFit; it's loose
-    complement: MinifigTorso
+-   !lego_feature
+    type: minifig backpack #not actually a  press fit; it's loose
+    complement: minifig torso
     example: 'wtf srsly where is it'
--   type: MinifigTorso #not actually a PressFit; it's loose
+-   !lego_feature
+    type: minifig torso #not actually a  press fit; it's loose
     # for backpacks and armor and so on
-    complement: MinifigBackpack
+    complement: minifig backpack
     example: 973
--   type: MinifigWrist#is this a snap fit?
-    complement: MinifigWristHole
+-   !lego_feature
+    type: minifig wrist #is this a snap fit?
+    complement: minifig wrist hole
     example: 983
--   type: MinifigWristHole#is this a snap fit?
-    complement: MinifigWrist
+-   !lego_feature
+    type: minifig wrist hole #is this a snap fit?
+    complement: minifig wrist
     example: 976
--   type: MinifigShoulder
-    complement: MinifigShoulderHole
+-   !lego_feature
+    type: minifig shoulder
+    complement: minifig shoulder hole
     example: 976
--   type: MinifigShoulderHole
-    complement: MinifigShoulder
+-   !lego_feature
+    type: minifig shoulder hole
+    complement: minifig shoulder
     example: 973
--   type: MinifigWaist
-    complement: MinifigHip
+-   !lego_feature
+    type: minifig waist
+    complement: minifig hip
     example: 973
--   type: MinifigHipStud
+-   !lego_feature
+    type: minifig hip stud
     # does this really not interface with anything else?
-    complement: MinifigWaist
+    complement: minifig waist
     example: 970
--   type: MinifigLegPin
-    complement: MinifigLegHole
+-   !lego_feature
+    type: minifig leg pin
+    complement: minifig leg hole
     example: 970
--   type: MinifigLegHole
-    complement: MinifigLegPin
+-   !lego_feature
+    type: minifig leg hole
+    complement: minifig leg pin
     example: 971
     
