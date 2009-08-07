@@ -33,7 +33,8 @@ def open_package(path):
 
 def load_package(path):
     '''returns a package loaded from the filesystem
-    see settings.paths['SKDB_PACKAGES_DIR'] btw'''
+    input should be something like "f-16" or "human-exoskeleton-1.0"
+    see settings.paths['SKDB_PACKAGES_DIR']'''
     if path == None:
         return None
     assert check_unix_name(path)
@@ -63,7 +64,6 @@ def import_package_classes(loaded_package, package_path):
             cls = getattr(module, class_name)
             setattr(loaded_package, class_name, cls )
             setattr(cls, "package", loaded_package)
-
 
 class Package(FennObject):
     yaml_tag='!package'
