@@ -108,11 +108,11 @@ def convert_interface(interface2):
         elif hasattr(interface2, "x_vec") and hasattr(interface2, "y_vec"):
             x_vec = interface2.x_vec
             y_vec = interface2.y_vec
-            x_vec = numpy.array(x_vec[0], x_vec[1], x_vec[2])
-            y_vec = numpy.array(y_vec[0], y_vec[1], y_vec[2])
+            x_vec = numpy.array([x_vec[0], x_vec[1], x_vec[2]])
+            y_vec = numpy.array([y_vec[0], y_vec[1], y_vec[2]])
             orientation = numpy.cross(x_vec, y_vec)
             interface2.orientation = orientation
-            (el, az) = point_shape(OCC.gp.gp_Ax1(orientation))
+            (el, az) = point_shape(OCC.gp.gp_Ax1(OCC.gp.gp_Pnt(0,0,0), OCC.gp.gp_Dir(orientation[0], orientation[1], orientation[2])))
             interface2.x = el
             interface2.y = az
             interface2.converted = True
