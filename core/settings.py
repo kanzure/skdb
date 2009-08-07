@@ -15,7 +15,7 @@ except KeyError, err:
     path = os.path.realpath(__file__).split(sep)
     path.pop()
     path.pop()
-    path.append('packages/')
+    path.append('packages')
     SKDB_PACKAGE_DIR = sep.join(path)
 
 paths = {
