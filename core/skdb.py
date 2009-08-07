@@ -47,7 +47,7 @@ def load_package(path):
        assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
     #TODO: load metadata, load template
     loaded_package = load(open(os.path.join(package_path, "metadata.yaml")))
-    new_import_package_classes(loaded_package, package_path)
+    import_package_classes(loaded_package, package_path)
     return loaded_package
     
 def import_package_classes(loaded_package, package_path):
