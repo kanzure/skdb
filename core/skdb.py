@@ -33,7 +33,8 @@ def open_package(path):
 
 def load_package(path):
     '''returns a package loaded from the filesystem
-    see settings.paths['SKDB_PACKAGES_DIR'] btw'''
+    input should be something like "f-16" or "human-exoskeleton-1.0"
+    see settings.paths['SKDB_PACKAGES_DIR']'''
     if path == None:
         return None
     assert check_unix_name(path)
@@ -51,12 +52,13 @@ def load_package(path):
     return loaded_package
     
 def import_package_classes(loaded_package, package_path):
-    for module_name in loaded_package.classes.keys():
+    for module_name in loaded_package.classes:
         try: 
             module = __import__(module_name)
         except ImportError:
             sys.path.append(package_path)
             module = __import__(module_name)
+        #FIXME: set module.package = loaded_package
         for cls in loaded_package.classes[module_name]:
             setattr(loaded_package, cls, getattr(module, cls))
 
