@@ -80,6 +80,7 @@ class tag_hack(FennObject):
         #    if not key == None:
         #        if key[:1] == "!":
         #            print key
-        self.yaml_loader.yaml_multi_constructors.__delitem__(tag)
-        self.tags.remove(tag)
+        if tag in self.yaml_loader.yaml_multi_constructors:
+           self.yaml_loader.yaml_multi_constructors.pop(tag)
+        self.tags.remove(tag) #this might need to be indented
         return
