@@ -3,6 +3,7 @@ import yaml, re
 class FennObject(yaml.YAMLObject):
     '''so i dont repeat generic yaml stuff everywhere'''
     def __setstate__(self, attrs):
+        print "entering FennObject.__setstate__()"
         for (k,v) in attrs.items():
             k = re.sub(' ', '_', k) #replace spaces with underscores because "foo.the attr" doesn't work
             self.__setattr__(k,v)
@@ -28,9 +29,9 @@ class FennObject(yaml.YAMLObject):
             rval = cls()
             #stuff data into object's attributes
             for (key, value) in data.iteritems():
-                print "key, value = (%s, %s)" % (key, value)
                 if value is not None:
                     setattr(rval, key, value)
+            #this isn't actually used anywhere:
             if hasattr(rval, "post_init_hook"):
                 rval.post_init_hook()
             return rval

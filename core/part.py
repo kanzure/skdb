@@ -20,10 +20,6 @@ class Part(FennObject):
             self.files = files
         if not hasattr(self, "interfaces"):
             self.interfaces = interfaces
-    def post_init_hook(self):
-        '''see yamlcrap.py- this is called after adding in all attributes and values'''
-        print "entering Part.post_init_hook()"
-        #self.load_CAD()
     def makes_sense(self):
         '''checks whether or not this part makes sense
         classes that inherit from Part should have their own makes_sense method.
@@ -50,10 +46,7 @@ try:
         import OCC.Utils.DataExchange.STEP
         def load_CAD(self):
             '''load this object's CAD file. assumes STEP.'''
-            print "Part.load_CAD checking if there are any files in the list:"
-            print "self.files = ", self.files
             if len(self.files) == 0: return #no files to load
-            print "there is a file"
             #FIXME: assuming STEP
             #TODO: check/verify filename path
             #FIXME: does not properly load in models from multiple files (2009-07-30)
