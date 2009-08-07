@@ -1,0 +1,12 @@
+!!python/object:skdb.tag_hack
+tags:
+- "!screw"
+- "!thread"
+---
+!package
+maintainer: 'fenn <fenn@users.sourceforge.net>'
+license: 'GPL2+'
+status: unfinished
+classes:
+    threads:
+    - Thread

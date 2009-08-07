@@ -41,7 +41,7 @@ class Part(FennObject):
     def __add__(self, other):
         return list(self.options(other))
     def __repr__(self):
-        return "%s(name=%s, description=%s, created=%s, files=%s, interfaces=%s)" % (self.__class__.__name__, self.name, self.description, self.created, self.files, self.interfaces)
+        return "%s(name=%s, interfaces=%s)" % (self.__class__.__name__, self.name, self.interfaces)
 
 try:
         import OCC.Utils.DataExchange.STEP

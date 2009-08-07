@@ -39,26 +39,31 @@ def load_package(path):
     assert check_unix_name(path)
     assert hasattr(settings,"paths")
     assert settings.paths.has_key("SKDB_PACKAGE_DIR")
-    assert not (os.listdir(settings.paths["SKDB_PACKAGE_DIR"]).count(path) == 0)
     package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)
+    assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
     #must have the required files
     required_files = ["metadata.yaml", "data.yaml"]
     for file in required_files:
-       assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
-    #TODO: load metadata, load template
+        assert os.access(os.path.join(package_path, file), os.F_OK), str(package_path)+": "+file+" not found or unreadable"
     loaded_package = load(open(os.path.join(package_path, "metadata.yaml")))
     import_package_classes(loaded_package, package_path)
     return loaded_package
     
 def import_package_classes(loaded_package, package_path):
+    '''assigns classes to the Package's namespace; for example:
+    package = load_package('lego')
+    mybrick = package.Brick()'''
     for module_name in loaded_package.classes.keys():
         try: 
             module = __import__(module_name)
         except ImportError:
             sys.path.append(package_path)
             module = __import__(module_name)
-        for cls in loaded_package.classes[module_name]:
-            setattr(loaded_package, cls, getattr(module, cls))
+        for class_name in loaded_package.classes[module_name]:
+            cls = getattr(module, class_name)
+            setattr(loaded_package, class_name, cls )
+            setattr(cls, "package", loaded_package)
+
 
 class Package(FennObject):
     yaml_tag='!package'

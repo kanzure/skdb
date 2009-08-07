@@ -1,6 +1,9 @@
 import skdb
-from skdb import Part, Thread, Interface, Unit, UnitError
+from skdb import Part, Interface, Unit, UnitError
 from string import Template
+
+threads = skdb.load_package('threads')
+Thread = threads.Thread
 
 __author__ = "ben lipkowitz, bryan bishop"
 __license__ = "GPL"
@@ -29,11 +32,11 @@ class Screw(Part):
         '7':'133ksi',
         '8':'150ksi',
         }
-    def __init__(self, thread=None, length=None, grade="2"):
+    def __init__(self, thread=None, length=None, grade="2", name=None):
         '''length is defined as the distance from bottom of the head for all screws but 
         flat head and set screws which use the top of the head instead'''
         #thread.__init__()
-        self.thread, self.length, self.grade = thread, length, grade
+        self.thread, self.length, self.grade, self.name = thread, length, grade, name
         if not (self.thread == None and self.length == None):
             if self.thread.length is None: self.thread.length = self.length
             assert self.length.compatible('m')

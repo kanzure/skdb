@@ -14,7 +14,7 @@ class Interface(yaml.YAMLObject):
         self.max_connections = max_connections
         self.connected = None
         self.identifier = None
-        self.complement = Interface #should be overwritten for specific problem domains
+        self.complement = None #should be overwritten for specific problem domains
     def is_busy(self):
         if self.connected >= self.max_connections: return True
         else: return False
