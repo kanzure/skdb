@@ -22,8 +22,8 @@ class Part(FennObject):
             self.interfaces = interfaces
     def post_init_hook(self):
         '''see yamlcrap.py- this is called after adding in all attributes and values'''
-        print "beep bop"
-        self.load_CAD()
+        print "entering Part.post_init_hook()"
+        #self.load_CAD()
     def makes_sense(self):
         '''checks whether or not this part makes sense
         classes that inherit from Part should have their own makes_sense method.

@@ -132,6 +132,8 @@ def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=N
         part2 = interface2.part
     point1 = interface1.point
     point2 = interface2.point
+    part1.load_CAD()
+    part2.load_CAD()
 
     #some simple checks
     #assert type(interface1.x) == Unit, "interface1.x should be of type skdb.Unit()"
