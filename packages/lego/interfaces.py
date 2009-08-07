@@ -20,12 +20,17 @@ class PrismaticJoint(Joint): pass
 
 class GearJoint(Joint): pass
 
+
 class Discrete:
     '''allows only a certain set of values'''
     pass
 
+grammar = {
+    'Stud':{'complement':['AntiStud', 'Stud'], 'example':'3005'}}
+
 class Feature(Interface):
     yaml_tag='!lego_feature'
+    def 
     def __repr__(self):
         try: part_name = self.part.name
         except AttributeError: part_name = None
@@ -43,6 +48,8 @@ class SnapFit(Feature):
     '''same as PressFit but with less friction, and a restorative force'''
     pass
 
+class Hinge(RevoluteJoint, SnapFit): pass
+
 class Face(Feature, PlanarJoint):
     def __init__(self):
         self.complement=[Face, Tire]
@@ -51,7 +58,7 @@ class Face(Feature, PlanarJoint):
 
 class Stud(RevoluteJoint, PressFit):
     def __init__(self):
-        self.complement = AntiStud
+        self.complement = [AntiStud, Stud]
         self.example = 3005
         
 class AntiStud(RevoluteJoint, PressFit):
@@ -173,10 +180,6 @@ class TireInner(PressFit):
 class TireOuter(GearJoint, Feature):
     def __init__(self):
         self.complement = Edge
-
-class Hinge(SnapFit, RevoluteJoint):
-    '''blah blah blah flexible kinematic constraint stuff goes here'''
-    pass
 
 class SwivelTop(Hinge):
     '''is this really a MinifigShoulder?'''

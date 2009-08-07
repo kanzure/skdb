@@ -1,0 +1,195 @@
+# this file more or less describes the grammar used for constructing things out of Lego
+#not done. see http://mr-bucket.co.uk/GLIDE/LCD_File_Format.html#Implimentation
+#for part examples see http://guide.lugnet.com/partsref/search.cgi?q: XXXX
+#or http://img.lugnet.com/ld/XXXX.gif
+
+!UNFINISHED
+-   type: Face
+    #class Edge to refer to the rim around each brick?
+    complement: [Face, Tire]
+-   type: Stud
+    complement: AntiStud
+    example: 3005
+-   type: AntiStud
+    # this typically has 3 or 4 contact points, but isn't round
+    complement: Stud
+    example: 3005
+-   type: StudCup
+    complement: [Stud, AntiStudCup]
+    example: 4073
+-   type: AntiStudCup
+    # 'this occurs when there are 4 Studs or TechnicStuds in a square
+    complement: StudCup
+    example: 2654
+-   type: TallStudCup
+    complement: [Stud, AntiStudCup]
+    example: '3062a'
+-   type: TechnicStud
+    #TODO finish
+-   type: HollowStud 
+    #assert isinstance( RevoluteJoint)
+    complement: [Rod, AntiStud]
+    example: '3062b' #4081b
+-   type: DuploStud
+    complement: DuploAntiStud
+-   type: DuploAntiStud
+    complement: DuploStud
+-   type: Rod
+    complement: [Claw, HollowStud]
+    example: 3957
+-   type: Claw
+    complement: Rod
+    example: 6019
+-   type: Pin
+    complement: PinHole
+    example: 3673
+-   type: StickyPin
+    #TODO finish
+-   type: PinHole #egad
+    complement: Pin
+    example: 3700
+-   type: MiniPin
+    complement: MiniPinHole
+    example: 4488
+-   type: MiniPinHole
+    complement: MiniPin
+    example: None #find one then!
+-   type: ShortPin
+    complement: PlateHole
+    example: 'that step file pin0 or whatever'
+-   type: PlateHole
+    # add something about stacking two plates is compatible with Pin
+    complement: Shortpin
+    example: '3709b'
+-   type: TowBall
+    complement: TowBallSocket
+    example: 3184
+-   type: TowBallSocket
+    complement: TowBall
+    example: 3183
+-   type: Magnet
+    # do magnets have the same stubAxle as wheels?
+    complement: Magnet
+    example: 73092
+-   type: WheelHolder
+    # is this the same as 2607?
+    complement: WheelAxle
+    example: 8
+-   type: WheelAxle #SnapFit?
+    complement: WheelHolder
+    example: 3464
+-   type: WheelRim
+    complement: TireInner
+    example: 3464
+-   type: TireInner
+    complement: WheelRim
+-   type: TireOuter
+    complement: Edge
+-   type: SwivelTop
+    # is this really a MinifigShoulder?
+    complement: SwivelBottom
+    example: 3679
+-   type: SwivelBottom
+    # is this really a MinifigShoulderHole?
+    complement: SwivelTop
+    example: 3680
+-   type: TurntableTop
+    complement: TurntableBottom
+    example: 3404
+-   type: TurntableBottom
+    complement: TurntableTop
+    example: 3403
+-   type: ScissorHingeTop
+    complement: ScissorHingeBottom
+    example: 2430
+-   type: ScissorHingeBottom
+    complement: ScissorHingeTop
+    example: 2429
+-   type: ElevationHingeHolder
+    complement: ElevationHinge
+    example: 3937
+-   type: ElevationHinge
+    complement: ElevationHingeHolder
+    example: 3938
+-   type: FlatHinge2
+    complement: FlatHinge3
+    example: 4276
+-   type: FlatHinge3
+    complement: FlatHinge2
+    example: 2452
+-   type: WideHingeM
+    complement: WideHingeF
+    example: 4315
+-   type: WideHingeF
+    complement: WideHingeM
+    example: 2872
+-   type: TrailerHingeM
+    complement: [TrailerHingeF, Claw]
+    example: 3639
+-   type: TrailerHingeF
+    complement: [TrailerHingeM, Rod]
+    example: 3640
+-   type: RoundHinge2
+    complement: RoundHinge3
+    example: 6048
+-   type: RoundHinge3
+    complement: RoundHinge2
+    example: 6217
+-   type: LockingHinge1
+    # sorta iffy on these as i've never seen them
+    complement: LockingHinge2
+    example: 30364
+-   type: LockingHinge2
+    complement: LockingHinge1
+    example: 30365
+-   type: Axle
+    complement: [AntiAxle, PinHole]
+    example: 3705
+-   type: AntiAxle
+    complement: Axle
+    example: 32064
+    angle: rev/4
+-   type: ToothedJoint
+    # there are 16 possible mates between two ToothedJoint interfaces
+    complement: ToothedJoint
+    example: 4263
+    angle: rev/16 
+-   type: MinifigNeck
+    complement: [MinifigNeckHole, AntiStud]
+    example: 973
+-   type: MinifigNeckHole
+    complement: [MinifigNeck, Stud]
+    example: 'standard lego head'
+-   type: MinifigBackpack #not actually a PressFit; it's loose
+    complement: MinifigTorso
+    example: 'wtf srsly where is it'
+-   type: MinifigTorso #not actually a PressFit; it's loose
+    # for backpacks and armor and so on
+    complement: MinifigBackpack
+    example: 973
+-   type: MinifigWrist#is this a snap fit?
+    complement: MinifigWristHole
+    example: 983
+-   type: MinifigWristHole#is this a snap fit?
+    complement: MinifigWrist
+    example: 976
+-   type: MinifigShoulder
+    complement: MinifigShoulderHole
+    example: 976
+-   type: MinifigShoulderHole
+    complement: MinifigShoulder
+    example: 973
+-   type: MinifigWaist
+    complement: MinifigHip
+    example: 973
+-   type: MinifigHipStud
+    # does this really not interface with anything else?
+    complement: MinifigWaist
+    example: 970
+-   type: MinifigLegPin
+    complement: MinifigLegHole
+    example: 970
+-   type: MinifigLegHole
+    complement: MinifigLegPin
+    example: 971
+    
