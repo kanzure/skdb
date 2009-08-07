@@ -28,8 +28,11 @@ class FennObject(yaml.YAMLObject):
             rval = cls()
             #stuff data into object's attributes
             for (key, value) in data.iteritems():
+                print "key, value = (%s, %s)" % (key, value)
                 if value is not None:
                     setattr(rval, key, value)
+            if hasattr(rval, "post_init_hook"):
+                rval.post_init_hook()
             return rval
         elif type(node) == yaml.SequenceNode:
             data = loader.construct_sequence(node)
@@ -52,6 +55,8 @@ class Dummy(object):
             data = loader.construct_scalar(node)
         elif type(node) == yaml.MappingNode:
             data = loader.construct_mapping(node)
+        elif type(node) == yaml.SequenceNode:
+            data = loader.construct_sequence(node)
         else: raise TypeError, 'I dont know what to do with this node: ' + str(node)
         return Dummy(data)
         
