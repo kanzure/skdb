@@ -119,8 +119,10 @@ def convert_interface(interface2):
     return
 
 def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=None):
-    if part1 == None and part2 == None:
-        if len(total_parts) < 1: return #meh
+    if part1 == None and part2 == None: #remove this when cleaning up pymates
+        if len(total_parts) < 1: return
+        restart() #especially this
+        demo() #and this
         part1 = total_parts[0]
         part2 = total_parts[1]
     if interface1 == None and interface2 == None:
@@ -146,21 +148,21 @@ def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=N
     occ_point1 = OCC.gp.gp_Pnt(point1[0], point1[1], point1[2])
     occ_point2 = OCC.gp.gp_Pnt(point2[0], point2[1], point2[2])
     
-    pivot_point = OCC.gp.gp_Pnt(0,0,0) #rotate about the origin
-    x_rotation = OCC.gp.gp_Dir(1,0,0) #OCC.gp.gp_Dir(interface2.x[0], interface2.x[1], interface2.x[2])
-    y_rotation = OCC.gp.gp_Dir(0,1,0) #OCC.gp.gp_Dir(interface2.j[0], interface2.j[1], interface2.j[2])
-    z_rotation = OCC.gp.gp_Dir(0,0,1) #OCC.gp.gp_Dir(interface2.k[0], interface2.k[1], interface2.k[2])
+    #pivot_point = OCC.gp.gp_Pnt(0,0,0) #rotate about the origin
+    pivot_point = occ_point1 #rotate about interface1
+    x_rotation = OCC.gp.gp_Dir(1,0,0)
+    y_rotation = OCC.gp.gp_Dir(0,1,0)
+    z_rotation = OCC.gp.gp_Dir(0,0,1)
     transformation = OCC.gp.gp_Trsf()
     transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, x_rotation),interface2.x)
-    #transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, y_rotation),180)
     transformation.SetRotation(OCC.gp.gp_Ax1(pivot_point, y_rotation),interface2.y)
-    transformation.SetTranslation(occ_point2, occ_point1)
+    transformation.SetTranslation(OCC.gp.gp_Pnt(0,0,0), occ_point2)
 
     brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
     brep_transform.Perform(part2.shapes[0]) #shapes[0] is the original shape
     resulting_shape = brep_transform.Shape()
 
-    OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
+    #OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
     return brep_transform
 
 def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
