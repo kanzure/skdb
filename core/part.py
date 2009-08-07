@@ -48,12 +48,12 @@ try:
         def load_CAD(self):
             '''load this object's CAD file. assumes STEP.'''
             if len(self.files) == 0: return #no files to load
-            assert hasattr(self,"package_path"), "Part.load_CAD doesn't have its package loaded."
+            assert hasattr(self,"package"), "Part.load_CAD doesn't have its package loaded."
             #FIXME: assuming STEP
             #TODO: check/verify filename path
             #FIXME: does not properly load in models from multiple files (2009-07-30)
             for file in self.files:
-                full_path = os.path.join(self.package_path, str(file))
+                full_path = os.path.join(self.package.path(), str(file))
                 my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(full_path)
                 my_step_importer.ReadFile()
                 self.shapes = my_step_importer.GetShapes()
