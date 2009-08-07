@@ -13,7 +13,7 @@ parts:
   size: 2x2 #the Lego class should be able to generate the interfaces from this
   material: ABS
   files:
-  - brick_thick_round.stp
+  - "brick_thick_round.stp"
   interfaces:
     - !lego_feature
       part: *wah

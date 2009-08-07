@@ -63,23 +63,35 @@ def load_package(path):
             #and set loaded_package.MyClass to what it should be
             #this sets loaded_package.MyClass to the module
             setattr(loaded_package, class_name, __import__(filename))
-            #this sets loaded_package.MyClass to really be MyClass this time
-            setattr(loaded_package, class_name, loaded_package.__getattribute__(class_name).__getattribute__(class_name))
+            if hasattr(loaded_package.__getattribute__(class_name), class_name):
+                #this sets loaded_package.MyClass to really be MyClass this time
+                the_class = loaded_package.__getattribute__(class_name).__getattribute__(class_name)
+                setattr(loaded_package, class_name, loaded_package.__getattribute__(class_name).__getattribute__(class_name))
+                setattr(the_class, "package_path", loaded_package.path())
     return loaded_package
 
 class Package(FennObject):
     yaml_tag='!package'
     def __init__(self): #, name, unix_name, license, urls):
-        self.name, self.unix_name, self.package_path, self.license = None, None, None, None
+        self.name, self.unix_name, self.license = None, None, None
         return
         self.name = name
         self.unix_name = unix_name
         if unix_name == None:
             self.unix_name = name
             assert check_unix_name(self.unix_name)
-        self.package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],self.unix_name)
         self.license = license
         self.urls = urls
+    def post_init_hook(self):
+        '''yaml calls this after loading a package'''
+        #need to set a unix name
+        if not self.unix_name:
+            if self.name: self.unix_name = self.name
+        return
+    def path(self):
+        '''returns the absolute path on the file system to the package folder'''
+        assert hasattr(self, "unix_name"), "this package must have a unix_name attribute-- was post_init_hook called?"
+        return settings.package_path(self.unix_name)
     def load(self, content, only_classes=None):
         '''loads some yaml (not necessarily into type Package)
         it's kind of fishy since a package is multiple files at the moment.'''
