@@ -43,8 +43,10 @@ template: !template
     grade: string
     length: in
 classes: 
-- screw.Screw
-- threads.Thread
+    screw:
+    - Screw
+    threads:
+    - Thread
 source data:
 - data.yaml
 generated data:

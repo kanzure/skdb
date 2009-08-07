@@ -36,10 +36,13 @@ tags:
    width: mm #manufactured with a tolerance of +- 2microns
    height: mm #+- 2microns
    depth: mm #+- 2microns
+ modules:
+ - lego
  classes: 
- - lego.Lego
- - lego.Peg
- - lego.Hole
+    lego: 
+    - Lego
+    - Stud
+    - AntiStud
  source data:
  - data.yaml
  generated data:

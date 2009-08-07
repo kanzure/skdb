@@ -47,32 +47,22 @@ def load_package(path):
        assert not (os.listdir(os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)).count(file) == 0)
     #TODO: load metadata, load template
     loaded_package = load(open(os.path.join(package_path, "metadata.yaml")))
-    #now load the class
-    for some_class in loaded_package.classes:
-        #if some_class is "some_file.MyClass" then
-        #filename = "some_file"
-        temp1 = some_class.split(".")
-        temp1.reverse()
-        filename = temp1.pop()
-        temp2 = some_class.split(".")
-        class_name = temp2.pop()
-        #if the class name is not already loaded into the globals,
-        if not class_name in globals().keys():
-            #append the package_path to the PYTHONPATH
-            sys.path.append(package_path)
-            #and set loaded_package.MyClass to what it should be
-            #this sets loaded_package.MyClass to the module
-            setattr(loaded_package, class_name, __import__(filename))
-            if hasattr(loaded_package.__getattribute__(class_name), class_name):
-                #this sets loaded_package.MyClass to really be MyClass this time
-                the_class = loaded_package.__getattribute__(class_name).__getattribute__(class_name)
-                setattr(loaded_package, class_name, loaded_package.__getattribute__(class_name).__getattribute__(class_name))
-                setattr(the_class, "package_path", loaded_package.path())
+    new_import_package_classes(loaded_package, package_path)
     return loaded_package
+    
+def import_package_classes(loaded_package, package_path):
+    for module_name in loaded_package.classes.keys():
+        try: 
+            module = __import__(module_name)
+        except ImportError:
+            sys.path.append(package_path)
+            module = __import__(module_name)
+        for cls in loaded_package.classes[module_name]:
+            setattr(loaded_package, cls, getattr(module, cls))
 
 class Package(FennObject):
     yaml_tag='!package'
-    def __init__(self): #, name, unix_name, license, urls):
+    def __init__(self, name=None, unix_name=None, license=None, urls=None, modules=None):
         self.name, self.unix_name, self.license = None, None, None
         return
         self.name = name
