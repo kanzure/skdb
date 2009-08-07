@@ -26,7 +26,7 @@ class Unit(FennObject):
     yaml_tag = "!unit"
     '''try to preserve the original units, and provide a wrapper to the GNU units program'''
     units_call = "units -f %s -t " % (combined_dat_path) #export LOCALE=en_US; ?
-    def __init__(self, string):
+    def __init__(self, string=None):
         #simplify(string) #check if we have a good unit format to begin with. is there a better way to do this?
         self.string = str(string)
         self.simplify() #has no side effects, just raise any exceptions early
@@ -161,7 +161,7 @@ class Uncertainty(Unit):
     yaml_tag = "!uncertainty" #ehh.. going to do something with this eventually
     sci =Unit.sci
     yaml_pattern = '^\+-' + sci + '\s*(\D?.*)$' #+-, number, units
-    def __init__(self, string):
+    def __init__(self, string=None):
         match = re.match('^\+-(.*)', string)
         if match: unit = match.group(1)
         else: raise SyntaxError, "'"+ string +"'" + ": uncertainty must begin with +-, for now at least" #got any better ideas?
@@ -176,7 +176,7 @@ class Range(FennObject):
     sci =Unit.sci
     #expression should look something like: 1e4 m .. 2km
     yaml_pattern = sci+'\s*(\D?.*)?\s*\.\.\s*'+sci+'\s*(\D?.*)$'
-    def __init__(self, min, max):
+    def __init__(self, min=None, max=None):
         self.min = min
         self.max = max
     def __repr__(self):

@@ -131,7 +131,7 @@ class RuntimeSwitch(FennObject):
     280K'''
     
     yaml_tag = '!which'
-    def __init__(self, depends, parameter=None): #i dont like 'depends' but cant think of a better word
+    def __init__(self, depends=None, parameter=None): #i dont like 'depends' but cant think of a better word
         self.depends, self.parameter = depends, parameter
     def __repr__(self):
         return 'RuntimeSwitch(%s, %s)' % (self.depends, self.parameter)
@@ -168,7 +168,7 @@ class Geometry(FennObject):
     
 class Process(FennObject):
     yaml_tag = '!process'
-    def __init__(self, name):
+    def __init__(self, name=None):
         self.name, self.classification, self.mechanism, self.geometry, self.surface_finish, self.consumables, self.functionality, self.effects, self.parameters, self.safety = None, None, None, None, None, None, None, None, None, None
         self.name = name
 
@@ -178,7 +178,7 @@ class Process(FennObject):
 
 class Material(Package):
     yaml_tag = '!material'
-    def __init__(self, name, density=1, specific_heat=1, etc=None): #TODO figure out what goes here
+    def __init__(self, name=None, density=1, specific_heat=1, etc=None): #TODO figure out what goes here
         self.name = name
         self.density = density
         self.specific_heat = specific_heat
@@ -187,7 +187,7 @@ class Fastener(Package):
     yaml_tag = '!fastener'
     '''could be a rivet, could be a bolt. duct tape? superglue? twine? hose clamp?
     these methods are what actually get called by higher levels of abstraction'''
-    def __init__(self, force, rigidity, safety_factor=7):
+    def __init__(self, force=None, rigidity=None, safety_factor=7):
         pass
 
 class Component(yaml.YAMLObject):
@@ -200,7 +200,7 @@ class Component(yaml.YAMLObject):
 
 class Bolt(Fastener):
     '''a screw by itself cannot convert torque to force. a bolt is a screw with a nut'''
-    def __init__(self, screw, nut):
+    def __init__(self, screw=None, nut=None):
         self.screw = screw
         self.nut = nut
 
