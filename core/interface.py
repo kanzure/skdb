@@ -1,9 +1,9 @@
 #!/usr/bin/python
 #defines pymates.interface.Interface
-import yaml
+from yamlcrap import FennObject
 import math
 
-class Interface(yaml.YAMLObject):
+class Interface(FennObject):
     '''"units" should be what is being transmitted through the interface, not about the structure.
     a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry'''
     yaml_tag = '!interface'
