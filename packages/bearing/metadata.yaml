@@ -8,7 +8,7 @@ license: 'GPL2+'
 urls:
 - 'http://www.me.utexas.edu/~adl/'
 - 'http://adl.serveftp.org/skdb.git/'
-
+status: unfinished
 name: bearing
 functionality: fastening #a process name here
 created: 2008-08-06
