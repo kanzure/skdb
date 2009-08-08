@@ -20,7 +20,7 @@ class Interface(yaml.YAMLObject):
         else: return False
     def compatible(self, other):
         '''returns True if other is complementary. this method should probably get overwritten for specific problem domains.'''
-        if isinstance(other, self.complement):
+        if self.complement == other.__class__.__name__:
             return True
         else: return False
     def options(self, parts):

@@ -126,8 +126,9 @@ def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=N
         part2 = total_parts[1]
     if interface1 == None and interface2 == None:
         #default: first interface on both parts
-        interface1 = part1.interfaces[random.randint(0, len(part1.interfaces))].options([part1, part2])
-        interface2 = part2.interfaces[random.randint(0, len(part2.interfaces))].options([part1, part2])
+        #FIXME: set back to options()
+        interface1 = part1.interfaces[random.randint(0, len(part1.interfaces))]#.options([part1, part2])
+        interface2 = part2.interfaces[random.randint(0, len(part2.interfaces))]#.options([part1, part2])
 
     else:
         part1 = interface1.part
