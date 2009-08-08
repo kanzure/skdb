@@ -3,252 +3,313 @@
 #for part examples see http://guide.lugnet.com/partsref/search.cgi?q=XXXX
 #or http://img.lugnet.com/ld/XXXX.gif
 
--   !lego_feature
-    type: face
+face:
     #class  edge to refer to the rim around each brick?
     complement: [face, tire]
--   !lego_feature
-    type: stud
+stud:
     complement: anti stud
     example: 3005
--   !lego_feature
-    type: anti stud
-    # this typically has 3 or 4 contact points, but isn't round
+    technique: press_fit #this should be different... somehow
+    kinematics: revolute
+anti stud:
+    comment: this typically has 3 or 4 contact points, but isn't round
     complement: stud
     example: 3005
--   !lego_feature
-    type: stud cup
+    technique: press_fit
+    kinematics: revolute
+stud cup:
     complement: [stud, anti stud cup]
     example: 4073
--   !lego_feature
-    type: anti stud cup
-    # 'this occurs when there are 4 studs or technic studs in a square
+    technique: press_fit
+    kinematics: revolute
+anti stud cup:
+    comment: this occurs when there are 4 studs or technic studs in a square
     complement: stud cup
     example: 2654
--   !lego_feature
-    type: tall stud cup
+    technique: press_fit
+    kinematics: revolute
+tall stud cup:
     complement: [stud, anti stud cup]
     example: '3062a'
--   !lego_feature
-    type: technic stud
-    # t o d o finish
--   !lego_feature
-    type: hollow stud 
+    technique: press_fit
+    kinematics: revolute
+technic stud:
+    #TODO finish technic
+hollow stud :
     #assert isinstance(  revolute joint)
-    complement: [rod, anti stud]
+    complement: [bar, anti stud]
     example: '3062b' #4081b
--   !lego_feature
-    type: duplo stud
+    technique: press_fit
+    kinematics: revolute
+duplo stud:
     complement: duplo anti stud
--   !lego_feature
-    type: duplo anti stud
+    technique: press_fit
+    kinematics: revolute
+duplo anti stud:
     complement: duplo stud
--   !lego_feature
-    type: rod
+    technique: press_fit
+    kinematics: revolute
+bar:
     complement: [claw, hollow stud]
     example: 3957
--   !lego_feature
-    type: claw
-    complement: rod
+    technique: [snap_fit, press_fit]
+    kinematics: revolute
+claw:
+    complement: bar
     example: 6019
--   !lego_feature
-    type: pin
+    technique: snap_fit
+    kinematics: revolute
+pin:
     complement: pin hole
     example: 3673
--   !lego_feature
-    type: sticky pin
-    # todo finish
--   !lego_feature
-    type: pin hole #egad
-    complement: pin
+    technique: snap_fit
+    kinematics: revolute
+sticky pin:
+    #TODO finish
+    technique: snap_fit
+    kinematics: revolute
+pin hole: 
+    complement: [pin, stud, technic stud, hollow stud]
     example: 3700
--   !lego_feature
-    type: mini pin
+    technique: [snap_fit, press_fit]
+    kinematics: [revolute, prismatic]
+mini pin:
     complement: mini pin hole
     example: 4488
--   !lego_feature
-    type: mini pin hole
+    technique: snap_fit
+    kinematics: revolute
+mini pin hole:
     complement: mini pin
     example: none #find one then!
--   !lego_feature
-    type: short pin
+    technique: snap_fit
+    kinematics: revolute
+short pin:
     complement: plate hole
     example: 'that step file pin0 or whatever'
--   !lego_feature
-    type: plate hole
+    technique: snap_fit
+    kinematics: revolute
+plate hole:
     # add something about stacking two plates is compatible with  pin
     complement: shortpin
     example: '3709b'
--   !lego_feature
-    type: tow ball
+    technique: snap_fit
+    kinematics: revolute
+tow ball:
     complement: tow ball socket
     example: 3184
--   !lego_feature
-    type: tow ball socket
+    technique: snap_fit
+    kinematics: spherical
+tow ball socket:
     complement: tow ball
     example: 3183
--   !lego_feature
-    type: magnet
+    technique: snap_fit
+    kinematics: spherical
+magnet:
     # do magnets have the same stub axle as wheels?
     complement: magnet
     example: 73092
--   !lego_feature
-    type: wheel holder
+    technique: positioning
+    kinematics: planar
+wheel holder:
     # is this the same as 2607?
     complement: wheel axle
     example: 8
--   !lego_feature
-    type: wheel axle # snap fit?
+    technique: snap_fit
+    kinematics: revolute
+wheel axle: # snap fit?
     complement: wheel holder
     example: 3464
--   !lego_feature
-    type: wheel rim
+    technique: snap_fit
+    kinematics: revolute
+wheel rim:
     complement: tire inner
     example: 3464
--   !lego_feature
-    type: tire inner
+    technique: snap_fit
+    kinematics: revolute
+tire inner:
     complement: wheel rim
--   !lego_feature
-    type: tire outer
+    technique: snap_fit
+    kinematics: revolute
+tire outer:
     complement: edge
--   !lego_feature
-    type: swivel top
+    technique: positioning
+    kinematics: gear
+swivel top:
     # is this really a  minifig shoulder?
     complement: swivel bottom
     example: 3679
--   !lego_feature
-    type: swivel bottom
+    technique: snap_fit
+    kinematics: revolute
+swivel bottom:
     # is this really a  minifig shoulder hole?
     complement: swivel top
     example: 3680
--   !lego_feature
-    type: turntable top
+    technique: snap_fit
+    kinematics: revolute
+turntable top:
     complement: turntable bottom
     example: 3404
--   !lego_feature
-    type: turntable bottom
+    technique: snap_fit
+    kinematics: revolute
+turntable bottom:
     complement: turntable top
     example: 3403
--   !lego_feature
-    type: scissor hinge top
+    technique: snap_fit
+    kinematics: revolute
+scissor hinge top:
     complement: scissor hinge bottom
     example: 2430
--   !lego_feature
-    type: scissor hinge bottom
+    technique: snap_fit
+    kinematics: hinge
+scissor hinge bottom:
     complement: scissor hinge top
     example: 2429
--   !lego_feature
-    type: elevation hinge holder
+    technique: snap_fit
+    kinematics: hinge
+elevation hinge holder:
     complement: elevation hinge
     example: 3937
--   !lego_feature
-    type: elevation hinge
+    technique: snap_fit
+    kinematics: hinge
+elevation hinge:
     complement: elevation hinge holder
     example: 3938
--   !lego_feature
-    type: flat hinge2
+    technique: snap_fit
+    kinematics: hinge
+flat hinge2:
     complement: flat hinge3
     example: 4276
--   !lego_feature
-    type: flat hinge3
+    technique: snap_fit
+    kinematics: hinge
+flat hinge3:
     complement: flat hinge2
     example: 2452
--   !lego_feature
-    type: wide hinge m
+    technique: snap_fit
+    kinematics: hinge
+wide hinge m:
     complement: wide hinge f
     example: 4315
--   !lego_feature
-    type: wide hinge f
+    technique: snap_fit
+    kinematics: hinge
+wide hinge f:
     complement: wide hinge m
     example: 2872
--   !lego_feature
-    type: trailer hinge m
+    technique: snap_fit
+    kinematics: hinge
+trailer hinge m:
     complement: [trailer hinge f, claw]
     example: 3639
--   !lego_feature
-    type: trailer hinge f
-    complement: [trailer hinge m, rod]
+    technique: snap_fit
+    kinematics: hinge
+trailer hinge f:
+    complement: [trailer hinge m, bar]
     example: 3640
--   !lego_feature
-    type: round hinge 2
+    technique: snap_fit
+    kinematics: hinge
+round hinge 2:
     complement: round hinge 3
     example: 6048
--   !lego_feature
-    type: round hinge 3
+    technique: snap_fit
+    kinematics: hinge
+round hinge 3:
     complement: round hinge 2
     example: 6217
--   !lego_feature
-    type: locking hinge 1
+    technique: snap_fit
+    kinematics: hinge
+locking hinge 1:
     # sorta iffy on these as i've never seen them
     complement: locking hinge 2
     example: 30364
--   !lego_feature
-    type: locking hinge 2
+    technique: snap_fit
+    kinematics: [hinge, discrete_angle]
+    angle: 20deg #?
+locking hinge 2:
     complement: locking hinge 1
     example: 30365
--   !lego_feature
-    type: axle
+    technique: snap_fit
+    kinematics: [hinge, discrete_angle]
+    angle: 20deg #?
+axle:
     complement: [anti axle, pin hole]
     example: 3705
--   !lego_feature
-    type: anti axle
+    technique: [press_fit, positioning]
+    kinematics: [revolute, prismatic, discrete_angle]
+    angle: rev/4
+anti axle:
     complement: axle
     example: 32064
+    technique: press_fit
+    kinematics: [prismatic, discrete_angle]
     angle: rev/4
--   !lego_feature
-    type: toothed joint
+toothed joint:
     # there are 16 possible mates between two  toothed joint interfaces
     complement: toothed joint
     example: 4263
+    technique: press_fit
+    kinematics: discrete_angle
     angle: rev/16 
--   !lego_feature
-    type: minifig neck
+minifig neck:
     complement: [minifig neck hole, anti stud]
     example: 973
--   !lego_feature
-    type: minifig neck hole
+    technique: press_fit
+    kinematics: revolute
+minifig neck hole:
     complement: [minifig neck, stud]
     example: 'standard lego head'
--   !lego_feature
-    type: minifig backpack #not actually a  press fit; it's loose
+    technique: press_fit
+    kinematics: revolute
+minifig backpack: #not actually a  press fit; it's loose
     complement: minifig torso
     example: 'wtf srsly where is it'
--   !lego_feature
-    type: minifig torso #not actually a  press fit; it's loose
+    technique: positioning
+    kinematics: discrete_angle
+    angle: rev/2
+minifig torso: #not actually a  press fit; it's loose
     # for backpacks and armor and so on
     complement: minifig backpack
-    example: 973
--   !lego_feature
-    type: minifig wrist #is this a snap fit?
+    example: 3838
+    technique: positioning
+    kinematics: discrete_angle
+    angle: rev/2
+minifig wrist: #is this a snap fit?
     complement: minifig wrist hole
     example: 983
--   !lego_feature
-    type: minifig wrist hole #is this a snap fit?
+    technique: snap_fit
+    kinematics: revolute
+minifig wrist hole: #is this a snap fit?
     complement: minifig wrist
     example: 976
--   !lego_feature
-    type: minifig shoulder
+    technique: snap_fit
+    kinematics: revolute
+minifig shoulder:
     complement: minifig shoulder hole
     example: 976
--   !lego_feature
-    type: minifig shoulder hole
+    technique: snap_fit
+    kinematics: revolute
+minifig shoulder hole:
     complement: minifig shoulder
     example: 973
--   !lego_feature
-    type: minifig waist
+    technique: snap_fit
+    kinematics: revolute
+minifig waist:
     complement: minifig hip
     example: 973
--   !lego_feature
-    type: minifig hip stud
+    technique: press_fit
+    kinematics: revolute
+minifig hip stud:
     # does this really not interface with anything else?
     complement: minifig waist
     example: 970
--   !lego_feature
-    type: minifig leg pin
+    technique: press_fit
+    kinematics: discrete_angle
+    angle: rev/4
+minifig leg pin:
     complement: minifig leg hole
     example: 970
--   !lego_feature
-    type: minifig leg hole
+    technique: snap_fit
+    kinematics: hinge
+minifig leg hole:
     complement: minifig leg pin
     example: 971
-    
+    technique: snap_fit
+    kinematics: hinge
