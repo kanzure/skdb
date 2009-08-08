@@ -2,6 +2,15 @@ import yaml, re
 
 class FennObject(yaml.YAMLObject):
     '''so i dont repeat generic yaml stuff everywhere'''
+    #TODO fix bad characters spaces etc
+    def overlay(self, other):
+        if type(other)==dict: 
+            attrs = other.iteritems()
+        else: 
+            attrs = other.__dict__
+        for (k, v) in attrs:
+            setattr(self, k, v)
+            
     def __setstate__(self, attrs):
         print "entering FennObject.__setstate__()"
         for (k,v) in attrs.items():
@@ -9,6 +18,7 @@ class FennObject(yaml.YAMLObject):
             self.__setattr__(k,v)
         if hasattr(self, post_setstate_hook):
             self.post_setstate_hook()
+            
     @classmethod
     def to_yaml(cls, dumper, data):
         if hasattr(data, 'yaml_repr'):
