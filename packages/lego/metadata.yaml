@@ -41,8 +41,7 @@ tags:
  classes: 
     lego: 
     - Lego
-    - Stud
-    - AntiStud
+    - Feature
  source data:
  - data.yaml
  generated data:

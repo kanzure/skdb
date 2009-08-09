@@ -18,78 +18,67 @@ parts:
     - !lego_feature
       part: *wah
       point: [-8.0, 0.0, -8.0]
-      type: StudCup
-      complement: AntiStudCup #todo: deleteme
+      type: stud cup
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
       part: *wah
       point: [-4.0, 0.0, -4.0]
-      complement: Stud #todo: deleteme
-      type: AntiStud
+      type: anti stud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
       part: *wah
       point: [-12.0, 0.0, -4.0]
-      complement: Stud #todo: deleteme
-      type: AntiStud
+      type: anti stud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
       part: *wah
       point: [-12.0, 0.0, -12.0]
-      complement: Stud #todo: deleteme
-      type: AntiStud
+      type: anti stud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
       part: *wah
       point: [-4.0, 0.0, -12.0]
-      complement: Stud #todo: deleteme
-      type: AntiStud
+      type: anti stud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
       part: *wah
       point: [-12.0, 9.5999999999999996, -4.0]
-      type: Stud
-      complement: AntiStud #todo: deleteme
+      type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
       part: *wah
       point: [-4.0, 9.5999999999999996, -4.0]
-      type: Stud
-      complement: AntiStud #todo: deleteme
+      type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
       part: *wah
       point: [-4.0, 9.5999999999999996, -12.0]
-      type: Stud
-      complement: AntiStud #todo: deleteme
+      type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
       part: *wah
       point: [-12.0, 9.5999999999999996, -12.0]
-      type: Stud
-      complement: AntiStud #todo: deleteme
+      type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
       part: *wah
       point: [-8.0, 9.5999999999999996, -8.0]
-      type: AntiStudCup
-      complement: StudCup #todo: deleteme
+      type: anti stud cup
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
       part: *wah
       point: [-8.0, 9.5999999999999996, -8.0]
-      type: AntiStudCup
-      complement: Stud #todo: deleteme
+      type: anti stud cup
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     
@@ -106,7 +95,7 @@ parts:
   interfaces:
     - !lego_feature
         name: peg1
-        type: Stud
+        type: stud
         geometry: #!cylinder #this is not necessary since a Peg interface should know its geometry
             height: 1.7mm
             diameter: 5mm
@@ -116,18 +105,18 @@ parts:
          - 'models/peg.step'
         #point it upwards (of course, Peg should know this too)
     - !lego_feature
-        type: Stud
+        type: stud
         name: peg2
         point: [8, 16, 0.85]
     - !lego_feature
-        type: Stud
+        type: stud
         name: peg3
         point: [16, 8, 0.85]
     - !lego_feature
-        type: Stud
+        type: stud
         name: peg4
         point: [16, 16, 0.85]
     - !lego_feature
-        type: Stud
+        type: stud
         name: hole1
 
