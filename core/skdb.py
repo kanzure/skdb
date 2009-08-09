@@ -23,33 +23,50 @@ debug = False
 #class InterfaceGeom(yaml.YAMLObject):
 
 def check_unix_name(name):
-    '''returns True if name (string) is a valid unix_name
-    allowed characters in a unix_name are: a-z, 0-9, - and _'''
-    return name.isalpha()
+    '''returns True if name (string) is a valid unix_name'''
+    assert name, "name is empty"
+    check = re.match('^[a-zA-Z0-9_\-.]*$', name)
+    assert check, 'allowed characters in a name are: a-z, 0-9, "-", ".", and "_". Instead, got: "'+str(name)+'"'
+    if check: return True
+    else: return False
+
+def package_file(package, filename, mode='r'):
+    '''construct a dummy package and return a filehandler for filename.
+    needed for packages to find their own files (can't be used as a method of Package)'''
+    dummy = Package(package)
+    package_path = dummy.path()
+    filepath = os.path.join(package_path, filename)
+    try: #fail early
+        assert os.access(filepath, os.F_OK)
+        return open(filepath, mode)
+    except AssertionError: 
+        raise IOError, 'error in package "'+package+'": could not read file "'+filename+'"'
+
 
 def open_package(path):
     '''just a synonym for load_package'''
     return load_package(path)
 
-def load_package(path):
+def load_package(name):
     '''returns a package loaded from the filesystem
     input should be something like "f-16" or "human-exoskeleton-1.0"
     see settings.paths['SKDB_PACKAGES_DIR']'''
-    if path == None:
+    if not check_unix_name(name): #fail even if asserts are turned off
         return None
-    assert check_unix_name(path)
     assert hasattr(settings,"paths")
     assert settings.paths.has_key("SKDB_PACKAGE_DIR")
-    package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],path)
+    package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],name)
     assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
     #must have the required files
     required_files = ["metadata.yaml", "data.yaml"]
     for file in required_files:
-        assert os.access(os.path.join(package_path, file), os.F_OK), str(package_path)+": "+file+" not found or unreadable"
-    loaded_package = load(open(os.path.join(package_path, "metadata.yaml")))
+        package_file(name, file)
+        #assert os.access(os.path.join(package_path, file), os.F_OK), str(package_path)+": "+file+" not found or unreadable"
+    loaded_package = load(package_file(name, 'metadata.yaml'))
     import_package_classes(loaded_package, package_path)
     return loaded_package
-    
+
+
 def import_package_classes(loaded_package, package_path):
     '''assigns classes to the Package's namespace; for example:
     package = load_package('lego')
@@ -67,41 +84,24 @@ def import_package_classes(loaded_package, package_path):
 
 class Package(FennObject):
     yaml_tag='!package'
-    def __init__(self, name=None, unix_name=None, license=None, urls=None, modules=None):
-        self.name, self.unix_name, self.license = None, None, None
-        return
+    def __init__(self, name=None, license=None, urls=None, modules=None):
         self.name = name
-        self.unix_name = unix_name
-        if unix_name == None:
-            self.unix_name = name
-            assert check_unix_name(self.unix_name)
         self.license = license
         self.urls = urls
     def post_init_hook(self):
         '''yaml calls this after loading a package'''
-        #need to set a unix name
-        if not self.unix_name:
-            if self.name: self.unix_name = self.name
-        return
+        check_unix_name(self.name)
     def path(self):
         '''returns the absolute path on the file system to the package folder'''
-        assert hasattr(self, "unix_name"), "this package must have a unix_name attribute-- was post_init_hook called?"
-        return settings.package_path(self.unix_name)
-    def load(self, content, only_classes=None):
-        '''loads some yaml (not necessarily into type Package)
-        it's kind of fishy since a package is multiple files at the moment.'''
-        returns = yaml.load(content)
-        if not only_classes == None:
-            #only return the objects that are of type only_classes
-            #FIXME: allow "only_classes" to be a list
-            real_returns = []
-            for (k,v) in returns.items():
-                if str(type(v)) == only_classes: #there has to be a better way to do this
-                    #set the name attribute to the keyname
-                    v.name = k
-                    real_returns.append(v)
-            return real_returns
-        return returns
+        check_unix_name(self.name)
+        return settings.package_path(self.name)
+    def load_data(self, file=None):
+        '''loads all the files listed in "source data:" from metadata.yaml'''
+        if not file:
+            catalog = getattr(self, 'source data')
+        else: catalog = [file]
+        for x in catalog:
+            self.overlay(load(package_file(self.name, x))) #merge data from entire catalog into package
     def dump(self):
         '''returns this object in yaml'''
         return yaml.dump(self)
