@@ -248,6 +248,7 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=None,roty2=None):
              ]
     for part in total_parts:
         for interface in part.interfaces:
+            convert_interface(interface)
             interface.part = part
             try:
                 color = colors[color_counter]
@@ -273,7 +274,7 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=None,roty2=None):
             elif hasattr(interface, "orientation"):
                 #convert from orientation to rotation
                 orientation = interface.orientation
-                (el, az) = point_shape(OCC.gp.gp_Ax1(orientation))
+                (el, az) = point_shape(OCC.gp.gp_Ax1(OCC.gp.gp_Pnt(0,0,0), OCC.gp.gp_Dir(orientation[0], orientation[1], orientation[2])))
                 rotx = el
                 roty = az #er, not quite
             else:
@@ -304,10 +305,31 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=None,roty2=None):
             
     return
 
+def add_key(key,method_to_call):
+    '''call this after pymates.start()
+    binds a key to a particular method
+    ex: add_key("G",some_method)
+    '''
+    upper_case = key.upper()
+    orded = ord(upper_case) #see wxDisplay.py line 171
+    OCC.Display.wxSamplesGui.frame.canva._key_map[orded] = method_to_call
+    print "added a key with name = ", orded, " mapped to method = ", method_to_call
+    return
+
+def cycler():
+    assert len(total_parts) > 1, "pymates must know of at least two parts"
+    restart()
+    res = mate_parts(part1=total_parts[0], part2=total_parts[1])
+    OCC.Display.wxSamplesGui.display.DisplayColoredShape(total_parts[0].shapes.pop())
+    OCC.Display.wxSamplesGui.display.DisplayColoredShape(res.Shape(),'BLUE')
+
 def start():
     '''call this immediately once opening up pymates in a shell session (like ipython)'''
     import OCC.Display.wxSamplesGui
     OCC.Display.wxSamplesGui.display.Create()
+    OCC.Display.wxSamplesGui.frame.canva._display.DisableAntiAliasing()
+    OCC.Display.wxSamplesGui.frame.canva._display.SetModeShaded()
+    add_key("n", cycler)
 
 def restart(event=None): #EraseAll
     '''clears the screen/workspace of all objects. also removes all parts (be careful).'''
@@ -350,6 +372,10 @@ def supermate_parts(event=None):
     demo()
     mate_parts()
     return
+
+def register_part(part):
+    '''registers a part into pymates for the cycler method to work'''
+    total_parts.append(part)
 
 def exit(event=None):
     '''exit this program'''
