@@ -101,7 +101,7 @@ def convert_interface(interface2):
         #see x_vec and y_vec .. which would give you orientation (if you take the cross products)
         if hasattr(interface2, "orientation"):
             orientation = interface2.orientation
-            (el, az) = point_shape(OCC.gp.gp_Ax1(orientation))
+            (el, az) = point_shape(OCC.gp.gp_Ax1(OCC.gp.gp_Pnt(0,0,0), OCC.gp.gp_Dir(orientation[0], orientation[1], orientation[2])))
             interface2.x = el
             interface2.y = az
             interface2.converted = True
@@ -127,8 +127,8 @@ def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=N
     if interface1 == None and interface2 == None:
         #default: first interface on both parts
         #FIXME: set back to options()
-        interface1 = part1.interfaces[random.randint(0, len(part1.interfaces))]#.options([part1, part2])
-        interface2 = part2.interfaces[random.randint(0, len(part2.interfaces))]#.options([part1, part2])
+        interface1 = part1.interfaces[random.randint(0, len(part1.interfaces)-1)]#.options([part1, part2])
+        interface2 = part2.interfaces[random.randint(0, len(part2.interfaces)-1)]#.options([part1, part2])
 
     else:
         part1 = interface1.part
