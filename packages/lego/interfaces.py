@@ -53,8 +53,6 @@ class Feature(skdb.Interface):
             self.overlay(grammar[type])
         except AttributeError: self.type = None
         
-        try: part_name = self.part.name
-        except AttributeError: part_name = None
         
         try: name = self.name
         except AttributeError: name = None
@@ -65,7 +63,9 @@ class Feature(skdb.Interface):
         else: return False
         
     def __repr__(self):
-        return "%s(part=%s,name=%s, type=%s)" % (self.__class__.__name__, self.part_name, self.name, self.type)
+        try: part_name = self.part.name
+        except AttributeError: part_name = None
+        return "%s(part=%s,name=%s, type=%s)" % (self.__class__.__name__, part_name, self.name, self.type)
         
     def example_picture(self):
         '''example should be an ldraw number'''
