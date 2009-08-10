@@ -189,11 +189,11 @@ def point_shape(shape, origin):
     trsf = gp_Trsf()
     #this may be in backwards order?
     trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el-math.pi/2)
-    shape = BRepBuilderAPI_Transform(shape, trsf, True).Shape()
+    shape1 = BRepBuilderAPI_Transform(shape, trsf, True).Shape()
     trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az-math.pi/2)
-    shape = BRepBuilderAPI_Transform(shape, trsf, True).Shape()
+    shape2 = BRepBuilderAPI_Transform(shape1, trsf, True).Shape()
 
-    return shape
+    return shape2
     
 from copy import copy
 
@@ -206,13 +206,14 @@ def draw_legos(event=None):
     brick2 = lego.parts[0]
     i2 = brick2.interfaces[5]
     brick2.load_CAD()
+    
     #this is lame
-    i1.x_vec = gp_Vec(i1.x_vec[0], i1.x_vec[1], i1.x_vec[2])
-    i1.y_vec = gp_Vec(i1.y_vec[0], i1.y_vec[1], i1.y_vec[2])
-    i2.x_vec = gp_Vec(i2.x_vec[0], i2.x_vec[1], i2.x_vec[2])
-    i2.y_vec = gp_Vec(i2.y_vec[0], i2.y_vec[1], i2.y_vec[2])
-    i1.point = gp_Pnt(i1.point[0], i1.point[1], i1.point[2])
-    i2.point = gp_Pnt(i2.point[0], i2.point[1], i2.point[2])
+    i1.x_vec = safe_vec(i1.x_vec)
+    i1.y_vec = safe_vec(i1.y_vec)
+    i2.x_vec = safe_vec(i2.x_vec)
+    i2.y_vec = safe_vec(i2.y_vec)
+    i1.point = safe_point(i1.point)
+    i2.point = safe_point(i2.point)
     
     #for v in [i1.x_vec, i1.y_vec, i2.x_vec, i2.y_vec]:
         #v = gp_Vec(v[0], v[1], v[2]) \
@@ -222,15 +223,36 @@ def draw_legos(event=None):
     point_shape(brick2.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i2.z_vec)))
     brick2.shapes[0] = move_shape(brick2.shapes[0], i1.point, i2.point)
     display.DisplayShape([brick1.shapes[0]])
-    display.DisplayShape([ brick2.shapes[0]])
+    display.DisplayShape([brick2.shapes[0]])
+    (head,body) = make_arrow_only(gp_Ax1(safe_point(i2.point), gp_Dir(i2.z_vec)))
+    head1 = point_shape(head, gp_Ax1(safe_point([0,0,0]), gp_Dir(i2.y_vec)))
+    body1 = point_shape(body, gp_Ax1(safe_point([0,0,0]), gp_Dir(i2.y_vec)))
+    display.DisplayShape(head)
+    display.DisplayShape(body)
     print i1.point
     print i1.z_vec.Coord()
     print i1.z_vec.Cross(i1.y_vec)
     print i1.z_vec.Coord()
     
-    
+def safe_point(point):
+    '''returns a gp_Pnt, even if you give it a gp_Pnt'''
+    if type(point) == gp_Pnt: return point
+    return gp_Pnt(point[0],point[1],point[2])
+
+def safe_vec(vector):
+    '''returns a gp_Vec, even if you give it a gp_Vec'''
+    if type(vector) == gp_Vec: return vector
+    return gp_Vec(vector[0], vector[1], vector[2])
+
 def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
+    (body, head) = make_arrow_only(origin=origin,scale=scale,text=text,color=color)
+    display.DisplayColoredShape(head, color)
+    display.DisplayColoredShape(body, color)
+    if text is not None:
+        make_text(text, origin.Location(), 6)
+
+def make_arrow_only(origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     assert type(origin) == gp_Ax1
     body = BRepPrimAPI_MakeCylinder(0.05, 0.7).Shape()
     head = BRepPrimAPI_MakeCone(0.1,0.001,0.3).Shape()
@@ -240,12 +262,8 @@ def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1,
     body = point_shape(body, origin)
     head = move_shape(head, gp_Pnt(0,0,0), origin.Location())
     body = move_shape(body, gp_Pnt(0,0,0), origin.Location())
+    return (body, head)
 
-    display.DisplayColoredShape(head, color)
-    display.DisplayColoredShape(body, color)
-    if text is not None:
-        make_text(text, origin.Location(), 6)
-    
 def make_arrow_to(event=None, dest=gp_Ax1(gp_Pnt(0,0,1), gp_Dir(0,0,1)), scale=1, text=None, color='YELLOW'):
     pass
 
