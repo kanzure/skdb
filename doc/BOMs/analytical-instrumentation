@@ -22,7 +22,8 @@ fourier transform spectroscopy:
     abbreviation: FTIR
 gas chromatography:
     abbreviation: GC
-gas chromatography-mass spectrometry (GC-MS):
+gas chromatography-mass spectrometry:
+    abbreviation: GC-MS
 high performance liquid chromatography:
     abbreviation: HPLC
 ion microprobe:
@@ -31,7 +32,9 @@ inductively coupled plasma:
     abbreviation: ICP
 instrumental mass fractionation:
     abbreviation: IMF
-ion selective electrode (ISE) eg. determination of pH:
+ion selective electrode:
+    abbreviation: ISE
+    description: "determination of pH"
 laser induced breakdown spectroscopy:
     abbreviation: LIBS
 mass spectrometry:
@@ -81,15 +84,18 @@ electron induced desorption:
     abbreviation: EID
 electron probe microanalysis:
     abbreviation: EPMA
-electron spectroscopy for chemical analysis; see XPS:
+electron spectroscopy for chemical analysis:
     abbreviation: ESCA
+    see also:
+    - *XPS
 electron stimulated desorption:
     abbreviation: ESD
 extended x-ray absorption fine structure:
     abbreviation: EXAFS
 field emission microscopy:
     abbreviation: FEM
-field ion microscopy-atom probe (FIM-AP):
+field ion microscopy-atom probe:
+    abbreviation: FIM-AP
 fourier transform infrared absorption spectroscopy:
     abbreviation: FTIR
 attenuated total reflection:
@@ -150,7 +156,8 @@ photodesorption:
     abbreviation: PD
 potentiodynamic electrochemical impedance spectroscopy:
     abbreviation: PDEIS
-photoelectron diffraction (PED, XPD, PhD, ARPEFS):
+photoelectron diffraction:
+    abbreviation: PED, XPD, PhD, ARPEFS
 particle (or proton) induced X-ray spectroscopy:
     abbreviation: PIXE
 rutherford backscattering spectroscopy:
@@ -195,7 +202,8 @@ wide angle X-ray scattering:
     abbreviation: WAXS
 X-ray induced auger electron spectroscopy:
     abbreviation: XAES
-X-ray crystal truncation rod scattering (X-CTR):
+X-ray crystal truncation rod scattering:
+    abbreviation: X-CTR
 X-ray diffuse scattering:
     abbreviation: XDS
 X-ray photoelectron emission microscopy:
