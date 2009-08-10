@@ -193,7 +193,6 @@ def add_lego(event=None):
     opts = None
     while not opts:
         i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
-        lego = skdb.load_package('lego'); lego.load_data()
         brick2 = deepcopy(generic_brick)
         brick2.post_init_hook()
         opts = list(i1.options(brick2))
@@ -211,7 +210,9 @@ def add_lego(event=None):
     body1 = point_shape(body, gp_Ax1(safe_point([0,0,0]), gp_Dir(i2.y_vec)))
     display.DisplayShape(head)
     display.DisplayShape(body)'''
-    
+
+from pymates import add_key
+add_key(' ', add_lego)
 
 
 def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):

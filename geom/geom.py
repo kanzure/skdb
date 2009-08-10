@@ -63,15 +63,22 @@ class Mate(Connection):
         i2.point = safe_point(i2.point)
         i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
         orient_i1 = point_shape(i1.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)), trsf_only=True)
-        move_i1 = gp_Trsf() #don't move the first part
-        trsf_i1 = move_i1.Multiplied(orient_i1)
-        tmp = i1.point.Transformed(trsf_i1)
+        #move_i1 = gp_Trsf() #don't move the first part
+        #trsf_i1 = move_i1.Multiplied(orient_i1)
+        trsf_i1 = orient_i1
+        if hasattr(i1.part, "transform"):
+            tmp = i1.point.Transformed(i1.part.transform)
+        else: tmp = i1.point
+        #tmp = i1.point.Transformed(trsf_i1)
         i2.z_vec = copy(i2.x_vec); i2.z_vec.Cross(i2.y_vec)
         orient_i2 = point_shape(i2.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i2.z_vec)), trsf_only=True)
+        opposite = gp_Trsf()
+        opposite.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(gp_Vec(1,0,0))), math.pi) #rotate 180 so that interface z axes are opposed
         move_i2 =  move_shape(i2.part.shapes[0], tmp, i2.point, trsf_only=True)
         trsf_i2 = move_i2.Multiplied(orient_i2)
-        if hasattr(i2.part, "transform"):
-            trsf_i2 = trsf_i2.Multiplied(i2.part.transform)
+        trsf_i2 = trsf_i2.Multiplied(opposite)
+        #if hasattr(i2.part, "transform"):
+        #    trsf_i2 = trsf_i2.Multiplied(i2.part.transform)
         print "x: %.1f y: %.1f z: %.1f" % trsf_i2.TranslationPart().Coord()
         return trsf_i2
         
