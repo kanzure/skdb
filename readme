@@ -7,6 +7,9 @@ clients/
 core/
     code needed for loading, parsing, and drawing inferences from package data
 
+geom/
+    optional code to work with pythonOCC/OpenCASCADE
+
 dep/
     start of a general purpose dependency resolution engine, for figuring out what tools are necessary to make the tools to make the tools...
 
