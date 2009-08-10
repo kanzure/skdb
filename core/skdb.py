@@ -102,6 +102,7 @@ class Package(FennObject):
         else: catalog = [file]
         for x in catalog:
             self.overlay(load(package_file(self.name, x))) #merge data from entire catalog into package
+            return self
     def dump(self):
         '''returns this object in yaml'''
         return yaml.dump(self)
@@ -117,7 +118,7 @@ class Package(FennObject):
     def makes_sense(self):
         '''checks for whether or not the package data makes sense'''
         raise NotImplementedError
-
+    
 class Distribution(FennObject):
     yaml_path = ['typical', 'feasible']
 
