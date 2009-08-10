@@ -21,13 +21,17 @@ class Part(FennObject):
             self.files = files
         if not hasattr(self, "interfaces"):
             self.interfaces = interfaces
+
+    def post_init_hook(self):
+        for i in self.interfaces:
+            i.part = self #so we dont have to do this over and over in the data.yaml
     def makes_sense(self):
         '''checks whether or not this part makes sense
         classes that inherit from Part should have their own makes_sense method.
         returns True if the data loaded up for the part makes sense.
         returns False if the data loaded up for the part does not make sense.
         '''
-        return True
+        raise NotImplementedError
         
     def options(self, parts):
         '''what can this part connect to?'''
