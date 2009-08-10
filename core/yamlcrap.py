@@ -3,6 +3,15 @@ import yaml, re
 class FennObject(yaml.YAMLObject):
     '''so i dont repeat generic yaml stuff everywhere'''
     #TODO fix bad characters spaces etc
+    
+    @staticmethod
+    def setify(var):
+        '''converts whatever to a set; dicts become a set of their values'''
+        if not hasattr(var, '__iter__'): var = set([var])
+        if isinstance(var, dict): var = set([var.values()]) #that's right, not keys
+        if isinstance(var, list): var = set(var)
+        return var
+        
     def overlay(self, other):
         if type(other)==dict: 
             attrs = other.iteritems()
@@ -11,13 +20,13 @@ class FennObject(yaml.YAMLObject):
         for (k, v) in attrs:
             setattr(self, k, v)
             
-    def __setstate__(self, attrs):
+    poop = '''def __setstate__(self, attrs):
         print "entering FennObject.__setstate__()"
         for (k,v) in attrs.items():
             k = re.sub(' ', '_', k) #replace spaces with underscores because "foo.the attr" doesn't work
             self.__setattr__(k,v)
         if hasattr(self, "post_setstate_hook"):
-            self.post_setstate_hook()
+            self.post_setstate_hook()'''
             
     @classmethod
     def to_yaml(cls, dumper, data):
