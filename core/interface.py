@@ -40,8 +40,6 @@ class Interface(FennObject):
             part_name = self.part.name
         else: part_name = None
         return 'Interface("%s", part="%s")' % (self.name, part_name)
-    def yaml_repr(self):
-        return "name: %s\nidentifier: %s\nhermaphroditic: %s\nunits: %s\ngeometry: %s\npoint: %s\nx: %s\ny: %s\nz: %s\npart: %s" % (self.name, self.identifier, self.hermaphroditic, self.units, self.geometry, self.point, self.x, self.y, self.z, self.part)
 
 class Connection:
     '''a temporary scenario to see if we should connect these two interfaces'''
@@ -60,7 +58,9 @@ class Connection:
 class Mate(Connection):
     def apply(self):
         '''apply this option for mating'''
-    def makes_sense(self):
-        return 1
+        
+    def makes_sense(self): #should we include is_busy()?
+        return self.interface1.compatible(self.interface2) and self.interface2.compatible(self.interface1)
+            
     def __repr__(self):
-        return "Mating(%s, %s)" % (self.interface1, self.interface2)
+        return "Mate(%s, %s)" % (self.interface1, self.interface2)
