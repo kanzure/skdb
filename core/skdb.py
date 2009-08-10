@@ -9,10 +9,10 @@ from string import Template as string_template
 from template import Template
 
 from units import Unit, Range, Uncertainty, UnitError, NaNError
-from interface import Interface, Connection, Mate
+from interface import Interface, Connection
 from part import Part
 from yamlcrap import FennObject, Dummy, tag_hack
-from threads import Thread
+#from threads import Thread
 import settings
 
 debug = False

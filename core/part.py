@@ -2,7 +2,6 @@
 #defines skdb.Part
 import yaml
 import time
-from interface import Mate
 from yamlcrap import FennObject
 import os
 
@@ -43,7 +42,7 @@ class Part(FennObject):
             for i in interface_list:
                     for j in self.interfaces:
                         if i.compatible(j) and j.compatible(i):
-                            rval.add(Mate(i, j))
+                            rval.add(Connection(i, j))
         return rval
         
     def __add__(self, other):
@@ -52,30 +51,4 @@ class Part(FennObject):
     def __repr__(self):
         return "%s(name=%s, interfaces=%s)" % (self.__class__.__name__, self.name, self.interfaces)
 
-try:
-        import OCC.Utils.DataExchange.STEP
-        def load_CAD(self):
-            '''load this object's CAD file. assumes STEP.'''
-            if len(self.files) == 0: return #no files to load
-            assert hasattr(self,"package"), "Part.load_CAD doesn't have its package loaded."
-            #FIXME: assuming STEP
-            #TODO: check/verify filename path
-            #FIXME: does not properly load in models from multiple files (2009-07-30)
-            for file in self.files:
-                full_path = os.path.join(self.package.path(), str(file))
-                my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(full_path)
-                my_step_importer.ReadFile()
-                self.shapes = my_step_importer.GetShapes()
-                self.compound = my_step_importer.GetCompound()
-            #i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
-            #x,y,point = self.interfaces[0].x,self.interfaces[0].y,self.interfaces[0].point
-            return self.shapes
-        Part.load_CAD = load_CAD
-        def add_shape(self, result):
-            '''add a shape to self.ais_shapes. this isn't as exciting as you think it is.'''
-            if type(result) == type([]): self.ais_shapes = result[0]
-            else: self.ais_shapes = result
-            return
-        Part.add_shape = add_shape
 
-except ImportError: print "Couldn't import OCC.Utils.DataExchange.STEP: Is pythonOCC installed properly?"

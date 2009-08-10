@@ -34,6 +34,8 @@ from OCC.Display.wxSamplesGui import display
 
 import math #OCC.math gets in the way? wtf
 import skdb
+from geom import Mate, move_shape, point_shape
+skdb.Mate = Mate
 
 current = gp_Pnt2d(0,0)
 
@@ -163,86 +165,50 @@ def make_text(string, pnt, height):
         _vertex = Graphic3d_Vertex(pnt.X(), pnt.Y(), pnt.Z())
     myGroup.Text(_string, _vertex, height)
 
-def move_shape(shape, from_pnt, to_pnt):
-    trsf = gp_Trsf()
-    trsf.SetTranslation(from_pnt, to_pnt)
-    return BRepBuilderAPI_Transform(shape, trsf, True).Shape()
 
-def angle_to(x,y,z):                                                         
-    '''returns polar coordinates in radians to a point from the origin            
-    a rotates around the x-axis; b rotates around the y axis; r is the distance'''
-    azimuth = math.atan2(y, x) #longitude                                       
-    elevation = math.atan2(z, math.sqrt(x**2 + y**2))                              
-    radius = math.sqrt(x**2+y**2+z**2)                                                 
-    return((azimuth, elevation, radius))  
-    #glRotatef(az-90,0,0,1)                                                        
-    #glRotatef(el-90,1,0,0) 
 
-def point_shape(shape, origin):
-    '''rotates a shape to point along origin's direction. this function ought to be unnecessary'''
-    assert type(origin) == gp_Ax1
-    #ox, oy, oz = origin.Location().X(), origin.Location().Y(), origin.Location().Z() #ffs
-    ox, oy, oz = 0, 0, 0
-    dx, dy, dz = origin.Direction().X(), origin.Direction().Y(), origin.Direction().Z()
-    (az, el, rad) = angle_to(dx-ox, dy-oy, dz-oz)
-    print "az: %s, el: %s, rad: %s... dx: %s, dy: %s, dz %s)" % (az, el, rad, dx, dy, dz)
-    trsf = gp_Trsf()
-    #this may be in backwards order?
-    trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el-math.pi/2)
-    shape1 = BRepBuilderAPI_Transform(shape, trsf, True).Shape()
-    trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az-math.pi/2)
-    shape2 = BRepBuilderAPI_Transform(shape1, trsf, True).Shape()
+from copy import copy, deepcopy
+from random import randint
 
-    return shape2
-    
-from copy import copy
-
-def draw_legos(event=None):
-    lego = skdb.load_package('lego'); lego.load_data()
-    brick1 =lego.parts[0]
-    brick1.load_CAD()
-    i1 = brick1.interfaces[1]
-    lego = skdb.load_package('lego'); lego.load_data()
-    brick2 = lego.parts[0]
-    i2 = brick2.interfaces[5]
-    brick2.load_CAD()
-    
-    #this is lame
-    i1.x_vec = safe_vec(i1.x_vec)
-    i1.y_vec = safe_vec(i1.y_vec)
-    i2.x_vec = safe_vec(i2.x_vec)
-    i2.y_vec = safe_vec(i2.y_vec)
-    i1.point = safe_point(i1.point)
-    i2.point = safe_point(i2.point)
-    
-    #for v in [i1.x_vec, i1.y_vec, i2.x_vec, i2.y_vec]:
-        #v = gp_Vec(v[0], v[1], v[2]) \
-    i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
-    point_shape(brick1.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)))
-    i2.z_vec = copy(i2.x_vec); i2.z_vec.Cross(i2.y_vec)
-    point_shape(brick2.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i2.z_vec)))
-    brick2.shapes[0] = move_shape(brick2.shapes[0], i1.point, i2.point)
-    display.DisplayShape([brick1.shapes[0]])
+lego = skdb.load_package('lego'); lego.load_data()
+generic_brick = lego.parts[0]
+generic_brick.load_CAD()
+print type(generic_brick)
+current_brick = None
+def make_lego(event=None):
+    global current_brick
+    if current_brick is None:
+        #lego = skdb.load_package('lego'); lego.load_data()
+        current_brick =deepcopy(generic_brick)
+        current_brick.post_init_hook()
+        #rotate it into frame correctly?
+        mate = Mate(current_brick.interfaces[0], current_brick.interfaces[0])
+        current_brick.shapes[0] = mate.apply()
+        display.DisplayShape([current_brick.shapes[0]])
+        return
+    opts = None
+    while not opts:
+        i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
+        lego = skdb.load_package('lego'); lego.load_data()
+        brick2 = deepcopy(generic_brick)
+        brick2.post_init_hook()
+        opts = list(i1.options(brick2))
+    conn =opts[random.randint(0, len(opts)-1)]
+    mate = Mate(conn.interface1, conn.interface2)
+    i2 = mate.interface2
+    i2.part.shapes[0] = mate.apply()
+    #display.DisplayShape([current_brick.shapes[0]])
     display.DisplayShape([brick2.shapes[0]])
-    (head,body) = make_arrow_only(gp_Ax1(safe_point(i2.point), gp_Dir(i2.z_vec)))
+    current_brick = brick2
+    
+    #interface arrows
+    go_away='''(body, head) = make_arrow_only(gp_Ax1(safe_point(i2.point), gp_Dir(i2.z_vec)))
     head1 = point_shape(head, gp_Ax1(safe_point([0,0,0]), gp_Dir(i2.y_vec)))
     body1 = point_shape(body, gp_Ax1(safe_point([0,0,0]), gp_Dir(i2.y_vec)))
     display.DisplayShape(head)
-    display.DisplayShape(body)
-    print i1.point
-    print i1.z_vec.Coord()
-    print i1.z_vec.Cross(i1.y_vec)
-    print i1.z_vec.Coord()
+    display.DisplayShape(body)'''
     
-def safe_point(point):
-    '''returns a gp_Pnt, even if you give it a gp_Pnt'''
-    if type(point) == gp_Pnt: return point
-    return gp_Pnt(point[0],point[1],point[2])
 
-def safe_vec(vector):
-    '''returns a gp_Vec, even if you give it a gp_Vec'''
-    if type(vector) == gp_Vec: return vector
-    return gp_Vec(vector[0], vector[1], vector[2])
 
 def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
@@ -351,6 +317,8 @@ def draw_all_tangents(event=None):
 
 def clear(event=None):
     display.EraseAll()
+    current = None
+    current_brick = None
 
 def exit(event=None):
     sys.exit() 
@@ -368,14 +336,15 @@ if __name__ == '__main__':
                     make_arrow,
                     make_arrows,
                     make_coordinate_arrows,
-                    draw_legos,
+                    make_lego,
                     clear,
                     exit
                     ]:
             add_function_to_menu('demo', f)
         #random_sweep()
         init_display()
-        draw_legos()
+        make_lego()
+        make_lego()
         start_display()
 
         
