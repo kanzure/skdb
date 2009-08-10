@@ -20,13 +20,14 @@ class Interface(FennObject):
         else: return False
     def compatible(self, other):
         '''returns True if other is complementary. this method should probably get overwritten for specific problem domains.'''
-        if self.complement == other.__class__.__name__:
-            return True
-        else: return False
+        for t in self.setify(self.complement):
+            if isinstance(other, t): return True
+        return False
+
     def options(self, parts):
         '''what can this interface connect to?'''
         #FIXME: what about options(self,interface)?
-        parts = set(parts) #yay sets!
+        parts = self.setify(parts) #yay sets!
         if self.part in parts: parts.remove(self.part) #unless it's really flexible
         rval = set()
         for part in parts:
@@ -55,14 +56,10 @@ class Connection:
         return
         
     def __repr__(self):
-        return "Connection(%s, %s)" % (self.interface1, self.interface2)
+        return "%s(%s, %s)" % (self.__class__.__name__, self.interface1, self.interface2)
         
     def makes_sense(self): #should we include is_busy()?
         return self.interface1.compatible(self.interface2) and self.interface2.compatible(self.interface1)
         
 class Mate(Connection):
-    def apply(self):
-        '''apply this option for mating'''
-            
-    def __repr__(self):
-        return "Mate(%s, %s)" % (self.interface1, self.interface2)
+    pass
