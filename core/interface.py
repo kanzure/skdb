@@ -48,19 +48,21 @@ class Connection:
         assert hasattr(interface2, 'connected')
         self.interface1 = interface1
         self.interface2 = interface2
+        
     def connect(self):
         self.interface1.connected = self
         self.interface2.connected = self
         return
+        
     def __repr__(self):
         return "Connection(%s, %s)" % (self.interface1, self.interface2)
-
-class Mate(Connection):
-    def apply(self):
-        '''apply this option for mating'''
         
     def makes_sense(self): #should we include is_busy()?
         return self.interface1.compatible(self.interface2) and self.interface2.compatible(self.interface1)
+        
+class Mate(Connection):
+    def apply(self):
+        '''apply this option for mating'''
             
     def __repr__(self):
         return "Mate(%s, %s)" % (self.interface1, self.interface2)
