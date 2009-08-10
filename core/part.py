@@ -28,19 +28,23 @@ class Part(FennObject):
         returns False if the data loaded up for the part does not make sense.
         '''
         return True
-    def options(self, part_list):
+        
+    def options(self, parts):
         '''what can this part connect to?'''
-        for part in part_list:
-            interface_list = set(part.interfaces)
-            if self in interface_list: interface_list.remove(self) #unless this part is really flexible
+        parts = self.setify(parts)
+        for part in parts:
+            interfaces = set(part.interfaces)
+            if self in interfaces: interfaces.remove(self) #unless this part is really flexible
             rval = set()
-            for interface in interface_list:
+            for i in interface_list:
                     for j in self.interfaces:
-                        if interface.compatible(j) and j.compatible(interface):
-                            rval.add(Mate(interface, j))
+                        if i.compatible(j) and j.compatible(i):
+                            rval.add(Mate(i, j))
         return rval
+        
     def __add__(self, other):
         return list(self.options(other))
+        
     def __repr__(self):
         return "%s(name=%s, interfaces=%s)" % (self.__class__.__name__, self.name, self.interfaces)
 
