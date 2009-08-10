@@ -33,6 +33,7 @@ from OCC.Precision import *
 from OCC.Display.wxSamplesGui import display
 
 import math #OCC.math gets in the way? wtf
+import skdb
 
 current = gp_Pnt2d(0,0)
 
@@ -194,6 +195,39 @@ def point_shape(shape, origin):
 
     return shape
     
+from copy import copy
+
+def draw_legos(event=None):
+    lego = skdb.load_package('lego'); lego.load_data()
+    brick1 =lego.parts[0]
+    brick1.load_CAD()
+    i1 = brick1.interfaces[1]
+    lego = skdb.load_package('lego'); lego.load_data()
+    brick2 = lego.parts[0]
+    i2 = brick2.interfaces[5]
+    brick2.load_CAD()
+    #this is lame
+    i1.x_vec = gp_Vec(i1.x_vec[0], i1.x_vec[1], i1.x_vec[2])
+    i1.y_vec = gp_Vec(i1.y_vec[0], i1.y_vec[1], i1.y_vec[2])
+    i2.x_vec = gp_Vec(i2.x_vec[0], i2.x_vec[1], i2.x_vec[2])
+    i2.y_vec = gp_Vec(i2.y_vec[0], i2.y_vec[1], i2.y_vec[2])
+    i1.point = gp_Pnt(i1.point[0], i1.point[1], i1.point[2])
+    i2.point = gp_Pnt(i2.point[0], i2.point[1], i2.point[2])
+    
+    #for v in [i1.x_vec, i1.y_vec, i2.x_vec, i2.y_vec]:
+        #v = gp_Vec(v[0], v[1], v[2]) \
+    i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
+    point_shape(brick1.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)))
+    i2.z_vec = copy(i2.x_vec); i2.z_vec.Cross(i2.y_vec)
+    point_shape(brick2.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i2.z_vec)))
+    brick2.shapes[0] = move_shape(brick2.shapes[0], i1.point, i2.point)
+    display.DisplayShape([brick1.shapes[0]])
+    display.DisplayShape([ brick2.shapes[0]])
+    print i1.point
+    print i1.z_vec.Coord()
+    print i1.z_vec.Cross(i1.y_vec)
+    print i1.z_vec.Coord()
+    
     
 def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
@@ -316,13 +350,14 @@ if __name__ == '__main__':
                     make_arrow,
                     make_arrows,
                     make_coordinate_arrows,
+                    draw_legos,
                     clear,
                     exit
                     ]:
             add_function_to_menu('demo', f)
         #random_sweep()
         init_display()
+        draw_legos()
         start_display()
-
 
         
