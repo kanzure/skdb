@@ -23,6 +23,9 @@ things you can do to run this:
 
 #see ~/local/pythonOCC/samples/Level2/DataExchange/import_step_multi.py
 #see ~/local/pythonOCC/samples/Level1/TopologyTransformation/mirror.py
+#for documentation on ax3, see: http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/FoundationClasses/html/classgp__Ax3.html
+#consider using gp_Ax3(gp_Ax2(gp_Pnt(interface_point), gp_Dir(orientation))) as the input to SetTransformation(gp_Ax3, gp_Ax3)
+
 
 #os.environ['CSF_GraphicShr'] = r"/usr/lib/libTKOpenGl.so"
 
@@ -45,7 +48,12 @@ import geom
 from assembly import Assembly
 from skdb import Part, Interface, Mate, Unit
 
-total_parts = []
+#some globals
+total_parts = [] #list of parts (temporary- should be deleted)
+#define the axises
+x_dir = OCC.gp.gp_Dir(1,0,0)
+y_dir = OCC.gp.gp_Dir(0,1,0)
+z_dir = OCC.gp.gp_Dir(0,0,1)
 
 def load(foo):
     '''load a yaml string'''
@@ -67,14 +75,6 @@ def demo(event=None):
     peg.add_shape(result2)
     total_parts.append(blockhole)
     total_parts.append(peg)
-
-def check_interface_vectors(vector1, vector2):
-    '''returns True if the vertex (make_vertex) is the same for both vectors'''
-    #(el, az, rad) = make_vertex(OCC.gp.gp_Ax1(OCC.gp.gp_Pnt(0,0,0), OCC.gp.gp_Dir(
-    return
-
-def mate_interfaces(interface1, interface2):
-    return mate_parts(part1=interface1.part, part2=interface2.part, interface1=interface1, interface2=interface2)
 
 def convert_interface(interface2):
     '''warning: this manipulates the input object
@@ -110,6 +110,10 @@ def convert_interface(interface2):
             interface2.z = rad
             interface2.converted = True
     return
+
+def mate_interfaces(interface1, interface2):
+    '''just a wrapper for mate_parts'''
+    return mate_parts(part1=interface1.part, part2=interface2.part, interface1=interface1, interface2=interface2)
 
 import random
 def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=None):
@@ -275,9 +279,6 @@ def real_point_shape(shape, origin):
 def draw_mating_arrows(interface1, interface2, color1='RED', color2='GREEN', arrow_length=5):
     '''displays the vectors pointing at each other for two mating interfaces by moving the second'''
     #if you run rapid-test.py, why is it that the two vertices are not at the same location?
-    x_dir = OCC.gp.gp_Dir(1,0,0)
-    y_dir = OCC.gp.gp_Dir(0,1,0)
-    z_dir = OCC.gp.gp_Dir(0,0,1)
     convert_interface(interface1)
     convert_interface(interface2)
     o1 = interface1.orientation
