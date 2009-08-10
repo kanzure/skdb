@@ -2,11 +2,10 @@ atomic absorption spectroscopy:
     abbreviation: AAS
 atomic fluorescence spectroscopy:
     abbreviation: AFS
-alpha particle X-ray spectrometer:
+alpha particle x-ray spectrometer:
     abbreviation: APXS
 capillary electrophoresis:
     abbreviation: CE
-chromatography:
 colorimetry:
 cyclic voltammetry:
     abbreviation: CV
@@ -20,12 +19,6 @@ field flow fractionation:
     abbreviation: FFF
 fourier transform spectroscopy:
     abbreviation: FTIR
-gas chromatography:
-    abbreviation: GC
-gas chromatography-mass spectrometry:
-    abbreviation: GC-MS
-high performance liquid chromatography:
-    abbreviation: HPLC
 ion microprobe:
     abbreviation: IM
 inductively coupled plasma:
@@ -37,30 +30,23 @@ ion selective electrode:
     description: "determination of pH"
 laser induced breakdown spectroscopy:
     abbreviation: LIBS
-mass spectrometry:
-    abbreviation: MS
 mossbauer spectroscopy:
 nuclear magnetic resonance:
     abbreviation: NMR
-particle induced X-ray emission spectroscopy:
+particle induced x-ray emission spectroscopy:
     abbreviation: PIXE
 pyrolysis:
     abbreviation: PY
-gas chromatography:
-    abbreviation: GC
-mass spectrometry:
-    abbreviation: MS
-raman spectroscopy:
 refractive index:
 resonance enhanced multi-photon ionization:
     abbreviation: REMPI
-scanning transmission X-ray microscopy:
+scanning transmission x-ray microscopy:
     abbreviation: STXM
 transmission electron microscopy:
     abbreviation: TEM
-X-ray fluorescence spectroscopy:
+x-ray fluorescence spectroscopy:
     abbreviation: XRF
-X-ray microscopy:
+x-ray microscopy:
     abbreviation: XRM
 auger electron diffraction:
     abbreviation: AED
@@ -78,7 +64,7 @@ dynamic vapour sorption:
     abbreviation: DVS
 electron backscatter diffraction:
     abbreviation: EBSD
-energy dispersive X-ray spectroscopy:
+energy dispersive x-ray spectroscopy:
     abbreviation: EDX
 electron induced desorption:
     abbreviation: EID
@@ -104,15 +90,13 @@ grazing incidence:
     abbreviation: GI
 diffuse reflectance:
     abbreviation: DRIFTS
-glow discharge mass spectrometry:
-    abbreviation: GDMS
 glow discharge optical spectroscopy:
     abbreviation: GDOS
-grazing incidence small angle X-ray scattering:
+grazing incidence small angle x-ray scattering:
     abbreviation: GISAXS
-grazing incidence X-ray diffraction:
+grazing incidence x-ray diffraction:
     abbreviation: GIXD
-grazing incidence X-ray reflectivity:
+grazing incidence x-ray reflectivity:
     abbreviation: GIXR
 helium atom scattering:
     abbreviation: HAS
@@ -124,7 +108,7 @@ ion induced Auger electron spectroscopy:
     abbreviation: IAES
 intelligent gravimetric analysis:
     abbreviation: IGA
-ion induced X-ray analysis:
+ion induced x-ray analysis:
     abbreviation: IIX
 ion neutralization spectroscopy:
     abbreviation: INS
@@ -150,7 +134,7 @@ medium energy ion scattering:
     abbreviation: MEIS
 neutron depth profiling:
     abbreviation: NDP
-near edge X-ray absorption fine structure:
+near edge x-ray absorption fine structure:
     abbreviation: NEXAFS
 photodesorption:
     abbreviation: PD
@@ -158,7 +142,7 @@ potentiodynamic electrochemical impedance spectroscopy:
     abbreviation: PDEIS
 photoelectron diffraction:
     abbreviation: PED, XPD, PhD, ARPEFS
-particle (or proton) induced X-ray spectroscopy:
+particle (or proton) induced x-ray spectroscopy:
     abbreviation: PIXE
 rutherford backscattering spectroscopy:
     abbreviation: RBS
@@ -166,7 +150,7 @@ reflection electron microscopy:
     abbreviation: REM
 reflection high energy electron diffraction:
     abbreviation: RHEED
-small angle X-ray scattering:
+small angle x-ray scattering:
     abbreviation: SAXS
 surface composition by analysis of neutral species and ion-impact radiation:
     abbreviation: SCANIIR
@@ -178,14 +162,10 @@ scanning electron microscopy:
     abbreviation: SEM
 surface enhanced raman spectroscopy:
     abbreviation: SERS
-surface extended X-ray absorption fine structure:
+surface extended x-ray absorption fine structure:
     abbreviation: SEXAFS
 scanning ion-conductance microscopy:
     abbreviation: SICM
-secondary ion mass spectrometry:
-    abbreviation: SIMS
-sputtered neutral species mass spectroscopy:
-    abbreviation: SNMS
 scanning near-field optical microscopy:
     abbreviation: SNOM
 scanning probe microscopy:
@@ -194,66 +174,85 @@ scanning tunneling microscopy:
     abbreviation: STM
 transmission electron microscopy:
     abbreviation: TEM
-total reflection X-ray fluorescence analysis:
+total reflection x-ray fluorescence analysis:
     abbreviation: TXRF
 UV-photoelectron spectroscopy:
     abbreviation: UPS
-wide angle X-ray scattering:
+wide angle x-ray scattering:
     abbreviation: WAXS
-X-ray induced auger electron spectroscopy:
+x-ray induced auger electron spectroscopy:
     abbreviation: XAES
-X-ray crystal truncation rod scattering:
+x-ray crystal truncation rod scattering:
     abbreviation: X-CTR
-X-ray diffuse scattering:
+x-ray diffuse scattering:
     abbreviation: XDS
-X-ray photoelectron emission microscopy:
+x-ray photoelectron emission microscopy:
     abbreviation: XPEEM
-X-ray photoelectron spectroscopy:
+x-ray photoelectron spectroscopy: &XPS
     abbreviation: XPS
-X-ray reflectivity:
+x-ray reflectivity:
     abbreviation: XR
-X-ray diffraction:
+x-ray diffraction:
     abbreviation: XRD
-X-ray fluorescence analysis:
+x-ray fluorescence analysis:
     abbreviation: XRF
-X-ray standing wave technique:
+x-ray standing wave technique:
     abbreviation: XSW
 chromatography:
-high performance liquid chromatography:
-ion chromatography:
-supercritical fluid chromatography:
-capillary electrophoresis:
-planar chromatography:
-infrared spectrometry (dispersive and fourier transform):
+    gas chromatography:
+        abbreviation: GC
+    high performance liquid chromatography:
+        abbreviation: HPLC
+    ion chromatography:
+    supercritical fluid chromatography:
+    planar chromatography:
+    size exclusion chromatography:
+    capillary electrophoresis:
+        abbreviation: CE
+    gas chromatography mass spectrometry: *GC-MS
+    high-performance liquid chromatography mass spectroscopy: *HPLC-MS
+mass spectrometry: &MS
+    abbreviation: MS
+    electron ionization mass spectroscopy:
+    chemical ionization mass spectroscopy:
+    gas chromatography mass spectrometry: &GC-MS
+        abbreviation: GC-MS
+    fast atom bombardments mass spectroscopy:
+    secondary ion mass spectroscopy:
+    high-performance liquid chromatography mass spectroscopy: &HPLC-MS
+        abbreviation: HPLC-MS
+    laser mass spectroscopy:
+    inductively coupled plasma mass spectrometry:
+    secondary ion mass spectrometry:
+        abbreviation: SIMS
+    sputtered neutral species mass spectroscopy:
+        abbreviation: SNMS
+    glow discharge mass spectrometry:
+        abbreviation: GDMS
+infrared spectrometry: #dispersive and fourier transform
 raman spectrometry:
+    abbreviation: RS
 nuclear magnetic resonance spectrometry:
-X-ray spectrometry:
-atomic absorption spectrometry:
+    abbreviation: NMR
+x-ray spectrometry:
 inductively coupled plasma atomic emission spectrometry:
-inductively coupled plasma mass spectrometry:
+atomic absorption spectrometry:
 atomic fluorescence spectrometry:
-visible/ultraviolet spectrometry:
+optical spectrometry: #and UV
 molecular fluorescence spectrometry:
 chemiluminescence spectrometry:
 x-ray fluorescence spectrometry:
-electron ionization mass spectroscopy:
-chemical ionization mass spectroscopy:
-gas chromatography mass spectrometry:
-fast atom bombardments mass spectroscopy:
-high-performance liquid chromatography mass spectroscopy:
-laser mass spectroscopy:
-amperometric techniques:
-voltammetric techniques:
-potentiometric techniques:
-conductiometric techniques:
+x-ray photon electron spectrometry:
+auger electron spectrometry:
 atomic force microscopy:
 scanning tunneling microscopy:
-auger electron spectrometry:
-x-ray photon electron spectrometry:
-secondary ion mass spectroscopy:
-size exclusion chromatography:
 low-angle laser light scattering:
-light obscuration particle size techniques:
-pyrolysis techniques:
-thermal techniques:
-mechanical property techniques:
+techniques:
+    amperometric techniques:
+    voltammetric techniques:
+    potentiometric techniques:
+    conductiometric techniques:
+    light obscuration particle size techniques:
+    pyrolysis techniques:
+    thermal techniques:
+    mechanical property techniques:
