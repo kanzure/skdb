@@ -47,16 +47,18 @@ class Feature(skdb.Interface):
     def __init__(self, name=None, type=None, part=None):
         skdb.Interface.__init__(self, name=name, part=part)
         self.type=type
+        
     def post_init_hook(self):
         try:
             type = self.type
             self.overlay(grammar[type])
         except AttributeError: self.type = None
-        
-        
         try: name = self.name
         except AttributeError: name = None
+        
     def compatible(self, other):
+        if type(self.complement) is not list: self.complement = [self.complement]
+        if type(other.complement) is not list: other.complement = [other.complement]
         if other.type in self.complement:
             assert self.type in other.complement, 'vice versa not fulfilled for "%s" and "%s"' %(self.type, other.type)
             return True
@@ -65,7 +67,8 @@ class Feature(skdb.Interface):
     def __repr__(self):
         try: part_name = self.part.name
         except AttributeError: part_name = None
-        return "%s(part=%s,name=%s, type=%s)" % (self.__class__.__name__, part_name, self.name, self.type)
+        #return "%s(part=%s,name=%s, type=%s)" % (self.__class__.__name__, part_name, self.name, self.type)
+        return "%s(name=%s)" % (self.__class__.__name__, self.name)
         
     def example_picture(self):
         '''example should be an ldraw number'''
