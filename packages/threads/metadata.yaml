@@ -4,6 +4,7 @@ tags:
 - "!thread"
 ---
 !package
+name: threads
 maintainer: 'fenn <fenn@users.sourceforge.net>'
 license: 'GPL2+'
 status: unfinished
