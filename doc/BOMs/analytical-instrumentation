@@ -1,150 +1,251 @@
-atomic absorption spectroscopy (AAS)
-atomic fluorescence spectroscopy (AFS)
-alpha particle X-ray spectrometer (APXS)
-capillary electrophoresis (CE)
-chromatography
-colorimetry
-cyclic voltammetry (CV)
-differential scanning calorimetry (DSC)
-electron paramagnetic resonance (EPR)
-electron spin resonance (ESR)
-field flow fractionation (FFF)
-fourier transform spectroscopy (FTIR)
-gas chromatography (GC)
-gas chromatography-mass spectrometry (GC-MS)
-high performance liquid chromatography (HPLC)
-ion microprobe (IM)
-inductively coupled plasma (ICP)
-instrumental mass fractionation (IMF)
-ion selective electrode (ISE) eg. determination of pH
-laser induced breakdown spectroscopy (LIBS)
-mass spectrometry (MS)
-mossbauer spectroscopy
-nuclear magnetic resonance (NMR)
-particle induced X-ray emission spectroscopy (PIXE)
-pyrolysis (PY)
-gas chromatography (GC)
-mass spectrometry (MS)
-raman spectroscopy
-refractive index
-resonance enhanced multi-photon ionization (REMPI)
-scanning transmission X-ray microscopy (STXM)
-transmission electron microscopy (TEM)
-X-ray fluorescence spectroscopy (XRF)
-X-ray microscopy (XRM)
-auger electron diffraction (AED)
-auger electron spectroscopy (AES)
-atomic force microscope (AFM)
-appearance potential spectroscopy (APS)
-coaxial impact collision ion scattering spectroscopy (CAICISS)
-cathodoluminescence (CL)
-dynamic vapour sorption (DVS)
-electron backscatter diffraction (EBSD)
-energy dispersive X-ray spectroscopy (EDX)
-electron induced desorption (EID)
-electron probe microanalysis (EPMA)
-electron spectroscopy for chemical analysis; see XPS (ESCA)
-electron stimulated desorption (ESD)
-extended x-ray absorption fine structure (EXAFS)
-field emission microscopy (FEM)
-field ion microscopy-atom probe (FIM-AP)
-fourier transform infrared absorption spectroscopy (FTIR)
-attenuated total reflection (ATR)
-grazing incidence (GI)
-diffuse reflectance (DRIFTS)
-glow discharge mass spectrometry (GDMS)
-glow discharge optical spectroscopy (GDOS)
-grazing incidence small angle X-ray scattering (GISAXS)
-grazing incidence X-ray diffraction (GIXD)
-grazing incidence X-ray reflectivity (GIXR)
-helium atom scattering (HAS)
-high-resolution electron energy loss spectroscopy (HREELS)
-high-resolution transmission electron microscopy (HRTEM)
-ion induced Auger electron spectroscopy (IAES)
-intelligent gravimetric analysis (IGA)
-ion induced X-ray analysis (IIX)
-ion neutralization spectroscopy (INS)
-infrared spectroscopy (IRS)
-ion scattering spectroscopy (ISS)
-low-energy electron diffraction (LEED)
-low-energy electron microscopy (LEEM)
-low-energy ion scattering (LEIS)
-laser induced breakdown spectroscopy (LIBS)
-laser induced plasma spectroscopy (LIPS)
-laser optical emission spectroscopy (LOES)
-light (raman) scattering (LS)
-medium energy ion scattering (MEIS)
-neutron depth profiling (NDP)
-near edge X-ray absorption fine structure (NEXAFS)
-photodesorption (PD)
-potentiodynamic electrochemical impedance spectroscopy (PDEIS)
-photoelectron diffraction (PED, XPD, PhD, ARPEFS)
-particle (or proton) induced X-ray spectroscopy (PIXE)
-rutherford backscattering spectroscopy (RBS)
-reflection electron microscopy (REM)
-reflection high energy electron diffraction (RHEED)
-small angle X-ray scattering (SAXS)
-surface composition by analysis of neutral species and ion-impact radiation (SCANIIR)
-spectroscopic ellipsometry (SE)
-surface enhanced infrared absorption spectroscopy (SEIRA)
-scanning electron microscopy (SEM)
-surface enhanced raman spectroscopy (SERS)
-surface extended X-ray absorption fine structure (SEXAFS)
-scanning ion-conductance microscopy (SICM)
-secondary ion mass spectrometry (SIMS)
-sputtered neutral species mass spectroscopy (SNMS)
-scanning near-field optical microscopy (SNOM)
-scanning probe microscopy (SPM)
-scanning tunneling microscopy (STM)
-transmission electron microscopy (TEM)
-total reflection X-ray fluorescence analysis (TXRF)
-UV-photoelectron spectroscopy (UPS)
-wide angle X-ray scattering (WAXS)
-X-ray induced auger electron spectroscopy (XAES)
-X-ray crystal truncation rod scattering (X-CTR)
-X-ray diffuse scattering (XDS)
-X-ray photoelectron emission microscopy (XPEEM)
-X-ray photoelectron spectroscopy (XPS)
-X-ray reflectivity (XR)
-X-ray diffraction (XRD)
-X-ray fluorescence analysis (XRF)
-X-ray standing wave technique (XSW)
-chromatography
-high performance liquid chromatography
-ion chromatography
-supercritical fluid chromatography
-capillary electrophoresis
-planar chromatography
-infrared spectrometry (dispersive and fourier transform)
-raman spectrometry
-nuclear magnetic resonance spectrometry
-X-ray spectrometry
-atomic absorption spectrometry
-inductively coupled plasma atomic emission spectrometry
-inductively coupled plasma mass spectrometry
-atomic fluorescence spectrometry
-visible/ultraviolet spectrometry
-molecular fluorescence spectrometry
-chemiluminescence spectrometry
-x-ray fluorescence spectrometry
-electron ionization mass spectroscopy
-chemical ionization mass spectroscopy
-gas chromatography mass spectrometry
-fast atom bombardments mass spectroscopy
-high-performance liquid chromatography mass spectroscopy
-laser mass spectroscopy
-amperometric techniques
-voltammetric techniques
-potentiometric techniques
-conductiometric techniques
-atomic force microscopy
-scanning tunneling microscopy
-auger electron spectrometry
-x-ray photon electron spectrometry
-secondary ion mass spectroscopy
-size exclusion chromatography
-low-angle laser light scattering
-light obscuration particle size techniques
-pyrolysis techniques
-thermal techniques
-mechanical property techniques
+atomic absorption spectroscopy:
+    abbreviation: AAS
+atomic fluorescence spectroscopy:
+    abbreviation: AFS
+alpha particle X-ray spectrometer:
+    abbreviation: APXS
+capillary electrophoresis:
+    abbreviation: CE
+chromatography:
+colorimetry:
+cyclic voltammetry:
+    abbreviation: CV
+differential scanning calorimetry:
+    abbreviation: DSC
+electron paramagnetic resonance:
+    abbreviation: EPR
+electron spin resonance:
+    abbreviation: ESR
+field flow fractionation:
+    abbreviation: FFF
+fourier transform spectroscopy:
+    abbreviation: FTIR
+gas chromatography:
+    abbreviation: GC
+gas chromatography-mass spectrometry (GC-MS):
+high performance liquid chromatography:
+    abbreviation: HPLC
+ion microprobe:
+    abbreviation: IM
+inductively coupled plasma:
+    abbreviation: ICP
+instrumental mass fractionation:
+    abbreviation: IMF
+ion selective electrode (ISE) eg. determination of pH:
+laser induced breakdown spectroscopy:
+    abbreviation: LIBS
+mass spectrometry:
+    abbreviation: MS
+mossbauer spectroscopy:
+nuclear magnetic resonance:
+    abbreviation: NMR
+particle induced X-ray emission spectroscopy:
+    abbreviation: PIXE
+pyrolysis:
+    abbreviation: PY
+gas chromatography:
+    abbreviation: GC
+mass spectrometry:
+    abbreviation: MS
+raman spectroscopy:
+refractive index:
+resonance enhanced multi-photon ionization:
+    abbreviation: REMPI
+scanning transmission X-ray microscopy:
+    abbreviation: STXM
+transmission electron microscopy:
+    abbreviation: TEM
+X-ray fluorescence spectroscopy:
+    abbreviation: XRF
+X-ray microscopy:
+    abbreviation: XRM
+auger electron diffraction:
+    abbreviation: AED
+auger electron spectroscopy:
+    abbreviation: AES
+atomic force microscope:
+    abbreviation: AFM
+appearance potential spectroscopy:
+    abbreviation: APS
+coaxial impact collision ion scattering spectroscopy:
+    abbreviation: CAICISS
+cathodoluminescence:
+    abbreviation: CL
+dynamic vapour sorption:
+    abbreviation: DVS
+electron backscatter diffraction:
+    abbreviation: EBSD
+energy dispersive X-ray spectroscopy:
+    abbreviation: EDX
+electron induced desorption:
+    abbreviation: EID
+electron probe microanalysis:
+    abbreviation: EPMA
+electron spectroscopy for chemical analysis; see XPS:
+    abbreviation: ESCA
+electron stimulated desorption:
+    abbreviation: ESD
+extended x-ray absorption fine structure:
+    abbreviation: EXAFS
+field emission microscopy:
+    abbreviation: FEM
+field ion microscopy-atom probe (FIM-AP):
+fourier transform infrared absorption spectroscopy:
+    abbreviation: FTIR
+attenuated total reflection:
+    abbreviation: ATR
+grazing incidence:
+    abbreviation: GI
+diffuse reflectance:
+    abbreviation: DRIFTS
+glow discharge mass spectrometry:
+    abbreviation: GDMS
+glow discharge optical spectroscopy:
+    abbreviation: GDOS
+grazing incidence small angle X-ray scattering:
+    abbreviation: GISAXS
+grazing incidence X-ray diffraction:
+    abbreviation: GIXD
+grazing incidence X-ray reflectivity:
+    abbreviation: GIXR
+helium atom scattering:
+    abbreviation: HAS
+high-resolution electron energy loss spectroscopy:
+    abbreviation: HREELS
+high-resolution transmission electron microscopy:
+    abbreviation: HRTEM
+ion induced Auger electron spectroscopy:
+    abbreviation: IAES
+intelligent gravimetric analysis:
+    abbreviation: IGA
+ion induced X-ray analysis:
+    abbreviation: IIX
+ion neutralization spectroscopy:
+    abbreviation: INS
+infrared spectroscopy:
+    abbreviation: IRS
+ion scattering spectroscopy:
+    abbreviation: ISS
+low-energy electron diffraction:
+    abbreviation: LEED
+low-energy electron microscopy:
+    abbreviation: LEEM
+low-energy ion scattering:
+    abbreviation: LEIS
+laser induced breakdown spectroscopy:
+    abbreviation: LIBS
+laser induced plasma spectroscopy:
+    abbreviation: LIPS
+laser optical emission spectroscopy:
+    abbreviation: LOES
+light (raman) scattering:
+    abbreviation: LS
+medium energy ion scattering:
+    abbreviation: MEIS
+neutron depth profiling:
+    abbreviation: NDP
+near edge X-ray absorption fine structure:
+    abbreviation: NEXAFS
+photodesorption:
+    abbreviation: PD
+potentiodynamic electrochemical impedance spectroscopy:
+    abbreviation: PDEIS
+photoelectron diffraction (PED, XPD, PhD, ARPEFS):
+particle (or proton) induced X-ray spectroscopy:
+    abbreviation: PIXE
+rutherford backscattering spectroscopy:
+    abbreviation: RBS
+reflection electron microscopy:
+    abbreviation: REM
+reflection high energy electron diffraction:
+    abbreviation: RHEED
+small angle X-ray scattering:
+    abbreviation: SAXS
+surface composition by analysis of neutral species and ion-impact radiation:
+    abbreviation: SCANIIR
+spectroscopic ellipsometry:
+    abbreviation: SE
+surface enhanced infrared absorption spectroscopy:
+    abbreviation: SEIRA
+scanning electron microscopy:
+    abbreviation: SEM
+surface enhanced raman spectroscopy:
+    abbreviation: SERS
+surface extended X-ray absorption fine structure:
+    abbreviation: SEXAFS
+scanning ion-conductance microscopy:
+    abbreviation: SICM
+secondary ion mass spectrometry:
+    abbreviation: SIMS
+sputtered neutral species mass spectroscopy:
+    abbreviation: SNMS
+scanning near-field optical microscopy:
+    abbreviation: SNOM
+scanning probe microscopy:
+    abbreviation: SPM
+scanning tunneling microscopy:
+    abbreviation: STM
+transmission electron microscopy:
+    abbreviation: TEM
+total reflection X-ray fluorescence analysis:
+    abbreviation: TXRF
+UV-photoelectron spectroscopy:
+    abbreviation: UPS
+wide angle X-ray scattering:
+    abbreviation: WAXS
+X-ray induced auger electron spectroscopy:
+    abbreviation: XAES
+X-ray crystal truncation rod scattering (X-CTR):
+X-ray diffuse scattering:
+    abbreviation: XDS
+X-ray photoelectron emission microscopy:
+    abbreviation: XPEEM
+X-ray photoelectron spectroscopy:
+    abbreviation: XPS
+X-ray reflectivity:
+    abbreviation: XR
+X-ray diffraction:
+    abbreviation: XRD
+X-ray fluorescence analysis:
+    abbreviation: XRF
+X-ray standing wave technique:
+    abbreviation: XSW
+chromatography:
+high performance liquid chromatography:
+ion chromatography:
+supercritical fluid chromatography:
+capillary electrophoresis:
+planar chromatography:
+infrared spectrometry (dispersive and fourier transform):
+raman spectrometry:
+nuclear magnetic resonance spectrometry:
+X-ray spectrometry:
+atomic absorption spectrometry:
+inductively coupled plasma atomic emission spectrometry:
+inductively coupled plasma mass spectrometry:
+atomic fluorescence spectrometry:
+visible/ultraviolet spectrometry:
+molecular fluorescence spectrometry:
+chemiluminescence spectrometry:
+x-ray fluorescence spectrometry:
+electron ionization mass spectroscopy:
+chemical ionization mass spectroscopy:
+gas chromatography mass spectrometry:
+fast atom bombardments mass spectroscopy:
+high-performance liquid chromatography mass spectroscopy:
+laser mass spectroscopy:
+amperometric techniques:
+voltammetric techniques:
+potentiometric techniques:
+conductiometric techniques:
+atomic force microscopy:
+scanning tunneling microscopy:
+auger electron spectrometry:
+x-ray photon electron spectrometry:
+secondary ion mass spectroscopy:
+size exclusion chromatography:
+low-angle laser light scattering:
+light obscuration particle size techniques:
+pyrolysis techniques:
+thermal techniques:
+mechanical property techniques:
