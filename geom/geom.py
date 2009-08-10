@@ -52,7 +52,7 @@ def point_shape(shape, origin, trsf_only=False):
 
 class Mate(Connection):
     def transform(self): 
-        '''returns the gp_Trsf to move/rotate i2 in place on i1. should have no side effects'''
+        '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
         i1, i2 = self.interface1, self.interface2
         #this is lame
         i1.x_vec = safe_vec(i1.x_vec)
@@ -64,18 +64,22 @@ class Mate(Connection):
         i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
         orient_i1 = point_shape(i1.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)), trsf_only=True)
         move_i1 = gp_Trsf() #don't move the first part
-        trsf_i1 = orient_i1.Multiplied(move_i1)
+        trsf_i1 = move_i1.Multiplied(orient_i1)
         tmp = i1.point.Transformed(trsf_i1)
         i2.z_vec = copy(i2.x_vec); i2.z_vec.Cross(i2.y_vec)
         orient_i2 = point_shape(i2.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i2.z_vec)), trsf_only=True)
         move_i2 =  move_shape(i2.part.shapes[0], tmp, i2.point, trsf_only=True)
-        trsf_i2 = orient_i2.Multiplied(move_i2)
+        trsf_i2 = move_i2.Multiplied(orient_i2)
+        if hasattr(i2.part, "transform"):
+            trsf_i2 = trsf_i2.Multiplied(i2.part.transform)
+        print "x: %.1f y: %.1f z: %.1f" % trsf_i2.TranslationPart().Coord()
         return trsf_i2
         
     def apply(self):
         '''i dont think this modifies i2.part'''
         print "connecting %s to %s" % (self.interface1.name, self.interface2.name)
-        return BRepBuilderAPI_Transform(self.interface2.part.shapes[0], self.transform(), True).Shape()
+        self.interface2.part.transform = self.transform()
+        return [BRepBuilderAPI_Transform(shape, self.transform(), True).Shape() for shape in self.interface2.part.shapes]
     
 try:
         import OCC.Utils.DataExchange.STEP

@@ -177,15 +177,19 @@ print type(generic_brick)
 current_brick = None
 def make_lego(event=None):
     global current_brick
-    if current_brick is None:
+    #if current_brick is None:
+    if True:
         #lego = skdb.load_package('lego'); lego.load_data()
         current_brick =deepcopy(generic_brick)
         current_brick.post_init_hook()
         #rotate it into frame correctly?
         mate = Mate(current_brick.interfaces[0], current_brick.interfaces[0])
-        current_brick.shapes[0] = mate.apply()
-        display.DisplayShape([current_brick.shapes[0]])
+        current_brick.shapes = mate.apply()
+        display.DisplayShape(current_brick.shapes)
         return
+        
+def add_lego(event=None):
+    global current_brick
     opts = None
     while not opts:
         i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
@@ -196,9 +200,9 @@ def make_lego(event=None):
     conn =opts[random.randint(0, len(opts)-1)]
     mate = Mate(conn.interface1, conn.interface2)
     i2 = mate.interface2
-    i2.part.shapes[0] = mate.apply()
+    i2.part.shapes = mate.apply()
     #display.DisplayShape([current_brick.shapes[0]])
-    display.DisplayShape([brick2.shapes[0]])
+    display.DisplayShape(brick2.shapes)
     current_brick = brick2
     
     #interface arrows
@@ -337,6 +341,7 @@ if __name__ == '__main__':
                     make_arrows,
                     make_coordinate_arrows,
                     make_lego,
+                    add_lego,
                     clear,
                     exit
                     ]:
@@ -344,7 +349,7 @@ if __name__ == '__main__':
         #random_sweep()
         init_display()
         make_lego()
-        make_lego()
+        add_lego()
         start_display()
 
         
