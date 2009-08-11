@@ -2,27 +2,71 @@ todo list for skdb-related work
 
 package code:
     generate instructions for making a package:
-clients:
+clients: #desktop, unless you really like writing javascript?
     skdb-get:
-        description: it's like apt-get/dpkg except for hardware and real stuff
+        description: "it's like apt-get/dpkg except for hardware and real stuff"
         see: skdb/clients/tb-get/
-    web:
+        note: write unit tests first to verify dependencies are satisfied
     visualization:
-web:
+        dependency tree browser:
+        CAD file visualization:
+        screenshot gallery generator from CAD files:
+            partially working: imgcad.py (ask kanzure)
+            better version:
+servers:
     djangit:
         remove all mysql dependencies:
         debugging:
-        add view for package metadata:
+        views:
+            generic yaml tree: 
+                js code folding: 
+                highlighting: 
+                links to skdb tags:
+            package metadata:
+                links to dependencies:
+                backlinks to functionality:
+                    taxonomy browser:
+            3d: 
+                ldraw:
+                step:
+                iges:
+                stl:
+                dxf:
+            pcb formats:
+                gerber:
+                eagle:
+                kicad:
+                pdf: (?)
+            gcode:
         protocol annotation module:
             description: biological protocols are added into the system in plain text, users are allowed to rewrite them step-by-step with a wiki-like interface until all protocols are completely converted into a more systematic format
         instruction output: #assembly, etc.
-    Tie-in of "open source hardware directories" with "one-click ordering" and sourcing of materials from suppliers
+        b2b: Tie-in of "open source hardware directories" with "one-click ordering" and sourcing of materials from suppliers
+import:
+    pov-to-X conversion:
+    parser for peeron and lugnet:
+    parse matweb scrape: (samrose)
+    ldraw to step: implicit geometry recognition? (feasible?)
+    stl to step:
 stuff to package:
-    screw:
+    screw: 
+        catalog generator script:
     thread:
+        common metric sizes:
+        common SAE sizes:
     lego:
+        finish technic grammar:
     bearing:
     plastic gel box case:
+        get cad files from tito:
+            author: Tito Jankowski
+            links:
+            - "http://www.pearlbiotech.com/wp-content/uploads/2009/05/pearl_biotech-gel_box_cad.skp"
+        find and verify generator script:
+            author: Michael Katsevman
+            links:
+            - "http://groups.google.com/group/diybio/msg/fb0cb0b7d6bf9b35"
+            - "http://logarchy.org/electrophoresis.py"
     test tube holder:
     transilluminator: #gel imager
     mechmate:
