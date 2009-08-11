@@ -1,6 +1,5 @@
 #!/usr/bin/python
-from lego import Lego, Peg, Hole
-from skdb import Part 
+from lego import *
 import unittest
 
 def init_legos(): #why can't i do this in test_lego?
@@ -45,7 +44,7 @@ class TestLegos(unittest.TestCase):
             for interface in brick.interfaces:
                 for opt in interface.options(bricklist):
                     if1, if2 = opt.interface1, opt.interface2
-                    self.assertFalse(if1.__class__ == Peg and if1.connected.__class__ == Peg)
+                    self.assertFalse(if1.type == 'stud' and if1.connected.type == 'antistud')
                     self.assertFalse(if1.__class__ == Hole and if2.connected.__class__ == Hole)
     def test_all_filled_up(self):
         '''there should be no more options involving brick1's interface0'''

@@ -26,21 +26,8 @@ class Discrete:
     '''allows only a certain set of values'''
     pass
 
-#class Grammar(skdb.FennObject, dict):
-#    yaml_tag='!lego_grammar'
+grammar = {}
 
-fh = skdb.package_file('lego', 'grammar.yaml')
-grammar = skdb.load(fh)['features']
-
-#stuff values
-for key in grammar.keys():
-    grammar[key]['name'] = key
-
-def dump_grammar_file():
-    '''you probably should pipe through 'grep -v name'''''
-    import yaml
-    return yaml.dump(grammar)
-    
 class Feature(skdb.Interface):
     yaml_tag='!lego_feature'
     yaml_flow_style=False
@@ -52,7 +39,7 @@ class Feature(skdb.Interface):
         try:
             type = self.type
             self.overlay(grammar[type])
-        except AttributeError: self.type = None
+        except KeyError: self.type = None
         try: name = self.name
         except AttributeError: name = None
         
@@ -89,6 +76,21 @@ class SnapFit(Feature):
     pass
 
 class Hinge(RevoluteJoint, SnapFit): pass
+
+#class Grammar(skdb.FennObject, dict):
+#    yaml_tag='!lego_grammar'
+
+fh = skdb.package_file('lego', 'grammar.yaml')
+grammar = skdb.load(fh)['features']
+
+#stuff values
+for key in grammar.keys():
+    grammar[key].name = key
+
+def dump_grammar_file():
+    '''you probably should pipe through 'grep -v name'''''
+    import yaml
+    return yaml.dump(grammar)
 
 if __name__ == '__main__':
     print dump_grammar_file()
