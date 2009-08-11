@@ -1,42 +1,32 @@
 todo list for skdb-related work
 
-switch out django server code that relies on mysql to use djangit (no mysql dependencies)
-
-http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=tree
-or:
-# git clone http://fennetic.net/git/skdb.git
-
-[x] Very simple package demo
-	[ ] Make a dependent package.
-		[ ] Simple script to handle python exception errors on the dependent package not being installed. Search local install dir, if not available then download from mirror network.
-	[ ] Dependency list in metadata for the package
-	[ ] Adoption or modification of debian dependency format expressed in .deb control files? Other ideas for complex dependencies? Dependencies on specific version numbers?
-		See: http://www.debian.org/doc/FAQ/ch-pkg_basics.en.html#s-controlfile
-	[ ] 3D modeling script -> generate STL of the object given parameters.	
-		[ ] Discussion re: how to deal with 3D output; other packages will want to "capture" this output and make up assemblies of multiple 3D objects, so ? Output to stdout? Output to a specific file for a specific project? Other questions like this.
-		(-- one issue to consider is the alignment of 3D objects together; other 3D file formats (SLDPRT, ..) do this via annotation of holes etc.)
-	[ ] Demonstration of an "assembly".
-	[ ] Demonstration of instructions for making. Human-readable instructions as well as either gcode or something to be wired up to a gcode generator.
-	[ ] Improved metadata features - how to deal with multiple authors, methods of contact, URLs, where to get the latest version, text-based descriptions, pointers to important files in the package (LICENSE, README, INSTALL, the typical parade)
-	[ ] gxml + functionCAD inclusion in the package format (Bryan will get around to this eventually)
-	[ ] MatML integration (or CAS reference numbers?) (MSDS documents wouldn't be a bad idea either)
-	[ ] Process Specification Language investigation - should we just do our own instructions language? etc. (Has full documentation, so it's not impossible to figure out.)
-
-[ ] Stuff to package
-	[-] Screw, other simple metal components
-	[?] Mechmate ( see http://heybryan.org/books/Manufacturing/mechmate.zip )
-	[ ] Arduino http://arduino.cc/
-	[ ] OpenCores http://opencores.org/
-(Eventually all open hardware projects of course :-))
-((("Project output", in the form of full documentation + batch scripts for hardware hooked up to a fablab, or the like, would be especially great. At a minimum, PDF documentation output, with schematics from different views of the STL files, instructions, plus mass property reports and calculations, plus other related tidbits of information (the debug output?) would make for a fantastic start.))).
-
-[ ] Simulator stuff
-	[ ] Investigate available physics engines
-	[ ] Load up a few STL files generated from the "simple demo packages".
-	[?] Animations of moving parts (energy sources would have to become packages first)
-
-[ ] B2B stuff
-	[ ] Tie-in of "open source hardware directories" with "one-click ordering" and sourcing of materials from suppliers
-	[ ] Recommendations for improving Seedka and the like, for WSDL & ebXML CAPP repositories for exposing business interfaces.
-
-There are many other items that we've collectively discussed about, both in the IRC channels and on the mailing lists, so hopefully this is a good representative sample. Comments?
+package code:
+    generate instructions for making a package:
+clients:
+    skdb-get:
+        description: it's like apt-get/dpkg except for hardware and real stuff
+        see: skdb/clients/tb-get/
+    web:
+    visualization:
+web:
+    djangit:
+        remove all mysql dependencies:
+        debugging:
+        add view for package metadata:
+        protocol annotation module:
+            description: biological protocols are added into the system in plain text, users are allowed to rewrite them step-by-step with a wiki-like interface until all protocols are completely converted into a more systematic format
+        instruction output: #assembly, etc.
+    Tie-in of "open source hardware directories" with "one-click ordering" and sourcing of materials from suppliers
+stuff to package:
+    screw:
+    thread:
+    lego:
+    bearing:
+    plastic gel box case:
+    test tube holder:
+    transilluminator: #gel imager
+    mechmate:
+    arduino:
+simulator stuff:
+    output to pyODE:
+    output to pybox2d:
