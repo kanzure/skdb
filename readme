@@ -1,5 +1,14 @@
 Hello! You must be new to all this so here's a rough breakdown of what is going on.
 
+Completed features:
+- a simple example package describing a typical screw from the hardware store
+  - the screw has a set of requirements for being manufactured
+  - the package has a set of packages it needs to work right (threads package)
+  - the package contains metadata such as homepage URL, author, copyright license
+- run packages/lego/demo.py to demonstrate interface compatibility
+
+
+here is a break down of the current directory structure:
 
 clients/
     front-ends for ordering parts. later there will be tools here for doing pretend scenarios, generating instructions, or assembling armies of giant robots
