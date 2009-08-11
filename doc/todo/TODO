@@ -9,6 +9,10 @@ clients: #desktop, unless you really like writing javascript?
         note: write unit tests first to verify dependencies are satisfied
     visualization:
         dependency tree browser:
+        CAD file visualization:
+        screenshot gallery generator from CAD files:
+            partially working: imgcad.py (ask kanzure)
+            better version:
 servers:
     djangit:
         remove all mysql dependencies:
@@ -25,6 +29,7 @@ servers:
             3d: 
                 ldraw:
                 step:
+                iges:
                 stl:
                 dxf:
             pcb formats:
@@ -42,7 +47,7 @@ import:
     parser for peeron and lugnet:
     parse matweb scrape: (samrose)
     ldraw to step: implicit geometry recognition? (feasible?)
-
+    stl to step:
 stuff to package:
     screw: 
         catalog generator script:
@@ -54,7 +59,14 @@ stuff to package:
     bearing:
     plastic gel box case:
         get cad files from tito:
+            author: Tito Jankowski
+            links:
+            - "http://www.pearlbiotech.com/wp-content/uploads/2009/05/pearl_biotech-gel_box_cad.skp"
         find and verify generator script:
+            author: Michael Katsevman
+            links:
+            - "http://groups.google.com/group/diybio/msg/fb0cb0b7d6bf9b35"
+            - "http://logarchy.org/electrophoresis.py"
     test tube holder:
     transilluminator: #gel imager
     mechmate:
