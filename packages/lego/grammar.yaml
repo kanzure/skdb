@@ -2,13 +2,20 @@
 #for part examples see http://guide.lugnet.com/partsref/search.cgi?q=XXXX
 features:
     face: !lego_feature
-        #class  edge to refer to the rim around each brick?
         complement: [face, tire]
+        shear: 0*N
+        tensile: 0*N
+        compression: 2000lbf #fenn guess
+        rotation: 0*N
     stud: !lego_feature
         complement: [anti stud, stud cup, pin hole]
         example: 3005
         technique: press_fit #this should be different... somehow
         kinematics: revolute
+        shear: 100lbf #fenn guess
+        tensile: 1lbf #fenn measured; probably off by a factor of 2
+        compression: 2000lbf #fenn guess
+        rotation: 1in*lbf/rev #co-axial, fenn guess
     anti stud: !lego_feature
         comment: this typically has 3 or 4 contact points, but is not round
         complement: stud
@@ -20,6 +27,7 @@ features:
         example: 4073
         technique: press_fit
         kinematics: revolute
+        tensile: 2lbf
     anti stud cup: !lego_feature
         comment: this occurs when there are 4 studs or technic studs in a square
         complement: stud cup
@@ -63,10 +71,12 @@ features:
         example: 3673
         technique: snap_fit
         kinematics: revolute
+        rotation: 1g*cm/rev #fenn guess
     sticky pin: !lego_feature
         #TODO finish
         technique: snap_fit
         kinematics: revolute
+        rotation: 30g*cm/rev #fenn guess
     pin hole: !lego_feature 
         complement: [pin, stud, technic stud, hollow stud]
         example: 3700
