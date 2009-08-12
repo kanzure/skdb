@@ -538,7 +538,25 @@ Free-Range Fish Farming:
 Algaeculture: Trough: Tank: Solar Panel: Flex Tube or Curtain: 
 Animal Husbandry: 
 
+---
+description: "some basic attempt at a taxonomy of techniques for biology lab protocols"
+links:
+- "http://adl.serveftp.org/protocol-online/full-library.txt"
 
-
+imaging:
+    microscopy:
+        optical: #light microscopy
+            staining:
+                immunofluorescence:
+                acid phosphatase:
+                acromosal:
+                adenosine triphosphatase:
+                elastic van dieson: #EVG
+            counting: #counting is a technique, right?
+        electron:
+            transmission electron microscopy:
+            scanning electron microscopy:
+    macroscopy:
+        telescopy:
 
 
