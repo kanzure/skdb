@@ -111,6 +111,37 @@ def convert_interface(interface2):
             interface2.converted = True
     return
 
+def check_part_transforms(part1, part2):
+    '''returns which transforms for part1 and part2 are valid mating positions of the parts'''
+    assert NotImplementedError
+
+def interface_overlaps(interface1, interface2):
+    '''returns true if the two interfaces have the same point'''
+    if interface1.point == interface2.point: return True
+    return False
+
+def same_orientation(interface1, interface2):
+    '''returns True if the two interfaces have the same orientation'''
+    if interface1.orientation == interface2.orientation: return True
+    assert NotImplementedError
+
+#needs a better name
+def transform_leads_to_equivalent_points(interface1, transform1, interface2, transform2):
+    '''returns true if interface1.point.Transform(transform1) leads to a point equal to interface2.point.Transform(transform2)'''
+    assert NotImplementedError
+
+def transform_leads_to_equivalent_orientations(interface1, transform1, interface2, transform2):
+    '''returns True if interface1.orientation.Transform(transform1) leads to an orientation equal to interface2.orientation.Transform(transform2)'''
+    assert NotImplementedError
+
+def transform_for_interface_to(interface1, point2):
+    '''returns a transform that puts interface1.point at the same location as point2'''
+    assert NotImplementedError
+
+def second_part_transformation_given_first(interface1, transformation1, interface2):
+    '''returns the transformation required to mate interface2 to interface1 given that interface1 may already have been transformed'''
+    assert NotImplementedError
+
 def mate_interfaces(interface1, interface2):
     '''just a wrapper for mate_parts'''
     return mate_parts(part1=interface1.part, part2=interface2.part, interface1=interface1, interface2=interface2)
@@ -127,37 +158,59 @@ def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=N
         #FIXME: set back to options()
         interface1 = part1.interfaces[random.randint(0, len(part1.interfaces)-1)]#.options([part1, part2])
         interface2 = part2.interfaces[random.randint(0, len(part2.interfaces)-1)]#.options([part1, part2])
+        interface1 = part1.interfaces[0]
+        interface2 = part2.interfaces[5]
     else:
         part1 = interface1.part
         part2 = interface2.part
-    point1 = interface1.point
-    point2 = interface2.point
     part1.load_CAD()
     part2.load_CAD()
 
-    convert_interface(interface1)
-    convert_interface(interface2)
+    #convert_interface(interface1)
+    #convert_interface(interface2)
+    point1 = interface1.point
+    point2 = interface2.point
 
     occ_point1 = OCC.gp.gp_Pnt(point1[0], point1[1], point1[2])
     occ_point2 = OCC.gp.gp_Pnt(point2[0], point2[1], point2[2])
     
-    orientation = interface2.orientation #or is it interface2?
+    orientation = interface2.orientation #or is it interface1?
+
+    #now move occ_point2 to the correct location
+    transformation0 = OCC.gp.gp_Trsf()
+    transformation0.SetTranslation(occ_point2, occ_point1)
+    occ_point2.Transform(transformation0)
+    (x,y,z) = [coord for coord in interface1.x_vec]
+    x_vec1 = OCC.gp.gp_Vec(x,y,z)
+    (x,y,z) = [coord for coord in interface1.y_vec]
+    y_vec1 = OCC.gp.gp_Vec(x,y,z)
+    (x,y,z) = [coord for coord in interface2.x_vec]
+    x_vec2 = OCC.gp.gp_Vec(x,y,z)
+    (x,y,z) = [coord for coord in interface2.y_vec]
+    y_vec2 = OCC.gp.gp_Vec(x,y,z)
+    z_vec1 = x_vec1.Crossed(y_vec1)
+    z_vec2 = x_vec2.Crossed(y_vec2)
+    print "z_vec2 = ", z_vec2.Coord()
+    resulting_shape = real_point_shape(part2.shapes[0], OCC.gp.gp_Ax1(occ_point2, OCC.gp.gp_Dir(y_vec2)))
+    resulting_shape2 = real_point_shape(part1.shapes[0], OCC.gp.gp_Ax1(occ_point1, OCC.gp.gp_Dir(y_vec1)))
+
+    transformation3 = OCC.gp.gp_Trsf()
+    transformation3.SetTranslation(occ_point1, occ_point2)
+    brep_transform3 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation3)
+    brep_transform3.Perform(resulting_shape)
+    resulting_shape3 = brep_transform3.Shape()
+
+    #OCC.Display.wxSamplesGui.display.DisplayColoredShape(resulting_shape, color2)
+
+    return [resulting_shape3, resulting_shape2]
+
     pivot_point = OCC.gp.gp_Pnt(0,0,0) #rotate about the origin
     #pivot_point = OCC.gp.gp_Pnt(orientation[0], orientation[1], orientation[2])
-    x_rotation = OCC.gp.gp_Dir(1,0,0)
-    y_rotation = OCC.gp.gp_Dir(0,1,0)
-    z_rotation = OCC.gp.gp_Dir(orientation[0],orientation[1],orientation[2])
-
-    transformation0 = OCC.gp.gp_Trsf()
-    transformation0.SetRotation(OCC.gp.gp_Ax1(pivot_point, OCC.gp.gp_Dir(orientation[0], orientation[1], orientation[2])), math.pi/2)
-    brep_transform0 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation0)
-    brep_transform0.Perform(part2.shapes[0])
-    resulting_shape0 = brep_transform0.Shape()
 
     transformation1 = OCC.gp.gp_Trsf()
     transformation1.SetRotation(OCC.gp.gp_Ax1(pivot_point, x_rotation),interface2.x)
     brep_transform1 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation1)
-    brep_transform1.Perform(resulting_shape0)
+    brep_transform1.Perform(part2.shapes[0])
     resulting_shape1 = brep_transform1.Shape()
 
     transformation2 = OCC.gp.gp_Trsf()
@@ -269,9 +322,9 @@ def real_point_shape(shape, origin):
     print "az: %s, el: %s, rad: %s... dx: %s, dy: %s, dz %s)" % (az, el, rad, dx, dy, dz) 
     trsf = gp_Trsf()
     #this may be in backwards order?
-    trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el-math.pi/2)
-    shape = BRepBuilderAPI_Transform(shape, trsf, True).Shape()
     trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az-math.pi/2)
+    shape = BRepBuilderAPI_Transform(shape, trsf, True).Shape()
+    trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el-math.pi/2)
     shape = BRepBuilderAPI_Transform(shape, trsf, True).Shape()
 
     return shape
@@ -283,9 +336,10 @@ def draw_mating_arrows(interface1, interface2, color1='RED', color2='GREEN', arr
     convert_interface(interface2)
     o1 = interface1.orientation
     o2 = interface2.orientation
-
-    axis1 = OCC.gp.gp_Ax1(OCC.gp.gp_Pnt(0,0,0), OCC.gp.gp_Dir(o1[0], o1[1], o1[2]))
-    axis2 = OCC.gp.gp_Ax1(OCC.gp.gp_Pnt(0,0,0), OCC.gp.gp_Dir(o2[0], o2[1], -o2[2]))
+    point1 = interface1.point
+    point2 = interface2.point
+    axis1 = OCC.gp.gp_Ax1(OCC.gp.gp_Pnt(point1[0],point1[1],point1[2]), OCC.gp.gp_Dir(o1[0], o1[1], o1[2]))
+    axis2 = OCC.gp.gp_Ax1(OCC.gp.gp_Pnt(point2[0],point2[1],point2[2]), OCC.gp.gp_Dir(o2[0], o2[1], -o2[2]))
 
     point1 = OCC.gp.gp_Pnt(interface1.point[0], interface1.point[1], interface1.point[2])
     point2 = OCC.gp.gp_Pnt(interface1.point[0], interface1.point[1], interface1.point[2] + arrow_length)
@@ -409,8 +463,11 @@ def add_key(key,method_to_call):
     return
 
 def cycler():
-    assert len(total_parts) > 1, "pymates must know of at least two parts"
+    print "in cycler"
+    #assert len(total_parts) > 0, "pymates must know of at least two parts"
+    n_parts = [total_parts[0], total_parts[1]]
     restart()
+    total_parts = n_parts
     res = mate_parts(part1=total_parts[0], part2=total_parts[1])
     OCC.Display.wxSamplesGui.display.DisplayColoredShape(total_parts[0].shapes.pop())
     OCC.Display.wxSamplesGui.display.DisplayColoredShape(res.Shape(),'BLUE')
