@@ -24,13 +24,13 @@ def usable_point(point):
     '''returns a point even if you pass it a point or gp_Pnt'''
     if type(point) == type([]): return point
     if type(point) == gp_Pnt: return [point.XYZ().X(), point.XYZ().Y(), point.XYZ().Z()]
-    assert NotImplementedError, "geom usable_point() only works with a list or a gp_Pnt"
+    raise NotImplementedError, "geom usable_point() only works with a list or a gp_Pnt"
 
 def usable_vec(vector):
     '''returns a vector (or direction) even if you pass it a vector or gp_Vec or gp_Dir'''
     if type(vector) == type([]): return vector
     if type(vector) == gp_Vec or type(vector) == gp_Dir: return [vector.X(), vector.Y(), vector.Z()]
-    assert NotImplementedError, "geom usable_vec() only works with a list or a gp_Vec or a gp_Dir"
+    raise NotImplementedError, "geom usable_vec() only works with a list or a gp_Vec or a gp_Dir"
 
 def usable_dir(direction):
     '''returns a direction even if you pass it a direction or gp_Dir'''
@@ -86,7 +86,7 @@ class Transform:
         return str(self.descriptions)
     def set_transform(self, gp_Trsf_inst=None, brepbuilderapi_transform_inst=None):
         '''maybe you want to reset one of the transforms for this Transform; other wrapper stuff goes on here.'''
-        if not gp_Trsf_inst == None and not brepbuilderapi_transform_inst == None: assert "Transform.set_transform() can only set one transform at a time."
+        if not gp_Trsf_inst == None and not brepbuilderapi_transform_inst == None: raise NotImplementedError, "Transform.set_transform() can only set one transform at a time."
         if not gp_Trsf_inst == None:
             self.gp_Trsf_object = gp_Trsf_inst
             self.update_brepbuilderapi_transform()
@@ -99,7 +99,7 @@ class Transform:
     #not sure about this next one
     def update_gp_trsf(self):
         '''an internal method. updates gp_Trsf_object based off of the current status of brepbuilderapi_transform_object'''
-        assert NotImplementedError, "Transform.set_gp_trsf(): Not sure if you're able to get a gp_Trsf from a BRepBuilderAPI_Transform"
+        raise NotImplementedError, "Transform.set_gp_trsf(): Not sure if you're able to get a gp_Trsf from a BRepBuilderAPI_Transform"
     def point_in_dir(self, point1=[0,0,0], direction1=[0,0,1]):
         '''modifies the Transform so that it will make a shape point in a direction.
         based off of point_shape'''
@@ -156,7 +156,7 @@ class Transform:
             ax1 = args[0]
             angle = args[1]
             self.describe("rotate an angle of %s radians in some undecipherable direction" % (angle))
-        else: assert NotImplementedError, "Transform.SetRotation was given the wrong number of arguments."
+        else: raise NotImplementedError, "Transform.SetRotation was given the wrong number of arguments."
         self.gp_Trsf_object.SetRotation(ax1, angle)
         self.update_brepbuilderapi_transform()
 
