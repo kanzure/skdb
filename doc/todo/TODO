@@ -39,15 +39,20 @@ servers:
                 pdf: (?)
             gcode:
         protocol annotation module:
-            description: biological protocols are added into the system in plain text, users are allowed to rewrite them step-by-step with a wiki-like interface until all protocols are completely converted into a more systematic format
+            protocola:
         instruction output: #assembly, etc.
         b2b: Tie-in of "open source hardware directories" with "one-click ordering" and sourcing of materials from suppliers
 import:
     pov-to-X conversion:
     parser for peeron and lugnet:
     parse matweb scrape: (samrose)
-    ldraw to step: implicit geometry recognition? (feasible?)
+    ldraw to step: implicit geometry recognition?
     stl to step:
+        feasibility: low
+    ldr to pyldraw: needs testing (ask kanzure)
+        convert ldr lego theo jansen mechanism:
+    pybox2d to skdb:
+        convert theo jansen mechanism:
 stuff to package:
     screw: 
         catalog generator script:
@@ -56,6 +61,7 @@ stuff to package:
         common SAE sizes:
     lego:
         finish technic grammar:
+        pare .lst and catalog files:
     bearing:
     plastic gel box case:
         get cad files from tito:
