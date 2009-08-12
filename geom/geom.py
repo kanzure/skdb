@@ -1,6 +1,7 @@
 from OCC.gp import *
 from OCC.BRepBuilderAPI import *
-from skdb import Connection, Part, Interface
+import OCC.Utils.DataExchange.STEP
+from skdb import Connection, Part, Interface, Unit
 import os, math
 from copy import copy, deepcopy
 
@@ -88,30 +89,48 @@ class Mate(Connection):
         self.interface2.part.transform = self.transform()
         return [BRepBuilderAPI_Transform(shape, self.transform(), True).Shape() for shape in self.interface2.part.shapes]
     
-try:
-        import OCC.Utils.DataExchange.STEP
-        def load_CAD(self):
-            '''load this object's CAD file. assumes STEP.'''
-            if len(self.files) == 0: return #no files to load
-            assert hasattr(self,"package"), "Part.load_CAD doesn't have its package loaded."
-            #FIXME: assuming STEP
-            #TODO: check/verify filename path
-            #FIXME: does not properly load in models from multiple files (2009-07-30)
-            for file in self.files:
-                full_path = os.path.join(self.package.path(), str(file))
-                my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(full_path)
-                my_step_importer.ReadFile()
-                self.shapes = my_step_importer.GetShapes()
-                self.compound = my_step_importer.GetCompound()
-            #i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
-            #x,y,point = self.interfaces[0].x,self.interfaces[0].y,self.interfaces[0].point
-            return self.shapes
-        Part.load_CAD = load_CAD
-        def add_shape(self, result):
-            '''add a shape to self.ais_shapes. this isn't as exciting as you think it is.'''
-            if type(result) == type([]): self.ais_shapes = result[0]
-            else: self.ais_shapes = result
-            return
-        Part.add_shape = add_shape
+#skdb.Part
+def load_CAD(self):
+    '''load this object's CAD file. assumes STEP.'''
+    if len(self.files) == 0: return #no files to load
+    assert hasattr(self,"package"), "Part.load_CAD doesn't have its package loaded."
+    #FIXME: assuming STEP
+    #TODO: check/verify filename path
+    #FIXME: does not properly load in models from multiple files (2009-07-30)
+    for file in self.files:
+        full_path = os.path.join(self.package.path(), str(file))
+        my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(full_path)
+        my_step_importer.ReadFile()
+        self.shapes = my_step_importer.GetShapes()
+        self.compound = my_step_importer.GetCompound()
+    #i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
+    #x,y,point = self.interfaces[0].x,self.interfaces[0].y,self.interfaces[0].point
+    return self.shapes
 
-except ImportError: print "Couldn't import OCC.Utils.DataExchange.STEP: Is pythonOCC installed properly?"
+Part.load_CAD = load_CAD
+def add_shape(self, result):
+    '''add a shape to self.ais_shapes. this isn't as exciting as you think it is.'''
+    if type(result) == type([]): self.ais_shapes = result[0]
+    else: self.ais_shapes = result
+    return
+Part.add_shape = add_shape
+
+def get_point(self): return list(self.__gp_Pnt_point.Coord())
+def set_point(self, value): 
+    if isinstance(value, Unit):
+        raise NotImplementedError, 'coords must be in mm'
+    self.__gp_Pnt_point = gp_Pnt(val[0], val[1], val[2])
+def del_point(self): del self.__gp_Pnt_point
+
+def get_gp_Pnt(self):
+    return self.__gp_Pnt
+
+def transformed(self, trsf):
+    return self.__gp_Pnt.Transformed(trsf)
+
+#stuff the class with new funcs
+for i in [load_CAD, add_shape, get_gp_Pnt, transformed]:
+    setattr(Part, i.__name__, i)
+
+#for some reason property doesn't accept properties or have a __name__. so much for OO
+Part.point = property(get_point, set_point, del_point)
