@@ -8,20 +8,11 @@ import OCC.BRepPrimAPI
 import OCC.BRepAlgoAPI
 from skdb import Part, Interface
 
-class TestPrimitives(unittest.TestCase):
-    def test_primitive_shape(self):
-        #test pymates.geom.primitives.PrimitiveShape
-        pass
-
-class TestGeom(unittest.TestCase):
-    def test_circle(self):
-        #test pymates.geom.Circle
-        pass
-    def test_square(self):
-        #test pymates.geom.Square
-        pass
-
 class TestPymates(unittest.TestCase):
+    def test_mating(self):
+        #test the mating code
+        mate(interface1, interface2)
+        self.assertTrue(interface1.position == interface2.position)
     def test_part(self):
         #test models/blockhole.yaml
 
