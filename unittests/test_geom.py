@@ -1,6 +1,5 @@
 import unittest
 import skdb
-import geom
 
 class TestGeom(unittest.TestCase):
     def init_interface(self):
@@ -13,11 +12,14 @@ class TestGeom(unittest.TestCase):
         foo = self.init_interface()
         part = skdb.Part(name='unitcube') #, file='../pymates/models/block-with-hole.step')#too big, want 2x2x2
         #self.part.load_CAD()
-        part.interfaces.add(foo)
+        part.interfaces.append(foo)
         return part
     def test_part(self):
         '''ditto'''
-        self.init_part()
-    def test_translation():
         part = self.init_part()
-        geom.move_part(
+    def test_translation(self):
+        trsf1 = skdb.geom.gp_Trsf()
+        transform1 = skdb.Transform(trsf1, description="a blank transformation")
+        transform1.SetTranslation([0,0,0], [0,10,0])
+        print transform1
+        #now test it by throwing a point through it

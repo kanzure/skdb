@@ -9,6 +9,7 @@ class Part(FennObject):
     '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.
     should a part without an interface be invalid?'''
     yaml_tag = '!part'
+    transforms = [] #a list of Transform objects (see skdb/geom/geom.py)
     def __init__(self, name=None, description=None, created=time.time(), files=[], interfaces=[]):
         if not hasattr(self, "name"):
             self.name = name
