@@ -6,7 +6,10 @@ import math
 
 class Interface(FennObject):
     '''"units" should be what is being transmitted through the interface, not about the structure.
-    a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry'''
+    a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry. theinterface geometry is located at "point" (in mm for now, sorry) and rotated about its Z vector clockwise "rotation" degrees looking away from the origin. (TODO: verify) The geometry is then rotated such that its Z vector points along "orientation".
+    
+    an alternative way to specify geometry is with "point" and two vectors: "x_vec" and "y_vec".
+    in both cases the mating trajectory is along the Z vector.'''
     yaml_tag = '!interface'
     converted = False
     def __init__(self, name=None, units=None, geometry=None, point=[0,0,0], orientation=[0,0,1], rotation=0, part=None, max_connections=1):
