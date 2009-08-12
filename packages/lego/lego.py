@@ -13,12 +13,14 @@ __status__ = "Development"
 class Lego(Part):
     '''standard lego part'''
     yaml_tag = "!lego"
-    def setup(self, name, num_pegs=0, num_holes=0):
-        '''sets up a lego part'''
+    def __init__(self, name=None, num_pegs=0, num_holes=0):
         self.name = name
         self.interfaces = []
         for each in range(num_holes):
             new_hole = grammar['anti stud']
+            import yaml
+            print yaml.dump(new_hole)
+            print new_hole
             new_hole.identifier = len(self.interfaces)
             self.interfaces.append(new_hole)
         for each in range(num_pegs):
@@ -29,16 +31,16 @@ class Lego(Part):
         '''returns a list of peg interfaces that this Lego has'''
         results = []
         for each in self.interfaces:
-            if each.__class__.__name__ == "Peg":
+            if each.type == "stud":
                 results.append(each)
         return results
     def holes(self):
         '''returns a list of hole interfaces that this Lego has'''
         results = []
         for each in self.interfaces:
-            if each.__class__.__name__ == "Hole":
+            if each.type == "antistud":
                 results.append(each)
         return results
     def __repr__(self):
-        return "Lego(name=%s, num_pegs=%d, num_holes=%d)" % (self.name, len(self.pegs()), len(self.holes()))
+        return "%s(name=%s, num_pegs=%d, num_holes=%d)" % (self.__class__.__name__, self.name, len(self.pegs()), len(self.holes()))
 
