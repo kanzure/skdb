@@ -16,17 +16,9 @@ class FennObject(yaml.YAMLObject):
         if type(other)==dict: 
             attrs = other.iteritems()
         else: 
-            attrs = other.__dict__
+            attrs = other.__dict__.iteritems()
         for (k, v) in attrs:
             setattr(self, k, v)
-            
-    poop = '''def __setstate__(self, attrs):
-        print "entering FennObject.__setstate__()"
-        for (k,v) in attrs.items():
-            k = re.sub(' ', '_', k) #replace spaces with underscores because "foo.the attr" doesn't work
-            self.__setattr__(k,v)
-        if hasattr(self, "post_setstate_hook"):
-            self.post_setstate_hook()'''
             
     @classmethod
     def to_yaml(cls, dumper, data):
