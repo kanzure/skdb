@@ -38,7 +38,7 @@ class Lego(Part):
         '''returns a list of hole interfaces that this Lego has'''
         results = []
         for each in self.interfaces:
-            if each.type == "antistud":
+            if each.type == "anti stud":
                 results.append(each)
         return results
     def __repr__(self):
