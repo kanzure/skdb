@@ -367,7 +367,7 @@ def draw_mating_arrows(interface1, interface2, color1='RED', color2='GREEN', arr
 
 def draw_arrows(interfaces,color='RED',arrow_length=5):
     '''displays a vector pointing in the mating direction from a particular interface point for each interface in a list
-    colors: RED, GREEN, BLUE, ORANGE'''
+    colors: RED, GREEN, BLUE'''
     x_dir = OCC.gp.gp_Dir(1,0,0)
     y_dir = OCC.gp.gp_Dir(0,1,0)
     z_dir = OCC.gp.gp_Dir(0,0,1)
@@ -400,7 +400,6 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=None,roty2=None):
                 'RED',
                 'GREEN',
                 'BLUE',
-                'ORANGE',
                 #'PURPLE',
              ]
     for part in total_parts:

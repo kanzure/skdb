@@ -15,7 +15,7 @@ brick1.load_CAD()
 brick2.load_CAD()
 
 #display the original location of the first brick
-pymates.OCC.Display.wxSamplesGui.display.DisplayColoredShape(brick1.shapes[0],'ORANGE')
+pymates.OCC.Display.wxSamplesGui.display.DisplayColoredShape(brick1.shapes[0],'RED')
 
 #display an original location for the second brick (offset from the original brick, however)
 transform0 = pymates.OCC.gp.gp_Trsf()
