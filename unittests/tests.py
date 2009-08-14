@@ -3,7 +3,7 @@
 
 import unittest
 import skdb
-from skdb import Thread, Unit
+from skdb import Unit
 
 class TestUnits(unittest.TestCase):
     def test_nounits(self):
@@ -93,6 +93,7 @@ class TestUnits(unittest.TestCase):
 
 class TestScrew(unittest.TestCase):
     import skdb.packages.screw.screw as screw
+    import skdb.packages.threads.threads as threads
     def test_conversions(self):
             screw1 = skdb.load(open('../packages/screw/data.yaml'))['screw'] #yaml.load(open('screw.yaml'))['screw']
             #print yaml.dump(screw)
