@@ -240,6 +240,7 @@ def dump(value, filename=None):
 
 def main():
     #basic self-test demo
+    load_package('screw')
     package = load(open('tags.yaml'))
     print dump(package)
 
