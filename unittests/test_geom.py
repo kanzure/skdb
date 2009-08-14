@@ -28,7 +28,7 @@ class TestGeom(unittest.TestCase):
         y_displacement = 10
         y_init = 5
         point = [0,y_init,0]
-        trsf1 = translation([0,0,0], [0,y_displacement,0])
+        trsf1 = translation(point1=[0,0,0], point2=[0,y_displacement,0])
         result_point = point_trsf(point, trsf1)
         if not y_displacement == 0:
             self.assertFalse(result_point == point)
@@ -41,7 +41,7 @@ class TestGeom(unittest.TestCase):
         direction = [0, 0, 1]
         angle = math.pi
         point = [5,0,0]
-        trsf1 = rotation(rotation_pivot_point, direction, angle)
+        trsf1 = rotation(rotation_pivot_point=rotation_pivot_point, direction=direction, angle=angle)
         result_point = point_trsf(point, trsf1)
         self.assertTrue(result_point == [-5,0,0]) #idk the real answer
         #TODO: test rotation(gp_Ax1, angle)
