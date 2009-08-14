@@ -10,5 +10,5 @@ brick2.post_init_hook()
 #print yaml.dump(brick1.interfaces[1].options([brick1, brick2]))
 for i in brick1.interfaces:
     #print "brick1's "+i.name+" is compatible with: ", [x.interface1.name for x in brick1.interfaces[5].options([brick1, brick2])]
-    print "brick1's "+i.name+" is compatible with: ", [x.interface1.name for x in i.options([brick1, brick2])]
+    print "brick1's "+i.name+" is compatible with: ", [x.interface2.name for x in i.options([brick1, brick2])]
 
