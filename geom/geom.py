@@ -71,31 +71,29 @@ def point_shape(shape, origin, trsf_only=False):
         shape = BRepBuilderAPI_Transform(shape1, trsf, True).Shape()
         return shape
 
-def translation(*args):
+def translation(point1=None, point2=None, vector=None):
     '''translate(point1, point2) -> gp_Trsf
     translate(vector) -> gp_Trsf'''
     new_trsf = gp_Trsf()
-    if len(args) == 2: #two points
-       point1 = safe_point(args[0])
-       point2 = safe_point(args[1])
+    if not point1==None and not point2==None: #two points
+       point1 = safe_point(point1)
+       point2 = safe_point(point2)
        vector = gp_Vec(point1, point2)
-    elif len(args) == 1: #a vector
-       vector = safe_vector(args[0])
+    elif not vector==None: #a vector
+       vector = safe_vector(vector)
     new_trsf.SetTranslation(vector)
     return new_trsf
 
-def rotation(*args):
+def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given=None):
     '''rotation(rotation_pivot_point, direction, angle) -> gp_Trsf
     rotation(gp_Ax1, angle) -> gp_Trsf'''
     new_trsf = gp_Trsf()
-    if len(args) == 3:
-       rotation_pivot_point = safe_point(args[0])
-       direction = safe_dir(args[1])
-       angle = args[2]
+    if not rotation_pivot_point==None and not direction==None and not angle==None:
+       rotation_pivot_point = safe_point(rotation_pivot_point)
+       direction = safe_dir(direction)
        ax1 = gp_Ax1(rotation_pivot_point, direction)
-    elif len(args) == 2:
-       ax1 = args[0]
-       angle = args[1]
+    elif not gp_Ax1_given==None and not angle==None:
+       ax1 = gp_Ax1_given
     else: raise NotImplementedError, "rotation was given the wrong number of arguments."
     new_trsf.SetRotation(ax1, angle)
     return new_trsf
