@@ -86,7 +86,7 @@ grammar = skdb.load(fh)['features']
 #stuff values
 for key in grammar.keys():
     grammar[key].name = key
-
+    grammar[key].type = key
 def dump_grammar_file():
     '''you probably should pipe through 'grep -v name'''''
     import yaml
