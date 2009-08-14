@@ -32,19 +32,16 @@ class TestPackage(unittest.TestCase):
         #load the package
         lego_package = skdb.load_package("lego")
         #make a lego part
-        #TODO: Package should load up all classes and add them in to the current namespace (Package.Lego, Package.Hole, etc.)
-        block = lego_package.Lego()
-        #FIXME: ugh
-        #give it some pegs and holes (make a particular lego brick)
-        block.setup("block name", num_pegs=peg_count, num_holes=hole_count)
+        block = lego_package.Lego("block name", num_pegs=peg_count, num_holes=hole_count)
         self.assertTrue(len(block.holes()) == hole_count)
         self.assertTrue(len(block.pegs()) == peg_count)
     def test_package_load_data(self):
         '''tests Package's ability to instantiate objects from data.yaml in the package'''
         screw_package = skdb.load_package("screw")
-        screws = screw_package.load_data()
-        for screw in screws:
-            self.assertTrue(screw.makes_sense())
+        package = screw_package.load_data()
+        #for screw in package.screw: 
+        screw = screw_package.screw #there is only one, for now 
+        self.assertTrue(screw.makes_sense())
          
 if __name__ == '__main__':
     unittest.main()
