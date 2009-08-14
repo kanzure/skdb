@@ -43,7 +43,8 @@ class TestGeom(unittest.TestCase):
         point = [5,0,0]
         trsf1 = rotation(rotation_pivot_point=rotation_pivot_point, direction=direction, angle=angle)
         result_point = point_trsf(point, trsf1)
-        self.assertTrue(result_point == [-5,0,0]) #idk the real answer
+        for n in range(3):
+            self.assertTrue(result_point[n] - [-5,0,0][n] < Precision().Confusion()) #idk the real answer
         #TODO: test rotation(gp_Ax1, angle)
         
 if __name__ == "__main__":
