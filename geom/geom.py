@@ -1,4 +1,5 @@
 from OCC.gp import *
+from OCC.Precision import *
 from OCC.BRepBuilderAPI import *
 import OCC.Utils.DataExchange.STEP
 from skdb import Connection, Part, Interface, Unit
