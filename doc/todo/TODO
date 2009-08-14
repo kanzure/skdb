@@ -39,9 +39,14 @@ servers:
                 pdf: (?)
             gcode:
         protocol annotation module:
-            protocola:
+            protocola: #50% bog water, 50% chocolate syrup. yummy!
         instruction output: #assembly, etc.
         b2b: Tie-in of "open source hardware directories" with "one-click ordering" and sourcing of materials from suppliers
+        funding models:
+            rspp: as in ' http://www.logarithmic.net/pfh/rspp '
+            oshwbank:
+            paypal button: this ought to be easy
+            bounty:
 import:
     pov-to-X conversion:
     parser for peeron and lugnet:
@@ -53,6 +58,9 @@ import:
         convert ldr lego theo jansen mechanism:
     pybox2d to skdb:
         convert theo jansen mechanism:
+export: #external simulations
+    pyODE:
+    pybox2d:
 stuff to package:
     screw: 
         catalog generator script:
@@ -77,6 +85,3 @@ stuff to package:
     transilluminator: #gel imager
     mechmate:
     arduino:
-simulator stuff:
-    output to pyODE:
-    output to pybox2d:
