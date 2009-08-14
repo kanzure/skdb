@@ -3,6 +3,7 @@
 import yaml
 import time
 from yamlcrap import FennObject
+from interface import Connection
 import os
 
 class Part(FennObject):
@@ -36,11 +37,11 @@ class Part(FennObject):
     def options(self, parts):
         '''what can this part connect to?'''
         parts = self.setify(parts)
+        if self in parts: parts.remove(self) #unless this part is really flexible
         for part in parts:
             interfaces = set(part.interfaces)
-            if self in interfaces: interfaces.remove(self) #unless this part is really flexible
             rval = set()
-            for i in interface_list:
+            for i in interfaces:
                     for j in self.interfaces:
                         if i.compatible(j) and j.compatible(i):
                             rval.add(Connection(i, j))
