@@ -5,12 +5,13 @@ urls:
 - 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=screw.yaml'
 - 'git://fennetic.net/git/skdb.git/'
 
-screw: !screw
- grade: '3'
- length: 1in
- thread: !thread
-    diameter: 1/4*in
-    form: UN 
-    pitch: 20rev/in
+parts:
+-   !screw
+    grade: '3'
+    length: 1in
+    thread: !thread
+        diameter: 1/4*in
+        form: UN 
+        pitch: 20rev/in
 
 

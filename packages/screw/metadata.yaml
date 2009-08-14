@@ -20,7 +20,8 @@ version: 0.0.1
 description: #package description
     a typical screw found at a hardware store.
 template: !template
- screw: !screw
+ parts: 
+ - !screw
     thread: !thread 
         interfaces:
             - !interface &thread_tighten
