@@ -71,94 +71,34 @@ def point_shape(shape, origin, trsf_only=False):
         shape = BRepBuilderAPI_Transform(shape1, trsf, True).Shape()
         return shape
 
-class Transform:
-    '''used for keeping track of the translation and rotation of a part
-    Part.transforms = [] #should be a list of Transform objects
-    all methods should have no side effects (except modifying local attributes)'''
-    gp_Trsf_object = None
-    descriptions = [] #list of descriptions; you will be a user's best friend if you maintain this list.
-    def __init__(self, gp_Trsf_obj, description=None):
-        self.set_transform(gp_Trsf_inst=gp_Trsf_obj)
-        if not description == None:
-            self.descriptions.append(description)
-    def __repr__(self):
-        '''spits out a human-readable representation of what this Transform actually does'''
-        return str(self.descriptions)
-    def set_transform(self, gp_Trsf_inst=None, brepbuilderapi_transform_inst=None):
-        '''maybe you want to reset one of the transforms for this Transform; other wrapper stuff goes on here.'''
-        if not gp_Trsf_inst == None and not brepbuilderapi_transform_inst == None: raise NotImplementedError, "Transform.set_transform() can only set one transform at a time."
-        if not gp_Trsf_inst == None:
-            self.gp_Trsf_object = gp_Trsf_inst
-            self.update_brepbuilderapi_transform()
-        if not brepbuilderapi_transform_inst == None:
-            self.brepbuilderapi_transform_object = brepbuilderapi_transform_inst
-            self.update_gp_trsf()
-    def update_brepbuilderapi_transform(self):
-        '''an internal method. updates brepbuilderapi_transform_object based off of the current status of gp_Trsf_obj'''
-        self.brepbuilderapi_transform_object = BRepBuilderAPI_Transform(self.gp_Trsf_object)
-    #not sure about this next one
-    def update_gp_trsf(self):
-        '''an internal method. updates gp_Trsf_object based off of the current status of brepbuilderapi_transform_object'''
-        raise NotImplementedError, "Transform.set_gp_trsf(): Not sure if you're able to get a gp_Trsf from a BRepBuilderAPI_Transform"
-    def point_in_dir(self, point1=[0,0,0], direction1=[0,0,1]):
-        '''modifies the Transform so that it will make a shape point in a direction.
-        based off of point_shape'''
-        point1 = safe_point(point1)
-        direction1 = safe_dir(direction1)
-        ox, oy, oz = 0, 0, 0
-        dx, dy, dz = direction1.Direction().X(), direction1.Direction().Y(), direction1.Direction().Z()
-        (az, el, rad) = angle_to(dx-ox, dy-oy, dz-oz)
-        trsf = gp_Trsf()
-        trsf.SetRotation(gp_Ax1(point1, gp_Dir(1,0,0)), el-math.pi/2)
-        trsf2 = gp_Trsf()
-        trsf2.SetRotation(gp_Ax1(point1, gp_Dir(0,0,1)), az-math.pi/2)
-        trsf.Multiply(trsf2) #why?
-        self.gp_Trsf_object.Multiply(trsf) #just a guess 
-    def perform_shape(self, shape):
-        '''returns an ais_shape. input shape should be a TopoDS_Shape. applies the transform.'''
-        self.set_brepbuilderapi_transform()
-        resulting_shape = copy(shape) #should that be deepcopy?
-        self.brepbuilderapi_transform.Perform(resulting_shape)
-        return resulting_shape.Shape()
-    def perform_point(self, point1):
-        '''perform this transform on a point, returns a new gp_Pnt'''
-        point1 = safe_point(point1)
-        return point1.Transformed(self.gp_Trsf_object)
-    def describe(self, description):
-        '''if you call this every time you update the transformation, you will be a user's best friend (also, __repr__ will work)
-        note that SetTranslation and SetRotation automatically call this
-        think of it as a logging utility or toy'''
-        self.descriptions.append(description)
-    #wrap up some gp_Trsf methods
-    def SetTranslation(self, *args):
-        '''SetTranslation(point1, point2)
-        SetTranslation(vector)'''
-        if len(args) == 2: #two points
-            point1 = safe_point(args[0])
-            point2 = safe_point(args[1])
-            vector = gp_Vec(point1, point2)
-            self.describe("translate from %s to %s" % (usable_point(point1), usable_point(point2)))
-        elif len(args) == 1: #a vector
-            vector = safe_vector(args[0])
-            self.describe("translate with vector %s" % (usable_vec(vector)))
-        self.gp_Trsf_object.SetTranslation(vector)
-        self.update_brepbuilderapi_transform()
-    def SetRotation(self, *args):
-        '''SetRotation(rotation_pivot_point, direction, angle)
-        SetRotation(gp_Ax1, angle)'''
-        if len(args) == 3:
-            rotation_pivot_point = safe_point(args[0])
-            direction = safe_dir(args[1])
-            angle = args[2]
-            ax1 = gp_Ax1(rotation_pivot_point, direction)
-            self.describe("rotate an angle of %s radians in the %s direction" % (angle, usable_dir(direction)))
-        elif len(args) == 2:
-            ax1 = args[0]
-            angle = args[1]
-            self.describe("rotate an angle of %s radians in some undecipherable direction" % (angle))
-        else: raise NotImplementedError, "Transform.SetRotation was given the wrong number of arguments."
-        self.gp_Trsf_object.SetRotation(ax1, angle)
-        self.update_brepbuilderapi_transform()
+def translation(*args):
+    '''translate(point1, point2) -> gp_Trsf
+    translate(vector) -> gp_Trsf'''
+    new_trsf = gp_Trsf()
+    if len(args) == 2: #two points
+       point1 = safe_point(args[0])
+       point2 = safe_point(args[1])
+       vector = gp_Vec(point1, point2)
+    elif len(args) == 1: #a vector
+       vector = safe_vector(args[0])
+    new_trsf.SetTranslation(vector)
+    return new_trsf
+
+def rotation(*args):
+    '''rotation(rotation_pivot_point, direction, angle) -> gp_Trsf
+    rotation(gp_Ax1, angle) -> gp_Trsf'''
+    new_trsf = gp_Trsf()
+    if len(args) == 3:
+       rotation_pivot_point = safe_point(args[0])
+       direction = safe_dir(args[1])
+       angle = args[2]
+       ax1 = gp_Ax1(rotation_pivot_point, direction)
+    elif len(args) == 2:
+       ax1 = args[0]
+       angle = args[1]
+    else: raise NotImplementedError, "rotation was given the wrong number of arguments."
+    new_trsf.SetRotation(ax1, angle)
+    return new_trsf
 
 class Mate(Connection):
     def transform(self): 
