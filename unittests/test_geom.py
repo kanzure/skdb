@@ -43,7 +43,7 @@ class TestGeom(unittest.TestCase):
         point = [5,0,0]
         trsf1 = rotation(rotation_pivot_point, direction, angle)
         result_point = point_trsf(point, trsf1)
-        self.assertTrue(result_point == [5,0,1]) #idk the real answer
+        self.assertTrue(result_point == [-5,0,0]) #idk the real answer
         #TODO: test rotation(gp_Ax1, angle)
         
 if __name__ == "__main__":
