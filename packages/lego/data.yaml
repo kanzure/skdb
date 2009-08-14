@@ -16,67 +16,56 @@ parts:
   - "brick_thick_round.stp"
   interfaces:
     - !lego_feature
-      part:
       point: [-8.0, 0.0, -8.0]
       type: stud cup
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
-      part:
       point: [-4.0, 0.0, -4.0]
       type: anti stud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
-      part:
       point: [-12.0, 0.0, -4.0]
       type: anti stud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
-      part:
       point: [-12.0, 0.0, -12.0]
       type: anti stud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
-      part:
       point: [-4.0, 0.0, -12.0]
       type: anti stud
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
-      part:
       point: [-12.0, 9.5999999999999996, -4.0]
       type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
-      part:
       point: [-4.0, 9.5999999999999996, -4.0]
       type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
-      part:
       point: [-4.0, 9.5999999999999996, -12.0]
       type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
-      part:
       point: [-12.0, 9.5999999999999996, -12.0]
       type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
-      part:
       point: [-8.0, 9.5999999999999996, -8.0]
       type: anti stud cup
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
-      part:
       point: [-8.0, 9.5999999999999996, -8.0]
       type: anti axle
       x_vec: [-1.0, 0.0, -0.0]
