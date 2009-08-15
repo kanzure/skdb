@@ -49,12 +49,30 @@ class TestGeom(unittest.TestCase):
     def test_point(self):
         point = Point(1,2,3)
         point = Point([1,2,3])
+    def test_point_eq(self):
+        self.assertEqual(geom.Point(0,0,0), geom.Point(0,0,0))
+        self.assertEqual(geom.Point(0,0,1e-9), geom.Point(0,0,0))
+        #not equals?
     def test_point_yaml(self):
         import yaml
-        self.assertEqual(yaml.dump(geom.Point(0, 0, 0.00000001)), "!point ['0.0', '0.0', 1e-08]")
-        self.assertEqual(yaml.dump(geom.Point(0, 0, 0.00000001)), "!point ['0.0', '0.0', '0.0']")
+        self.assertEqual(yaml.dump(geom.Point(0, 0, 0.00000001)), "!point ['0.0', '0.0', 1e-08]\n")
+        self.assertEqual(yaml.dump(geom.Point(0, 0, 0.000000000000001)), "!point ['0.0', '0.0', '0.0']\n")
         self.assertEqual(yaml.load("!point ['0.0', '0.0', 1e-08]"), geom.Point(0, 0, 0.00000001))
         self.assertEqual(yaml.load("!point [0.0, 0.0, 1e-08]"), geom.Point(0, 0, 0.00000001))    
-        
+        self.assertEqual(yaml.dump(geom.Point(0,0,1e-8)), "!point ['0.0', '0.0', 1e-08]\n")
+    def test_vec(self):
+        vec = Vector(1,2,3)
+        vec = Vector([1,2,3])
+    def test_vec_eq(self):                                                                         
+        self.assertEqual(geom.Vector(0,0,0), geom.Vector(0,0,0))
+        self.assertEqual(geom.Vector(0,0,1e-9), geom.Vector(0,0,0)) 
+        #not equals? 
+    def test_vec_yaml(self):
+        import yaml
+        self.assertEqual(yaml.dump(geom.Vector(0, 0, 0.00000001)), "!vector ['0.0', '0.0', 1e-08]\n")
+        self.assertEqual(yaml.load("!vector ['0.0', '0.0', 1e-08]"), geom.Vector(0, 0, 0.00000001))
+    def test_dir(self):
+        dir = Direction(1,2,3)
+
 if __name__ == "__main__":
     unittest.main()

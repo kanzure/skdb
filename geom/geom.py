@@ -99,11 +99,10 @@ def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given
     new_trsf.SetRotation(ax1, angle)
     return new_trsf
 
-class Point(gp_Pnt, FennObject):
-    '''wraps gp_Pnt: Point(1,2,3) or Point([1,2,3])
-    Caution: assigning an attribute like "x" will not affect the underlying gp_Pnt,
+class OCC_triple(FennObject):
+    doc_format = '''wraps %s: %s(1,2,3) or %s([1,2,3])
+    Caution: assigning an attribute like "x" will not affect the underlying %s,
     you have to make a new one instead.'''
-    yaml_tag='!point'
     def __init__(self, x=None, y=None, z=None):
         if isinstance(x, list):
             self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
@@ -111,23 +110,36 @@ class Point(gp_Pnt, FennObject):
             self.x, self.y, self.z = float(x), float(y), float(z)
         self.post_init_hook()
     def post_init_hook(self): 
-        try: gp_Pnt.__init__(self,self.x,self.y,self.z)
-        except ValueError: gp_Pnt.__init__(self) #return a null point
-    def __eq__(self, other):
-        if not isinstance(other, gp_Pnt): return False
+        try: self.__class__.occ_class.__init__(self,self.x,self.y,self.z)
+        except ValueError: self.__class__.occ_class.__init__(self) #return a null point
+    def __eq__(self, other): 
+        if not isinstance(other, self.__class__.occ_class): return False
         else: return self.IsEqual(other, Precision().Confusion()) == 1
     def __repr__(self):
         return "%s(%s, %s, %s)" % (self.__class__.__name__, round(self.X()), round(self.Y()), round(self.Z()))
     def yaml_repr(self):
         return [round(self.X()), round(self.Y()), round(self.Z())]
 
-class Vector(gp_Vec):
-    '''wraps gp_Vec'''
-    def __init__(self):
-        gp_Vec.__init__(self)
-    def __repr__(self):
-        return "[%s, %s, %s]" % (self.X(), self.Y(), self.Z())
+class Point(OCC_triple, gp_Pnt):
+    yaml_tag='!point'
+    occ_class = gp_Pnt    
+    __doc__ = OCC_triple.doc_format % (occ_class, 'Point', 'Point', occ_class.__name__)
 
+
+class Vector(OCC_triple, gp_Vec):
+    yaml_tag='!vector'
+    occ_class = gp_Vec
+    __doc__ = OCC_triple.doc_format % (occ_class, 'Vector', 'Vector', occ_class.__name__)
+    def __eq__(self, other):
+        '''vec needs LinearTolerance and AngularTolerance'''
+        if not isinstance(other, self.__class__.occ_class): return False
+        else: return self.IsEqual(other, Precision().Confusion(), Precision().Confusion()) == 1
+
+class Direction(OCC_triple, gp_Dir):
+    yaml_tag='!direction'
+    occ_class = gp_Dir
+    __doc__ = OCC_triple.doc_format % (occ_class, 'Direction', 'Direction', occ_class.__name__)
+    
 class Transform(gp_Trsf):
     '''wraps gp_Trsf for stackable transforms'''
     def __init__(self):
