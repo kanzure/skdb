@@ -103,11 +103,22 @@ class OCC_triple(FennObject):
     doc_format = '''wraps %s: %s(1,2,3) or %s([1,2,3])
     Caution: assigning an attribute like "x" will not affect the underlying %s,
     you have to make a new one instead.'''
-    def __init__(self, x=None, y=None, z=None):
-        if isinstance(x, list):
-            self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
-        else:
-            self.x, self.y, self.z = float(x), float(y), float(z)
+    def __init__(self, x=None, y=None, z=None, gp_pnt=None, gp_xyz=None):
+        if not (x==None and y==None and z==None):
+            if isinstance(x, list):
+                self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
+            else:
+                self.x, self.y, self.z = float(x), float(y), float(z)
+        elif not gp_pnt == None:
+            self.x, self.y, self.z = gp_pnt.XYZ().X(), gp_pnt.XYZ().Y(), gp_pnt.XYZ().Z()
+            self.post_init_hook()
+            self = gp_pnt
+            return
+        elif not gp_xyz == None:
+           self.x, self.y, self.z = gp_xyz.X(), gp_xyz.Y(), gp_xyz.Z()
+           self.post_init_hook()
+           self = gp_xyz
+           return
         self.post_init_hook()
     def post_init_hook(self): 
         try: self.__class__.occ_class.__init__(self,self.x,self.y,self.z)
@@ -122,9 +133,22 @@ class OCC_triple(FennObject):
 
 class Point(OCC_triple, gp_Pnt):
     yaml_tag='!point'
-    occ_class = gp_Pnt    
+    occ_class = gp_Pnt
     __doc__ = OCC_triple.doc_format % (occ_class, 'Point', 'Point', occ_class.__name__)
+    def Transform(self, transform):
+        result = gp_Pnt.Transformed(self, transform)
+        return Point(gp_pnt=result)
 
+class XYZ(OCC_triple, gp_XYZ):
+    '''wraps gp_XYZ, mainly for the __repr__'''
+    occ_class = gp_XYZ
+    __doc__ = OCC_triple.doc_format % (occ_class, 'XYZ', 'XYZ', occ_class.__name__)
+    #def __init__(self, gpxyz=None):
+    #    gp_XYZ.__init__(self)
+    #    if not gpxyz == None:
+    #        self = gpxyz
+    def __repr__(self):
+        return "[%s, %s, %s]" % (self.X(), self.Y(), self.Z())
 
 class Vector(OCC_triple, gp_Vec):
     yaml_tag='!vector'
@@ -142,25 +166,90 @@ class Direction(OCC_triple, gp_Dir):
     
 class Transform(gp_Trsf):
     '''wraps gp_Trsf for stackable transforms'''
-    def __init__(self):
+    def __init__(self, gptrsf=None, parent=None, description="root node"):
         gp_Trsf.__init__(self)
+        self.children = []
+        self.description = description
+        if not parent==None:
+            self.parent = parent
+        if not gptrsf==None:
+            self = gptrsf #do this last
+    def __repr__(self):
+        '''see also Transform.get_children'''
+        return self.description
+    def process_result(self, trsf, description=""):
+        '''hides some redundancy from the other methods'''
+        new_transform = Transform(gptrsf=trsf, parent=self, description=description)
+        self.children.append(new_transform)
+        return new_transform
+    def get_children(self):
+        '''returns a list of all children'''
+        if self.children == []:
+            return None
+        return_list = copy(self.children)
+        for each in self.children:
+            more = each.get_children()
+            if more:
+                return_list.append(more)
+        return return_list
+    def Invert(self):
+        '''wraps like gp_Trsf.Inverted'''
+        result = gp_Trsf.Inverted(self)
+        return self.process_result(result, description="inverted")
+    def Multiply(self, *args):
+        '''wraps gp_Trsf.Multiplied'''
+        result = gp_Trsf.Multiplied(self, args)
+        return self.process_result(result, description="multiplied")
+    def SetRotation(self, *args):
+        '''should this only be in Rotation?'''
+        self_copy = copy(self)
+        result = gp_Trsf.SetRotation(self_copy, args)
+        new_transform = Rotation(gptrsf=result, parent=self, description="rotated")
+        self.children.append(new_transform)
+        return new_transform
+    def SetTranslation(self, point1, point2):
+        '''wraps gp_Trsf.SetTranslation'''
+        #self_copy = copy(self)
+        self_copy = gp_Trsf()
+        self_copy.SetTranslation(point1, point2)
+        new_transform = Translation(gptrsf=self_copy, parent=self, description="translated", point1=point1, point2=point2)
+        self.children.append(new_transform)
+        return new_transform
+    def SetMirror(self, point):
+        '''wraps gp_Trsf.Mirror -- mirror about a point'''
+        self_copy = copy(self)
+        result = gp_Trsf.SetMirror(self_copy, safe_point(point))
+        desc = "mirrored about a point %s" % (usable_point(point))
+        return self.process_result(result, description=desc)
 
 class Rotation(Transform):
     '''a special type of Transform for rotation
     Rotation(rotation_pivot_point=, direction=, angle=) -> gp_Trsf
     Rotation(gp_Ax1=, angle=) -> gp_Trsf'''
-    def __init__(self, pivot_point=None, direction=None, angle=None):
-        #pivot_point=Point([0,0,1]), direction=Vector(vector=[0,0,1]), angle=Unit("pi/2 radians")
-        if not pivot_point and not direction and not angle: raise NotImplementedError, "you must pass parameters to Rotation.__init__"
-        Transform.__init__(self)
+    pass
+    #def __init__(self, pivot_point=None, direction=None, angle=None):
+    #    #pivot_point=Point([0,0,1]), direction=Vector(vector=[0,0,1]), angle=Unit("pi/2 radians")
+    #    if not pivot_point and not direction and not angle: raise NotImplementedError, "you must pass parameters to Rotation.__init__"
+    #    Transform.__init__(self)
 
 class Translation(Transform):
     '''a special type of Transform for translation
     Translation(point1=, point2=) -> gp_Trsf
     Translation(vector=) -> gp_Trsf'''
-    def __init__(self, point1=None, point2=None, vector=None):
+    def __init__(self, point1=None, point2=None, vector=None, gptrsf=None, parent=None, description=None):
         if not point1 and not point2 and not vector: raise NotImplementedError, "you must pass parameters to Translation.__init__"
-        Transform.__init__(self)
+        self.point1 = point1
+        self.point2 = point2
+        self.vector = vector
+        self.parent = parent
+        self.description = description
+        self.children = []
+        gp_Trsf.__init__(self)
+        gp_Trsf.SetTranslation(self, point1, point2)
+        #Transform.__init__(self, gptrsf=gptrsf, parent=parent, description=description)
+    def __repr__(self):
+        xyz = gp_Trsf.TranslationPart(self)
+        return "Translation[%s, %s, %s]" % (xyz.X(), xyz.Y(), xyz.Z())
 
 class Mate(Connection):
     def transform(self): 

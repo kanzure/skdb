@@ -48,7 +48,7 @@ class TestGeom(unittest.TestCase):
         import yaml
         self.assertEqual(yaml.dump(geom.Vector(0, 0, 0.00000001)), "!vector ['0.0', '0.0', 1e-08]\n")
         self.assertEqual(yaml.load("!vector ['0.0', '0.0', 1e-08]"), geom.Vector(0, 0, 0.00000001))
-    def test_dir(self):
+    def test_dir(self): #maybe we can just force everyone to use !vector instead of !orientation or !direction (it's the same thing)
         dir = Direction(1,2,3)
     def test_translation(self):
         '''test translation'''
@@ -62,7 +62,7 @@ class TestGeom(unittest.TestCase):
         self.assertTrue(result_point == [point[0],point[1]+y_displacement,point[2]])
         #TODO: test translation(vector)
     def test_rotation(self):
-        '''test rotation'''
+        '''test geom.rotation'''
         #test rotation(rotation_pivot_point, direction, angle)
         rotation_pivot_point = [0,0,0]
         direction = [0, 0, 1]
@@ -71,18 +71,36 @@ class TestGeom(unittest.TestCase):
         trsf1 = rotation(rotation_pivot_point=rotation_pivot_point, direction=direction, angle=angle)
         result_point = point_trsf(point, trsf1)
         for n in range(3):
-            self.assertTrue(result_point[n] - [-5,0,0][n] < Precision().Confusion()) #idk the real answer
+            self.assertTrue(result_point[n] - [-5,0,0][n] < Precision().Confusion())
         #TODO: test rotation(gp_Ax1, angle)
     def test_transform(self):
-        '''transforms should not be stored in yaml'''
+        '''note: transforms should not be stored in yaml'''
+        import yaml
+
+        trans0 = geom.Transform()
+        point1 = yaml.load("!point [1,2,3]")
+        point2 = yaml.load("!point [4,5,6]")
+        trans1 = trans0.SetTranslation(point1, point2)
+        point3 = yaml.load("!point [10,10,15]")
+        trans2 = trans1.SetTranslation(point2, point3)
+        
+        #make sure it keeps the tree/stacking information correctly
+        self.assertTrue(trans0.get_children()==[trans1, [trans2]])
+
+        point4 = yaml.load("!point [15,5,2]")
+        new_point = point4.Transform(trans2)
+        
+        #make sure it put the point in the correct spot
+        self.assertTrue(new_point == yaml.load("!point [21,10,11]"))
+        
         pass
     def test_stacked_transforms(self):
         pass
     def test_rotation_transform(self):
-        '''test Rotation (not rotation())'''
+        '''test geom.Rotation (not geom.rotation())'''
         pass
     def test_translation_transform(self):
-        '''test Translation (not translation())'''
+        '''test geom.Translation (not geom.translation())'''
         pass
     #now some unit tests for part mating
 
