@@ -8,34 +8,21 @@ from copy import copy, deepcopy
 
 def safe_point(point):
     '''returns a gp_Pnt, even if you give it a gp_Pnt'''
-    if type(point) == gp_Pnt: return point
-    return gp_Pnt(point[0],point[1],point[2])
+    if isinstance(point, Point): return point
+    elif isinstance(point, gp_Pnt): return Point(point.X(), point.Y(), point.Z())
+    else: return Point(point[0],point[1],point[2])
 
 def safe_vec(vector):
     '''returns a gp_Vec, even if you give it a gp_Vec'''
-    if type(vector) == gp_Vec: return vector
-    return gp_Vec(vector[0], vector[1], vector[2])
+    if isinstance(vector, Vector): return vector
+    elif isinstance(vector, gp_Vec): return Vector(vector.X(), vector.Y(), vector.Z())
+    else: return Vector(vector[0], vector[1], vector[2])
 
 def safe_dir(direction):
     '''returns a gp_Dir, even if you give it a gp_Dir'''
-    if type(direction) == gp_Dir: return direction
-    return gp_Dir(direction[0], direction[1], direction[2])
-
-def usable_point(point):
-    '''returns a point even if you pass it a point or gp_Pnt'''
-    if type(point) == type([]): return point
-    if type(point) == gp_Pnt: return [point.XYZ().X(), point.XYZ().Y(), point.XYZ().Z()]
-    raise NotImplementedError, "geom usable_point() only works with a list or a gp_Pnt"
-
-def usable_vec(vector):
-    '''returns a vector (or direction) even if you pass it a vector or gp_Vec or gp_Dir'''
-    if type(vector) == type([]): return vector
-    if type(vector) == gp_Vec or type(vector) == gp_Dir: return [vector.X(), vector.Y(), vector.Z()]
-    raise NotImplementedError, "geom usable_vec() only works with a list or a gp_Vec or a gp_Dir"
-
-def usable_dir(direction):
-    '''returns a direction even if you pass it a direction or gp_Dir'''
-    return usable_vec(direction)
+    if isinstance(direction, Direction): return direction
+    elif: isinstance(direction, gp_Dir): return Direction(direction.X(), direction.Y(), direction.Z())
+    else: return Direction(direction[0], direction[1], direction[2])
 
 def move_shape(shape, from_pnt, to_pnt, trsf_only=True):
     trsf = gp_Trsf()
@@ -224,7 +211,7 @@ class Transform(gp_Trsf):
         '''wraps gp_Trsf.Mirror -- mirror about a point'''
         self_copy = copy(self)
         result = gp_Trsf.SetMirror(self_copy, safe_point(point))
-        desc = "mirrored about a point %s" % (usable_point(point))
+        desc = "mirrored about %s" % (point)
         return self.process_result(result, description=desc)
 
 class Rotation(Transform):
