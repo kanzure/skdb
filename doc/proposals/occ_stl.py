@@ -56,10 +56,10 @@ for iND in range(number_domains):
             vertex3 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(OCC.gp.gp_Pnt(p3))
             akt_wire = OCC.BRepBuilderAPI.BRepBuilderAPI_MakePolygon(vertex1.Vertex(), vertex2.Vertex(), vertex3.Vertex(), True)
             #print "vertex1 = %s\nvertex2 = %s\nvertex3 = %s" % (p1.Coord(), p2.Coord(), p3.Coord())
-            if not akt_wire == None:#not akt_wire.IsNull():
+            if akt_wire:#not akt_wire.IsNull():
                 akt_face = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeFace(akt_wire.Wire())
                 #help(akt_face)
-                if not akt_face == None: #not akt_face.IsNull():
+                if akt_face: #not akt_face.IsNull():
                     #print "debug4"
                     compound_builder.Add(result_shape, akt_face.Face())
                     #compound_builder.Add(OCC.TopoDS.TopoDS_Compound(), OCC.BRepBuilderAPI.BRepBuilderAPI_MakeFace().Shape())
