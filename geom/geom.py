@@ -99,6 +99,47 @@ def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given
     new_trsf.SetRotation(ax1, angle)
     return new_trsf
 
+class Point(gp_Pnt):
+    '''wraps gp_Pnt'''
+    def __init__(self, x=None, y=None, z=None):
+        if not (not x and not y and not z):
+            gp_Pnt.__init__(self,x,y,z)
+        else: gp_Pnt.__init__(self,x,y,z)
+        self.x = x
+        self.y = y
+        self.z = z
+    def __repr__(self):
+        return "[%s, %s, %s]" % (self.XYZ().X(), self.XYZ().Y(), self.XYZ().Z())
+
+class Vector(gp_Vec):
+    '''wraps gp_Vec'''
+    def __init__(self):
+        gp_Vec.__init__(self)
+    def __repr__(self):
+        return "[%s, %s, %s]" % (self.X(), self.Y(), self.Z())
+
+class Transform(gp_Trsf):
+    '''wraps gp_Trsf for stackable transforms'''
+    def __init__(self):
+        gp_Trsf.__init__(self)
+
+class Rotation(Transform):
+    '''a special type of Transform for rotation
+    Rotation(rotation_pivot_point=, direction=, angle=) -> gp_Trsf
+    Rotation(gp_Ax1=, angle=) -> gp_Trsf'''
+    def __init__(self, pivot_point=None, direction=None, angle=None):
+        #pivot_point=Point([0,0,1]), direction=Vector(vector=[0,0,1]), angle=Unit("pi/2 radians")
+        if not pivot_point and not direction and not angle: raise NotImplementedError, "you must pass parameters to Rotation.__init__"
+        Transform.__init__(self)
+
+class Translation(Transform):
+    '''a special type of Transform for translation
+    Translation(point1=, point2=) -> gp_Trsf
+    Translation(vector=) -> gp_Trsf'''
+    def __init__(self, point1=None, point2=None, vector=None):
+        if not point1 and not point2 and not vector: raise NotImplementedError, "you must pass parameters to Translation.__init__"
+        Transform.__init__(self)
+
 class Mate(Connection):
     def transform(self): 
         '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
