@@ -6,24 +6,6 @@ from skdb import Connection, Part, Interface, Unit, FennObject, round
 import os, math
 from copy import copy, deepcopy
 
-def safe_point(point):
-    '''returns a gp_Pnt, even if you give it a gp_Pnt'''
-    if isinstance(point, Point): return point
-    elif isinstance(point, gp_Pnt): return Point(point.X(), point.Y(), point.Z())
-    else: return Point(point[0],point[1],point[2])
-
-def safe_vec(vector):
-    '''returns a gp_Vec, even if you give it a gp_Vec'''
-    if isinstance(vector, Vector): return vector
-    elif isinstance(vector, gp_Vec): return Vector(vector.X(), vector.Y(), vector.Z())
-    else: return Vector(vector[0], vector[1], vector[2])
-
-def safe_dir(direction):
-    '''returns a gp_Dir, even if you give it a gp_Dir'''
-    if isinstance(direction, Direction): return direction
-    elif: isinstance(direction, gp_Dir): return Direction(direction.X(), direction.Y(), direction.Z())
-    else: return Direction(direction[0], direction[1], direction[2])
-
 def move_shape(shape, from_pnt, to_pnt, trsf_only=True):
     trsf = gp_Trsf()
     trsf.SetTranslation(from_pnt, to_pnt)
@@ -64,11 +46,11 @@ def translation(point1=None, point2=None, vector=None):
     translate(vector) -> gp_Trsf'''
     new_trsf = gp_Trsf()
     if not point1==None and not point2==None: #two points
-       point1 = safe_point(point1)
-       point2 = safe_point(point2)
+       point1 = Point(point1)
+       point2 = Point(point2)
        vector = gp_Vec(point1, point2)
     elif not vector==None: #a vector
-       vector = safe_vector(vector)
+       vector = Vector(vector)
     new_trsf.SetTranslation(vector)
     return new_trsf
 
@@ -77,8 +59,8 @@ def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given
     rotation(gp_Ax1, angle) -> gp_Trsf'''
     new_trsf = gp_Trsf()
     if not rotation_pivot_point==None and not direction==None and not angle==None:
-       rotation_pivot_point = safe_point(rotation_pivot_point)
-       direction = safe_dir(direction)
+       rotation_pivot_point = Point(rotation_pivot_point)
+       direction = Direction(direction)
        ax1 = gp_Ax1(rotation_pivot_point, direction)
     elif not gp_Ax1_given==None and not angle==None:
        ax1 = gp_Ax1_given
@@ -87,27 +69,22 @@ def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given
     return new_trsf
 
 class OCC_triple(FennObject):
-    doc_format = '''wraps %s: %s(1,2,3) or %s([1,2,3])
+    '''simplifies wrapping pythonOCC classes like gp_Pnt, gp_Vec etc'''
+    doc_format = '''wraps %s: %s(1,2,3) or %s([1,2,3]) or %s(%s)
     Caution: assigning an attribute like "x" will not affect the underlying %s,
     you have to make a new one instead.'''
-    def __init__(self, x=None, y=None, z=None, gp_pnt=None, gp_xyz=None):
+    def __init__(self, x=None, y=None, z=None):
+        if isinstance(x, self.__class__): #Point(Point(1,2,3))
+            self.__dict__ = copy(x.__dict__) #does this use the same gp_Pnt object? (it shouldnt)
+        if isinstance(x, self.occ_class) or isinstance(x, OCC_triple): #Point(gp_Pnt()) or Point(Vector(1,2,3))
+            x,y,z = (x.X(), x.Y(), x.Z())
         if not (x==None and y==None and z==None):
             if isinstance(x, list):
                 self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
             else:
                 self.x, self.y, self.z = float(x), float(y), float(z)
-        elif not gp_pnt == None:
-            self.x, self.y, self.z = gp_pnt.XYZ().X(), gp_pnt.XYZ().Y(), gp_pnt.XYZ().Z()
-            self.post_init_hook()
-            self = gp_pnt
-            return
-        elif not gp_xyz == None:
-           self.x, self.y, self.z = gp_xyz.X(), gp_xyz.Y(), gp_xyz.Z()
-           self.post_init_hook()
-           self = gp_xyz
-           return
         self.post_init_hook()
-    def post_init_hook(self): 
+    def post_init_hook(self): #for instantiating from yaml
         try: self.__class__.occ_class.__init__(self,self.x,self.y,self.z)
         except ValueError: self.__class__.occ_class.__init__(self) #return a null point
     def __eq__(self, other): 
@@ -117,19 +94,19 @@ class OCC_triple(FennObject):
         return "%s(%s, %s, %s)" % (self.__class__.__name__, round(self.X()), round(self.Y()), round(self.Z()))
     def yaml_repr(self):
         return [round(self.X()), round(self.Y()), round(self.Z())]
+    def Transform(self, transform):
+        result = self.occ_class.Transformed(self, transform)
+        return self.__class__(result)
 
 class Point(OCC_triple, gp_Pnt):
     yaml_tag='!point'
     occ_class = gp_Pnt
-    __doc__ = OCC_triple.doc_format % (occ_class, 'Point', 'Point', occ_class.__name__)
-    def Transform(self, transform):
-        result = gp_Pnt.Transformed(self, transform)
-        return Point(gp_pnt=result)
+    __doc__ = OCC_triple.doc_format % (occ_class, 'Point', 'Point', 'Point', occ_class, occ_class.__name__)
 
 class XYZ(OCC_triple, gp_XYZ):
     '''wraps gp_XYZ, mainly for the __repr__'''
     occ_class = gp_XYZ
-    __doc__ = OCC_triple.doc_format % (occ_class, 'XYZ', 'XYZ', occ_class.__name__)
+    __doc__ = OCC_triple.doc_format % (occ_class, 'XYZ', 'XYZ', 'XYZ', occ_class, occ_class.__name__)
     #def __init__(self, gpxyz=None):
     #    gp_XYZ.__init__(self)
     #    if not gpxyz == None:
@@ -140,7 +117,7 @@ class XYZ(OCC_triple, gp_XYZ):
 class Vector(OCC_triple, gp_Vec):
     yaml_tag='!vector'
     occ_class = gp_Vec
-    __doc__ = OCC_triple.doc_format % (occ_class, 'Vector', 'Vector', occ_class.__name__)
+    __doc__ = OCC_triple.doc_format % (occ_class, 'Vector', 'Vector', 'Vector', occ_class, occ_class.__name__)
     def __eq__(self, other):
         '''vec needs LinearTolerance and AngularTolerance'''
         if not isinstance(other, self.__class__.occ_class): return False
@@ -149,7 +126,7 @@ class Vector(OCC_triple, gp_Vec):
 class Direction(OCC_triple, gp_Dir):
     yaml_tag='!direction'
     occ_class = gp_Dir
-    __doc__ = OCC_triple.doc_format % (occ_class, 'Direction', 'Direction', occ_class.__name__)
+    __doc__ = OCC_triple.doc_format % (occ_class, 'Direction', 'Direction', 'Direction', occ_class, occ_class.__name__)
     
 class Transform(gp_Trsf):
     '''wraps gp_Trsf for stackable transforms'''
@@ -210,7 +187,7 @@ class Transform(gp_Trsf):
     def SetMirror(self, point):
         '''wraps gp_Trsf.Mirror -- mirror about a point'''
         self_copy = copy(self)
-        result = gp_Trsf.SetMirror(self_copy, safe_point(point))
+        result = gp_Trsf.SetMirror(self_copy, Point(point))
         desc = "mirrored about %s" % (point)
         return self.process_result(result, description=desc)
 
@@ -247,12 +224,12 @@ class Mate(Connection):
         '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
         i1, i2 = self.interface1, self.interface2
         #this is lame
-        i1.x_vec = safe_vec(i1.x_vec)
-        i1.y_vec = safe_vec(i1.y_vec)
-        i2.x_vec = safe_vec(i2.x_vec)
-        i2.y_vec = safe_vec(i2.y_vec)
-        i1.point = safe_point(i1.point)
-        i2.point = safe_point(i2.point)
+        i1.x_vec = Vector(i1.x_vec)
+        i1.y_vec = Vector(i1.y_vec)
+        i2.x_vec = Vector(i2.x_vec)
+        i2.y_vec = Vector(i2.y_vec)
+        i1.point = Point(i1.point)
+        i2.point = Point(i2.point)
         i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
         orient_i1 = point_shape(i1.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)), trsf_only=True)
         #move_i1 = gp_Trsf() #don't move the first part

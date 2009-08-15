@@ -3,9 +3,9 @@ from skdb.geom import *
 
 def point_trsf(point1, transform):
     '''point_trsf(point1, transform) -> [x,y,z]'''
-    point1 = safe_point(point1)
+    point1 = Point(point1)
     result_pnt = point1.Transformed(transform)
-    return usable_point(result_pnt)
+    return result_pnt
 
 class TestGeom(unittest.TestCase):
     def init_interface(self):
@@ -59,19 +59,18 @@ class TestGeom(unittest.TestCase):
         result_point = point_trsf(point, trsf1)
         if not y_displacement == 0:
             self.assertFalse(result_point == point)
-        self.assertTrue(result_point == [point[0],point[1]+y_displacement,point[2]])
+        self.assertTrue(result_point == Point([point[0],point[1]+y_displacement,point[2]]))
         #TODO: test translation(vector)
     def test_rotation(self):
         '''test geom.rotation'''
         #test rotation(rotation_pivot_point, direction, angle)
-        rotation_pivot_point = [0,0,0]
-        direction = [0, 0, 1]
+        rotation_pivot_point = Point(0,0,0)
+        direction = Direction(0, 0, 1)
         angle = math.pi
-        point = [5,0,0]
+        point = Point(5,0,0)
         trsf1 = rotation(rotation_pivot_point=rotation_pivot_point, direction=direction, angle=angle)
         result_point = point_trsf(point, trsf1)
-        for n in range(3):
-            self.assertTrue(result_point[n] - [-5,0,0][n] < Precision().Confusion())
+        self.assertEqual(result_point, Point(-5,0,0))
         #TODO: test rotation(gp_Ax1, angle)
     def test_transform(self):
         '''note: transforms should not be stored in yaml'''
