@@ -1,5 +1,5 @@
 import unittest, math
-from skdb import *
+from geom import *
 
 def point_trsf(point1, transform):
     '''point_trsf(point1, transform) -> [x,y,z]'''
