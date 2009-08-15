@@ -22,6 +22,10 @@ debug = False
 #class Cylinder(yaml.YAMLObject)
 #class InterfaceGeom(yaml.YAMLObject):
 
+def round(num):                                                                                      
+    '''round down to 0 if abs(num) < +-1e-13, gets rid of icky floating point errors'''              
+    return str(float("%.13f" % (float(num))))     
+
 def check_unix_name(name):
     '''returns True if name (string) is a valid unix_name'''
     assert name, "name is empty"
