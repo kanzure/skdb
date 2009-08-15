@@ -200,7 +200,7 @@ class Transform(gp_Trsf):
             result.Multiply(each.run())
         return result
     def Invert(self):
-        '''wraps like gp_Trsf.Inverted'''
+        '''wraps gp_Trsf.Inverted'''
         result = gp_Trsf.Inverted(self)
         return self.process_result(result, description="inverted")
     def Multiply(self, *args):
