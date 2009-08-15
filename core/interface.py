@@ -40,7 +40,7 @@ class Interface(FennObject):
                         rval.add(Connection(self,i))
         return rval     
     def __repr__(self):
-        if not self.part == None:
+        if self.part:
             part_name = self.part.name
         else: part_name = None
         return 'Interface("%s", part="%s")' % (self.name, part_name)

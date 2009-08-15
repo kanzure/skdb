@@ -45,11 +45,11 @@ def translation(point1=None, point2=None, vector=None):
     '''translate(point1, point2) -> gp_Trsf
     translate(vector) -> gp_Trsf'''
     new_trsf = gp_Trsf()
-    if not point1==None and not point2==None: #two points
+    if point1 and point2: #two points
        point1 = Point(point1)
        point2 = Point(point2)
        vector = gp_Vec(point1, point2)
-    elif not vector==None: #a vector
+    elif vector: #a vector
        vector = Vector(vector)
     new_trsf.SetTranslation(vector)
     return new_trsf
@@ -58,11 +58,11 @@ def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given
     '''rotation(rotation_pivot_point, direction, angle) -> gp_Trsf
     rotation(gp_Ax1, angle) -> gp_Trsf'''
     new_trsf = gp_Trsf()
-    if not rotation_pivot_point==None and not direction==None and not angle==None:
+    if rotation_pivot_point and direction and angle:
        rotation_pivot_point = Point(rotation_pivot_point)
        direction = Direction(direction)
        ax1 = gp_Ax1(rotation_pivot_point, direction)
-    elif not gp_Ax1_given==None and not angle==None:
+    elif gp_Ax1_given and angle:
        ax1 = gp_Ax1_given
     else: raise NotImplementedError, "rotation was given the wrong number of arguments."
     new_trsf.SetRotation(ax1, angle)
@@ -80,7 +80,7 @@ class OCC_triple(FennObject):
             self.x, self.y, self.z = (x.X(), x.Y(), x.Z())
         elif isinstance(x, list):
             self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
-        elif not (x==None and y==None and z==None):
+        elif x is not None and y is not None and z is not None:
             self.x, self.y, self.z = float(x), float(y), float(z)
         self.post_init_hook()
     def post_init_hook(self): #for instantiating from yaml
@@ -108,7 +108,7 @@ class XYZ(OCC_triple, gp_XYZ):
     __doc__ = OCC_triple.doc_format % (occ_class, 'XYZ', 'XYZ', 'XYZ', occ_class, occ_class.__name__)
     #def __init__(self, gpxyz=None):
     #    gp_XYZ.__init__(self)
-    #    if not gpxyz == None:
+    #    if gpxyz:
     #        self = gpxyz
     def __repr__(self):
         return "[%s, %s, %s]" % (self.X(), self.Y(), self.Z())
@@ -133,7 +133,7 @@ class Transform(gp_Trsf):
         gp_Trsf.__init__(self)
         self.children = []
         self.description = description
-        if not parent==None:
+        if parent:
             self.parent = parent
     def __repr__(self):
         '''see also Transform.get_children'''
