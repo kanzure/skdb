@@ -85,24 +85,30 @@ class TestGeom(unittest.TestCase):
         import yaml
 
         trans0 = geom.Transform()
-        point1 = yaml.load("!point [1,2,3]")
-        point2 = yaml.load("!point [4,5,6]")
+        point1 = Point(1,2,3)
+        point2 = Point(4,5,6)
         trans1 = trans0.SetTranslation(point1, point2)
-        point3 = yaml.load("!point [10,10,15]")
+        point3 = Point(10,10,15)
         trans2 = trans1.SetTranslation(point2, point3)
         
         #make sure it keeps the tree/stacking information correctly
         self.assertTrue(trans0.get_children()==[trans1, [trans2]])
 
-        point4 = yaml.load("!point [15,5,2]")
-        new_point = point4.Transform(trans2)
+        point4 = Point(15,5,2)
+        new_point = point4.transform(trans2)
         
         #make sure it put the point in the correct spot
-        expected_point = yaml.load("!point [21,10,11]")
+        expected_point = Point(21,10,11)
         self.assertTrue(new_point == expected_point)
         
         pass
-    def test_stacked_transforms(self):
+    def test_stacked_transformations(self):
+        transformation0 = geom.Transform()
+        transformation1 = transformation0.SetTranslation(Point(0,0,0), Point(0,0,1))
+        transformation2 = transformation1.SetTranslation(Point(0,5,0), Point(1,2,0))
+        transformation3 = transformation2.run() #stacking
+        new_point = Point(0,0,0).transform(transformation3)
+        self.assertEqual(new_point, Point(1,-3,0))
         pass
     def test_rotation_transform(self):
         '''test geom.Rotation (not geom.rotation())'''

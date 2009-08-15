@@ -93,7 +93,7 @@ class OCC_triple(FennObject):
         return "%s(%s, %s, %s)" % (self.__class__.__name__, round(self.X()), round(self.Y()), round(self.Z()))
     def yaml_repr(self):
         return [round(self.X()), round(self.Y()), round(self.Z())]
-    def Transform(self, transform):
+    def transform(self, transform):
         result = self.occ_class.Transformed(self, transform)
         return self.__class__(result)
 
@@ -156,9 +156,9 @@ class Transform(gp_Trsf):
     def run(self, result=None):
         '''multiplies all of the transforms together'''
         if self.children == []:
-            return None
+            return self
         if result == None:
-            result = gp_Trsf()
+            result = Transform()
         for each in self.children:
             result.Multiply(each.run())
         return result
