@@ -2,7 +2,7 @@ from OCC.gp import *
 from OCC.Precision import *
 from OCC.BRepBuilderAPI import *
 import OCC.Utils.DataExchange.STEP
-from skdb import Connection, Part, Interface, Unit, FennObject
+from skdb import Connection, Part, Interface, Unit, FennObject, round
 import os, math
 from copy import copy, deepcopy
 
@@ -99,20 +99,25 @@ def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given
     new_trsf.SetRotation(ax1, angle)
     return new_trsf
 
-class Point(gp_Pnt, FennObject, list):
-    '''wraps gp_Pnt'''
+class Point(gp_Pnt, FennObject):
+    '''wraps gp_Pnt: Point(1,2,3) or Point([1,2,3])
+    Caution: assigning an attribute like "x" will not affect the underlying gp_Pnt,
+    you have to make a new one instead.'''
     yaml_tag='!point'
     def __init__(self, x=None, y=None, z=None):
-        self.x = x
-        self.y = y
-        self.z = z
+        if isinstance(x, list):
+            self.x, self.y, self.z = x[0], x[1], x[2]
+        else:
+            self.x, self.y, self.z = x, y, z
+        self.post_init_hook()
     def post_init_hook(self): 
         #if self.x and self.y and self.z:
             gp_Pnt.__init__(self,self.x,self.y,self.z)
-        #else: #else what?
-
+        #else: #else what? let gp_Pnt throw a tantrum
     def __repr__(self):
-        return "[%s, %s, %s]" % (self.XYZ().X(), self.XYZ().Y(), self.XYZ().Z())
+        return "%s(%s, %s, %s)" % (self.__class__.__name__, round(self.X()), round(self.Y()), round(self.Z()))
+    def yaml_repr(self):
+        return [round(self.X()), round(self.Y()), round(self.Z())]
 
 class Vector(gp_Vec):
     '''wraps gp_Vec'''

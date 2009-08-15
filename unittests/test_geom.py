@@ -46,6 +46,15 @@ class TestGeom(unittest.TestCase):
         for n in range(3):
             self.assertTrue(result_point[n] - [-5,0,0][n] < Precision().Confusion()) #idk the real answer
         #TODO: test rotation(gp_Ax1, angle)
+    def test_point(self):
+        point = Point(1,2,3)
+        point = Point([1,2,3])
+    def test_point_yaml(self):
+        import yaml
+        self.assertEqual(yaml.dump(geom.Point(0, 0, 0.00000001)), "!point ['0.0', '0.0', 1e-08]")
+        self.assertEqual(yaml.dump(geom.Point(0, 0, 0.00000001)), "!point ['0.0', '0.0', '0.0']")
+        self.assertEqual(yaml.load("!point ['0.0', '0.0', 1e-08]"), geom.Point(0, 0, 0.00000001))
+        self.assertEqual(yaml.load("!point [0.0, 0.0, 1e-08]"), geom.Point(0, 0, 0.00000001))    
         
 if __name__ == "__main__":
     unittest.main()
