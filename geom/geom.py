@@ -76,13 +76,12 @@ class OCC_triple(FennObject):
     def __init__(self, x=None, y=None, z=None):
         if isinstance(x, self.__class__): #Point(Point(1,2,3))
             self.__dict__ = copy(x.__dict__) #does this use the same gp_Pnt object? (it shouldnt)
-        if isinstance(x, self.occ_class) or isinstance(x, OCC_triple): #Point(gp_Pnt()) or Point(Vector(1,2,3))
-            x,y,z = (x.X(), x.Y(), x.Z())
-        if not (x==None and y==None and z==None):
-            if isinstance(x, list):
-                self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
-            else:
-                self.x, self.y, self.z = float(x), float(y), float(z)
+        elif isinstance(x, self.occ_class) or isinstance(x, OCC_triple): #Point(gp_Pnt()) or Point(Vector(1,2,3))
+            self.x, self.y, self.z = (x.X(), x.Y(), x.Z())
+        elif isinstance(x, list):
+            self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
+        elif not (x==None and y==None and z==None):
+            self.x, self.y, self.z = float(x), float(y), float(z)
         self.post_init_hook()
     def post_init_hook(self): #for instantiating from yaml
         try: self.__class__.occ_class.__init__(self,self.x,self.y,self.z)

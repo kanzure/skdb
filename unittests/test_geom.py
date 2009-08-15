@@ -26,12 +26,18 @@ class TestGeom(unittest.TestCase):
     def test_point(self):
         point = Point(1,2,3)
         point = Point([1,2,3])
-        point2 = point.Transform(gp_Trsf())
-        self.assertFalse(point2 is point)
+        point = Point(gp_Pnt(1,2,3))
+        point = Point(Point(1,2,3))
+        point = Point(Vector(1,2,3))
     def test_point_eq(self):
         self.assertEqual(geom.Point(0,0,0), geom.Point(0,0,0))
         self.assertEqual(geom.Point(0,0,1e-9), geom.Point(0,0,0))
         #not equals?
+    def test_point_transformed_no_side_effects(self):
+        '''Point.Transform should return a new Point'''
+        point = Point(1,2,3)
+        point2 = point.Transform(gp_Trsf())
+        self.assertFalse(point2 is point) 
     def test_point_yaml(self):
         import yaml
         self.assertEqual(yaml.dump(geom.Point(0, 0, 0.00000001)), "!point ['0.0', '0.0', 1e-08]\n")
