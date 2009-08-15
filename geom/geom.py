@@ -207,16 +207,13 @@ class Transform(gp_Trsf):
         '''wraps gp_Trsf.Multiplied'''
         result = gp_Trsf.Multiplied(self, args)
         return self.process_result(result, description="multiplied")
-    def SetRotation(self, *args):
-        '''should this only be in Rotation?'''
-        self_copy = copy(self)
-        result = gp_Trsf.SetRotation(self_copy, args)
-        new_transform = Rotation(gptrsf=result, parent=self, description="rotated")
+    def SetRotation(self, pivot_point=Point([0,0,0]), direction=Direction([0,0,1]), angle=Unit("pi/2 radians")):
+        '''SetRotation(pivot_point=Point(), direction=Direction(), angle=Unit())'''
+        new_transform = Rotation(parent=self, description="rotated", pivot_point=pivot_point, direction=direction, angle=angle)
         self.children.append(new_transform)
         return new_transform
     def SetTranslation(self, point1, point2):
-        '''wraps gp_Trsf.SetTranslation'''
-        #self_copy = copy(self)
+        '''SetTranslation(point1=Point(), point2=Point())'''
         new_transform = Translation(parent=self, description="translated", point1=point1, point2=point2)
         self.children.append(new_transform)
         return new_transform
@@ -229,20 +226,26 @@ class Transform(gp_Trsf):
 
 class Rotation(Transform):
     '''a special type of Transform for rotation
-    Rotation(rotation_pivot_point=, direction=, angle=) -> gp_Trsf
-    Rotation(gp_Ax1=, angle=) -> gp_Trsf'''
-    pass
-    #def __init__(self, pivot_point=None, direction=None, angle=None):
-    #    #pivot_point=Point([0,0,1]), direction=Vector(vector=[0,0,1]), angle=Unit("pi/2 radians")
-    #    if not pivot_point and not direction and not angle: raise NotImplementedError, "you must pass parameters to Rotation.__init__"
-    #    Transform.__init__(self)
+    Rotation(pivot_point=Point(), direction=Direction(), angle=Unit())'''
+    def __init__(self, pivot_point=Point([0,0,0]), direction=Direction([0,0,1]), angle=Unit("pi/2 radians"), parent=None, description=None):
+        if not pivot_point and not direction and not angle: raise NotImplementedError, "you must pass parameters to Rotation.__init__"
+        self.pivot_point = pivot_point
+        self.direction = direction
+        self.angle = angle
+        Transform.__init__(self, parent=parent, description=description)
+        gp_Trsf.SetRotation(self, gp_Ax1(pivot_point, direction), float(angle))
+    def __repr__(self):
+        '''just a guess for now, please test'''
+        xyz = gp_Trsf.RotationPart(self)
+        return "Rotation[%s, %s, %s]" % (xyz.X(), xyz.Y(), xyz.Z())
 
 class Translation(Transform):
     '''a special type of Transform for translation
-    Translation(point1=, point2=) -> gp_Trsf
-    Translation(vector=) -> gp_Trsf'''
+    Translation(point1=, point2=)
+    Translation(vector=) (not implemented)'''
     def __init__(self, point1=None, point2=None, vector=None, parent=None, description=None):
         if not point1 and not point2 and not vector: raise NotImplementedError, "you must pass parameters to Translation.__init__"
+        if vector: raise NotImplementedError, "Translation.__init__ doesn't yet take a vector (sorry)" #FIXME
         self.point1 = point1
         self.point2 = point2
         self.vector = vector
