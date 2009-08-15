@@ -26,6 +26,8 @@ class TestGeom(unittest.TestCase):
     def test_point(self):
         point = Point(1,2,3)
         point = Point([1,2,3])
+        point2 = point.Transform(gp_Trsf())
+        self.assertFalse(point2 is point)
     def test_point_eq(self):
         self.assertEqual(geom.Point(0,0,0), geom.Point(0,0,0))
         self.assertEqual(geom.Point(0,0,1e-9), geom.Point(0,0,0))
@@ -91,7 +93,8 @@ class TestGeom(unittest.TestCase):
         new_point = point4.Transform(trans2)
         
         #make sure it put the point in the correct spot
-        self.assertTrue(new_point == yaml.load("!point [21,10,11]"))
+        expected_point = yaml.load("!point [21,10,11]")
+        self.assertTrue(new_point == expected_point)
         
         pass
     def test_stacked_transforms(self):
