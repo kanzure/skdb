@@ -166,14 +166,12 @@ class Direction(OCC_triple, gp_Dir):
     
 class Transform(gp_Trsf):
     '''wraps gp_Trsf for stackable transforms'''
-    def __init__(self, gptrsf=None, parent=None, description="root node"):
+    def __init__(self, parent=None, description="root node"):
         gp_Trsf.__init__(self)
         self.children = []
         self.description = description
         if not parent==None:
             self.parent = parent
-        if not gptrsf==None:
-            self = gptrsf #do this last
     def __repr__(self):
         '''see also Transform.get_children'''
         return self.description
@@ -192,6 +190,15 @@ class Transform(gp_Trsf):
             if more:
                 return_list.append(more)
         return return_list
+    def run(self, result=None):
+        '''multiplies all of the transforms together'''
+        if self.children == []:
+            return None
+        if result == None:
+            result = gp_Trsf()
+        for each in self.children:
+            result.Multiply(each.run())
+        return result
     def Invert(self):
         '''wraps like gp_Trsf.Inverted'''
         result = gp_Trsf.Inverted(self)
@@ -210,9 +217,7 @@ class Transform(gp_Trsf):
     def SetTranslation(self, point1, point2):
         '''wraps gp_Trsf.SetTranslation'''
         #self_copy = copy(self)
-        self_copy = gp_Trsf()
-        self_copy.SetTranslation(point1, point2)
-        new_transform = Translation(gptrsf=self_copy, parent=self, description="translated", point1=point1, point2=point2)
+        new_transform = Translation(parent=self, description="translated", point1=point1, point2=point2)
         self.children.append(new_transform)
         return new_transform
     def SetMirror(self, point):
@@ -236,7 +241,7 @@ class Translation(Transform):
     '''a special type of Transform for translation
     Translation(point1=, point2=) -> gp_Trsf
     Translation(vector=) -> gp_Trsf'''
-    def __init__(self, point1=None, point2=None, vector=None, gptrsf=None, parent=None, description=None):
+    def __init__(self, point1=None, point2=None, vector=None, parent=None, description=None):
         if not point1 and not point2 and not vector: raise NotImplementedError, "you must pass parameters to Translation.__init__"
         self.point1 = point1
         self.point2 = point2
@@ -244,9 +249,8 @@ class Translation(Transform):
         self.parent = parent
         self.description = description
         self.children = []
-        gp_Trsf.__init__(self)
+        Transform.__init__(self, parent=parent, description=description)
         gp_Trsf.SetTranslation(self, point1, point2)
-        #Transform.__init__(self, gptrsf=gptrsf, parent=parent, description=description)
     def __repr__(self):
         xyz = gp_Trsf.TranslationPart(self)
         return "Translation[%s, %s, %s]" % (xyz.X(), xyz.Y(), xyz.Z())
