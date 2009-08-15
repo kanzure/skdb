@@ -22,8 +22,17 @@ class FennObject(yaml.YAMLObject):
             
     @classmethod
     def to_yaml(cls, dumper, data):
+        if hasattr(data, "yaml_flow_style"):
+            flow = data.yaml_flow_style
+        else: flow=None
         if hasattr(data, 'yaml_repr'):
-            return dumper.represent_scalar(data.yaml_tag, data.yaml_repr())
+            repr, tag = data.yaml_repr(), data.yaml_tag
+            if isinstance(repr, list) or isinstance(repr, tuple):
+                return dumper.represent_sequence(tag, repr, flow)
+            elif isinstance(repr, dict):
+                return dumper.represent_mapping(tag, repr, flow)
+            else:
+                return dumper.represent_scalar(tag, repr)
         else: 
             #return the default yaml dump
             if len(data.__dict__) > 0: return dumper.represent_mapping(cls.yaml_tag, data.__dict__.iteritems())
