@@ -106,14 +106,16 @@ class Point(gp_Pnt, FennObject):
     yaml_tag='!point'
     def __init__(self, x=None, y=None, z=None):
         if isinstance(x, list):
-            self.x, self.y, self.z = x[0], x[1], x[2]
+            self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
         else:
-            self.x, self.y, self.z = x, y, z
+            self.x, self.y, self.z = float(x), float(y), float(z)
         self.post_init_hook()
     def post_init_hook(self): 
-        #if self.x and self.y and self.z:
-            gp_Pnt.__init__(self,self.x,self.y,self.z)
-        #else: #else what? let gp_Pnt throw a tantrum
+        try: gp_Pnt.__init__(self,self.x,self.y,self.z)
+        except ValueError: gp_Pnt.__init__(self) #return a null point
+    def __eq__(self, other):
+        if not isinstance(other, gp_Pnt): return False
+        else: return self.IsEqual(other, Precision().Confusion()) == 1
     def __repr__(self):
         return "%s(%s, %s, %s)" % (self.__class__.__name__, round(self.X()), round(self.Y()), round(self.Z()))
     def yaml_repr(self):
