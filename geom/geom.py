@@ -2,7 +2,7 @@ from OCC.gp import *
 from OCC.Precision import *
 from OCC.BRepBuilderAPI import *
 import OCC.Utils.DataExchange.STEP
-from skdb import Connection, Part, Interface, Unit
+from skdb import Connection, Part, Interface, Unit, FennObject
 import os, math
 from copy import copy, deepcopy
 
@@ -99,15 +99,18 @@ def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given
     new_trsf.SetRotation(ax1, angle)
     return new_trsf
 
-class Point(gp_Pnt):
+class Point(gp_Pnt, FennObject, list):
     '''wraps gp_Pnt'''
+    yaml_tag='!point'
     def __init__(self, x=None, y=None, z=None):
-        if not (not x and not y and not z):
-            gp_Pnt.__init__(self,x,y,z)
-        else: gp_Pnt.__init__(self,x,y,z)
         self.x = x
         self.y = y
         self.z = z
+    def post_init_hook(self): 
+        #if self.x and self.y and self.z:
+            gp_Pnt.__init__(self,self.x,self.y,self.z)
+        #else: #else what?
+
     def __repr__(self):
         return "[%s, %s, %s]" % (self.XYZ().X(), self.XYZ().Y(), self.XYZ().Z())
 
