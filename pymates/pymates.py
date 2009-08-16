@@ -46,7 +46,8 @@ import OCC.GC
 import OCC.Geom
 import geom
 from assembly import Assembly
-from skdb import Part, Interface, Mate, Unit
+from skdb import Part, Interface, Connection, Unit
+from skdb import *
 
 #some globals
 total_parts = [] #list of parts (temporary- should be deleted)
