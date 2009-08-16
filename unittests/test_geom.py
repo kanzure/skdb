@@ -1,5 +1,6 @@
 import unittest, math
 from skdb.geom import *
+from skdb import load_package
 
 def point_trsf(point1, transform):
     '''point_trsf(point1, transform) -> [x,y,z]'''
@@ -58,7 +59,7 @@ class TestGeom(unittest.TestCase):
         self.assertEqual(yaml.load("!vector ['0.0', '0.0', 1e-08]"), geom.Vector(0, 0, 0.00000001))
     def test_dir(self): #maybe we can just force everyone to use !vector instead of !orientation or !direction (it's the same thing)
         dir = Direction(1,2,3)
-    def test_translation(self):
+    def test_translation(self): #this is an obsolete test and may be removed
         '''test translation'''
         y_displacement = 10
         y_init = 5
@@ -69,7 +70,7 @@ class TestGeom(unittest.TestCase):
             self.assertFalse(result_point == point)
         self.assertTrue(result_point == Point([point[0],point[1]+y_displacement,point[2]]))
         #TODO: test translation(vector)
-    def test_rotation(self):
+    def test_rotation(self): #this is an obsolete test and may be removed
         '''test geom.rotation'''
         #test rotation(rotation_pivot_point, direction, angle)
         rotation_pivot_point = Point(0,0,0)
@@ -101,7 +102,6 @@ class TestGeom(unittest.TestCase):
         expected_point = Point(21,10,11)
         self.assertTrue(new_point == expected_point)
         
-        pass
     def test_stacked_transformations(self):
         transformation0 = geom.Transform()
         transformation1 = transformation0.SetTranslation(Point(0,0,0), Point(0,0,1))
@@ -109,14 +109,27 @@ class TestGeom(unittest.TestCase):
         transformation3 = transformation2.run() #stacking
         new_point = Point(0,0,0).transform(transformation3)
         self.assertEqual(new_point, Point(1,-3,0))
-        pass
-    def test_rotation_transform(self):
-        '''test geom.Rotation (not geom.rotation())'''
-        pass
-    def test_translation_transform(self):
-        '''test geom.Translation (not geom.translation())'''
-        pass
     #now some unit tests for part mating
+    def test_part_mating(self):
+        lego_pack = load_package("lego")
+        lego_pack.load_data()
+        brick1 = deepcopy(lego_pack.parts[0])
+        brick1.post_init_hook()
+        brick2 = deepcopy(lego_pack.parts[0])
+        brick2.post_init_hook()
+        brick1.load_CAD()
+        brick2.load_CAD()
+        #they should be the same thing so far
+        self.assertTrue(brick1 == brick2)
+        options = brick1.options([brick2])
+        #select one of the Connection instances to test with
+        selected = options.pop()
+        selected.connect()
+        blah = mate_connection(selected)
+        print blah #TopoDS shape (is this useful?)
+        #not sure what to do with that. brick2 has already been transformed, brick2.transformation = some new transform. 
+        self.assertNotEqual(brick1.transformation, brick2.transformation)
+        self.assertNotEqual(brick1, brick2)
 
 if __name__ == "__main__":
     unittest.main()

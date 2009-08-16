@@ -221,43 +221,39 @@ class Translation(Transform):
         xyz = gp_Trsf.TranslationPart(self)
         return "Translation[%s, %s, %s]" % (xyz.X(), xyz.Y(), xyz.Z())
 
-class Mate(Connection):
-    def transform(self): 
-        '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
-        i1, i2 = self.interface1, self.interface2
-        #this is lame
-        i1.x_vec = Vector(i1.x_vec)
-        i1.y_vec = Vector(i1.y_vec)
-        i2.x_vec = Vector(i2.x_vec)
-        i2.y_vec = Vector(i2.y_vec)
-        i1.point = Point(i1.point)
-        i2.point = Point(i2.point)
-        i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
-        orient_i1 = point_shape(i1.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)), trsf_only=True)
-        #move_i1 = gp_Trsf() #don't move the first part
-        #trsf_i1 = move_i1.Multiplied(orient_i1)
-        trsf_i1 = orient_i1
-        if hasattr(i1.part, "transform"):
-            tmp = i1.point.Transformed(i1.part.transform)
-        else: tmp = i1.point
-        #tmp = i1.point.Transformed(trsf_i1)
-        i2.z_vec = copy(i2.x_vec); i2.z_vec.Cross(i2.y_vec)
-        orient_i2 = point_shape(i2.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i2.z_vec)), trsf_only=True)
-        opposite = gp_Trsf()
-        opposite.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(gp_Vec(1,0,0))), math.pi) #rotate 180 so that interface z axes are opposed
-        move_i2 =  move_shape(i2.part.shapes[0], tmp, i2.point, trsf_only=True)
-        trsf_i2 = move_i2.Multiplied(orient_i2)
-        trsf_i2 = trsf_i2.Multiplied(opposite)
-        #if hasattr(i2.part, "transform"):
-        #    trsf_i2 = trsf_i2.Multiplied(i2.part.transform)
-        print "x: %.1f y: %.1f z: %.1f" % trsf_i2.TranslationPart().Coord()
-        return trsf_i2
-        
-    def apply(self):
-        '''i dont think this modifies i2.part'''
-        print "connecting %s to %s" % (self.interface1.name, self.interface2.name)
-        self.interface2.part.transform = self.transform()
-        return [BRepBuilderAPI_Transform(shape, self.transform(), True).Shape() for shape in self.interface2.part.shapes]
+def mate_connection(connecter): 
+    '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
+    i1, i2 = connecter.interface1, connecter.interface2
+    if i1.part.transformation is None: i1.part.transformation = Transform()
+    #this is lame
+    i1.x_vec = Vector(i1.x_vec)
+    i1.y_vec = Vector(i1.y_vec)
+    i2.x_vec = Vector(i2.x_vec)
+    i2.y_vec = Vector(i2.y_vec)
+    i1.point = Point(i1.point)
+    i2.point = Point(i2.point)
+    i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
+    orient_i1 = point_shape(i1.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)), trsf_only=True)
+    #move_i1 = gp_Trsf() #don't move the first part
+    #trsf_i1 = move_i1.Multiplied(orient_i1)
+    trsf_i1 = orient_i1
+    if hasattr(i1.part, "transformation"):
+       tmp = i1.point.Transformed(i1.part.transformation)
+    else: tmp = i1.point
+    #tmp = i1.point.Transformed(trsf_i1)
+    i2.z_vec = copy(i2.x_vec); i2.z_vec.Cross(i2.y_vec)
+    orient_i2 = point_shape(i2.part.shapes[0], gp_Ax1(Point(0,0,0), gp_Dir(i2.z_vec)), trsf_only=True)
+    temp_transformation = Transform()
+    opposite = temp_transformation.SetRotation(pivot_point = Point(0,0,0), direction=Direction(Vector(1,0,0)), angle=math.pi) #rotate 180 so that interface z axes are opposed
+    move_i2 =  move_shape(i2.part.shapes[0], tmp, i2.point, trsf_only=True)
+    trsf_i2 = move_i2.Multiplied(orient_i2)
+    trsf_i2 = trsf_i2.Multiplied(opposite)
+    #if hasattr(i2.part, "transform"):
+    #    trsf_i2 = trsf_i2.Multiplied(i2.part.transform)
+    print "x: %.1f y: %.1f z: %.1f" % trsf_i2.TranslationPart().Coord()
+    connecter.interface2.part.transformation = trsf_i2
+    #return trsf_i2
+    return [BRepBuilderAPI_Transform(shape, trsf_i2, True).Shape() for shape in connecter.interface2.part.shapes]
     
 #skdb.Part
 def load_CAD(self):

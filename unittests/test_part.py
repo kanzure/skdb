@@ -27,36 +27,12 @@ class TestPart(unittest.TestCase):
         self.assertTrue(pymates.compatibility(lego1,copy.copy(lego1))==1)
         self.assertTrue(pymates.compatibility(lego2,copy.copy(lego2))==1)
          
-        pass
-
     def test_assembly_options(self):
         #figure out how to represent multiple possible assemblies
         #of two (or more) given parts
         pass
-    def test_assemblies(self):
-        #TODO: test assembly1+assembly1
-        #TODO: test assembly1+assembly2
-        #TODO: test assembly2+assembly2
-        #assembly2-assembly1
-        #assembly1-assembly2
-        #assembly1*assembly2
-        #assembly2*assembly1
-        #assembly1 >= assembly2
-        #assembly2 >= assembly1
-        #assembly1 <= assembly2
-        #assembly2 <= assembly1
-        #assembly1 == assembly1
-        #assembly1 == assembly2
-        #assembly2 == assembly2
-        #(maybe) assembly2 == assembly1
-        #part*assembly #figure out all possible mates?
-        #TODO: when should assemblies *not* be able to be combined?
-        pass
     def test_part_equality(self):
         #are two parts given the same information the same?
-        pass
-    def test_part_methods(self):
-        #in the case of the screw, test the package methods?
         pass
     def test_legos(self):
         import skdb.packages.lego

@@ -54,8 +54,9 @@ class Connection:
         self.interface2 = interface2
         
     def connect(self):
-        self.interface1.connected.add(self)
-        self.interface2.connected.add(self)
+        '''make interface1 and interface2 aware of this connection; update interface2.part's transformation attribute.'''
+        self.interface1.connected.append(self)
+        self.interface2.connected.append(self)
         return
         
     def __repr__(self):
@@ -64,8 +65,7 @@ class Connection:
     def makes_sense(self): #should we include is_busy()?
         return self.interface1.compatible(self.interface2) and self.interface2.compatible(self.interface1)
       
-#from geom import Mate
-#try: from skdb.paths import Mate
+#from skdb.geom import Mate
 #except ImportError:      
-class Mate(Connection):
-        pass
+#class Mate(Connection):
+#        pass
