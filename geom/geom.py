@@ -221,6 +221,23 @@ class Translation(Transform):
         xyz = gp_Trsf.TranslationPart(self)
         return "Translation[%s, %s, %s]" % (xyz.X(), xyz.Y(), xyz.Z())
 
+def mate_first(part1):
+    '''sets up the first part in your system. should be thrown into a class somewhere.'''
+    def compatible(self, other):
+        return True
+    fake_interface = Interface(name="fake interface")
+    fake_interface.compatible = compatible
+    fake_interface.point = Point(0,0,0)
+    fake_interface.orientation = Vector(0, 0, 1)
+    fake_interface.connected = []
+    fake_interface.x_vec = Vector(-1,0,0) #ask fenn?
+    fake_interface.y_vec = Vector(0,0,1) #ask fenn?
+    fake_part = Part(name="fake part", interfaces=[fake_interface]) #should never be seen by the user
+    fake_part.post_init_hook()
+    connecter = Connection(fake_part.interfaces[0], part1.interfaces[0])
+    connecter.connect()
+    return mate_connection(connecter)
+
 def mate_connection(connecter): 
     '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
     i1, i2 = connecter.interface1, connecter.interface2
@@ -233,10 +250,10 @@ def mate_connection(connecter):
     i1.point = Point(i1.point)
     i2.point = Point(i2.point)
     i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
-    orient_i1 = point_shape(i1.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)), trsf_only=True)
-    #move_i1 = gp_Trsf() #don't move the first part
-    #trsf_i1 = move_i1.Multiplied(orient_i1)
-    trsf_i1 = orient_i1
+    #orient_i1 = point_shape(i1.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)), trsf_only=True)
+    ##move_i1 = gp_Trsf() #don't move the first part
+    ##trsf_i1 = move_i1.Multiplied(orient_i1)
+    #trsf_i1 = orient_i1
     if hasattr(i1.part, "transformation"):
        tmp = i1.point.Transformed(i1.part.transformation)
     else: tmp = i1.point

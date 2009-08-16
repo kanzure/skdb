@@ -28,6 +28,7 @@ class Part(FennObject):
     def post_init_hook(self):
         for i in self.interfaces:
             i.part = self #so we dont have to do this over and over in the data.yaml
+            i.connected = []
     def makes_sense(self):
         '''checks whether or not this part makes sense
         classes that inherit from Part should have their own makes_sense method.
