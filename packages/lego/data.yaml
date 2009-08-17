@@ -169,3 +169,101 @@ parts:
       x_vec: [1.0, 0.0, 0.0]
       y_vec: [0.0, 0.0, -1.0]
     
+ - !lego
+  name: 1x4 technic beam
+  description: has 3 holes and hollow studs. i think the cad model scale might be off a bit
+  size: 1x4
+  material: ABS
+  files:
+  - "brick_thick_single_hole.stp"
+  interfaces:
+    - !lego_feature
+      point: [4.0, 0.0, -4.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
+    - !lego_feature
+      point: [12.0, 0.0, -4.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
+    - !lego_feature
+      point: [20.0, 0.0, -4.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
+    - !lego_feature
+      point: [28.0, 0.0, -4.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
+    - !lego_feature
+      point: [4.0, 9.6, -4.0]
+      type: technic stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [12.0, 9.6, -4.0]
+      type: technic stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [20.0, 9.6, -4.0]
+      type: technic stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [28.0, 9.6, -4.0]
+      type: technic stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [8.0, 5.5, 0.0]
+      type: pin hole
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, -1.0, -0.0]
+    - !lego_feature
+      point: [16.0, 5.5, 0.0]
+      type: pin hole
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, -1.0, -0.0]
+    - !lego_feature
+      point: [24.0, 5.5, 0.0]
+      type: pin hole
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, -1.0, -0.0]
+    - !lego_feature
+      point: [8.0, 5.5, -8.0]
+      type: pin hole
+      x_vec: [1.0, -0.0, 0.0]
+      y_vec: [0.0, 1.0, 0.0]
+    - !lego_feature
+      point: [16.0, 5.5, -8.0]
+      type: pin hole
+      x_vec: [1.0, -0.0, 0.0]
+      y_vec: [0.0, 1.0, 0.0]
+    - !lego_feature
+      point: [24.0, 5.5, -8.0]
+      type: pin hole
+      x_vec: [1.0, -0.0, 0.0]
+      y_vec: [0.0, 1.0, 0.0]
+    
+ - !lego
+  name: technic pin
+  description: i think the cad model scale might be off a bit
+  size:
+  material: ABS
+  files:
+  - "gear_pin1.stp"
+  interfaces:
+    - !lego_feature
+      point: [0.0, 0.0, 0.0]
+      type: pin
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, -1.0, 0.0]
+    - !lego_feature
+      point: [0.0, 0.0, -16.0]
+      type: pin
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 1.0, 0.0]
+    
