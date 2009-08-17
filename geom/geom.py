@@ -6,37 +6,6 @@ from skdb import Connection, Part, Interface, Unit, FennObject, round
 import os, math
 from copy import copy, deepcopy
 
-def safe_point(point):
-    '''returns a gp_Pnt, even if you give it a gp_Pnt'''
-    if type(point) == gp_Pnt: return point
-    return gp_Pnt(point[0],point[1],point[2])
-
-def safe_vec(vector):
-    '''returns a gp_Vec, even if you give it a gp_Vec'''
-    if type(vector) == gp_Vec: return vector
-    return gp_Vec(vector[0], vector[1], vector[2])
-
-def safe_dir(direction):
-    '''returns a gp_Dir, even if you give it a gp_Dir'''
-    if type(direction) == gp_Dir: return direction
-    return gp_Dir(direction[0], direction[1], direction[2])
-
-def usable_point(point):
-    '''returns a point even if you pass it a point or gp_Pnt'''
-    if type(point) == type([]): return point
-    if type(point) == gp_Pnt: return [point.XYZ().X(), point.XYZ().Y(), point.XYZ().Z()]
-    raise NotImplementedError, "geom usable_point() only works with a list or a gp_Pnt"
-
-def usable_vec(vector):
-    '''returns a vector (or direction) even if you pass it a vector or gp_Vec or gp_Dir'''
-    if type(vector) == type([]): return vector
-    if type(vector) == gp_Vec or type(vector) == gp_Dir: return [vector.X(), vector.Y(), vector.Z()]
-    raise NotImplementedError, "geom usable_vec() only works with a list or a gp_Vec or a gp_Dir"
-
-def usable_dir(direction):
-    '''returns a direction even if you pass it a direction or gp_Dir'''
-    return usable_vec(direction)
-
 def move_shape(shape, from_pnt, to_pnt, trsf_only=True):
     trsf = gp_Trsf()
     trsf.SetTranslation(from_pnt, to_pnt)
@@ -76,12 +45,12 @@ def translation(point1=None, point2=None, vector=None):
     '''translate(point1, point2) -> gp_Trsf
     translate(vector) -> gp_Trsf'''
     new_trsf = gp_Trsf()
-    if not point1==None and not point2==None: #two points
-       point1 = safe_point(point1)
-       point2 = safe_point(point2)
+    if point1 and point2: #two points
+       point1 = Point(point1)
+       point2 = Point(point2)
        vector = gp_Vec(point1, point2)
-    elif not vector==None: #a vector
-       vector = safe_vector(vector)
+    elif vector: #a vector
+       vector = Vector(vector)
     new_trsf.SetTranslation(vector)
     return new_trsf
 
@@ -89,38 +58,32 @@ def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given
     '''rotation(rotation_pivot_point, direction, angle) -> gp_Trsf
     rotation(gp_Ax1, angle) -> gp_Trsf'''
     new_trsf = gp_Trsf()
-    if not rotation_pivot_point==None and not direction==None and not angle==None:
-       rotation_pivot_point = safe_point(rotation_pivot_point)
-       direction = safe_dir(direction)
+    if rotation_pivot_point and direction and angle:
+       rotation_pivot_point = Point(rotation_pivot_point)
+       direction = Direction(direction)
        ax1 = gp_Ax1(rotation_pivot_point, direction)
-    elif not gp_Ax1_given==None and not angle==None:
+    elif gp_Ax1_given and angle:
        ax1 = gp_Ax1_given
     else: raise NotImplementedError, "rotation was given the wrong number of arguments."
     new_trsf.SetRotation(ax1, angle)
     return new_trsf
 
 class OCC_triple(FennObject):
-    doc_format = '''wraps %s: %s(1,2,3) or %s([1,2,3])
+    '''simplifies wrapping pythonOCC classes like gp_Pnt, gp_Vec etc'''
+    doc_format = '''wraps %s: %s(1,2,3) or %s([1,2,3]) or %s(%s)
     Caution: assigning an attribute like "x" will not affect the underlying %s,
     you have to make a new one instead.'''
-    def __init__(self, x=None, y=None, z=None, gp_pnt=None, gp_xyz=None):
-        if not (x==None and y==None and z==None):
-            if isinstance(x, list):
-                self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
-            else:
-                self.x, self.y, self.z = float(x), float(y), float(z)
-        elif not gp_pnt == None:
-            self.x, self.y, self.z = gp_pnt.XYZ().X(), gp_pnt.XYZ().Y(), gp_pnt.XYZ().Z()
-            self.post_init_hook()
-            self = gp_pnt
-            return
-        elif not gp_xyz == None:
-           self.x, self.y, self.z = gp_xyz.X(), gp_xyz.Y(), gp_xyz.Z()
-           self.post_init_hook()
-           self = gp_xyz
-           return
+    def __init__(self, x=None, y=None, z=None):
+        if isinstance(x, self.__class__): #Point(Point(1,2,3))
+            self.__dict__ = copy(x.__dict__) #does this use the same gp_Pnt object? (it shouldnt)
+        elif isinstance(x, self.occ_class) or isinstance(x, OCC_triple): #Point(gp_Pnt()) or Point(Vector(1,2,3))
+            self.x, self.y, self.z = (x.X(), x.Y(), x.Z())
+        elif isinstance(x, list):
+            self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
+        elif x is not None and y is not None and z is not None:
+            self.x, self.y, self.z = float(x), float(y), float(z)
         self.post_init_hook()
-    def post_init_hook(self): 
+    def post_init_hook(self): #for instantiating from yaml
         try: self.__class__.occ_class.__init__(self,self.x,self.y,self.z)
         except ValueError: self.__class__.occ_class.__init__(self) #return a null point
     def __eq__(self, other): 
@@ -130,22 +93,22 @@ class OCC_triple(FennObject):
         return "%s(%s, %s, %s)" % (self.__class__.__name__, round(self.X()), round(self.Y()), round(self.Z()))
     def yaml_repr(self):
         return [round(self.X()), round(self.Y()), round(self.Z())]
+    def transform(self, transform):
+        result = self.occ_class.Transformed(self, transform)
+        return self.__class__(result)
 
 class Point(OCC_triple, gp_Pnt):
     yaml_tag='!point'
     occ_class = gp_Pnt
-    __doc__ = OCC_triple.doc_format % (occ_class, 'Point', 'Point', occ_class.__name__)
-    def Transform(self, transform):
-        result = gp_Pnt.Transformed(self, transform)
-        return Point(gp_pnt=result)
+    __doc__ = OCC_triple.doc_format % (occ_class, 'Point', 'Point', 'Point', occ_class, occ_class.__name__)
 
 class XYZ(OCC_triple, gp_XYZ):
     '''wraps gp_XYZ, mainly for the __repr__'''
     occ_class = gp_XYZ
-    __doc__ = OCC_triple.doc_format % (occ_class, 'XYZ', 'XYZ', occ_class.__name__)
+    __doc__ = OCC_triple.doc_format % (occ_class, 'XYZ', 'XYZ', 'XYZ', occ_class, occ_class.__name__)
     #def __init__(self, gpxyz=None):
     #    gp_XYZ.__init__(self)
-    #    if not gpxyz == None:
+    #    if gpxyz:
     #        self = gpxyz
     def __repr__(self):
         return "[%s, %s, %s]" % (self.X(), self.Y(), self.Z())
@@ -153,7 +116,7 @@ class XYZ(OCC_triple, gp_XYZ):
 class Vector(OCC_triple, gp_Vec):
     yaml_tag='!vector'
     occ_class = gp_Vec
-    __doc__ = OCC_triple.doc_format % (occ_class, 'Vector', 'Vector', occ_class.__name__)
+    __doc__ = OCC_triple.doc_format % (occ_class, 'Vector', 'Vector', 'Vector', occ_class, occ_class.__name__)
     def __eq__(self, other):
         '''vec needs LinearTolerance and AngularTolerance'''
         if not isinstance(other, self.__class__.occ_class): return False
@@ -162,7 +125,7 @@ class Vector(OCC_triple, gp_Vec):
 class Direction(OCC_triple, gp_Dir):
     yaml_tag='!direction'
     occ_class = gp_Dir
-    __doc__ = OCC_triple.doc_format % (occ_class, 'Direction', 'Direction', occ_class.__name__)
+    __doc__ = OCC_triple.doc_format % (occ_class, 'Direction', 'Direction', 'Direction', occ_class, occ_class.__name__)
     
 class Transform(gp_Trsf):
     '''wraps gp_Trsf for stackable transforms'''
@@ -170,7 +133,7 @@ class Transform(gp_Trsf):
         gp_Trsf.__init__(self)
         self.children = []
         self.description = description
-        if not parent==None:
+        if parent:
             self.parent = parent
     def __repr__(self):
         '''see also Transform.get_children'''
@@ -193,9 +156,9 @@ class Transform(gp_Trsf):
     def run(self, result=None):
         '''multiplies all of the transforms together'''
         if self.children == []:
-            return None
+            return self
         if result == None:
-            result = gp_Trsf()
+            result = Transform()
         for each in self.children:
             result.Multiply(each.run())
         return result
@@ -207,42 +170,45 @@ class Transform(gp_Trsf):
         '''wraps gp_Trsf.Multiplied'''
         result = gp_Trsf.Multiplied(self, args)
         return self.process_result(result, description="multiplied")
-    def SetRotation(self, *args):
-        '''should this only be in Rotation?'''
-        self_copy = copy(self)
-        result = gp_Trsf.SetRotation(self_copy, args)
-        new_transform = Rotation(gptrsf=result, parent=self, description="rotated")
+    def SetRotation(self, pivot_point=Point([0,0,0]), direction=Direction([0,0,1]), angle=Unit("pi/2 radians")):
+        '''SetRotation(pivot_point=Point(), direction=Direction(), angle=Unit())'''
+        new_transform = Rotation(parent=self, description="rotated", pivot_point=pivot_point, direction=direction, angle=angle)
         self.children.append(new_transform)
         return new_transform
     def SetTranslation(self, point1, point2):
-        '''wraps gp_Trsf.SetTranslation'''
-        #self_copy = copy(self)
+        '''SetTranslation(point1=Point(), point2=Point())'''
         new_transform = Translation(parent=self, description="translated", point1=point1, point2=point2)
         self.children.append(new_transform)
         return new_transform
     def SetMirror(self, point):
         '''wraps gp_Trsf.Mirror -- mirror about a point'''
         self_copy = copy(self)
-        result = gp_Trsf.SetMirror(self_copy, safe_point(point))
-        desc = "mirrored about a point %s" % (usable_point(point))
+        result = gp_Trsf.SetMirror(self_copy, Point(point))
+        desc = "mirrored about %s" % (point)
         return self.process_result(result, description=desc)
 
 class Rotation(Transform):
     '''a special type of Transform for rotation
-    Rotation(rotation_pivot_point=, direction=, angle=) -> gp_Trsf
-    Rotation(gp_Ax1=, angle=) -> gp_Trsf'''
-    pass
-    #def __init__(self, pivot_point=None, direction=None, angle=None):
-    #    #pivot_point=Point([0,0,1]), direction=Vector(vector=[0,0,1]), angle=Unit("pi/2 radians")
-    #    if not pivot_point and not direction and not angle: raise NotImplementedError, "you must pass parameters to Rotation.__init__"
-    #    Transform.__init__(self)
+    Rotation(pivot_point=Point(), direction=Direction(), angle=Unit())'''
+    def __init__(self, pivot_point=Point([0,0,0]), direction=Direction([0,0,1]), angle=Unit("pi/2 radians"), parent=None, description=None):
+        if not pivot_point and not direction and not angle: raise NotImplementedError, "you must pass parameters to Rotation.__init__"
+        self.pivot_point = pivot_point
+        self.direction = direction
+        self.angle = angle
+        Transform.__init__(self, parent=parent, description=description)
+        gp_Trsf.SetRotation(self, gp_Ax1(pivot_point, direction), float(angle))
+    def __repr__(self):
+        '''just a guess for now, please test'''
+        xyz = gp_Trsf.RotationPart(self)
+        return "Rotation[%s, %s, %s]" % (xyz.X(), xyz.Y(), xyz.Z())
 
 class Translation(Transform):
     '''a special type of Transform for translation
-    Translation(point1=, point2=) -> gp_Trsf
-    Translation(vector=) -> gp_Trsf'''
+    Translation(point1=, point2=)
+    Translation(vector=) (not implemented)'''
     def __init__(self, point1=None, point2=None, vector=None, parent=None, description=None):
         if not point1 and not point2 and not vector: raise NotImplementedError, "you must pass parameters to Translation.__init__"
+        if vector: raise NotImplementedError, "Translation.__init__ doesn't yet take a vector (sorry)" #FIXME
         self.point1 = point1
         self.point2 = point2
         self.vector = vector
@@ -255,43 +221,56 @@ class Translation(Transform):
         xyz = gp_Trsf.TranslationPart(self)
         return "Translation[%s, %s, %s]" % (xyz.X(), xyz.Y(), xyz.Z())
 
-class Mate(Connection):
-    def transform(self): 
-        '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
-        i1, i2 = self.interface1, self.interface2
-        #this is lame
-        i1.x_vec = safe_vec(i1.x_vec)
-        i1.y_vec = safe_vec(i1.y_vec)
-        i2.x_vec = safe_vec(i2.x_vec)
-        i2.y_vec = safe_vec(i2.y_vec)
-        i1.point = safe_point(i1.point)
-        i2.point = safe_point(i2.point)
-        i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
-        orient_i1 = point_shape(i1.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)), trsf_only=True)
-        #move_i1 = gp_Trsf() #don't move the first part
-        #trsf_i1 = move_i1.Multiplied(orient_i1)
-        trsf_i1 = orient_i1
-        if hasattr(i1.part, "transform"):
-            tmp = i1.point.Transformed(i1.part.transform)
-        else: tmp = i1.point
-        #tmp = i1.point.Transformed(trsf_i1)
-        i2.z_vec = copy(i2.x_vec); i2.z_vec.Cross(i2.y_vec)
-        orient_i2 = point_shape(i2.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i2.z_vec)), trsf_only=True)
-        opposite = gp_Trsf()
-        opposite.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(gp_Vec(1,0,0))), math.pi) #rotate 180 so that interface z axes are opposed
-        move_i2 =  move_shape(i2.part.shapes[0], tmp, i2.point, trsf_only=True)
-        trsf_i2 = move_i2.Multiplied(orient_i2)
-        trsf_i2 = trsf_i2.Multiplied(opposite)
-        #if hasattr(i2.part, "transform"):
-        #    trsf_i2 = trsf_i2.Multiplied(i2.part.transform)
-        print "x: %.1f y: %.1f z: %.1f" % trsf_i2.TranslationPart().Coord()
-        return trsf_i2
-        
-    def apply(self):
-        '''i dont think this modifies i2.part'''
-        print "connecting %s to %s" % (self.interface1.name, self.interface2.name)
-        self.interface2.part.transform = self.transform()
-        return [BRepBuilderAPI_Transform(shape, self.transform(), True).Shape() for shape in self.interface2.part.shapes]
+def mate_first(part1):
+    '''sets up the first part in your system. should be thrown into a class somewhere.'''
+    def compatible(self, other):
+        return True
+    fake_interface = Interface(name="fake interface")
+    fake_interface.compatible = compatible
+    fake_interface.point = Point(0,0,0)
+    fake_interface.orientation = Vector(0, 0, 1)
+    fake_interface.connected = []
+    fake_interface.x_vec = Vector(-1,0,0) #ask fenn?
+    fake_interface.y_vec = Vector(0,0,1) #ask fenn?
+    fake_part = Part(name="fake part", interfaces=[fake_interface]) #should never be seen by the user
+    fake_part.post_init_hook()
+    connecter = Connection(fake_part.interfaces[0], part1.interfaces[0])
+    connecter.connect()
+    return mate_connection(connecter)
+
+def mate_connection(connecter): 
+    '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
+    i1, i2 = connecter.interface1, connecter.interface2
+    if i1.part.transformation is None: i1.part.transformation = Transform()
+    #this is lame
+    i1.x_vec = Vector(i1.x_vec)
+    i1.y_vec = Vector(i1.y_vec)
+    i2.x_vec = Vector(i2.x_vec)
+    i2.y_vec = Vector(i2.y_vec)
+    i1.point = Point(i1.point)
+    i2.point = Point(i2.point)
+    i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
+    #orient_i1 = point_shape(i1.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)), trsf_only=True)
+    ##move_i1 = gp_Trsf() #don't move the first part
+    ##trsf_i1 = move_i1.Multiplied(orient_i1)
+    #trsf_i1 = orient_i1
+    if hasattr(i1.part, "transformation"):
+       tmp = i1.point.Transformed(i1.part.transformation)
+    else: tmp = i1.point
+    #tmp = i1.point.Transformed(trsf_i1)
+    i2.z_vec = copy(i2.x_vec); i2.z_vec.Cross(i2.y_vec)
+    orient_i2 = point_shape(i2.part.shapes[0], gp_Ax1(Point(0,0,0), gp_Dir(i2.z_vec)), trsf_only=True)
+    temp_transformation = Transform()
+    opposite = temp_transformation.SetRotation(pivot_point = Point(0,0,0), direction=Direction(Vector(1,0,0)), angle=math.pi) #rotate 180 so that interface z axes are opposed
+    move_i2 =  move_shape(i2.part.shapes[0], tmp, i2.point, trsf_only=True)
+    trsf_i2 = move_i2.Multiplied(orient_i2)
+    trsf_i2 = trsf_i2.Multiplied(opposite)
+    #if hasattr(i2.part, "transform"):
+    #    trsf_i2 = trsf_i2.Multiplied(i2.part.transform)
+    print "x: %.1f y: %.1f z: %.1f" % trsf_i2.TranslationPart().Coord()
+    connecter.interface2.part.transformation = trsf_i2
+    #return trsf_i2
+    return [BRepBuilderAPI_Transform(shape, trsf_i2, True).Shape() for shape in connecter.interface2.part.shapes]
     
 #skdb.Part
 def load_CAD(self):

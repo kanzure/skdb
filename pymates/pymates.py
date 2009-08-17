@@ -46,7 +46,8 @@ import OCC.GC
 import OCC.Geom
 import geom
 from assembly import Assembly
-from skdb import Part, Interface, Mate, Unit
+from skdb import Part, Interface, Connection, Unit
+from skdb import *
 
 #some globals
 total_parts = [] #list of parts (temporary- should be deleted)
@@ -435,7 +436,7 @@ def show_interface_arrows(event=None,arrow_length=5,rotx2=None,roty2=None):
                 rotx = interface.x
                 roty = interface.y
 
-            if not rotx2 == None and not roty2 == None:
+            if rotx2 is not None and roty2 is not None:
                 rotx, roty = rotx2, roty2
 
             x_dir = OCC.gp.gp_Dir(1,0,0)

@@ -1,11 +1,12 @@
 import unittest, math
 from skdb.geom import *
+from skdb import load_package
 
 def point_trsf(point1, transform):
     '''point_trsf(point1, transform) -> [x,y,z]'''
-    point1 = safe_point(point1)
+    point1 = Point(point1)
     result_pnt = point1.Transformed(transform)
-    return usable_point(result_pnt)
+    return result_pnt
 
 class TestGeom(unittest.TestCase):
     def init_interface(self):
@@ -26,10 +27,18 @@ class TestGeom(unittest.TestCase):
     def test_point(self):
         point = Point(1,2,3)
         point = Point([1,2,3])
+        point = Point(gp_Pnt(1,2,3))
+        point = Point(Point(1,2,3))
+        point = Point(Vector(1,2,3))
     def test_point_eq(self):
         self.assertEqual(geom.Point(0,0,0), geom.Point(0,0,0))
         self.assertEqual(geom.Point(0,0,1e-9), geom.Point(0,0,0))
         #not equals?
+    def test_point_transformed_no_side_effects(self):
+        '''Point.Transform should return a new Point'''
+        point = Point(1,2,3)
+        point2 = point.Transform(gp_Trsf())
+        self.assertFalse(point2 is point) 
     def test_point_yaml(self):
         import yaml
         self.assertEqual(yaml.dump(geom.Point(0, 0, 0.00000001)), "!point ['0.0', '0.0', 1e-08]\n")
@@ -50,7 +59,7 @@ class TestGeom(unittest.TestCase):
         self.assertEqual(yaml.load("!vector ['0.0', '0.0', 1e-08]"), geom.Vector(0, 0, 0.00000001))
     def test_dir(self): #maybe we can just force everyone to use !vector instead of !orientation or !direction (it's the same thing)
         dir = Direction(1,2,3)
-    def test_translation(self):
+    def test_translation(self): #this is an obsolete test and may be removed
         '''test translation'''
         y_displacement = 10
         y_init = 5
@@ -59,50 +68,69 @@ class TestGeom(unittest.TestCase):
         result_point = point_trsf(point, trsf1)
         if not y_displacement == 0:
             self.assertFalse(result_point == point)
-        self.assertTrue(result_point == [point[0],point[1]+y_displacement,point[2]])
+        self.assertTrue(result_point == Point([point[0],point[1]+y_displacement,point[2]]))
         #TODO: test translation(vector)
-    def test_rotation(self):
+    def test_rotation(self): #this is an obsolete test and may be removed
         '''test geom.rotation'''
         #test rotation(rotation_pivot_point, direction, angle)
-        rotation_pivot_point = [0,0,0]
-        direction = [0, 0, 1]
+        rotation_pivot_point = Point(0,0,0)
+        direction = Direction(0, 0, 1)
         angle = math.pi
-        point = [5,0,0]
+        point = Point(5,0,0)
         trsf1 = rotation(rotation_pivot_point=rotation_pivot_point, direction=direction, angle=angle)
         result_point = point_trsf(point, trsf1)
-        for n in range(3):
-            self.assertTrue(result_point[n] - [-5,0,0][n] < Precision().Confusion())
+        self.assertEqual(result_point, Point(-5,0,0))
         #TODO: test rotation(gp_Ax1, angle)
     def test_transform(self):
         '''note: transforms should not be stored in yaml'''
         import yaml
 
         trans0 = geom.Transform()
-        point1 = yaml.load("!point [1,2,3]")
-        point2 = yaml.load("!point [4,5,6]")
+        point1 = Point(1,2,3)
+        point2 = Point(4,5,6)
         trans1 = trans0.SetTranslation(point1, point2)
-        point3 = yaml.load("!point [10,10,15]")
+        point3 = Point(10,10,15)
         trans2 = trans1.SetTranslation(point2, point3)
         
         #make sure it keeps the tree/stacking information correctly
         self.assertTrue(trans0.get_children()==[trans1, [trans2]])
 
-        point4 = yaml.load("!point [15,5,2]")
-        new_point = point4.Transform(trans2)
+        point4 = Point(15,5,2)
+        new_point = point4.transform(trans2)
         
         #make sure it put the point in the correct spot
-        self.assertTrue(new_point == yaml.load("!point [21,10,11]"))
+        expected_point = Point(21,10,11)
+        self.assertTrue(new_point == expected_point)
         
-        pass
-    def test_stacked_transforms(self):
-        pass
-    def test_rotation_transform(self):
-        '''test geom.Rotation (not geom.rotation())'''
-        pass
-    def test_translation_transform(self):
-        '''test geom.Translation (not geom.translation())'''
-        pass
+    def test_stacked_transformations(self):
+        transformation0 = geom.Transform()
+        transformation1 = transformation0.SetTranslation(Point(0,0,0), Point(0,0,1))
+        transformation2 = transformation1.SetTranslation(Point(0,5,0), Point(1,2,0))
+        transformation3 = transformation2.run() #stacking
+        new_point = Point(0,0,0).transform(transformation3)
+        self.assertEqual(new_point, Point(1,-3,0))
     #now some unit tests for part mating
+    def test_part_mating(self):
+        lego_pack = load_package("lego")
+        lego_pack.load_data()
+        brick1 = deepcopy(lego_pack.parts[0])
+        brick1.post_init_hook()
+        brick2 = deepcopy(lego_pack.parts[0])
+        brick2.post_init_hook()
+        brick1.load_CAD()
+        brick2.load_CAD()
+        #they should be the same thing so far
+        #self.assertTrue(brick1 == brick2)
+        options = brick1.options([brick2])
+        options = list(options)
+        #select one of the Connection instances to test with
+        selected = options[1]
+        selected.connect()
+        blah = mate_connection(selected)
+        print blah #TopoDS shape (is this useful?)
+        #not sure what to do with that. brick2 has already been transformed, brick2.transformation = some new transform. 
+        self.assertNotEqual(brick1.transformation, brick2.transformation)
+        self.assertNotEqual(brick1, brick2)
 
 if __name__ == "__main__":
     unittest.main()

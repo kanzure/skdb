@@ -98,7 +98,7 @@ class tag_hack(FennObject):
     def undo_tag_hack_for_tag(self, tag):
         '''undoes a tag hack for a particular tag'''
         #for key in yaml.YAMLObject.yaml_loader.yaml_constructors.keys():
-        #    if not key == None:
+        #    if key:
         #        if key[:1] == "!":
         #            print key
         if tag in self.yaml_loader.yaml_multi_constructors:

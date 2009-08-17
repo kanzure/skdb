@@ -37,7 +37,7 @@ class Screw(Part):
         flat head and set screws which use the top of the head instead'''
         #thread.__init__()
         self.thread, self.length, self.grade, self.name = thread, length, grade, name
-        if not (self.thread == None and self.length == None):
+        if self.thread and self.length:
             if self.thread.length is None: self.thread.length = self.length
             assert self.length.compatible('m')
 
