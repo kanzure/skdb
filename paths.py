@@ -176,7 +176,7 @@ all_bricks = [] #not currently used
 
 def get_brick():
     brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
-    #brick = deepcopy(lego.parts[0])
+    brick = deepcopy(lego.parts[random.randint(2,3)])
     brick.post_init_hook()
     brick.load_CAD()
     return brick
@@ -189,7 +189,7 @@ def make_lego(event=None):
     global current_brick, all_bricks
     current_brick = get_brick()
     #rotate it into frame correctly?
-    fake = skdb.Interface(point=Point(10,0,0)) #bleh. can't I just apply a Transformation already?
+    fake = skdb.Interface(point=Point(0,0,0)) #bleh. can't I just apply a Transformation already?
     fake.x_vec=Vector(1,0,0)
     fake.y_vec=Vector(0,-1,0)
     fake.part = get_brick()
@@ -208,10 +208,11 @@ def add_lego(event=None):
         brick2 = get_brick()
         opts = list(i1.options(brick2))
     conn =opts[random.randint(0, len(opts)-1)]
-    display.DisplayShape(make_vertex(Point(conn.interface1.point)))#.Transformed(mate_connection(conn))))
-    display.DisplayShape(make_vertex(Point(conn.interface2.point)))#.Transformed(mate_connection(conn))))
+    trsf = mate_connection(conn)
+    display.DisplayShape(make_vertex(Point(conn.interface1.point).Transformed(trsf)))
+    display.DisplayShape(make_vertex(Point(conn.interface2.point).Transformed(trsf)))
     shapes = conn.interface2.part.shapes
-    shapes[0] = BRepBuilderAPI_Transform(shapes[0], mate_connection(conn), True).Shape()
+    shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape()
     
     all_bricks.append(brick2)
     display.DisplayShape(brick2.shapes[0])
