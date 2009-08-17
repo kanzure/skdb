@@ -5,6 +5,15 @@ urls:
 - 'http://fennetic.net/git/gitweb.cgi?p=skdb.git;a=blob_plain;f=screw.yaml'
 - 'git://fennetic.net/git/skdb.git/'
 
+#re: tolerances. http://www.lego.com/info/pdf/LEGO_company_profile_UK.pdf
+#http://www.lugnet.com/~330/FAQ/Build/dimensions
+#width: 8.0mm +- 2microns #6:5 (width:height)
+#height: 9.582mm +- 2microns #6:5 (width:height)
+#depth: 10mm +- 2microns
+#      geometry: #!cylinder #this is not necessary since a Peg interface should know its geometry
+#          height: 1.7mm
+#          diameter: 5mm
+
 #1FLU = 1 * "fundamental lego unit"
 parts:
  - !lego 
@@ -41,71 +50,122 @@ parts:
       x_vec: [-1.0, 0.0, 0.0]
       y_vec: [-0.0, -0.0, -1.0]
     - !lego_feature
-      point: [-12.0, 9.5999999999999996, -4.0]
+      point: [-12.0, 9.6, -4.0]
       type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
-      point: [-4.0, 9.5999999999999996, -4.0]
+      point: [-4.0, 9.6, -4.0]
       type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
-      point: [-4.0, 9.5999999999999996, -12.0]
+      point: [-4.0, 9.6, -12.0]
       type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
-      point: [-12.0, 9.5999999999999996, -12.0]
+      point: [-12.0, 9.6, -12.0]
       type: stud
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
-      point: [-8.0, 9.5999999999999996, -8.0]
+      point: [-8.0, 9.6, -8.0]
       type: anti stud cup
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     - !lego_feature
-      point: [-8.0, 9.5999999999999996, -8.0]
+      point: [-8.0, 9.6, -8.0]
       type: anti axle
       x_vec: [-1.0, 0.0, -0.0]
       y_vec: [-0.0, -0.0, 1.0]
     
  - !lego
-  name: brick
-  description: 2x2 brick
-  size: 2x2 #the Lego class should be able to generate the interfaces from this information.
-  material: ABS plastic #acrylonitrile butadiene styrene
-  #re: tolerances. http://www.lego.com/info/pdf/LEGO_company_profile_UK.pdf
-  #http://www.lugnet.com/~330/FAQ/Build/dimensions
-  width: 8.0mm +- 2microns #6:5 (width:height)
-  height: 9.582mm +- 2microns #6:5 (width:height)
-  depth: 10mm +- 2microns
+  name: 2x4 brick
+  description: the classic lego brick. i think the cad model scale might be off a bit
+  size: 2x4
+  material: ABS
+  files:
+  - "brick_thick.stp"
   interfaces:
     - !lego_feature
-        name: peg1
-        type: stud
-        geometry: #!cylinder #this is not necessary since a Peg interface should know its geometry
-            height: 1.7mm
-            diameter: 5mm
-        point: [8, 8, 0.85] #center of stud's cylinder (z = cylinder_height/2 = 0.85)
-        orientation: [0,0,1] #point the interface in this direction, wrt the geometry's coord frame at instantiation
-        files: #this is not necessary since a Peg interface can generate CAD
-         - 'models/peg.step'
-        #point it upwards (of course, Peg should know this too)
+      point: [-4.0, 0.0, -4.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
     - !lego_feature
-        type: stud
-        name: peg2
-        point: [8, 16, 0.85]
+      point: [-12.0, 0.0, -4.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
     - !lego_feature
-        type: stud
-        name: peg3
-        point: [16, 8, 0.85]
+      point: [-20.0, 0.0, -4.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
     - !lego_feature
-        type: stud
-        name: peg4
-        point: [16, 16, 0.85]
+      point: [-28.0, 0.0, -4.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
     - !lego_feature
-        type: stud
-        name: hole1
-
+      point: [-4.0, 0.0, -12.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
+    - !lego_feature
+      point: [-12.0, 0.0, -12.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
+    - !lego_feature
+      point: [-20.0, 0.0, -12.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
+    - !lego_feature
+      point: [-28.0, 0.0, -12.0]
+      type: anti stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, 1.0]
+    - !lego_feature
+      point: [-4.0, 9.6, -4.0]
+      type: stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [-12.0, 9.6, -4.0]
+      type: stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [-20.0, 9.6, -4.0]
+      type: stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [-28.0, 9.6, -4.0]
+      type: stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [-4.0, 9.6, -12.0]
+      type: stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [-12.0, 9.6, -12.0]
+      type: stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [-20.0, 9.6, -12.0]
+      type: stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    - !lego_feature
+      point: [-28.0, 9.6, -12.0]
+      type: stud
+      x_vec: [1.0, 0.0, 0.0]
+      y_vec: [0.0, 0.0, -1.0]
+    
