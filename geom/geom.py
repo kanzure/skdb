@@ -166,7 +166,7 @@ class Transform(gp_Trsf):
         '''wraps gp_Trsf.Inverted'''
         result = gp_Trsf.Inverted(self)
         return self.process_result(result, description="inverted")
-    def Multiply(self, *args):
+    def Multiplied(self, *args):
         '''wraps gp_Trsf.Multiplied'''
         result = gp_Trsf.Multiplied(self, args)
         return self.process_result(result, description="multiplied")
@@ -230,18 +230,36 @@ def mate_first(part1):
     fake_interface.point = Point(0,0,0)
     fake_interface.orientation = Vector(0, 0, 1)
     fake_interface.connected = []
-    fake_interface.x_vec = Vector(-1,0,0) #ask fenn?
-    fake_interface.y_vec = Vector(0,0,1) #ask fenn?
+    fake_interface.x_vec = Vector(1,0,0) #ask fenn?
+    fake_interface.y_vec = Vector(0,-1,0) #ask fenn?
     fake_part = Part(name="fake part", interfaces=[fake_interface]) #should never be seen by the user
     fake_part.post_init_hook()
     connecter = Connection(fake_part.interfaces[0], part1.interfaces[0])
     connecter.connect()
     return mate_connection(connecter)
 
-def mate_connection(connecter): 
+def build_trsf(point, x_vec, y_vec, rotation=0): #rotation not yet implmented. maybe Transform could take these as arguments by default?
+    assert isinstance(x_vec, Vector) and isinstance(y_vec, Vector)
+    trsf = gp_Trsf()
+    z_vec = x_vec.Crossed(y_vec)
+    (az, el, rad) = angle_to(z_vec.X(), z_vec.Y(), z_vec.Z())
+    trsf.SetTransformation(gp_Ax3(point, Direction(z_vec.X(), z_vec.Y(), z_vec.Z()), Direction(x_vec)))
+    #tmp = gp_Trsf()
+    #trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el-math.pi/2)
+    #tmp.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az-math.pi/2)
+    ##trsf = trsf.Multiplied(tmp) #TODO fix this so it works plz
+    #tmp2 = gp_Trsf()
+    ##tmp2.SetTranslation(Point(0,0,0), point)
+    #gp_Trsf.SetTranslation(tmp2, Point(0,0,0), point)
+    #trsf.Multiply(tmp)
+    #trsf.Multiply(tmp2)
+    return trsf
+
+def mate_connection(connection): 
     '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
-    i1, i2 = connecter.interface1, connecter.interface2
-    if i1.part.transformation is None: i1.part.transformation = Transform()
+    i1, i2 = connection.interface1, connection.interface2
+    connection.connect()
+    if i1.part.transformation is None: i1.part.transformation = build_trsf(Point(0,0,0), Vector(1,0,0), Vector(0,1,0))
     #this is lame
     i1.x_vec = Vector(i1.x_vec)
     i1.y_vec = Vector(i1.y_vec)
@@ -249,29 +267,17 @@ def mate_connection(connecter):
     i2.y_vec = Vector(i2.y_vec)
     i1.point = Point(i1.point)
     i2.point = Point(i2.point)
-    i1.z_vec = copy(i1.x_vec); i1.z_vec.Cross(i1.y_vec)
-    #orient_i1 = point_shape(i1.part.shapes[0], gp_Ax1(gp_Pnt(0,0,0), gp_Dir(i1.z_vec)), trsf_only=True)
-    ##move_i1 = gp_Trsf() #don't move the first part
-    ##trsf_i1 = move_i1.Multiplied(orient_i1)
-    #trsf_i1 = orient_i1
     if hasattr(i1.part, "transformation"):
-       tmp = i1.point.Transformed(i1.part.transformation)
-    else: tmp = i1.point
-    #tmp = i1.point.Transformed(trsf_i1)
-    i2.z_vec = copy(i2.x_vec); i2.z_vec.Cross(i2.y_vec)
-    orient_i2 = point_shape(i2.part.shapes[0], gp_Ax1(Point(0,0,0), gp_Dir(i2.z_vec)), trsf_only=True)
-    temp_transformation = Transform()
-    opposite = temp_transformation.SetRotation(pivot_point = Point(0,0,0), direction=Direction(Vector(1,0,0)), angle=math.pi) #rotate 180 so that interface z axes are opposed
-    move_i2 =  move_shape(i2.part.shapes[0], tmp, i2.point, trsf_only=True)
-    trsf_i2 = move_i2.Multiplied(orient_i2)
-    trsf_i2 = trsf_i2.Multiplied(opposite)
-    #if hasattr(i2.part, "transform"):
-    #    trsf_i2 = trsf_i2.Multiplied(i2.part.transform)
-    print "x: %.1f y: %.1f z: %.1f" % trsf_i2.TranslationPart().Coord()
-    connecter.interface2.part.transformation = trsf_i2
+       tmp_point = i1.point.Transformed(i1.part.transformation)
+    else: tmp_point = i1.point #FIXME actually use this value or stacked parts won't work
+    opposite = Transform().SetRotation(pivot_point =i2.point, direction=Direction(Vector(1,0,0)), 
+        angle=math.pi) #rotate 180 so that interface z axes are opposed
+    i2.part.transformation = build_trsf(i2.point, i2.x_vec, i2.y_vec)
+    i2.part.transformation.Multiply(opposite)
+    i2.part.transformation.Multiply(i1.part.transformation)
     #return trsf_i2
-    return [BRepBuilderAPI_Transform(shape, trsf_i2, True).Shape() for shape in connecter.interface2.part.shapes]
-    
+    return [BRepBuilderAPI_Transform(shape, i2.part.transformation, True).Shape() for shape in i2.part.shapes]
+   
 #skdb.Part
 def load_CAD(self):
     '''load this object's CAD file. assumes STEP.'''

@@ -34,8 +34,7 @@ from OCC.Display.wxSamplesGui import display
 
 import math #OCC.math gets in the way? wtf
 import skdb
-from geom import Mate, move_shape, point_shape
-skdb.Mate = Mate
+from geom import Point, Vector, Transform, mate_connection, move_shape, point_shape
 
 current = gp_Pnt2d(0,0)
 
@@ -170,38 +169,46 @@ def make_text(string, pnt, height):
 from copy import copy, deepcopy
 from random import randint
 
+
 lego = skdb.load_package('lego'); lego.load_data()
-generic_brick = lego.parts[0]
-generic_brick.load_CAD()
-print type(generic_brick)
 current_brick = None
+all_bricks = [] #not currently used
+
+def get_brick():
+    brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
+    #brick = deepcopy(lego.parts[0])
+    brick.post_init_hook()
+    brick.load_CAD()
+    return brick
+
+def show_bricks():
+    display.EraseAll()
+    display.DisplayShape([brick.shapes[0] for brick in all_bricks])
+
 def make_lego(event=None):
-    global current_brick
-    #if current_brick is None:
-    if True:
-        #lego = skdb.load_package('lego'); lego.load_data()
-        current_brick =deepcopy(generic_brick)
-        current_brick.post_init_hook()
-        #rotate it into frame correctly?
-        mate = Mate(current_brick.interfaces[0], current_brick.interfaces[0])
-        current_brick.shapes = mate.apply()
-        display.DisplayShape(current_brick.shapes)
-        return
-        
+    global current_brick, all_bricks
+    current_brick = get_brick()
+    #rotate it into frame correctly?
+    fake = skdb.Interface(point=Point(10,0,0)) #bleh. can't I just apply a Transformation already?
+    fake.x_vec=Vector(1,0,0)
+    fake.y_vec=Vector(0,-1,0)
+    fake.part = get_brick()
+    current_brick.shapes = mate_connection(skdb.Connection(fake, current_brick.interfaces[0]))
+    all_bricks.append(current_brick)
+    display.DisplayColoredShape(current_brick.shapes[0], 'RED')
+    return
+
 def add_lego(event=None):
-    global current_brick
+    global current_brick, all_bricks
     opts = None
     while not opts:
         i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
-        brick2 = deepcopy(generic_brick)
-        brick2.post_init_hook()
+        brick2 = get_brick()
         opts = list(i1.options(brick2))
     conn =opts[random.randint(0, len(opts)-1)]
-    mate = Mate(conn.interface1, conn.interface2)
-    i2 = mate.interface2
-    i2.part.shapes = mate.apply()
-    #display.DisplayShape([current_brick.shapes[0]])
-    display.DisplayShape(brick2.shapes)
+    conn.interface2.part.shapes = mate_connection(conn)
+    all_bricks.append(brick2)
+    display.DisplayShape(brick2.shapes[0])
     current_brick = brick2
     
     #interface arrows
@@ -321,9 +328,11 @@ def draw_all_tangents(event=None):
     tangents(C_gp, L_gp, radius=2)
 
 def clear(event=None):
-    display.EraseAll()
+    global current_brick, all_bricks
     current = None
     current_brick = None
+    all_bricks=[]
+    display.EraseAll()
 
 def exit(event=None):
     sys.exit() 
