@@ -14,7 +14,7 @@ class Interface(FennObject):
     converted = False
     def __init__(self, name=None, units=None, geometry=None, point=[0,0,0], orientation=[0,0,1], rotation=0, part=None, max_connections=1):
         self.name, self.units, self.geometry, self.part = name, units, geometry, part
-        self.point, self.orientation, self.rotation = point, orientation, rotation
+        #self.point, self.orientation, self.rotation = point, orientation, rotation
         self.max_connections = max_connections
         self.connected = []
         self.identifier = None

@@ -193,7 +193,7 @@ def make_lego(event=None):
     fake.x_vec=Vector(1,0,0)
     fake.y_vec=Vector(0,-1,0)
     fake.part = get_brick()
-    trsf = mate_connection(skdb.Connection(fake, current_brick.interfaces[0]))
+    trsf = mate_connection(skdb.Connection(current_brick.interfaces[0], current_brick.interfaces[0]))
     current_brick.shapes[0] = BRepBuilderAPI_Transform(current_brick.shapes[0], trsf, True).Shape()
     all_bricks.append(current_brick)
     display.DisplayColoredShape(current_brick.shapes[0], 'RED')
