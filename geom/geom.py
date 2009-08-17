@@ -275,8 +275,8 @@ def mate_connection(connection):
     i2.part.transformation = build_trsf(i2.point, i2.x_vec, i2.y_vec)
     i2.part.transformation.Multiply(opposite)
     i2.part.transformation.Multiply(i1.part.transformation)
-    #return trsf_i2
-    return [BRepBuilderAPI_Transform(shape, i2.part.transformation, True).Shape() for shape in i2.part.shapes]
+    return i2.part.transformation
+    #return [BRepBuilderAPI_Transform(shape, i2.part.transformation, True).Shape() for shape in i2.part.shapes]
    
 #skdb.Part
 def load_CAD(self):

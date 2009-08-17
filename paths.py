@@ -193,9 +193,11 @@ def make_lego(event=None):
     fake.x_vec=Vector(1,0,0)
     fake.y_vec=Vector(0,-1,0)
     fake.part = get_brick()
-    current_brick.shapes = mate_connection(skdb.Connection(fake, current_brick.interfaces[0]))
+    trsf = mate_connection(skdb.Connection(fake, current_brick.interfaces[0]))
+    current_brick.shapes[0] = BRepBuilderAPI_Transform(current_brick.shapes[0], trsf, True).Shape()
     all_bricks.append(current_brick)
     display.DisplayColoredShape(current_brick.shapes[0], 'RED')
+    display.DisplayShape(make_vertex(Point(0,0,0)))
     return
 
 def add_lego(event=None):
@@ -206,7 +208,11 @@ def add_lego(event=None):
         brick2 = get_brick()
         opts = list(i1.options(brick2))
     conn =opts[random.randint(0, len(opts)-1)]
-    conn.interface2.part.shapes = mate_connection(conn)
+    display.DisplayShape(make_vertex(Point(conn.interface1.point)))#.Transformed(mate_connection(conn))))
+    display.DisplayShape(make_vertex(Point(conn.interface2.point)))#.Transformed(mate_connection(conn))))
+    shapes = conn.interface2.part.shapes
+    shapes[0] = BRepBuilderAPI_Transform(shapes[0], mate_connection(conn), True).Shape()
+    
     all_bricks.append(brick2)
     display.DisplayShape(brick2.shapes[0])
     current_brick = brick2
