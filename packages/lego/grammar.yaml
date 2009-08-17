@@ -8,7 +8,7 @@ features:
         compression: 2000lbf #fenn guess
         rotation: 0*N
     stud: !lego_feature
-        complement: [anti stud, stud cup, pin hole]
+        complement: [anti stud] #, stud cup, pin hole]
         example: 3005
         technique: press_fit #this should be different... somehow
         kinematics: revolute
@@ -18,12 +18,12 @@ features:
         rotation: 1in*lbf/rev #co-axial, fenn guess
     anti stud: !lego_feature
         comment: this typically has 3 or 4 contact points, but is not round
-        complement: stud
+        complement: [stud, technic stud]
         example: 3005
         technique: press_fit
         kinematics: revolute
     stud cup: !lego_feature
-        complement: [stud, anti stud cup]
+        complement: anti stud cup #[stud, anti stud cup, technic stud]
         example: 4073
         technique: press_fit
         kinematics: revolute
@@ -40,7 +40,7 @@ features:
         technique: press_fit
         kinematics: revolute
     technic stud: !lego_feature
-        complement: [anti stud, pin hole, stud cup]
+        complement: anti stud #[anti stud, pin hole, stud cup]
         #TODO finish technic
     hollow stud : !lego_feature
         #assert isinstance(  revolute joint)
