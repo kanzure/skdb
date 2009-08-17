@@ -18,7 +18,7 @@ def angle_to(x,y,z):
     azimuth = math.atan2(y, x) #longitude                                       
     elevation = math.atan2(z, math.sqrt(x**2 + y**2))                              
     radius = math.sqrt(x**2+y**2+z**2)                                                 
-    return((azimuth, elevation, radius))  
+    return((azimuth-math.pi/2, elevation-math.pi/2, radius))  
     #glRotatef(az-90,0,0,1)                                                        
     #glRotatef(el-90,1,0,0) 
 
@@ -31,9 +31,9 @@ def point_shape(shape, origin, trsf_only=False):
     (az, el, rad) = angle_to(dx-ox, dy-oy, dz-oz)
     #print "az: %s, el: %s, rad: %s... dx: %s, dy: %s, dz %s)" % (az, el, rad, dx, dy, dz)
     trsf = gp_Trsf()
-    trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el-math.pi/2)
+    trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el)
     trsf2 = gp_Trsf()
-    trsf2.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az-math.pi/2)
+    trsf2.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az)
     trsf.Multiply(trsf2)
     if trsf_only: 
         return trsf
@@ -242,8 +242,8 @@ def build_trsf(point, x_vec, y_vec, rotation=0): #rotation not yet implmented. m
     assert isinstance(x_vec, Vector) and isinstance(y_vec, Vector)
     trsf = gp_Trsf()
     z_vec = x_vec.Crossed(y_vec)
-    (az, el, rad) = angle_to(z_vec.X(), z_vec.Y(), z_vec.Z())
-    trsf.SetTransformation(gp_Ax3(point, Direction(z_vec.X(), z_vec.Y(), z_vec.Z()), Direction(x_vec)))
+    #(az, el, rad) = angle_to(z_vec.X(), z_vec.Y(), z_vec.Z())
+    trsf.SetTransformation(gp_Ax3(point, Direction(y_vec.X(), y_vec.Y(), y_vec.Z()), Direction(x_vec)))
     #tmp = gp_Trsf()
     #trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el-math.pi/2)
     #tmp.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az-math.pi/2)
