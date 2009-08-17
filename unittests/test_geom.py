@@ -117,8 +117,8 @@ class TestGeom(unittest.TestCase):
         brick1.post_init_hook()
         brick2 = deepcopy(lego_pack.parts[0])
         brick2.post_init_hook()
-        brick1.load_CAD()
-        brick2.load_CAD()
+        #brick1.load_CAD()
+        #brick2.load_CAD()
         #they should be the same thing so far
         #self.assertTrue(brick1 == brick2)
         options = brick1.options([brick2])
