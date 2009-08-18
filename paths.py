@@ -176,7 +176,7 @@ all_bricks = [] #not currently used
 
 def get_brick():
     brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
-    brick = deepcopy(lego.parts[random.randint(2,3)])
+    #brick = deepcopy(lego.parts[random.randint(2,3)])
     brick.post_init_hook()
     brick.load_CAD()
     return brick
@@ -228,6 +228,14 @@ def add_lego(event=None):
 from pymates import add_key
 add_key(' ', add_lego)
 
+def test_transform(event=None):
+    brick = get_brick()
+    display.DisplayShape(brick.shapes[0])
+    trsf = gp_Trsf()
+    trsf.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), gp_Dir(0,0,1)))
+    newshape = BRepBuilderAPI_Transform(brick.shapes[0], trsf, True).Shape()
+    display.DisplayShape(newshape)
+    
 
 def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
@@ -365,8 +373,9 @@ if __name__ == '__main__':
             add_function_to_menu('demo', f)
         #random_sweep()
         init_display()
-        make_lego()
-        add_lego()
+        #make_lego()
+        #add_lego()
+        test_transform()
         start_display()
 
         
