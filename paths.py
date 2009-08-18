@@ -34,7 +34,7 @@ from OCC.Display.wxSamplesGui import display
 
 import math #OCC.math gets in the way? wtf
 import skdb
-from geom import Point, Vector, Transformation, mate_connection, move_shape, point_shape
+from geom import Point, Vector, Direction, Transformation, mate_connection, move_shape, point_shape
 
 current = gp_Pnt2d(0,0)
 
@@ -229,10 +229,15 @@ from pymates import add_key
 add_key(' ', add_lego)
 
 def test_transformation(event=None):
+    display.EraseAll()
     brick = get_brick()
     display.DisplayShape(brick.shapes[0])
     trsf = gp_Trsf()
-    trsf.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), gp_Dir(0,0,1)))
+    i = brick.interfaces[0]
+    point = Point(i.point)
+    z_vec = Vector(i.x_vec).Crossed(Vector(i.y_vec))
+    trsf.SetTransformation(gp_Ax3(point, Direction(z_vec)))
+    trsf = trsf.Inverted()
     newshape = BRepBuilderAPI_Transform(brick.shapes[0], trsf, True).Shape()
     display.DisplayShape(newshape)
     
@@ -368,6 +373,7 @@ if __name__ == '__main__':
                     make_lego,
                     add_lego,
                     clear,
+                    test_transformation,
                     exit
                     ]:
             add_function_to_menu('demo', f)
