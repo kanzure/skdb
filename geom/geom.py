@@ -6,7 +6,7 @@ from skdb import Connection, Part, Interface, Unit, FennObject, round
 import os, math
 from copy import copy, deepcopy
 
-def move_shape(shape, from_pnt, to_pnt, trsf_only=True):
+def move_shape(shape, from_pnt, to_pnt, trsf_only=False):
     trsf = gp_Trsf()
     trsf.SetTranslation(from_pnt, to_pnt)
     if trsf_only: return trsf
@@ -34,11 +34,11 @@ def point_shape(shape, origin, trsf_only=False):
     trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el)
     trsf2 = gp_Trsf()
     trsf2.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az)
-    trsf.Multiply(trsf2)
+    trsf2.Multiply(trsf)
     if trsf_only: 
-        return trsf
+        return trsf2
     else:
-        shape = BRepBuilderAPI_Transform(shape1, trsf, True).Shape()
+        shape = BRepBuilderAPI_Transform(shape, trsf2, True).Shape()
         return shape
 
 def translation(point1=None, point2=None, vector=None):
