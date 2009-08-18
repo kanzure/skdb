@@ -93,8 +93,9 @@ class OCC_triple(FennObject):
         return "%s(%s, %s, %s)" % (self.__class__.__name__, round(self.X()), round(self.Y()), round(self.Z()))
     def yaml_repr(self):
         return [round(self.X()), round(self.Y()), round(self.Z())]
-    def transform(self, transform):
-        result = self.occ_class.Transformed(self, transform)
+    def transformed(self, transformation):
+        '''transform is a verb'''
+        result = self.occ_class.Transformed(self, transformation)
         return self.__class__(result)
 
 class Point(OCC_triple, gp_Pnt):
@@ -127,8 +128,8 @@ class Direction(OCC_triple, gp_Dir):
     occ_class = gp_Dir
     __doc__ = OCC_triple.doc_format % (occ_class, 'Direction', 'Direction', 'Direction', occ_class, occ_class.__name__)
     
-class Transform(gp_Trsf):
-    '''wraps gp_Trsf for stackable transforms'''
+class Transformation(gp_Trsf):
+    '''wraps gp_Trsf for stackable transformations'''
     def __init__(self, parent=None, description="root node"):
         gp_Trsf.__init__(self)
         self.children = []
@@ -136,13 +137,13 @@ class Transform(gp_Trsf):
         if parent:
             self.parent = parent
     def __repr__(self):
-        '''see also Transform.get_children'''
+        '''see also Transformation.get_children'''
         return self.description
     def process_result(self, trsf, description=""):
         '''hides some redundancy from the other methods'''
-        new_transform = Transform(gptrsf=trsf, parent=self, description=description)
-        self.children.append(new_transform)
-        return new_transform
+        new_transformation = Transformation(gptrsf=trsf, parent=self, description=description)
+        self.children.append(new_transformation)
+        return new_transformation
     def get_children(self):
         '''returns a list of all children'''
         if self.children == []:
@@ -154,11 +155,11 @@ class Transform(gp_Trsf):
                 return_list.append(more)
         return return_list
     def run(self, result=None):
-        '''multiplies all of the transforms together'''
+        '''multiplies all of the Transformations together'''
         if self.children == []:
             return self
         if result == None:
-            result = Transform()
+            result = Transformation()
         for each in self.children:
             result.Multiply(each.run())
         return result
@@ -172,14 +173,14 @@ class Transform(gp_Trsf):
         return self.process_result(result, description="multiplied")
     def SetRotation(self, pivot_point=Point([0,0,0]), direction=Direction([0,0,1]), angle=Unit("pi/2 radians")):
         '''SetRotation(pivot_point=Point(), direction=Direction(), angle=Unit())'''
-        new_transform = Rotation(parent=self, description="rotated", pivot_point=pivot_point, direction=direction, angle=angle)
-        self.children.append(new_transform)
-        return new_transform
+        new_transformation = Rotation(parent=self, description="rotated", pivot_point=pivot_point, direction=direction, angle=angle)
+        self.children.append(new_transformation)
+        return new_transformation
     def SetTranslation(self, point1, point2):
         '''SetTranslation(point1=Point(), point2=Point())'''
-        new_transform = Translation(parent=self, description="translated", point1=point1, point2=point2)
-        self.children.append(new_transform)
-        return new_transform
+        new_transformation = Translation(parent=self, description="translated", point1=point1, point2=point2)
+        self.children.append(new_transformation)
+        return new_transformation
     def SetMirror(self, point):
         '''wraps gp_Trsf.Mirror -- mirror about a point'''
         self_copy = copy(self)
@@ -187,23 +188,23 @@ class Transform(gp_Trsf):
         desc = "mirrored about %s" % (point)
         return self.process_result(result, description=desc)
 
-class Rotation(Transform):
-    '''a special type of Transform for rotation
+class Rotation(Transformation):
+    '''a special type of Transformation for rotation
     Rotation(pivot_point=Point(), direction=Direction(), angle=Unit())'''
     def __init__(self, pivot_point=Point([0,0,0]), direction=Direction([0,0,1]), angle=Unit("pi/2 radians"), parent=None, description=None):
         if not pivot_point and not direction and not angle: raise NotImplementedError, "you must pass parameters to Rotation.__init__"
         self.pivot_point = pivot_point
         self.direction = direction
         self.angle = angle
-        Transform.__init__(self, parent=parent, description=description)
+        Transformation.__init__(self, parent=parent, description=description)
         gp_Trsf.SetRotation(self, gp_Ax1(pivot_point, direction), float(angle))
     def __repr__(self):
         '''just a guess for now, please test'''
         xyz = gp_Trsf.RotationPart(self)
         return "Rotation[%s, %s, %s]" % (xyz.X(), xyz.Y(), xyz.Z())
 
-class Translation(Transform):
-    '''a special type of Transform for translation
+class Translation(Transformation):
+    '''a special type of Transformation for translation
     Translation(point1=, point2=)
     Translation(vector=) (not implemented)'''
     def __init__(self, point1=None, point2=None, vector=None, parent=None, description=None):
@@ -215,7 +216,7 @@ class Translation(Transform):
         self.parent = parent
         self.description = description
         self.children = []
-        Transform.__init__(self, parent=parent, description=description)
+        Transformation.__init__(self, parent=parent, description=description)
         gp_Trsf.SetTranslation(self, point1, point2)
     def __repr__(self):
         xyz = gp_Trsf.TranslationPart(self)
@@ -238,7 +239,7 @@ def mate_first(part1):
     connecter.connect()
     return mate_connection(connecter)
 
-def build_trsf(point, x_vec, y_vec, rotation=0): #rotation not yet implmented. maybe Transform could take these as arguments by default?
+def build_trsf(point, x_vec, y_vec, rotation=0): #rotation not yet implmented. maybe Transformation could take these as arguments by default?
     assert isinstance(x_vec, Vector) and isinstance(y_vec, Vector)
     trsf = gp_Trsf()
     z_vec = x_vec.Crossed(y_vec)
@@ -270,7 +271,7 @@ def mate_connection(connection):
     if hasattr(i1.part, "transformation"):
        tmp_point = i1.point.Transformed(i1.part.transformation)
     else: tmp_point = i1.point #FIXME actually use this value or stacked parts won't work
-    opposite = Transform().SetRotation(pivot_point =i2.point, direction=Direction(Vector(1,0,0)), 
+    opposite = Transformation().SetRotation(pivot_point =i2.point, direction=Direction(Vector(1,0,0)), 
         angle=math.pi) #rotate 180 so that interface z axes are opposed
     i2.part.transformation = build_trsf(i2.point, i2.x_vec, i2.y_vec)
     i2.part.transformation.Multiply(opposite)

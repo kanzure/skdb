@@ -112,8 +112,8 @@ def convert_interface(interface2):
             interface2.converted = True
     return
 
-def check_part_transforms(part1, part2):
-    '''returns which transforms for part1 and part2 are valid mating positions of the parts'''
+def check_part_transformations(part1, part2):
+    '''returns which transformations for part1 and part2 are valid mating positions of the parts'''
     assert NotImplementedError
 
 def interface_overlaps(interface1, interface2):
@@ -127,16 +127,16 @@ def same_orientation(interface1, interface2):
     assert NotImplementedError
 
 #needs a better name
-def transform_leads_to_equivalent_points(interface1, transform1, interface2, transform2):
-    '''returns true if interface1.point.Transform(transform1) leads to a point equal to interface2.point.Transform(transform2)'''
+def transformation_leads_to_equivalent_points(interface1, transformation1, interface2, transformation2):
+    '''returns true if interface1.point.Transform(transformation1) leads to a point equal to interface2.point.Transform(transformation2)'''
     assert NotImplementedError
 
-def transform_leads_to_equivalent_orientations(interface1, transform1, interface2, transform2):
-    '''returns True if interface1.orientation.Transform(transform1) leads to an orientation equal to interface2.orientation.Transform(transform2)'''
+def transformation_leads_to_equivalent_orientations(interface1, transformation1, interface2, transformation2):
+    '''returns True if interface1.orientation.Transform(transformation1) leads to an orientation equal to interface2.orientation.Transform(transformation2)'''
     assert NotImplementedError
 
-def transform_for_interface_to(interface1, point2):
-    '''returns a transform that puts interface1.point at the same location as point2'''
+def transformation_for_interface_to(interface1, point2):
+    '''returns a transformation that puts interface1.point at the same location as point2'''
     assert NotImplementedError
 
 def second_part_transformation_given_first(interface1, transformation1, interface2):
@@ -197,9 +197,9 @@ def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=N
 
     transformation3 = OCC.gp.gp_Trsf()
     transformation3.SetTranslation(occ_point1, occ_point2)
-    brep_transform3 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation3)
-    brep_transform3.Perform(resulting_shape)
-    resulting_shape3 = brep_transform3.Shape()
+    brep_transformation3 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation3)
+    brep_transformation3.Perform(resulting_shape)
+    resulting_shape3 = brep_transformation3.Shape()
 
     #OCC.Display.wxSamplesGui.display.DisplayColoredShape(resulting_shape, color2)
 
@@ -210,42 +210,42 @@ def mate_parts(part1=None, part2=None, event=None, interface1=None, interface2=N
 
     transformation1 = OCC.gp.gp_Trsf()
     transformation1.SetRotation(OCC.gp.gp_Ax1(pivot_point, x_rotation),interface2.x)
-    brep_transform1 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation1)
-    brep_transform1.Perform(part2.shapes[0])
-    resulting_shape1 = brep_transform1.Shape()
+    brep_transformation1 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation1)
+    brep_transformation1.Perform(part2.shapes[0])
+    resulting_shape1 = brep_transformation1.Shape()
 
     transformation2 = OCC.gp.gp_Trsf()
     transformation2.SetRotation(OCC.gp.gp_Ax1(pivot_point, y_rotation),interface2.y)
-    brep_transform2 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation2)
-    brep_transform2.Perform(resulting_shape1)
-    resulting_shape2 = brep_transform2.Shape()
+    brep_transformation2 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation2)
+    brep_transformation2.Perform(resulting_shape1)
+    resulting_shape2 = brep_transformation2.Shape()
 
     transformation3 = OCC.gp.gp_Trsf()
     transformation3.SetTranslation(occ_point2, occ_point1)
-    brep_transform3 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation3)
-    brep_transform3.Perform(resulting_shape2)
-    resulting_shape3 = brep_transform3.Shape()
+    brep_transformation3 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation3)
+    brep_transformation3.Perform(resulting_shape2)
+    resulting_shape3 = brep_transformation3.Shape()
 
     #transformation4 = OCC.gp.gp_Trsf()
     #transformation4.SetRotation(OCC.gp.gp_Ax1(occ_point, z_rotation),math.pi)
-    #brep_transform4 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation4)
-    #brep_transform4.Perform(resulting_shape3)
-    #resulting_shape4 = brep_transform4.Shape()
+    #brep_transformation4 = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation4)
+    #brep_transformation4.Perform(resulting_shape3)
+    #resulting_shape4 = brep_transformation4.Shape()
 
     OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape3)
     my_copy = copy.copy(part2)
     my_copy.shapes[0] = resulting_shape3
     total_parts.append(my_copy)
-    return brep_transform3
+    return brep_transformation3
 
 def move(my_part, x, y, z, i1, i2, i3, j1, j2, j3):
     o_point = OCC.gp.gp_Pnt(x,y,z)
     o_n_vec = OCC.gp.gp_Dir(i1,i2,i3)
     o_vx_vec = OCC.gp.gp_Dir(j1,j2,j3)
     ax3 = OCC.gp.gp_Ax3(o_point, o_n_vec, o_vx_vec)
-    transform = OCC.gp.gp_Trsf()
-    transform.SetTransformation(ax3)
-    toploc = OCC.TopLoc.TopLoc_Location(transform)
+    transformation = OCC.gp.gp_Trsf()
+    transformation.SetTransformation(ax3)
+    toploc = OCC.TopLoc.TopLoc_Location(transformation)
     OCC.Display.wxSamplesGui.display.Context.SetLocation(my_part.ais_shapes, toploc)
     OCC.Display.wxSamplesGui.display.Context.UpdateCurrentViewer()
     return
@@ -510,11 +510,11 @@ def transform_point(x,y,z,color='YELLOW'):
     occ_point1 = OCC.gp.gp_Pnt(point1[0],point1[1],point1[2])
     occ_point2 = OCC.gp.gp_Pnt(point2[0],point2[1],point2[2])
     transformation.SetTranslation(occ_point2, occ_point1)
-    brep_transform = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
-    brep_transform.Perform(mysphere.Shape())  #(total_parts[1].shapes[0])
-    resulting_shape = brep_transform.Shape()
+    brep_transformation = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(transformation)
+    brep_transformation.Perform(mysphere.Shape())  #(total_parts[1].shapes[0])
+    resulting_shape = brep_transformation.Shape()
     OCC.Display.wxSamplesGui.display.DisplayShape(resulting_shape)
-    return brep_transform
+    return brep_transformation
 
 def supermate_parts(event=None):
     '''a handy shortcut for calling restart(), demo(), and mate_parts() in that order'''

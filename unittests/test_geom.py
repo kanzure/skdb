@@ -2,10 +2,10 @@ import unittest, math
 from skdb.geom import *
 from skdb import load_package
 
-def point_trsf(point1, transform):
-    '''point_trsf(point1, transform) -> [x,y,z]'''
+def point_trsf(point1, transformation):
+    '''point_trsf(point1, transformation) -> [x,y,z]'''
     point1 = Point(point1)
-    result_pnt = point1.Transformed(transform)
+    result_pnt = point1.Transformed(transformation)
     return result_pnt
 
 class TestGeom(unittest.TestCase):
@@ -35,9 +35,9 @@ class TestGeom(unittest.TestCase):
         self.assertEqual(geom.Point(0,0,1e-9), geom.Point(0,0,0))
         #not equals?
     def test_point_transformed_no_side_effects(self):
-        '''Point.Transform should return a new Point'''
+        '''Point.transformed should return a new Point'''
         point = Point(1,2,3)
-        point2 = point.Transform(gp_Trsf())
+        point2 = point.transformed(gp_Trsf())
         self.assertFalse(point2 is point) 
     def test_point_yaml(self):
         import yaml
@@ -81,11 +81,9 @@ class TestGeom(unittest.TestCase):
         result_point = point_trsf(point, trsf1)
         self.assertEqual(result_point, Point(-5,0,0))
         #TODO: test rotation(gp_Ax1, angle)
-    def test_transform(self):
-        '''note: transforms should not be stored in yaml'''
-        import yaml
-
-        trans0 = geom.Transform()
+    def test_transformation(self):
+        '''note: gp_Trsf not be stored in yaml'''
+        trans0 = geom.Transformation()
         point1 = Point(1,2,3)
         point2 = Point(4,5,6)
         trans1 = trans0.SetTranslation(point1, point2)
@@ -96,18 +94,18 @@ class TestGeom(unittest.TestCase):
         self.assertTrue(trans0.get_children()==[trans1, [trans2]])
 
         point4 = Point(15,5,2)
-        new_point = point4.transform(trans2)
+        new_point = point4.transformed(trans2)
         
         #make sure it put the point in the correct spot
         expected_point = Point(21,10,11)
         self.assertTrue(new_point == expected_point)
         
     def test_stacked_transformations(self):
-        transformation0 = geom.Transform()
+        transformation0 = geom.Transformation()
         transformation1 = transformation0.SetTranslation(Point(0,0,0), Point(0,0,1))
         transformation2 = transformation1.SetTranslation(Point(0,5,0), Point(1,2,0))
         transformation3 = transformation2.run() #stacking
-        new_point = Point(0,0,0).transform(transformation3)
+        new_point = Point(0,0,0).transformed(transformation3)
         self.assertEqual(new_point, Point(1,-3,0))
     #now some unit tests for part mating
     def test_part_mating(self):
@@ -128,7 +126,7 @@ class TestGeom(unittest.TestCase):
         selected.connect()
         blah = mate_connection(selected)
         print blah #TopoDS shape (is this useful?)
-        #not sure what to do with that. brick2 has already been transformed, brick2.transformation = some new transform. 
+        #not sure what to do with that. brick2 has already been transformed, brick2.transformation = some new transformation. 
         self.assertNotEqual(brick1.transformation, brick2.transformation)
         self.assertNotEqual(brick1, brick2)
 
