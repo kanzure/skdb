@@ -55,7 +55,13 @@ class Connection:
         
     def connect(self):
         '''make interface1 and interface2 aware of this connection; update interface2.part's transformation attribute.'''
-        print "connecting %s's %s to %s's %s" %(self.interface1.part.name, self.interface1.name, self.interface2.part.name, self.interface2.name) 
+        #import skdb
+        #lego = skdb.load_package('lego').load_data().parts
+        #brick1 = lego.index(self.interface1.part)
+        #brick2 = lego.index(self.interface2.part)
+        i1 = self.interface1.part.interfaces.index(self.interface1)
+        i2 = self.interface2.part.interfaces.index(self.interface2)
+        print "connecting %s's %s  to %s's %s brick1[%s] to brick2[%s])" %(self.interface1.part.name,  self.interface1.name, self.interface2.part.name, self.interface2.name,  i1, i2)
         self.interface1.connected.append(self)
         self.interface2.connected.append(self)
         return
