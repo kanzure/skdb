@@ -78,7 +78,7 @@ features:
         kinematics: revolute
         rotation: 30g*cm/rev #fenn guess
     pin hole: !lego_feature 
-        complement: [pin, stud, technic stud, hollow stud]
+        complement: [pin] #, stud, technic stud, hollow stud]
         example: 3700
         technique: [snap_fit, press_fit]
         kinematics: [revolute, prismatic]
