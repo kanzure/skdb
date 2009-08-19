@@ -73,21 +73,18 @@ class OCC_triple(FennObject):
     doc_format = '''wraps %s: %s(1,2,3) or %s([1,2,3]) or %s(%s)
     Caution: assigning an attribute like "x" will not affect the underlying %s,
     you have to make a new one instead.'''
+    wrapped_classes = gp_Pnt, gp_Vec, gp_Dir, gp_XYZ
     def __init__(self, x=None, y=None, z=None):
         if isinstance(x, self.__class__): #Point(Point(1,2,3))
             self.__dict__ = copy(x.__dict__) #does this use the same gp_Pnt object? (it shouldnt)
-        elif isinstance(x, self.occ_class) or isinstance(x, OCC_triple): #Point(gp_Pnt()) or Point(Vector(1,2,3))
-            self.x, self.y, self.z = (x.X(), x.Y(), x.Z())
-        elif isinstance(x, list):
+        for cls in OCC_triple.wrapped_classes: 
+            if isinstance(x, cls): #Point(gp_Pnt()) or Point(Vector(1,2,3))
+                self.x, self.y, self.z = (x.X(), x.Y(), x.Z())
+                self.post_init_hook(); return
+        if isinstance(x, list):
             self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
         elif x is not None and y is not None and z is not None:
             self.x, self.y, self.z = float(x), float(y), float(z)
-        elif isinstance(x, gp_Vec): #Direction; x is a gp_Vec and y and z are None.
-            self.x, self.y, self.z = (x.X(), x.Y(), x.Z())
-        else: #to help debug the Direction class
-            print "ERROR in OCC_triple, self.occ_class = ", self.occ_class #OCC.gp.gp_Dir
-            print "and type(self) = ", type(self) #geom.geom.Direction
-            print "(x, y, z) = (%s, %s, %s)" % (x, y, z) #(gp_Vec, None, None)
         self.post_init_hook()
     def post_init_hook(self): #for instantiating from yaml
         try: self.__class__.occ_class.__init__(self,self.x,self.y,self.z)
