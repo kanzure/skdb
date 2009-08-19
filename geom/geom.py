@@ -82,6 +82,12 @@ class OCC_triple(FennObject):
             self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
         elif x is not None and y is not None and z is not None:
             self.x, self.y, self.z = float(x), float(y), float(z)
+        elif isinstance(x, gp_Vec): #Direction; x is a gp_Vec and y and z are None.
+            self.x, self.y, self.z = (x.X(), x.Y(), x.Z())
+        else: #to help debug the Direction class
+            print "ERROR in OCC_triple, self.occ_class = ", self.occ_class #OCC.gp.gp_Dir
+            print "and type(self) = ", type(self) #geom.geom.Direction
+            print "(x, y, z) = (%s, %s, %s)" % (x, y, z) #(gp_Vec, None, None)
         self.post_init_hook()
     def post_init_hook(self): #for instantiating from yaml
         try: self.__class__.occ_class.__init__(self,self.x,self.y,self.z)
