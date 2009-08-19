@@ -246,17 +246,7 @@ def build_trsf(point, x_vec, y_vec, rotation=0): #rotation not yet implmented. m
     assert isinstance(x_vec, Vector) and isinstance(y_vec, Vector)
     trsf = gp_Trsf()
     z_vec = x_vec.Crossed(y_vec)
-    #(az, el, rad) = angle_to(z_vec.X(), z_vec.Y(), z_vec.Z())
-    trsf.SetTransformation(gp_Ax3(point, Direction(y_vec.X(), y_vec.Y(), y_vec.Z()), Direction(x_vec)))
-    #tmp = gp_Trsf()
-    #trsf.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), el-math.pi/2)
-    #tmp.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az-math.pi/2)
-    ##trsf = trsf.Multiplied(tmp) #TODO fix this so it works plz
-    #tmp2 = gp_Trsf()
-    ##tmp2.SetTranslation(Point(0,0,0), point)
-    #gp_Trsf.SetTranslation(tmp2, Point(0,0,0), point)
-    #trsf.Multiply(tmp)
-    #trsf.Multiply(tmp2)
+    trsf.SetTransformation(gp_Ax3(point, Direction(z_vec.X(), z_vec.Y(), z_vec.Z()), Direction(x_vec)))
     return trsf
 
 def mate_connection(connection): 

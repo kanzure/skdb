@@ -188,17 +188,18 @@ def show_bricks():
 def make_lego(event=None):
     global current_brick, all_bricks
     current_brick = get_brick()
-    #rotate it into frame correctly?
-    fake = skdb.Interface(point=Point(0,0,0)) #bleh. can't I just apply a Transformation already?
-    fake.x_vec=Vector(1,0,0)
-    fake.y_vec=Vector(0,-1,0)
-    fake.part = get_brick()
-    trsf = mate_connection(skdb.Connection(current_brick.interfaces[0], current_brick.interfaces[0]))
-    current_brick.shapes[0] = BRepBuilderAPI_Transform(current_brick.shapes[0], trsf, True).Shape()
+    #orient the part so that i[0] is aligned with the origin's z-axis
+    trsf = gp_Trsf()
+    i = current_brick.interfaces[0]
+    point = Point(i.point)
+    z_vec = Vector(i.x_vec).Crossed(Vector(i.y_vec)) #find the interface vector
+    trsf.SetTransformation(gp_Ax3(point, Direction(z_vec)))
+    #trsf = trsf.Inverted()
+    current_brick.transformation = trsf
+    shapes = current_brick.shapes
+    shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape() #move it
+    display.DisplayColoredShape(shapes[0], 'RED')
     all_bricks.append(current_brick)
-    display.DisplayColoredShape(current_brick.shapes[0], 'RED')
-    display.DisplayShape(make_vertex(Point(0,0,0)))
-    return
 
 def add_lego(event=None):
     global current_brick, all_bricks
@@ -227,20 +228,6 @@ def add_lego(event=None):
 
 from pymates import add_key
 add_key(' ', add_lego)
-
-def test_transformation(event=None):
-    display.EraseAll()
-    brick = get_brick()
-    display.DisplayShape(brick.shapes[0])
-    trsf = gp_Trsf()
-    i = brick.interfaces[0]
-    point = Point(i.point)
-    z_vec = Vector(i.x_vec).Crossed(Vector(i.y_vec))
-    trsf.SetTransformation(gp_Ax3(point, Direction(z_vec)))
-    trsf = trsf.Inverted()
-    newshape = BRepBuilderAPI_Transform(brick.shapes[0], trsf, True).Shape()
-    display.DisplayShape(newshape)
-    
 
 def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
@@ -373,15 +360,13 @@ if __name__ == '__main__':
                     make_lego,
                     add_lego,
                     clear,
-                    test_transformation,
                     exit
                     ]:
             add_function_to_menu('demo', f)
         #random_sweep()
         init_display()
-        #make_lego()
+        make_lego()
         #add_lego()
-        test_transformation()
         start_display()
 
         
