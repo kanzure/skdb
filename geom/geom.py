@@ -254,24 +254,25 @@ def mate_connection(connection):
     i1, i2 = connection.interface1, connection.interface2
     connection.connect()
     if i1.part.transformation is None: i1.part.transformation = build_trsf(Point(0,0,0), Vector(1,0,0), Vector(0,1,0))
-    #this is lame
-    i1.x_vec = Vector(i1.x_vec)
-    i1.y_vec = Vector(i1.y_vec)
-    i2.x_vec = Vector(i2.x_vec)
-    i2.y_vec = Vector(i2.y_vec)
-    i1.point = Point(i1.point)
-    i2.point = Point(i2.point)
     if hasattr(i1.part, "transformation"):
-       tmp_point = i1.point.Transformed(i1.part.transformation)
+       tmp_point = Point(i1.point).Transformed(i1.part.transformation)
     else: tmp_point = i1.point #FIXME actually use this value or stacked parts won't work
-    opposite = Transformation().SetRotation(pivot_point =i2.point, direction=Direction(Vector(1,0,0)), 
-        angle=math.pi) #rotate 180 so that interface z axes are opposed
-    i2.part.transformation = build_trsf(i2.point, i2.x_vec, i2.y_vec)
-    i2.part.transformation.Multiply(opposite)
-    i2.part.transformation.Multiply(i1.part.transformation)
+    #opposite = Transformation().SetRotation(pivot_point =Vector(i2.point), direction=Direction(Vector(1,0,0)), 
+    #    angle=math.pi) #rotate 180 so that interface z axes are opposed
+    i2.part.transformation = i2.get_transformation()
+    #i2.part.transformation.Multiply(opposite)
+    i2.part.transformation.Multiply(i1.get_transformation().Multiplied(i2.part.transformation))
     return i2.part.transformation
-    #return [BRepBuilderAPI_Transform(shape, i2.part.transformation, True).Shape() for shape in i2.part.shapes]
    
+#skdb.Interface
+def get_transformation(self): #i wish this were a property instead
+    '''returns the transformation to align the interface vector at the origin along the Z axis'''
+    trsf = gp_Trsf()
+    z_vec = Vector(self.x_vec).Crossed(Vector(self.y_vec)) #find the interface vector
+    trsf.SetTransformation(gp_Ax3(Point(self.point), Direction(z_vec)))
+    return trsf
+Interface.get_transformation = get_transformation
+
 #skdb.Part
 def load_CAD(self):
     '''load this object's CAD file. assumes STEP.'''
