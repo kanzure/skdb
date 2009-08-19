@@ -259,9 +259,16 @@ def mate_connection(connection):
     else: tmp_point = i1.point #FIXME actually use this value or stacked parts won't work
     #opposite = Transformation().SetRotation(pivot_point =Vector(i2.point), direction=Direction(Vector(1,0,0)), 
     #    angle=math.pi) #rotate 180 so that interface z axes are opposed
-    i2.part.transformation = i2.get_transformation()
+    #i2.part.transformation = i1.part.transformation.Multiplied(i1.get_transformation().Multiplied(i2.get_transformation()))
+    #i2.part.transformation = i2.get_transformation().Multiplied(i1.get_transformation().Multiplied(i1.part.transformation))
+    i2.part.transformation = gp_Trsf()
+    t = i2.part.transformation
+    #t.Multiply(i2.get_transformation().Inverted())
+    t.Multiply(i1.get_transformation().Inverted())
+    t.Multiply(i1.part.transformation)
+    t.Multiply(i2.get_transformation())
+
     #i2.part.transformation.Multiply(opposite)
-    i2.part.transformation.Multiply(i1.get_transformation().Multiplied(i2.part.transformation))
     return i2.part.transformation
    
 #skdb.Interface

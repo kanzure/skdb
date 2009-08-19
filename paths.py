@@ -186,9 +186,10 @@ def show_bricks():
     display.EraseAll()
     display.DisplayShape([brick.shapes[0] for brick in all_bricks])
 
-def make_lego(event=None):
+def make_lego(event=None, brick=None):
     global current_brick, all_bricks
-    current_brick = get_brick()
+    if brick is None: brick = get_brick()
+    current_brick = brick
     #orient the part so that i[0] is aligned with the origin's z-axis
     trsf = gp_Trsf()
     i = current_brick.interfaces[0]
@@ -201,32 +202,34 @@ def make_lego(event=None):
     display.DisplayColoredShape(shapes[0], 'RED')
     all_bricks.append(current_brick)
 
-def add_lego(event=None):
+def add_lego(event=None, brick=get_brick()):
     global current_brick, all_bricks
     opts = None
-    while not opts:
+    n=0
+    brick2 = brick
+    while True:
         i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
-        brick2 = get_brick()
         opts = list(i1.options(brick2))
+        if opts or n > 20: break
+        brick2 = get_brick() #try again
+        n+=1
     conn =opts[random.randint(0, len(opts)-1)]
 
     trsf = mate_connection(conn)
-    display.DisplayShape(make_vertex(Point(conn.interface1.point).Transformed(trsf)))
+    #display.DisplayShape(make_vertex(Point(conn.interface1.point).Transformed(trsf)))
     display.DisplayShape(make_vertex(Point(conn.interface2.point).Transformed(trsf)))
     shapes = conn.interface2.part.shapes
     shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape()
     
     trsf2 = gp_Trsf()
-    trsf.Multiply(i1.part.transformation)
+    trsf.Multiply(conn.interface1.part.transformation)
     trsf.Multiply(conn.interface1.get_transformation())
-    arrow = make_arrow_to(trsf2, scale=3)
-    display.DisplayShape(arrow)
+    display.DisplayShape(make_arrow_to(trsf2, scale=3, color='RED', text='i1'))
     
     trsf3 = gp_Trsf()
     trsf3.Multiply(conn.interface2.part.transformation)
     trsf3.Multiply(conn.interface2.get_transformation())
-    arrow = make_arrow_to(trsf3, scale=3)
-    display.DisplayShape(arrow)
+    display.DisplayShape(make_arrow_to(trsf3, scale=3, text='i2'))
 
     all_bricks.append(brick2)
     display.DisplayShape(brick2.shapes[0])
@@ -239,8 +242,10 @@ def add_lego(event=None):
     display.DisplayShape(head)
     display.DisplayShape(body)'''
 
-from pymates import add_key
-add_key(' ', add_lego)
+def show_interfaces(event=None, brick=None):
+    if brick is None: brick = current_brick
+    for i in brick.interfaces:
+        display.DisplayShape(make_arrow_to(dest=i.get_transformation().Multiplied(i.part.transformation), text=brick.interfaces.index(i)))
 
 def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
@@ -262,6 +267,7 @@ def make_arrow_only(origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=N
     return BRepAlgoAPI_Fuse(head, body).Shape()
 
 def make_arrow_to(dest=gp_Trsf(), scale=1, text=None, color='YELLOW'):
+    if text is not None: make_text(text, Point(dest.TranslationPart().Coord()), 6)
     return BRepBuilderAPI_Transform(make_arrow_only(scale=scale, text=text, color=color), dest).Shape()
 
 def make_arrows(event=None):
@@ -356,6 +362,13 @@ def clear(event=None):
 def exit(event=None):
     sys.exit() 
 
+
+from pymates import add_key
+add_key('a', add_lego)
+add_key('c', clear)
+add_key('m', make_lego)
+add_key('s', show_interfaces)
+
 if __name__ == '__main__':
         from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display
         add_menu('demo')
@@ -369,6 +382,7 @@ if __name__ == '__main__':
                     make_arrow,
                     make_arrows,
                     make_coordinate_arrows,
+                    show_interfaces,
                     make_lego,
                     add_lego,
                     clear,
@@ -378,7 +392,7 @@ if __name__ == '__main__':
         #random_sweep()
         init_display()
         make_lego()
-        #add_lego()
+        add_lego()
         start_display()
 
         
