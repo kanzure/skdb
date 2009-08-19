@@ -15,6 +15,7 @@ from OCC.BRepPrimAPI import *
 from OCC.BRepBuilderAPI import *
 from OCC.BRepFilletAPI import *
 from OCC.BRepOffsetAPI import *
+from OCC.BRepAlgoAPI import *
 from OCC.BRep import *
 from OCC.TopExp import *
 from OCC.TopAbs import *
@@ -192,8 +193,7 @@ def make_lego(event=None):
     trsf = gp_Trsf()
     i = current_brick.interfaces[0]
     point = Point(i.point)
-    z_vec = Vector(i.x_vec).Crossed(Vector(i.y_vec)) #find the interface vector
-    trsf.SetTransformation(gp_Ax3(point, Direction(z_vec)))
+    trsf = i.get_transformation()
     #trsf = trsf.Inverted()
     current_brick.transformation = trsf
     shapes = current_brick.shapes
@@ -209,12 +209,25 @@ def add_lego(event=None):
         brick2 = get_brick()
         opts = list(i1.options(brick2))
     conn =opts[random.randint(0, len(opts)-1)]
+
     trsf = mate_connection(conn)
     display.DisplayShape(make_vertex(Point(conn.interface1.point).Transformed(trsf)))
     display.DisplayShape(make_vertex(Point(conn.interface2.point).Transformed(trsf)))
     shapes = conn.interface2.part.shapes
     shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape()
     
+    trsf2 = gp_Trsf()
+    trsf.Multiply(i1.part.transformation)
+    trsf.Multiply(conn.interface1.get_transformation())
+    arrow = make_arrow_to(trsf2, scale=3)
+    display.DisplayShape(arrow)
+    
+    trsf3 = gp_Trsf()
+    trsf3.Multiply(conn.interface2.part.transformation)
+    trsf3.Multiply(conn.interface2.get_transformation())
+    arrow = make_arrow_to(trsf3, scale=3)
+    display.DisplayShape(arrow)
+
     all_bricks.append(brick2)
     display.DisplayShape(brick2.shapes[0])
     current_brick = brick2
@@ -231,26 +244,25 @@ add_key(' ', add_lego)
 
 def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
-    (body, head) = make_arrow_only(origin=origin,scale=scale,text=text,color=color)
-    display.DisplayColoredShape(head, color)
-    display.DisplayColoredShape(body, color)
+    arrow = make_arrow_only(origin=origin,scale=scale,text=text,color=color)
+    display.DisplayColoredShape(arrow, color)
     if text is not None:
         make_text(text, origin.Location(), 6)
 
 def make_arrow_only(origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     assert type(origin) == gp_Ax1
-    body = BRepPrimAPI_MakeCylinder(0.05, 0.7).Shape()
-    head = BRepPrimAPI_MakeCone(0.1,0.001,0.3).Shape()
-    head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7)) #move cone to top of arrow
+    body = BRepPrimAPI_MakeCylinder(0.02*scale, 0.7*scale).Shape()
+    head = BRepPrimAPI_MakeCone(0.1*scale,0.001,0.3*scale).Shape()
+    head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move cone to top of arrow
     #arrow = BRepAlgoAPI_Fuse(head, body).Shape()
     head = point_shape(head, origin)
     body = point_shape(body, origin)
     head = move_shape(head, gp_Pnt(0,0,0), origin.Location())
     body = move_shape(body, gp_Pnt(0,0,0), origin.Location())
-    return (body, head)
+    return BRepAlgoAPI_Fuse(head, body).Shape()
 
-def make_arrow_to(event=None, dest=gp_Ax1(gp_Pnt(0,0,1), gp_Dir(0,0,1)), scale=1, text=None, color='YELLOW'):
-    pass
+def make_arrow_to(dest=gp_Trsf(), scale=1, text=None, color='YELLOW'):
+    return BRepBuilderAPI_Transform(make_arrow_only(scale=scale, text=text, color=color), dest).Shape()
 
 def make_arrows(event=None):
     #a silly chain of arrows
