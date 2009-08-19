@@ -261,12 +261,12 @@ def mate_connection(connection):
     #    angle=math.pi) #rotate 180 so that interface z axes are opposed
     #i2.part.transformation = i1.part.transformation.Multiplied(i1.get_transformation().Multiplied(i2.get_transformation()))
     #i2.part.transformation = i2.get_transformation().Multiplied(i1.get_transformation().Multiplied(i1.part.transformation))
-    i2.part.transformation = gp_Trsf()
-    t = i2.part.transformation
+    t = gp_Trsf()
     #t.Multiply(i2.get_transformation().Inverted())
-    t.Multiply(i1.get_transformation().Inverted())
+    t.Multiply(i1.get_transformation())
     t.Multiply(i1.part.transformation)
     t.Multiply(i2.get_transformation())
+    return t
 
     #i2.part.transformation.Multiply(opposite)
     return i2.part.transformation
@@ -276,7 +276,7 @@ def get_transformation(self): #i wish this were a property instead
     '''returns the transformation to align the interface vector at the origin along the Z axis'''
     trsf = gp_Trsf()
     z_vec = Vector(self.x_vec).Crossed(Vector(self.y_vec)) #find the interface vector
-    trsf.SetTransformation(gp_Ax3(Point(self.point), Direction(self.x_vec)))
+    trsf.SetTransformation(gp_Ax3(Point(self.point), Direction(z_vec)))
     return trsf
 Interface.get_transformation = get_transformation
 
