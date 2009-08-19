@@ -276,7 +276,7 @@ def get_transformation(self): #i wish this were a property instead
     '''returns the transformation to align the interface vector at the origin along the Z axis'''
     trsf = gp_Trsf()
     z_vec = Vector(self.x_vec).Crossed(Vector(self.y_vec)) #find the interface vector
-    trsf.SetTransformation(gp_Ax3(Point(self.point), Direction(z_vec)))
+    trsf.SetTransformation(gp_Ax3(Point(self.point), Direction(self.x_vec)))
     return trsf
 Interface.get_transformation = get_transformation
 
