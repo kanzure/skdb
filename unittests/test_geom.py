@@ -28,6 +28,7 @@ class TestGeom(unittest.TestCase):
         point = Point(1,2,3)
         point = Point(0,0,0)
         point = Point([1,2,3])
+        point = Point((1,2,3))
         point = Point(gp_Pnt(1,2,3))
         point = Point(Point(1,2,3))
         point = Point(Vector(1,2,3))

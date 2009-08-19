@@ -81,7 +81,7 @@ class OCC_triple(FennObject):
             if isinstance(x, cls): #Point(gp_Pnt()) or Point(Vector(1,2,3))
                 self.x, self.y, self.z = (x.X(), x.Y(), x.Z())
                 self.post_init_hook(); return
-        if isinstance(x, list):
+        if isinstance(x, list) or isinstance(x, tuple):
             self.x, self.y, self.z = float(x[0]), float(x[1]), float(x[2])
         elif x is not None and y is not None and z is not None:
             self.x, self.y, self.z = float(x), float(y), float(z)
