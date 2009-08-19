@@ -176,8 +176,8 @@ current_brick = None
 all_bricks = [] #not currently used
 
 def get_brick():
-    brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
-    #brick = deepcopy(lego.parts[random.randint(2,3)])
+    #brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
+    brick = deepcopy(lego.parts[random.randint(2,2)])
     brick.post_init_hook()
     brick.load_CAD()
     return brick
@@ -190,23 +190,28 @@ def make_lego(event=None, brick=None):
     global current_brick, all_bricks
     if brick is None: brick = get_brick()
     current_brick = brick
+    display.DisplayColoredShape(current_brick.shapes[0], 'GREEN')
+    for i in current_brick.interfaces:
+        display.DisplayShape(make_vertex(Point(i.point)))
     #orient the part so that i[0] is aligned with the origin's z-axis
     trsf = gp_Trsf()
     i = current_brick.interfaces[0]
     point = Point(i.point)
     trsf = i.get_transformation()
-    #trsf = trsf.Inverted()
-    current_brick.transformation = trsf
-    shapes = current_brick.shapes
+    current_brick.transformation = trsf #side effect
+    shapes = current_brick.shapes 
     shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape() #move it
     display.DisplayColoredShape(shapes[0], 'RED')
+    for i in current_brick.interfaces:
+        display.DisplayShape(make_vertex(Point(i.point).Transformed(trsf)))
     all_bricks.append(current_brick)
 
-def add_lego(event=None, brick=get_brick()):
+def add_lego(event=None, brick=None):
     global current_brick, all_bricks
     opts = None
     n=0
-    brick2 = brick
+    if brick is not None: brick2 = brick
+    else: brick2 = get_brick()
     while True:
         i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
         opts = list(i1.options(brick2))
@@ -214,38 +219,53 @@ def add_lego(event=None, brick=get_brick()):
         brick2 = get_brick() #try again
         n+=1
     conn =opts[random.randint(0, len(opts)-1)]
+    
+    #i1 = current_brick.interfaces[3]
+    #i2 = brick2.interfaces[7]
+    #conn = skdb.Connection(i1, i2)
 
     trsf = mate_connection(conn)
-    #display.DisplayShape(make_vertex(Point(conn.interface1.point).Transformed(trsf)))
-    display.DisplayShape(make_vertex(Point(conn.interface2.point).Transformed(trsf)))
-    shapes = conn.interface2.part.shapes
-    shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape()
     
     trsf2 = gp_Trsf()
-    trsf.Multiply(conn.interface1.part.transformation)
     trsf.Multiply(conn.interface1.get_transformation())
+    trsf.Multiply(trsf)
     display.DisplayShape(make_arrow_to(trsf2, scale=3, color='RED', text='i1'))
     
     trsf3 = gp_Trsf()
-    trsf3.Multiply(conn.interface2.part.transformation)
     trsf3.Multiply(conn.interface2.get_transformation())
+    trsf3.Multiply(trsf)
     display.DisplayShape(make_arrow_to(trsf3, scale=3, text='i2'))
 
     all_bricks.append(brick2)
     display.DisplayShape(brick2.shapes[0])
     current_brick = brick2
+
+current_brick = get_brick()
+brick2 = get_brick()
+opts = list(current_brick.options(brick2))
+opt = 0
+
+def show_next_mate(event=None, mate=None):
+    global opt
+    display.EraseAll()
+    display.DisplayColoredShape(current_brick.shapes[0], 'RED')
+    conn=opts[opt]
+    opt += 1
+    trsf = mate_connection(conn)
+
+    display.DisplayShape(BRepBuilderAPI_Transform(conn.interface2.part.shapes[0], trsf, True).Shape())
+    display.DisplayShape(make_vertex(Point(conn.interface1.point).Transformed(trsf)))
+    display.DisplayShape(make_vertex(Point(conn.interface2.point).Transformed(trsf)))
     
-    #interface arrows
-    go_away='''(body, head) = make_arrow_only(gp_Ax1(safe_point(i2.point), gp_Dir(i2.z_vec)))
-    head1 = point_shape(head, gp_Ax1(safe_point([0,0,0]), gp_Dir(i2.y_vec)))
-    body1 = point_shape(body, gp_Ax1(safe_point([0,0,0]), gp_Dir(i2.y_vec)))
-    display.DisplayShape(head)
-    display.DisplayShape(body)'''
 
 def show_interfaces(event=None, brick=None):
     if brick is None: brick = current_brick
     for i in brick.interfaces:
-        display.DisplayShape(make_arrow_to(dest=i.get_transformation().Multiplied(i.part.transformation), text=brick.interfaces.index(i)))
+        #display.DisplayShape(make_arrow_to(dest=i.part.transformation.Multiplied(i.get_transformation()), text=brick.interfaces.index(i), scale=5))
+        dest = Transformation()
+        dest.Multiply(i.part.transformation)
+        dest.Multiply(i.get_transformation())
+        display.DisplayShape(make_arrow_to(dest=dest, text=brick.interfaces.index(i), scale=5))
 
 def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
@@ -259,14 +279,11 @@ def make_arrow_only(origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=N
     body = BRepPrimAPI_MakeCylinder(0.02*scale, 0.7*scale).Shape()
     head = BRepPrimAPI_MakeCone(0.1*scale,0.001,0.3*scale).Shape()
     head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move cone to top of arrow
-    #arrow = BRepAlgoAPI_Fuse(head, body).Shape()
-    head = point_shape(head, origin)
-    body = point_shape(body, origin)
-    head = move_shape(head, gp_Pnt(0,0,0), origin.Location())
-    body = move_shape(body, gp_Pnt(0,0,0), origin.Location())
     return BRepAlgoAPI_Fuse(head, body).Shape()
 
 def make_arrow_to(dest=gp_Trsf(), scale=1, text=None, color='YELLOW'):
+    for i in 0, 1, 2, 3:
+        print dest._CSFDB_Getgp_Trsfmatrix().Column(i).Coord()
     if text is not None: make_text(text, Point(dest.TranslationPart().Coord()), 6)
     return BRepBuilderAPI_Transform(make_arrow_only(scale=scale, text=text, color=color), dest).Shape()
 
@@ -279,10 +296,13 @@ def make_arrows(event=None):
     
 def make_coordinate_arrows(event=None):
     #typical origin symbol
-    display.DisplayShape(make_vertex(gp_Pnt(1,0,0)))
-    make_arrow(color='RED', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)))
-    make_arrow(color='GREEN', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,1,0)))
-    make_arrow(color='BLUE', origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)))
+    display.DisplayShape(make_vertex(gp_Pnt(0,0,0)))
+    x = gp_Trsf(); x.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), gp_Dir(1,0,0)))
+    y = gp_Trsf(); y.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), gp_Dir(0,1,0)))
+    z = gp_Trsf(); z.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), gp_Dir(0,0,1)))
+    display.DisplayColoredShape(make_arrow_to(scale=3, dest=x), 'RED')
+    display.DisplayColoredShape(make_arrow_to(scale=3, dest=y), 'GREEN')
+    display.DisplayColoredShape(make_arrow_to(scale=3, dest=z), 'BLUE')
 
 def init_display():
     '''The reason for recreating is that myGroup is gone after an EraseAll call'''
@@ -367,7 +387,8 @@ from pymates import add_key
 add_key('a', add_lego)
 add_key('c', clear)
 add_key('m', make_lego)
-add_key('s', show_interfaces)
+add_key('i', show_interfaces)
+add_key(' ', show_next_mate)
 
 if __name__ == '__main__':
         from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display
@@ -391,8 +412,9 @@ if __name__ == '__main__':
             add_function_to_menu('demo', f)
         #random_sweep()
         init_display()
-        make_lego()
-        add_lego()
+        #make_lego()
+        #add_lego()
+        make_coordinate_arrows()
         start_display()
 
         
