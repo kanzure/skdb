@@ -1,0 +1,12 @@
+these files are for extracting and manipulating data from the design engineering lab 
+repository, previously located at http://function.device.mst.edu and now at
+http://designengineeringlab.org:16080/
+
+you can read more about their philosophy etc at 
+http://designengineeringlab.org/delabsite/research.html
+
+the repository was a SQL database mainly geared toward representing function structure 
+graphs in terms of "flows".
+
+the database (and subsequent XML dump) contained base64 (ascii) encoded jpeg files, so in 
+order to view those files we have to decode them, hence these scripts.
