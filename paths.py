@@ -276,15 +276,16 @@ def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1,
 
 def make_arrow_only(origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
     assert type(origin) == gp_Ax1
-    body = BRepPrimAPI_MakeCylinder(0.02*scale, 0.7*scale).Shape()
-    head = BRepPrimAPI_MakeCone(0.1*scale,0.001,0.3*scale).Shape()
-    #head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move cone to top of arrow
-    head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0.08*scale,0,0.7*scale)) #move cone to top of arrow
+    body = BRepPrimAPI_MakeCylinder(0.02*scale, 1*scale).Shape()
+    #head = BRepPrimAPI_MakeCone(0.1*scale,0.001,0.3*scale).Shape()
+    head = BRepPrimAPI_MakeWedge (0.3*scale, 0.05*scale, 0.3*scale, 0.1).Shape() #dx, dy, dz, ltx(?)
+    head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move flag to top of arrow
+
     return BRepAlgoAPI_Fuse(head, body).Shape()
 
 def make_arrow_to(dest=gp_Trsf(), scale=1, text=None, color='YELLOW'):
-    for i in 0, 1, 2, 3:
-        print dest._CSFDB_Getgp_Trsfmatrix().Column(i).Coord()
+    #for i in 0, 1, 2, 3:
+        #print dest._CSFDB_Getgp_Trsfmatrix().Column(i).Coord()
     if text is not None: make_text(text, Point(dest.TranslationPart().Coord()), 6)
     return BRepBuilderAPI_Transform(make_arrow_only(scale=scale, text=text, color=color), dest).Shape()
 
@@ -304,12 +305,16 @@ def make_coordinate_arrow(direction, color='YELLOW'):
 def make_coordinate_arrows(event=None):
     #typical origin symbol
     display.DisplayShape(make_vertex(gp_Pnt(0,0,0)))
+    for (v, c) in [[(1,0,0), 'RED'], [(0,1,0), 'GREEN'], [(0,0,1), 'BLUE']]:
+        make_coordinate_arrow(v, c)
+    return
+    
     for a in 0, 1, -1:
         for b in 0, 1, -1:
             for c in 0, 1, -1:
                 try: make_coordinate_arrow([a, b, c])
                 except RuntimeError:
-                    print ""
+                    pass
 
 def init_display():
     '''The reason for recreating is that myGroup is gone after an EraseAll call'''
