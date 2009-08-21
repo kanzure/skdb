@@ -293,16 +293,22 @@ def make_arrows(event=None):
     display.DisplayShape(make_vertex(gp_Pnt(1,1,2)))
     s=math.sqrt(3)/3
     make_arrow(origin=gp_Ax1(gp_Pnt(s,s,s+1), gp_Dir(1,1,1)), text='hmm')
-    
+
+def make_coordinate_arrow(direction, color='YELLOW'):
+    direction = Direction(direction)
+    trsf = gp_Trsf()
+    trsf.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), direction))
+    display.DisplayColoredShape(make_arrow_to(scale=3, dest=trsf), color)
+
 def make_coordinate_arrows(event=None):
     #typical origin symbol
     display.DisplayShape(make_vertex(gp_Pnt(0,0,0)))
-    x = gp_Trsf(); x.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), gp_Dir(1,0,0)))
-    y = gp_Trsf(); y.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), gp_Dir(0,1,0)))
-    z = gp_Trsf(); z.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), gp_Dir(0,0,1)))
-    display.DisplayColoredShape(make_arrow_to(scale=3, dest=x), 'RED')
-    display.DisplayColoredShape(make_arrow_to(scale=3, dest=y), 'GREEN')
-    display.DisplayColoredShape(make_arrow_to(scale=3, dest=z), 'BLUE')
+    for a in 0, 1, -1:
+        for b in 0, 1, -1:
+            for c in 0, 1, -1:
+                try: make_coordinate_arrow([a, b, c])
+                except RuntimeError:
+                    print ""
 
 def init_display():
     '''The reason for recreating is that myGroup is gone after an EraseAll call'''
