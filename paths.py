@@ -316,6 +316,31 @@ def make_coordinate_arrows(event=None):
                 except RuntimeError:
                     pass
 
+#not tested
+def angle_between(vec1, vec2):
+    '''returns the angle between vec1 and vec2'''
+    vec1a = vec1.Normalized()
+    vec2a = vec2.Normalized()
+    return math.acos( vec1a.Dot(vec2a) )
+
+#not tested
+def converter(point, x_vec, y_vec):
+    '''convert from (point, x_vec, y_vec) to (gp_Ax1, rotation) or (point, normal_vector, rotation)
+    get rotation around the normal vector
+    '''
+    normal_vector = x_vec.Crossed(y_vec)
+    #get rotation around the normal vector
+    angle = angle_between(Vector(0,0,1), normal_vector)
+    return [point, normal_vector, angle]
+
+#not tested
+def point_shape_not_mathy(point, x_vec, y_vec):
+    '''given (point, x_vec, y_vec), get a trsf'''
+    trsf = gp_Trsf()
+    normal_vector = converter(point, x_vec, y_vec)[1]
+    trsf.SetTransformation(gp_Ax3(point, normal_vector, x_vec))
+    return trsf
+
 def init_display():
     '''The reason for recreating is that myGroup is gone after an EraseAll call'''
     global myGroup
