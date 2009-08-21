@@ -278,7 +278,8 @@ def make_arrow_only(origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=N
     assert type(origin) == gp_Ax1
     body = BRepPrimAPI_MakeCylinder(0.02*scale, 0.7*scale).Shape()
     head = BRepPrimAPI_MakeCone(0.1*scale,0.001,0.3*scale).Shape()
-    head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move cone to top of arrow
+    #head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move cone to top of arrow
+    head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0.08*scale,0,0.7*scale)) #move cone to top of arrow
     return BRepAlgoAPI_Fuse(head, body).Shape()
 
 def make_arrow_to(dest=gp_Trsf(), scale=1, text=None, color='YELLOW'):
