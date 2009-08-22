@@ -8,337 +8,462 @@ hand tools:
     box knife:
         mcmaster: 3814a11
         level: necessity
+        cost: 1..10 USD
     precision blade:
         mcmaster: 35435a11, 38995a71, 35515a12
         level: priority
+        cost: 1..10 USD
     claw hammer:
         mcmaster: 6484a21
         level: priority
+        cost: 10..50 USD
     ball peen hammer:
         mcmaster: 6481a31
         level: surprisingly useful
+        cost: 10..50 USD
     blacksmiths hammer:
         mcmaster: 64662a24
         level: can do without
+        cost: 10..80 USD
     rubber mallet:
         mcmaster: 5917a8
         level: infrequent but handy
+        cost: 10..40 USD
     miter box:
         mcmaster: 4201a11
         level: surprisingly useful
+        cost: 15..45 USD
     hacksaw:
         mcmaster: 4086a34
         level: necessity
+        cost: 5..25 USD
     tight spot hacksaw:
         mcmaster: 4060a16
         level: extremely useful
+        cost: 2..5 USD
     hole punch tool:
         mcmaster: 3461a22
         level: infrequent but handy
+        cost: 40..150 USD
     center punches and chisel set:
         mcmaster: 3506a76
         level: extremely useful
+        cost: 25..120 USD
     metric and imperial socket sets:
         mcmaster: 7290a24, 5757a35, 5582a11
         level: extremely useful
+        cost: 30..1200 USD
     torque wrench:
         mcmaster: 85555a221
         level: can do without
+        cost: 50..300 USD
     hex key sets:
         mcmaster: 5541a31, 5215a24, 716a13, 5215a12
         level: priority
+        cost: 2..80 USD
     torx key set:
         mcmaster: 5959a85
         level: surprisingly useful
+        cost: 2..40 USD
     mini-hex drivers:
         mcmaster: 52975a21, 7270a59
         level: infrequent but handy
+        cost: 2..40 USD
     combination wrenches:
         mcmaster: 5314a62, 5304a73, 5314a25, 5772a53
         level: priority
+        cost: 25..800 USD
     vise grip long nose locking pliers:
         mcmaster: 7136a19
         level: surprisingly useful
+        cost: 2..50 USD
     needlenose pliers:
         mcmaster: 5451a12
         level: extremely useful
+        cost: 2..35 USD
     bull nose pliers:
         level: surprisingly useful
+        cost: 2..35 USD
     vise grip large:
         size: large
         level: infrequent but handy
+        cost: 5..60 USD
     vise grip medium:
         size: medium
         mcmaster: 5177a17
         level: surprisingly useful
+        cost: 5..45 USD
     adjustable wrenches:
         mcmaster: 5385a12, 5385a15
         level: necessity
+        cost: 3..40 USD
     crow bar: #ripping bar
         mcmaster: 5990a2
         level: infrequent but handy
+        cost: 2..30 USD
     tube cutter:
         mcmaster: 2706a1
         level: can do without
+        cost: 15..80 USD
     glass cutter:
         mcmaster: 3867a16
         level: infrequent but handy
+        cost: 2..25 USD
     bolt chain cutter:
         mcmaster: 3771a15
         level: infrequent but handy
+        cost: 50..150 USD
     sheet metal snips:
         mcmaster: 3585a13, 3908a11, 3902a9
         level: surprisingly useful
+        cost: 10..40 USD
     finnishing saw:
         mcmaster: 4012a1
         level: surprisingly useful
+        cost: 10..30 USD
     coping saw:
         mcmaster: 4099a1, 6917a11
         level: infrequent but handy
+        cost: 4..10 USD
     hole saw kit:
         mcmaster: 4008a71
         level: surprisingly useful
+        cost: 25..120 USD
     pull saw:
         mcmaster: 4058a52
         level: surprisingly useful
+        cost: 10..20 USD
     tape and die:
         mcmaster: 2726a66
         level: extremely useful
+        cost: 40..1200 USD
     drill sets:
         mcmaster: 28115a77, 31555a55, 31555a56, 31555a57, 8802a11, 8802a12, 8802a13
         level: priority
+        cost: 5..1200 USD
     deburring taper:
         mcmaster: 3018a4
         level: can do without
+        cost: 5..80 USD
     deburring tools:
         mcmaster: 4253a16, 4289a36
         level: surprisingly useful
+        cost: 2..25 USD
     drill stops:
         mcmaster: 8959a16
         level: can do without
+        cost: 2..10 USD
     vise:
         mcmaster: 5344a31
         level: necessity
+        cost: 10..1500 USD
     clamps:
         mcmaster: 5165a25
         level: surprisingly useful
+        cost: 2..45 USD
     quick-grips:
         mcmaster: 51755a7
         level: extremely useful
+        cost: 15..50 USD
     jaw puller:
         mcmaster: 6293k12
         level: can do without
+        cost: 50..180 USD
     files:
         mcmaster: 8176a12, 819a12
         level: priority
+        cost: 2..100 USD
     hydraulic floor jack:
         level: extremely useful
+        cost: 25..200 USD
     block and tackle lifting winch:
         level: surprisingly useful
+        cost: 50..500 USD
     screwdrivers:
         mcmaster: 8551a31
         level: necessity
+        cost: 1..90 USD
     jewller screwdrivers:
         mcmaster: 52985a21, 52985a23
         level: priority
+        cost: 10..40 USD
     propane burner:
         level: extremely useful
+        cost: 10..50 USD
     heat gun:
         level: can do without
+        cost: 50..250 USD
 power tools:
     electric drill:
         power: 18V
         mcmaster: 29835a16
         level: necessity
+        cost: 25..300 USD
     band saw:
         mcmaster: 416a12
         level: extremely useful
+        cost: 250..5000 USD
     reciprocating saw: #sawzail
         mcmaster: 4011a25
         level: priority
+        cost: 120..250 USD
     sliding compound miter saw:
         mcmaster: 3001a21
         level: priority
+        cost: 200..600 USD
     tilting table saw:
         mcmaster: 27925a12
         level: extremely useful
+        cost: 300..2000 USD
     drill press:
         mcmaster: 28865a31
         level: surprisingly useful
-    pllunge router:
+        cost: 100..2500 USD
+    plunge router:
         mcmaster: 36485a11
         level: surprisingly useful
+        cost: 100..300 USD
     manual lathe:
         mcmaster: 8941a12
         level: infrequent but handy
+        cost: 500..5000 USD
     mig welder:
         mcmaster: 7899a28
         level: extremely useful
+        cost: 200..1500 USD
     stroboscope:
         mcmaster: 1177t92
         level: can do without
+        cost: 25..250 USD
     adjustable hot plate:
         mcmaster: 33255k6t
         level: infrequent but handy
+        cost: 50..800 USD
     dremel:
         mcmaster: 4344a42, 4370a5
         level: priority
+        cost: 50..150 USD
     angle grinder:
         mcmaster: 4395a16
         level: priority
+        cost: 50..250 USD
     bench grinder:
         mcmaster: 20535A654
         level: infrequent but handy
+        cost: 75..300 USD
     belt sander:
         mcmaster: 4892a21
         level: priority
+        cost: 100..200 USD
     disc-belt sander:
         mcmaster: 46245a49
         level: infrequent but handy
+        cost: 250..1500 USD
     bridgeport mill:
         level: surprisingly useful
+        cost: 500..15000 USD
     heisseschneider hot knife:
         level: uhh
+        cost: 50..200 USD
     sewing machine:
         level: priority
+        cost: 25..2500 USD
     air compressor:
         mcmaster: 4364k3
         level: uhh
+        cost: 200..2500 USD
     spot blaster:
         mcmaster: 31195k11, 3210k11
         level: uhh
+        cost: 50..500 USD
     vacuum pump:
         level: infrequent but handy
+        cost: 100..1000+ USD
     oxy torch:
         mcmaster: 7754a12 #maybe
         level: surprisingly useful
+        cost: 250..1500 USD
     acetylene torch:
         mcmaster: 7754a12 #maybe
         level: surprisingly useful
+        cost: 250..1500 USD
     plasma torch:
         level: infrequent but handy
+        cost: 600..3000 USD
 cnc tools:
     inkjet printer:
         level: necessity
+        cost: 25..250 USD
     large-format printer:
         level: can do without
+        cost: 900..25000 USD
     nc mill:
         level: infrequent but handy
+        cost: 2500..120000 USD
     nc lathe:
         level: can do without
+        cost: 5000..150000 USD
     laser cutter:
         gas: co2
         level: priority
+        cost: 12000..50000 USD
     plasma cutter:
         level: extremely useful
+        cost: 3000..20000 USD
     wire-edm:
         level: can do without
+        cost: 100000..250000 USD
     water jet:
         level: infrequent but handy
+        cost: 80000..150000 USD
     stereolithographic goo squirter:
         level: can do without
+        cost: 25000..250000 #what about bre's stuff?
     plotter:
         level: can do without
+        cost: 1000..25000 USD
 electronic tools:
     wire stripper:
         level: priority
+        cost: 2..80 USD
     pliers set:
         mcmaster: 5323a49
         level: necessity
+        cost: 10..120 USD
     work holder and magnifier:
         mcmaster: 5007a14
         level: priority
+        cost: 5..100 USD
     multimeter:
         level: priority
+        cost: 75..250 USD
     temperature-controlled soldier station:
         level: extremely useful
-    hot air tool for point reflow / desoldering:
+        cost: 150..1000 USD
+    hot air tool for point reflow  desoldering:
         level: surprisingly useful
+        cost: 30..500 USD
     bench power supply, multi-output:
         level: priority
+        cost: 150..500 USD
     toaster oven, adjustable time/temp:
         level: extremely useful
+        cost: 40..60 USD
     microscope:
         level: infrequent but handy
     oscilloscope:
         level: infrequent but handy
+        cost: 500..5000 USD
     microtweezer sets:
         level: extremely useful
+        cost: 2..100 USD
     pick-n-place smt:
         level: can do without
+        cost: 3000..25000 USD
 fetish tools:
     optics bench:
         level: infrequent but handy
+        cost: 1000..400000 USD
     mask writer:
         level: can do without
+        cost: 50000..1000000 USD
     mini-jector:
         level: can do without
+        cost: 4000..50000 USD
     thermoformer:
         level: surprisingly useful
+        cost: 1000..20000 USD
     ESEM:
         level: can do without
+        cost: 25000..500000 USD
     3D scanner:
         level: infrequent but handy
+        cost: 5000..100000 USD
     excimer laser cutter:
         level: can do without
+        cost: 100000..1000000 USD
     PCR: #this isn't a tool, saul.
         level: can do without
+        cost: 10..100000 USD #wtf. rt-pcr?
     micropipettes:
         level: can do without
+        cost: 20..2000 USD
     spin coater:
         level: can do without
+        cost: 500..25000 USD
     high temp vacuum oven:
         level: can do without
+        cost: 2000..30000 USD
     chemistry hoods:
         level: can do without
     glassware:
         level: can do without
+        cost: 2000..1000000
     ultrasonic welder:
         level: can do without
+        cost: 5000..25000 USD
     tube bender:
         level: can do without
+        cost: 1000..40000 USD
     etching tanks:
         level: can do without
+        cost: 25..2500 USD
     kiln:
         level: can do without
+        cost: 500..5000 USD
     anvil:
         level: can do without
+        cost: 250..1000 USD
     crucible:
         level: can do without
+        cost: 20..2500 USD
     thin film evaporater sputterer:
         level: can do without
+        cost: 5000..100000 USD
 safety, measurement and visualization:
     safety goggles:
         mcmaster: 2404t21
         level: necessity
+        cost: 1..10 USD
     ear muffs:
         mcmaster: 920516
         level: priority
+        cost: 2..30 USD
     micrometer:
         mcmaster: 2054a75
         level: priority
+        cost: 5..300 USD
     caliper:
         mcmaster: 8647a44
         level: necessity
+        cost: 5..500 USD
     head-mounted magnifier:
         mcmaster: 1490t3, 1509t14
         level: extremely useful
-    feeler-gauges:
+        cost: 5..120 USD
+    feeler gauges:
         mcmaster: 2070a7
         level: infrequent but handy
+        cost: 1..25 USD
     spirit level:
         mcmaster: 2169a4, 169a1
         level: can do without
+        cost: 5..50 USD
     tape measure:
         mcmaster: 19805a74
         level: necessity
+        cost: 1..25 USD
     adjustable stereomicroscope:
         mcmaster: 10705t64
         level: extremely useful
+        cost: 500..25000 USD
     hot gloves:
         level: infrequent but handy
+        cost: 5..100 USD
     work gloves: 
         level: extremely useful
+        cost: 1..40 USD
     welding mask:
         level: can do without
+        cost: 15..100 USD
 
