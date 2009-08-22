@@ -49,18 +49,49 @@ offsite:
 
 stabilization protocol:
     - Saline solution to dissoleve the heparin (2500 units of heparin per cc)
-    - Potassium chloride (1mEq/kg) or sodium pentobarbital (30mg)
-    - Deferoxamine HCl (2g)
+    - or:
+        potassium chloride:
+            quantity: 1mEq/kg
+        sodium pentobarbital:
+            quantity: 30mg
+    - deferoxamine HCl:
+        quantity: 2g
     - Epinephrine (0,2mg/kg followed by 0,1mg/kg every 10 min. until temp. is 25°C)
-    - Nimodipine (10 µg/kg IV push + continious IV infusion at a rate of 60 µg/Kg/h untill esophageal temp. is 30°C) or diltiazem HCl (300µg/Kg)
-    - Sodium citrate (120 mg/Kg)
+    - or:
+        nimodipine:
+            notes: 10 micrograms/kg IV push + continuous IV infusion at a rate of 60 micrograms/Kg/h until esophageal temp is 30 deg C
+        diltiazem HCl:
+            quantity: 300 micrograms/Kg
+    - sodium acetate:
+        quantity: 120mg/kg
     - E-Celle (micellized d-alpha-tocopherol acetate) (80 IU/Kg + continious infusion at a rate of 10 IU/Kg/h)
-    - Ascorbic acid (125mg/Kg)
+    - ascorbic acid:
+        quantity: 125mg/kg
     - Tromethamine (250mg/Kg; 200 cc 0,3M fast + infusion 30 drops/sec.)
-    - Heparin (420 IU/Kg)
-    - Chlorpromazine HCl (3mg/Kg)
-    - Methylprednisolone HCl (1g)
-    - Mannitol (2g/Kg)
-    - Metubine iodide (0,07 mg/Kg) or succinylchloride (0,8 mg/Kg)
-    - Gentamicin sulphate (1 mg/Kg) + Bactrim (160 mg) + sulfamethoxazole (800 mg) or erythromycin (1 g adults, 500 mg children under 12)
-    - Dextran-40 in normal saline (250-500 cc)
+    - heparin:
+        quantity: 420 IU/kg
+    - chlorpromazine HCl:
+        quantity: 3mg/kg
+    - methlyprednisolone HCl:
+        quantity: 1g
+    - mannitol:
+        quantity: 2g/kg
+    - or:
+        metubine iodide:
+            quantity: 0.07 mg/Kg
+        succinylchloride:
+            quantity: 0.8 mg/Kg
+    #- Gentamicin sulphate (1 mg/Kg) + Bactrim (160 mg) + sulfamethoxazole (800 mg) or erythromycin (1 g adults, 500 mg children under 12)
+    - and:
+        gentamicin sulphate:
+            quantity: 1 mg/Kg
+        bactrim:
+            quantity: 160mg
+        or:
+            sulfamethoxazole:
+                quantity: 800 mg
+            erythromycin:
+                quantity: 1g
+                under 12 years of age: 500mg
+    - dextran-40 in normal saline:
+        quantity: 250..500cc
