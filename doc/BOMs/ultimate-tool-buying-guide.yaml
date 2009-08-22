@@ -2,7 +2,7 @@ description: "a complete list of tools you need to make almost anything. think o
 author: 'saul griffith'
 urls:
 - "http://www.saulgriffith.com/Make/Make03.pdf"
-levels: necessity, priority, extremely useful, surprisingly useful, infrequent but handy, can do without it, meh
+levels: necessity, priority, extremely useful, surprisingly useful, infrequent but handy, can do without, uhh
 
 hand tools:
     box knife:
@@ -16,99 +16,143 @@ hand tools:
         level: priority
     ball peen hammer:
         mcmaster: 6481a31
+        level: surprisingly useful
     blacksmiths hammer:
         mcmaster: 64662a24
+        level: can do without
     rubber mallet:
         mcmaster: 5917a8
+        level: infrequent but handy
     miter box:
         mcmaster: 4201a11
+        level: surprisingly useful
     hacksaw:
         mcmaster: 4086a34
+        level: necessity
     tight spot hacksaw:
         mcmaster: 4060a16
+        level: extremely useful
     hole punch tool:
         mcmaster: 3461a22
+        level: infrequent but handy
     center punches and chisel set:
         mcmaster: 3506a76
+        level: extremely useful
     metric and imperial socket sets:
         mcmaster: 7290a24, 5757a35, 5582a11
+        level: extremely useful
     torque wrench:
         mcmaster: 85555a221
+        level: can do without
     hex key sets:
         mcmaster: 5541a31, 5215a24, 716a13, 5215a12
         level: priority
     torx key set:
         mcmaster: 5959a85
+        level: surprisingly useful
     mini-hex drivers:
         mcmaster: 52975a21, 7270a59
+        level: infrequent but handy
     combination wrenches:
         mcmaster: 5314a62, 5304a73, 5314a25, 5772a53
         level: priority
     vise grip long nose locking pliers:
         mcmaster: 7136a19
+        level: surprisingly useful
     needlenose pliers:
         mcmaster: 5451a12
+        level: extremely useful
     bull nose pliers:
-    vise grip: #large
-    vise grip med: #medium
+        level: surprisingly useful
+    vise grip large:
+        size: large
+        level: infrequent but handy
+    vise grip medium:
+        size: medium
         mcmaster: 5177a17
+        level: surprisingly useful
     adjustable wrenches:
         mcmaster: 5385a12, 5385a15
+        level: necessity
     crow bar: #ripping bar
         mcmaster: 5990a2
+        level: infrequent but handy
     tube cutter:
         mcmaster: 2706a1
+        level: can do without
     glass cutter:
         mcmaster: 3867a16
+        level: infrequent but handy
     bolt chain cutter:
         mcmaster: 3771a15
+        level: infrequent but handy
     sheet metal snips:
         mcmaster: 3585a13, 3908a11, 3902a9
+        level: surprisingly useful
     finnishing saw:
         mcmaster: 4012a1
+        level: surprisingly useful
     coping saw:
         mcmaster: 4099a1, 6917a11
+        level: infrequent but handy
     hole saw kit:
         mcmaster: 4008a71
+        level: surprisingly useful
     pull saw:
         mcmaster: 4058a52
+        level: surprisingly useful
     tape and die:
         mcmaster: 2726a66
+        level: extremely useful
     drill sets:
         mcmaster: 28115a77, 31555a55, 31555a56, 31555a57, 8802a11, 8802a12, 8802a13
         level: priority
     deburring taper:
         mcmaster: 3018a4
+        level: can do without
     deburring tools:
         mcmaster: 4253a16, 4289a36
+        level: surprisingly useful
     drill stops:
         mcmaster: 8959a16
+        level: can do without
     vise:
         mcmaster: 5344a31
+        level: necessity
     clamps:
         mcmaster: 5165a25
+        level: surprisingly useful
     quick-grips:
         mcmaster: 51755a7
+        level: extremely useful
     jaw puller:
         mcmaster: 6293k12
+        level: can do without
     files:
         mcmaster: 8176a12, 819a12
         level: priority
     hydraulic floor jack:
+        level: extremely useful
     block and tackle lifting winch:
+        level: surprisingly useful
     screwdrivers:
         mcmaster: 8551a31
+        level: necessity
     jewller screwdrivers:
         mcmaster: 52985a21, 52985a23
         level: priority
     propane burner:
+        level: extremely useful
     heat gun:
+        level: can do without
 power tools:
     electric drill:
         power: 18V
         mcmaster: 29835a16
+        level: necessity
     band saw:
         mcmaster: 416a12
+        level: extremely useful
     reciprocating saw: #sawzail
         mcmaster: 4011a25
         level: priority
@@ -117,18 +161,25 @@ power tools:
         level: priority
     tilting table saw:
         mcmaster: 27925a12
+        level: extremely useful
     drill press:
         mcmaster: 28865a31
+        level: surprisingly useful
     pllunge router:
         mcmaster: 36485a11
+        level: surprisingly useful
     manual lathe:
         mcmaster: 8941a12
+        level: infrequent but handy
     mig welder:
         mcmaster: 7899a28
+        level: extremely useful
     stroboscope:
         mcmaster: 1177t92
+        level: can do without
     adjustable hot plate:
         mcmaster: 33255k6t
+        level: infrequent but handy
     dremel:
         mcmaster: 4344a42, 4370a5
         level: priority
@@ -137,81 +188,129 @@ power tools:
         level: priority
     bench grinder:
         mcmaster: 20535A654
+        level: infrequent but handy
     belt sander:
         mcmaster: 4892a21
         level: priority
     disc-belt sander:
         mcmaster: 46245a49
+        level: infrequent but handy
     bridgeport mill:
+        level: surprisingly useful
     heisseschneider hot knife:
+        level: uhh
     sewing machine:
         level: priority
     air compressor:
         mcmaster: 4364k3
+        level: uhh
     spot blaster:
         mcmaster: 31195k11, 3210k11
+        level: uhh
     vacuum pump:
+        level: infrequent but handy
     oxy torch:
         mcmaster: 7754a12 #maybe
+        level: surprisingly useful
     acetylene torch:
         mcmaster: 7754a12 #maybe
+        level: surprisingly useful
     plasma torch:
+        level: infrequent but handy
 cnc tools:
     inkjet printer:
+        level: necessity
     large-format printer:
+        level: can do without
     nc mill:
+        level: infrequent but handy
     nc lathe:
+        level: can do without
     laser cutter:
         gas: co2
         level: priority
     plasma cutter:
+        level: extremely useful
     wire-edm:
+        level: can do without
     water jet:
+        level: infrequent but handy
     stereolithographic goo squirter:
+        level: can do without
     plotter:
+        level: can do without
 electronic tools:
     wire stripper:
         level: priority
-    pfiers set:
+    pliers set:
         mcmaster: 5323a49
+        level: necessity
     work holder and magnifier:
         mcmaster: 5007a14
         level: priority
     multimeter:
         level: priority
     temperature-controlled soldier station:
+        level: extremely useful
     hot air tool for point reflow / desoldering:
+        level: surprisingly useful
     bench power supply, multi-output:
         level: priority
     toaster oven, adjustable time/temp:
+        level: extremely useful
     microscope:
+        level: infrequent but handy
     oscilloscope:
-    micro-tweezer sets:
+        level: infrequent but handy
+    microtweezer sets:
+        level: extremely useful
     pick-n-place smt:
+        level: can do without
 fetish tools:
     optics bench:
+        level: infrequent but handy
     mask writer:
+        level: can do without
     mini-jector:
+        level: can do without
     thermoformer:
+        level: surprisingly useful
     ESEM:
+        level: can do without
     3D scanner:
+        level: infrequent but handy
     excimer laser cutter:
+        level: can do without
     PCR: #this isn't a tool, saul.
+        level: can do without
     micropipettes:
+        level: can do without
     spin coater:
+        level: can do without
     high temp vacuum oven:
+        level: can do without
     chemistry hoods:
+        level: can do without
     glassware:
+        level: can do without
     ultrasonic welder:
+        level: can do without
     tube bender:
+        level: can do without
     etching tanks:
+        level: can do without
     kiln:
+        level: can do without
     anvil:
+        level: can do without
     crucible:
+        level: can do without
     thin film evaporater sputterer:
+        level: can do without
 safety, measurement and visualization:
     safety goggles:
         mcmaster: 2404t21
+        level: necessity
     ear muffs:
         mcmaster: 920516
         level: priority
@@ -220,15 +319,26 @@ safety, measurement and visualization:
         level: priority
     caliper:
         mcmaster: 8647a44
+        level: necessity
     head-mounted magnifier:
         mcmaster: 1490t3, 1509t14
+        level: extremely useful
     feeler-gauges:
         mcmaster: 2070a7
+        level: infrequent but handy
     spirit level:
         mcmaster: 2169a4, 169a1
+        level: can do without
     tape measure:
         mcmaster: 19805a74
+        level: necessity
+    adjustable stereomicroscope:
+        mcmaster: 10705t64
+        level: extremely useful
     hot gloves:
-    work gloves:
+        level: infrequent but handy
+    work gloves: 
+        level: extremely useful
     welding mask:
+        level: can do without
 
