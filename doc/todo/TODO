@@ -6,6 +6,8 @@ skdb core:
         connection graph:
             apply transforms at each arc while traversing:
             wrap some graph class instead of using directly for easy swapping:
+        part mating:
+            method of computing roll (rotation around the normal vector)
 package code:
     generate instructions for making a package:
 clients: #desktop, unless you really like writing javascript?
