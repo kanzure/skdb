@@ -7,11 +7,10 @@ import os, math
 from copy import copy, deepcopy
 from string import Template
 
-def move_shape(shape, from_pnt, to_pnt, trsf_only=False):
+def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
     trsf.SetTranslation(from_pnt, to_pnt)
-    if trsf_only: return trsf
-    else: return BRepBuilderAPI_Transform(shape, trsf, True).Shape()
+    return BRepBuilderAPI_Transform(shape, trsf, True).Shape()
 
 def angle_to(x,y,z):                                                         
     '''returns polar coordinates in radians to a point from the origin            
@@ -35,10 +34,9 @@ def point_along(direction):
     trsf2.Multiply(trsf)
     return trsf2
     
-def point_shape(shape, origin, trsf_only=False):
+def point_shape(shape, direction):
     '''rotates a shape to point along origin's direction. this function ought to be unnecessary'''
-    assert type(origin) == gp_Ax1
-    shape = BRepBuilderAPI_Transform(shape, point_along(origin.Direction), True).Shape()
+    shape = BRepBuilderAPI_Transform(shape, point_along(Direction(direction)), True).Shape()
     return shape
 
 def translation(point1=None, point2=None, vector=None):
