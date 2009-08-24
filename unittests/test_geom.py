@@ -62,28 +62,6 @@ class TestGeom(unittest.TestCase):
         self.assertEqual(yaml.load("!vector ['0.0', '0.0', 1e-08]"), geom.Vector(0, 0, 0.00000001))
     def test_dir(self): #maybe we can just force everyone to use !vector instead of !orientation or !direction (it's the same thing)
         dir = Direction(1,2,3)
-    def test_translation(self): #this is an obsolete test and may be removed
-        '''test translation'''
-        y_displacement = 10
-        y_init = 5
-        point = [0,y_init,0]
-        trsf1 = translation(point1=[0,0,0], point2=[0,y_displacement,0])
-        result_point = point_trsf(point, trsf1)
-        if not y_displacement == 0:
-            self.assertFalse(result_point == point)
-        self.assertTrue(result_point == Point([point[0],point[1]+y_displacement,point[2]]))
-        #TODO: test translation(vector)
-    def test_rotation(self): #this is an obsolete test and may be removed
-        '''test geom.rotation'''
-        #test rotation(rotation_pivot_point, direction, angle)
-        rotation_pivot_point = Point(0,0,0)
-        direction = Direction(0, 0, 1)
-        angle = math.pi
-        point = Point(5,0,0)
-        trsf1 = rotation(rotation_pivot_point=rotation_pivot_point, direction=direction, angle=angle)
-        result_point = point_trsf(point, trsf1)
-        self.assertEqual(result_point, Point(-5,0,0))
-        #TODO: test rotation(gp_Ax1, angle)
     def test_transformation(self):
         '''note: gp_Trsf not be stored in yaml'''
         trans0 = geom.Transformation()
