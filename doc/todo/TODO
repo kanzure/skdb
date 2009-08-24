@@ -8,6 +8,8 @@ skdb core:
             wrap some graph class instead of using directly for easy swapping:
         part mating:
             method of computing roll (rotation around the normal vector)
+            start with origin. rotate both Z and X in global el and az so that Z lines
+            up with z_vec. now roll is the angle between twice rotated X and final x_vec 
 package code:
     generate instructions for making a package:
 clients: #desktop, unless you really like writing javascript?
