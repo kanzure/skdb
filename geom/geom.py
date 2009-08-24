@@ -39,33 +39,6 @@ def point_shape(shape, direction):
     shape = BRepBuilderAPI_Transform(shape, point_along(Direction(direction)), True).Shape()
     return shape
 
-def translation(point1=None, point2=None, vector=None):
-    '''translate(point1, point2) -> gp_Trsf
-    translate(vector) -> gp_Trsf'''
-    new_trsf = gp_Trsf()
-    if point1 and point2: #two points
-       point1 = Point(point1)
-       point2 = Point(point2)
-       vector = gp_Vec(point1, point2)
-    elif vector: #a vector
-       vector = Vector(vector)
-    new_trsf.SetTranslation(vector)
-    return new_trsf
-
-def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given=None):
-    '''rotation(rotation_pivot_point, direction, angle) -> gp_Trsf
-    rotation(gp_Ax1, angle) -> gp_Trsf'''
-    new_trsf = gp_Trsf()
-    if rotation_pivot_point and direction and angle:
-       rotation_pivot_point = Point(rotation_pivot_point)
-       direction = Direction(direction)
-       ax1 = gp_Ax1(rotation_pivot_point, direction)
-    elif gp_Ax1_given and angle:
-       ax1 = gp_Ax1_given
-    else: raise NotImplementedError, "rotation was given the wrong number of arguments."
-    new_trsf.SetRotation(ax1, angle)
-    return new_trsf
-
 class OCC_triple(FennObject):
     '''simplifies wrapping pythonOCC classes like gp_Pnt, gp_Vec etc'''
     doc_format = Template('''wraps $occ_class: $cls(1,2,3) or $cls([1,2,3]) or $cls($occ_name(1,2,3))
