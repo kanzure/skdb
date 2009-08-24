@@ -5,6 +5,7 @@ import OCC.Utils.DataExchange.STEP
 from skdb import Connection, Part, Interface, Unit, FennObject, round
 import os, math
 from copy import copy, deepcopy
+from string import Template
 
 def move_shape(shape, from_pnt, to_pnt, trsf_only=False):
     trsf = gp_Trsf()
@@ -69,9 +70,9 @@ def rotation(rotation_pivot_point=None, direction=None, angle=None, gp_Ax1_given
 
 class OCC_triple(FennObject):
     '''simplifies wrapping pythonOCC classes like gp_Pnt, gp_Vec etc'''
-    doc_format = '''wraps %s: %s(1,2,3) or %s([1,2,3]) or %s(%s)
-    Caution: assigning an attribute like "x" will not affect the underlying %s,
-    you have to make a new one instead.'''
+    doc_format = Template('''wraps $occ_class: $cls(1,2,3) or $cls([1,2,3]) or $cls($occ_name(1,2,3))
+    Caution: assigning an attribute like "x" will not affect the underlying $occ_name,
+    you have to make a new one instead.''')
     wrapped_classes = gp_Pnt, gp_Vec, gp_Dir, gp_XYZ
     def __init__(self, x=None, y=None, z=None):
         if isinstance(x, self.__class__): #Point(Point(1,2,3))
@@ -103,23 +104,18 @@ class OCC_triple(FennObject):
 class Point(OCC_triple, gp_Pnt):
     yaml_tag='!point'
     occ_class = gp_Pnt
-    __doc__ = OCC_triple.doc_format % (occ_class, 'Point', 'Point', 'Point', occ_class, occ_class.__name__)
+    __doc__ = OCC_triple.doc_format.safe_substitute(occ_class=occ_class, cls='Point', occ_name = occ_class.__name__)
 
 class XYZ(OCC_triple, gp_XYZ):
-    '''wraps gp_XYZ, mainly for the __repr__'''
     occ_class = gp_XYZ
-    __doc__ = OCC_triple.doc_format % (occ_class, 'XYZ', 'XYZ', 'XYZ', occ_class, occ_class.__name__)
-    #def __init__(self, gpxyz=None):
-    #    gp_XYZ.__init__(self)
-    #    if gpxyz:
-    #        self = gpxyz
+    __doc__ = OCC_triple.doc_format.safe_substitute(occ_class=occ_class, cls='XYZ', occ_name = occ_class.__name__)
     def __repr__(self):
         return "[%s, %s, %s]" % (self.X(), self.Y(), self.Z())
 
 class Vector(OCC_triple, gp_Vec):
     yaml_tag='!vector'
     occ_class = gp_Vec
-    __doc__ = OCC_triple.doc_format % (occ_class, 'Vector', 'Vector', 'Vector', occ_class, occ_class.__name__)
+    __doc__ = OCC_triple.doc_format.safe_substitute(occ_class=occ_class, cls='Vector', occ_name = occ_class.__name__)
     def __eq__(self, other):
         '''vec needs LinearTolerance and AngularTolerance'''
         if not isinstance(other, self.__class__.occ_class): return False
@@ -128,7 +124,8 @@ class Vector(OCC_triple, gp_Vec):
 class Direction(OCC_triple, gp_Dir):
     yaml_tag='!direction'
     occ_class = gp_Dir
-    __doc__ = OCC_triple.doc_format % (occ_class, 'Direction', 'Direction', 'Direction', occ_class, occ_class.__name__)
+    __doc__ = OCC_triple.doc_format.safe_substitute(occ_class=occ_class, cls='Vector', occ_name = occ_class.__name__)
+
     
 class Transformation(gp_Trsf):
     '''wraps gp_Trsf for stackable transformations'''
