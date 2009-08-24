@@ -319,11 +319,9 @@ def chain_arrows(event=None):
     make_arrow(origin=gp_Pnt(s,s,s+1), direction=gp_Dir(1,1,1), text='hmm')
 
 def coordinate_arrow(direction, color='YELLOW', flag=False):
-    trsf = gp_Trsf()
-    trsf.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), Direction(direction)))
-    if flag: shape = Flag(scale=3)
-    else: shape = Arrow(scale=3)
-    display.DisplayColoredShape(shape.to(trsf), color)
+    if flag: shape = Flag(scale=3, direction=direction)
+    else: shape = Arrow(scale=3, direction=direction)
+    display.DisplayColoredShape(shape.Shape(), color)
 
 def coordinate_arrows(event=None):
     #typical origin symbol
