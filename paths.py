@@ -35,7 +35,7 @@ from OCC.Display.wxSamplesGui import display
 
 import math #OCC.math gets in the way? wtf
 import skdb
-from geom import Point, Vector, Direction, Transformation, mate_connection, move_shape, point_shape, point_along
+from geom import Point, Vector, Direction, Transformation, mate_connection, move_shape, point_shape, point_along, build_trsf
 
 current = gp_Pnt2d(0,0)
 
@@ -190,9 +190,6 @@ def make_lego(event=None, brick=None):
     global current_brick, all_bricks
     if brick is None: brick = get_brick()
     current_brick = brick
-    display.DisplayColoredShape(current_brick.shapes[0], 'GREEN')
-    for i in current_brick.interfaces:
-        display.DisplayShape(make_vertex(Point(i.point)))
     #orient the part so that i[0] is aligned with the origin's z-axis
     trsf = gp_Trsf()
     i = current_brick.interfaces[0]
@@ -225,16 +222,17 @@ def add_lego(event=None, brick=None):
     #conn = skdb.Connection(i1, i2)
 
     trsf = mate_connection(conn)
-    
+    brick2.transformation = trsf
+    brick2.shapes[0] = BRepBuilderAPI_Transform(brick2.shapes[0], trsf, True).Shape() #move it
     trsf2 = gp_Trsf()
     trsf.Multiply(conn.interface1.get_transformation())
     trsf.Multiply(trsf)
-    display.DisplayShape(Arrow(scale=3, color='RED', text='i1').to(trsf2).Shape())
+    display.DisplayShape(Arrow(scale=3).to(trsf2))
     
     trsf3 = gp_Trsf()
     trsf3.Multiply(conn.interface2.get_transformation())
-    trsf3.Multiply(trsf)
-    display.DisplayShape(Arrow(scale=3, text='i2').to(trsf3).Shape())
+    #trsf3.Multiply(trsf)
+    display.DisplayShape(Arrow(scale=3).to(trsf3))
 
     all_bricks.append(brick2)
     display.DisplayShape(brick2.shapes[0])
@@ -337,6 +335,16 @@ def test_coordinate_arrows(event=None):
                 except RuntimeError:
                     pass
 
+def test_transformation(event=None):
+    brick = get_brick()
+    point = [10,10,10]
+    up =    build_trsf(point,[0,1,0],[-1,0,0])
+    right = build_trsf(point,[1,0,0],[0,1,0])
+    down =build_trsf(point,[0,-1,0],[1,0,0])
+    left =   build_trsf(point,[-1,0,0],[0,-1,0])
+    
+    for (i, color) in [(up,'YELLOW'), (right,"RED"), (down,"GREEN"), (left,"BLUE")]:
+        display.DisplayColoredShape(BRepBuilderAPI_Transform(brick.shapes[0], i).Shape(), color)
 def init_display():
     '''The reason for recreating is that myGroup is gone after an EraseAll call'''
     global myGroup
@@ -449,6 +457,7 @@ if __name__ == '__main__':
         #make_lego()
         #add_lego()
         coordinate_arrows()
+        test_transformation()
         start_display()
 
         

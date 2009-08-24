@@ -62,6 +62,14 @@ class TestGeom(unittest.TestCase):
         self.assertEqual(yaml.load("!vector ['0.0', '0.0', 1e-08]"), geom.Vector(0, 0, 0.00000001))
     def test_dir(self): #maybe we can just force everyone to use !vector instead of !orientation or !direction (it's the same thing)
         dir = Direction(1,2,3)
+    def test_build_trsf(self):
+        a = build_trsf([0,0,0], [1,0,0], [0,1,0])
+        self.assertEqual(a.TranslationPart().Coord(), (0,0,0))
+        print Point(Point(1,2,3).Transformed(a)), Point(1,2,3)
+        self.assertEqual(Point(1,2,3).Transformed(a), Point(1,2,3))
+        self.assertTrue(Direction(1,1,0).Angle(Direction(1,1,math.sqrt(2)))/(math.pi/180) - 45 < 1e-10)
+
+
     def test_transformation(self):
         '''note: gp_Trsf not be stored in yaml'''
         trans0 = geom.Transformation()

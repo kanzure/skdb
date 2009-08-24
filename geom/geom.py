@@ -11,7 +11,12 @@ def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
     trsf.SetTranslation(from_pnt, to_pnt)
     return BRepBuilderAPI_Transform(shape, trsf, True).Shape()
-
+    
+def point_shape(shape, direction):
+    '''rotates a shape to point along origin's direction. this function ought to be unnecessary'''
+    shape = BRepBuilderAPI_Transform(shape, point_along(Direction(direction)), True).Shape()
+    return shape
+    
 def angle_to(x,y,z):                                                         
     '''returns polar coordinates in radians to a point from the origin            
     el rotates around the x-axis; then az rotates around the z axis; r is the distance'''
@@ -24,7 +29,7 @@ def angle_to(x,y,z):
 
 def point_along(direction):
     ox, oy, oz = 0, 0, 0
-    dx, dy, dz = direction.Coord()
+    dx, dy, dz = Direction(direction).Coord()
     (az, el, rad) = angle_to(dx-ox, dy-oy, dz-oz)
     #print "az: %s, el: %s, rad: %s... dx: %s, dy: %s, dz %s)" % (az, el, rad, dx, dy, dz)
     trsf = gp_Trsf()
@@ -34,10 +39,21 @@ def point_along(direction):
     trsf2.Multiply(trsf)
     return trsf2
     
-def point_shape(shape, direction):
-    '''rotates a shape to point along origin's direction. this function ought to be unnecessary'''
-    shape = BRepBuilderAPI_Transform(shape, point_along(Direction(direction)), True).Shape()
-    return shape
+def build_trsf(point, x_vec, y_vec): 
+    point, x_vec, y_vec = Point(point), Direction(x_vec), Direction(y_vec)
+    z_vec = Direction(x_vec.Crossed(y_vec))
+    normal = Direction(0,0,1).Transformed(point_along(z_vec))
+    orthogonal = Direction(1,0,0).Transformed(point_along(z_vec)) #dummy to keep track of X
+    roll_angle = orthogonal.AngleWithRef(x_vec, z_vec)-math.pi/2 #rotation around z_vec
+
+    print roll_angle, roll_angle*180/math.pi
+    trsf = gp_Trsf()
+    trsf.SetTranslation(gp_Pnt(0,0,0), point)
+    tmp = gp_Trsf()
+    tmp.SetRotation(gp_Ax1(gp_Pnt(0,0,0), normal), roll_angle)
+    trsf.Multiply(tmp)
+    #trsf.SetTransformation(gp_Ax3(point, z_vec, Direction(x_vec)))
+    return trsf
 
 class OCC_triple(FennObject):
     '''simplifies wrapping pythonOCC classes like gp_Pnt, gp_Vec etc'''
@@ -209,12 +225,6 @@ def mate_first(part1):
     connecter.connect()
     return mate_connection(connecter)
 
-def build_trsf(point, x_vec, y_vec, rotation=0): #rotation not yet implmented. maybe Transformation could take these as arguments by default?
-    assert isinstance(x_vec, Vector) and isinstance(y_vec, Vector)
-    trsf = gp_Trsf()
-    z_vec = x_vec.Crossed(y_vec)
-    trsf.SetTransformation(gp_Ax3(point, Direction(z_vec.X(), z_vec.Y(), z_vec.Z()), Direction(x_vec)))
-    return trsf
 
 def mate_connection(connection): 
     '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
@@ -243,8 +253,7 @@ def get_transformation(self): #i wish this were a property instead
     '''returns the transformation to align the interface vector at the origin along the Z axis'''
     trsf = gp_Trsf()
     z_vec = Vector(self.x_vec).Crossed(Vector(self.y_vec)) #find the interface vector
-    trsf.SetTransformation(gp_Ax3(Point(self.point), Direction(z_vec)))
-    return trsf
+    return build_trsf(self.point, self.x_vec, self.y_vec)
 Interface.get_transformation = get_transformation
 
 #skdb.Part
