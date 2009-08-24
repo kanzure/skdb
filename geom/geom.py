@@ -14,7 +14,7 @@ def move_shape(shape, from_pnt, to_pnt, trsf_only=False):
 
 def angle_to(x,y,z):                                                         
     '''returns polar coordinates in radians to a point from the origin            
-    a rotates around the x-axis; b rotates around the y axis; r is the distance'''
+    el rotates around the x-axis; then az rotates around the z axis; r is the distance'''
     azimuth = math.atan2(y, x) #longitude                                       
     elevation = math.atan2(z, math.sqrt(x**2 + y**2))                              
     radius = math.sqrt(x**2+y**2+z**2)                                                 
@@ -22,12 +22,9 @@ def angle_to(x,y,z):
     #glRotatef(az-90,0,0,1)                                                        
     #glRotatef(el-90,1,0,0) 
 
-def point_shape(shape, origin, trsf_only=False):
-    '''rotates a shape to point along origin's direction. this function ought to be unnecessary'''
-    assert type(origin) == gp_Ax1
-    #ox, oy, oz = origin.Location().X(), origin.Location().Y(), origin.Location().Z() #ffs
+def point_along(direction):
     ox, oy, oz = 0, 0, 0
-    dx, dy, dz = origin.Direction().X(), origin.Direction().Y(), origin.Direction().Z()
+    dx, dy, dz = direction.Coord()
     (az, el, rad) = angle_to(dx-ox, dy-oy, dz-oz)
     #print "az: %s, el: %s, rad: %s... dx: %s, dy: %s, dz %s)" % (az, el, rad, dx, dy, dz)
     trsf = gp_Trsf()
@@ -35,11 +32,13 @@ def point_shape(shape, origin, trsf_only=False):
     trsf2 = gp_Trsf()
     trsf2.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), az)
     trsf2.Multiply(trsf)
-    if trsf_only: 
-        return trsf2
-    else:
-        shape = BRepBuilderAPI_Transform(shape, trsf2, True).Shape()
-        return shape
+    return trsf2
+    
+def point_shape(shape, origin, trsf_only=False):
+    '''rotates a shape to point along origin's direction. this function ought to be unnecessary'''
+    assert type(origin) == gp_Ax1
+    shape = BRepBuilderAPI_Transform(shape, point_along(origin.Direction), True).Shape()
+    return shape
 
 def translation(point1=None, point2=None, vector=None):
     '''translate(point1, point2) -> gp_Trsf

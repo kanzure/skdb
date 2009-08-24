@@ -35,7 +35,7 @@ from OCC.Display.wxSamplesGui import display
 
 import math #OCC.math gets in the way? wtf
 import skdb
-from geom import Point, Vector, Direction, Transformation, mate_connection, move_shape, point_shape
+from geom import Point, Vector, Direction, Transformation, mate_connection, move_shape, point_shape, point_along
 
 current = gp_Pnt2d(0,0)
 
@@ -229,12 +229,12 @@ def add_lego(event=None, brick=None):
     trsf2 = gp_Trsf()
     trsf.Multiply(conn.interface1.get_transformation())
     trsf.Multiply(trsf)
-    display.DisplayShape(make_arrow_to(trsf2, scale=3, color='RED', text='i1'))
+    display.DisplayShape(Arrow(scale=3, color='RED', text='i1').to(trsf2).Shape())
     
     trsf3 = gp_Trsf()
     trsf3.Multiply(conn.interface2.get_transformation())
     trsf3.Multiply(trsf)
-    display.DisplayShape(make_arrow_to(trsf3, scale=3, text='i2'))
+    display.DisplayShape(Arrow(scale=3, text='i2').to(trsf3).Shape())
 
     all_bricks.append(brick2)
     display.DisplayShape(brick2.shapes[0])
@@ -246,6 +246,7 @@ opts = list(current_brick.options(brick2))
 opt = 0
 
 def show_next_mate(event=None, mate=None):
+    '''cycle through available options and display them with each keypress'''
     global opt
     display.EraseAll()
     display.DisplayColoredShape(current_brick.shapes[0], 'RED')
@@ -261,58 +262,80 @@ def show_next_mate(event=None, mate=None):
 def show_interfaces(event=None, brick=None):
     if brick is None: brick = current_brick
     for i in brick.interfaces:
-        #display.DisplayShape(make_arrow_to(dest=i.part.transformation.Multiplied(i.get_transformation()), text=brick.interfaces.index(i), scale=5))
+        #display.DisplayShape(arrow_to(dest=i.part.transformation.Multiplied(i.get_transformation()), text=brick.interfaces.index(i), scale=5))
         dest = Transformation()
         dest.Multiply(i.part.transformation)
         dest.Multiply(i.get_transformation())
-        display.DisplayShape(make_arrow_to(dest=dest, text=brick.interfaces.index(i), scale=5))
+        display.DisplayShape(arrow_to(dest=dest, text=brick.interfaces.index(i), scale=5))
 
-def make_arrow(event=None, origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
+def make_arrow(event=None, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
-    arrow = make_arrow_only(origin=origin,scale=scale,text=text,color=color)
+    arrow = Arrow(origin=origin, direction=direction, scale=scale).Shape()
     display.DisplayColoredShape(arrow, color)
     if text is not None:
-        make_text(text, origin.Location(), 6)
+        make_text(text, origin, 6)
 
-def make_arrow_only(origin=gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)), scale=1, text=None, color="YELLOW"):
-    assert type(origin) == gp_Ax1
-    body = BRepPrimAPI_MakeCylinder(0.02*scale, 1*scale).Shape()
-    #head = BRepPrimAPI_MakeCone(0.1*scale,0.001,0.3*scale).Shape()
-    head = BRepPrimAPI_MakeWedge (0.3*scale, 0.05*scale, 0.3*scale, 0.1).Shape() #dx, dy, dz, ltx(?)
-    head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move flag to top of arrow
+class Arrow(TopoDS_Shape):
+    def __init__(self, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1):
+        self.origin = Point(origin)
+        self.direction = Direction(direction)
+        self.scale = scale
+        self.build_shape()
+        #apparently we must translate and then rotate
+        tmp = gp_Trsf(); tmp.SetTranslation(gp_Pnt(0,0,0), origin)
+        self.transformation = tmp
+        tmp = point_along(direction)
+        self.transformation.Multiply(tmp)
+    def build_shape(self):
+        scale = self.scale
+        body = BRepPrimAPI_MakeCylinder(0.02*scale, 0.7*scale).Shape()
+        head = BRepPrimAPI_MakeCone(0.1*scale,0.001,0.3*scale).Shape()
+        head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move cone to top of arrow
+        self._shape =  BRepAlgoAPI_Fuse(head, body).Shape()
+        
+    def Shape(self): 
+        return BRepBuilderAPI_Transform(self._shape, self.transformation).Shape()
+    
+    def to(self, dest):
+        assert isinstance(dest, gp_Trsf)
+        self.transformation.Multiply(dest)
+        return BRepBuilderAPI_Transform(self.Shape(), dest).Shape()
 
-    return BRepAlgoAPI_Fuse(head, body).Shape()
-
-def make_arrow_to(dest=gp_Trsf(), scale=1, text=None, color='YELLOW'):
-    #for i in 0, 1, 2, 3:
-        #print dest._CSFDB_Getgp_Trsfmatrix().Column(i).Coord()
-    if text is not None: make_text(text, Point(dest.TranslationPart().Coord()), 6)
-    return BRepBuilderAPI_Transform(make_arrow_only(scale=scale, text=text, color=color), dest).Shape()
-
-def make_arrows(event=None):
+class Flag(Arrow):
+    def __init__(self, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1):
+        Arrow.__init__(self, origin=origin, direction=direction, scale=scale)
+    def build_shape(self):
+        scale = self.scale
+        body = BRepPrimAPI_MakeCylinder(0.02*scale, 1*scale).Shape()
+        head = BRepPrimAPI_MakeWedge (0.3*scale, 0.05*scale, 0.3*scale, 0.1).Shape() #dx, dy, dz, ltx(?)
+        head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move flag to top of arrow
+        self._shape = BRepAlgoAPI_Fuse(head, body).Shape()
+        
+def chain_arrows(event=None):
     #a silly chain of arrows
-    make_arrow(origin=gp_Ax1(gp_Pnt(0,0,1), gp_Dir(1,1,1)))
+    make_arrow(origin=gp_Pnt(0,0,1), direction=gp_Dir(1,1,1))
     display.DisplayShape(make_vertex(gp_Pnt(1,1,2)))
     s=math.sqrt(3)/3
-    make_arrow(origin=gp_Ax1(gp_Pnt(s,s,s+1), gp_Dir(1,1,1)), text='hmm')
+    make_arrow(origin=gp_Pnt(s,s,s+1), direction=gp_Dir(1,1,1), text='hmm')
 
-def make_coordinate_arrow(direction, color='YELLOW'):
-    direction = Direction(direction)
+def coordinate_arrow(direction, color='YELLOW', flag=False):
     trsf = gp_Trsf()
-    trsf.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), direction))
-    display.DisplayColoredShape(make_arrow_to(scale=3, dest=trsf), color)
+    trsf.SetTransformation(gp_Ax3(gp_Pnt(0,0,0), Direction(direction)))
+    if flag: shape = Flag(scale=3)
+    else: shape = Arrow(scale=3)
+    display.DisplayColoredShape(shape.to(trsf), color)
 
-def make_coordinate_arrows(event=None):
+def coordinate_arrows(event=None):
     #typical origin symbol
     display.DisplayShape(make_vertex(gp_Pnt(0,0,0)))
     for (v, c) in [[(1,0,0), 'RED'], [(0,1,0), 'GREEN'], [(0,0,1), 'BLUE']]:
-        make_coordinate_arrow(v, c)
-    return
-    
+        coordinate_arrow(v, c)
+        
+def test_coordinate_arrows(event=None):
     for a in 0, 1, -1:
         for b in 0, 1, -1:
             for c in 0, 1, -1:
-                try: make_coordinate_arrow([a, b, c])
+                try: coordinate_arrow([a, b, c], flag=True)
                 except RuntimeError:
                     pass
 
@@ -413,8 +436,9 @@ if __name__ == '__main__':
                     random_cone,
                     random_sweep,
                     make_arrow,
-                    make_arrows,
-                    make_coordinate_arrows,
+                    chain_arrows,
+                    coordinate_arrows,
+                    test_coordinate_arrows,
                     show_interfaces,
                     make_lego,
                     add_lego,
@@ -426,7 +450,7 @@ if __name__ == '__main__':
         init_display()
         #make_lego()
         #add_lego()
-        make_coordinate_arrows()
+        coordinate_arrows()
         start_display()
 
         
