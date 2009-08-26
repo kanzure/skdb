@@ -340,8 +340,8 @@ def test_transformation(event=None):
     point = [10,10,10]
     up =    build_trsf(point,[0,1,0],[-1,0,0])
     right = build_trsf(point,[1,0,0],[0,1,0])
-    down =build_trsf(point,[0,-1,0],[1,0,0])
-    left =   build_trsf(point,[-1,0,0],[0,-1,0])
+    down =  build_trsf(point,[0,-1,0],[-1,0,0])
+    left =  build_trsf(point,[-1,0,0],[0,-1,0])
     
     for (i, color) in [(up,'YELLOW'), (right,"RED"), (down,"GREEN"), (left,"BLUE")]:
         display.DisplayColoredShape(BRepBuilderAPI_Transform(brick.shapes[0], i).Shape(), color)
