@@ -338,12 +338,11 @@ def test_coordinate_arrows(event=None):
 def test_transformation(event=None):
     brick = get_brick()
     point = [10,10,10]
-
     
-    #up =    build_trsf(point,[0,1,0],[1,0,0])
-    #right = build_trsf(point,[1,0,0],[0,-1,0])
-    #down =build_trsf(point,[0,-1,0],[-1,0,0])
-    #left =   build_trsf(point,[-1,0,0],[0,-1,0])
+    up =    build_trsf(point,[0,1,0],[-1,0,0])
+    right = build_trsf(point,[1,0,0],[0,1,0])
+    down =  build_trsf(point,[0,-1,0],[1,0,0])
+    left =  build_trsf(point,[-1,0,0],[0,-1,0])
     
     #up =    build_trsf(point,[1,1,0],[1,-1,0])
     #right = build_trsf(point,[1,-1,0],[-1,-1,0])

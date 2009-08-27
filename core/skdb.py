@@ -86,7 +86,7 @@ def import_package_classes(loaded_package, package_path):
             setattr(loaded_package, class_name, cls )
             setattr(cls, "package", loaded_package)
 
-class Package(FennObject):
+class Package(FennObject): #should this be a FennObject? ideally it should spit out metadata.yaml, data.yaml, etc.
     yaml_tag='!package'
     def __init__(self, name=None, license=None, urls=None, modules=None):
         self.name = name
@@ -121,7 +121,16 @@ class Package(FennObject):
         raise NotImplementedError
     def makes_sense(self):
         '''checks for whether or not the package data makes sense'''
-        raise NotImplementedError
+        assert self.name is not None, "package name"
+        assert self.functionality is not None, "functionality"
+        assert self.created is not None, "created"
+        assert self.updated is not None, "updated"
+        assert self.version is not None, "version"
+        assert self.description is not None, "description"
+        assert self.classes is not None, "classes"
+        assert self.source_data is not None, "source data"
+        assert self.dependencies is not None, "dependencies" #unless you really know what you're doing?
+        return True
     
 class Distribution(FennObject):
     yaml_path = ['typical', 'feasible']

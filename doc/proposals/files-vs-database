@@ -1,0 +1,14 @@
+benefits for little files:
+
+- fast download
+- no database infrastructure
+- revision control with standard tools
+- gather/compress/transmit chunks of data
+- diffs with standard tools
+- viewable with standard tools
+- indexing content with search engines
+- faster than a database
+
+cons for little files:
+- no way to search by parameter
+- ??
