@@ -1,0 +1,21 @@
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, 1.0, 0.0]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [0.0, 1.0, 0.0]
+  y_vec: [-1.0, 0.0, 0.0]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [-1.0, 0.0, 0.0]
+  y_vec: [-0.0, -1.0, 0.0]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [-0.0, -1.0, 0.0]
+  y_vec: [1.0, -0.0, 0.0]
+

@@ -1,0 +1,26 @@
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [-0.125, 0.64951899999999996, 0.75]
+  y_vec: [-0.64951899999999996, -0.625, 0.43301299999999998]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [0.625, -0.216506, 0.75]
+  y_vec: [0.216506, -0.875, -0.43301299999999998]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, -1.0, -0.0]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [0.625, 0.216506, 0.75]
+  y_vec: [-0.216506, -0.875, 0.43301299999999998]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [-0.125, -0.64951899999999996, 0.75]
+  y_vec: [0.64951899999999996, -0.625, -0.43301299999999998]
+

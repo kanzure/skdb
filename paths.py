@@ -316,9 +316,9 @@ def chain_arrows(event=None):
     s=math.sqrt(3)/3
     make_arrow(origin=gp_Pnt(s,s,s+1), direction=gp_Dir(1,1,1), text='hmm')
 
-def coordinate_arrow(direction, color='YELLOW', flag=False):
-    if flag: shape = Flag(scale=3, direction=direction)
-    else: shape = Arrow(scale=3, direction=direction)
+def coordinate_arrow(direction, color='YELLOW', flag=True, scale=3):
+    if flag: shape = Flag(scale=scale, direction=direction)
+    else: shape = Arrow(scale=scale, direction=direction)
     display.DisplayColoredShape(shape.Shape(), color)
 
 def coordinate_arrows(event=None):
@@ -338,13 +338,40 @@ def test_coordinate_arrows(event=None):
 def test_transformation(event=None):
     brick = get_brick()
     point = [10,10,10]
-    up =    build_trsf(point,[0,1,0],[-1,0,0])
-    right = build_trsf(point,[1,0,0],[0,1,0])
-    down =build_trsf(point,[0,-1,0],[1,0,0])
-    left =   build_trsf(point,[-1,0,0],[0,-1,0])
+
     
-    for (i, color) in [(up,'YELLOW'), (right,"RED"), (down,"GREEN"), (left,"BLUE")]:
-        display.DisplayColoredShape(BRepBuilderAPI_Transform(brick.shapes[0], i).Shape(), color)
+    #up =    build_trsf(point,[0,1,0],[1,0,0])
+    #right = build_trsf(point,[1,0,0],[0,-1,0])
+    #down =build_trsf(point,[0,-1,0],[-1,0,0])
+    #left =   build_trsf(point,[-1,0,0],[0,-1,0])
+    
+    #up =    build_trsf(point,[1,1,0],[1,-1,0])
+    #right = build_trsf(point,[1,-1,0],[-1,-1,0])
+    #down =build_trsf(point,[-1,-1,0],[-1,1,0])
+    #left =   build_trsf(point,[-1,1,0],[1,1,0])
+    
+    #print 'the real deal'
+    #up =    build_trsf(point,[0,1,0.1],[-1,0,-0.1])
+    #right = build_trsf(point,[1,0,0],[0,1,0])
+    #down =build_trsf(point,[0,-1,0],[1,0,0])
+    #left =   build_trsf(point,[-1,0,0],[0,-1,0])
+    #for (i, color) in [(up,'YELLOW'), (right,"RED"), (down,"GREEN"), (left,"BLUE")]:
+        ##display.DisplayColoredShape(BRepBuilderAPI_Transform(brick.shapes[0], i).Shape(), color)
+        #pass
+    #for i in range(15):
+        #foo = build_trsf(point, [0,1,i/10], [-1,0,-i/10])
+        #foo = build_trsf(point, [i,10-i,i], [-10+i,i,-i])
+        #display.DisplayShape(BRepBuilderAPI_Transform(brick.shapes[0], foo).Shape())
+    #for i in skdb.load(open('20vert.yaml')):
+    #for i in skdb.load(open('60horz.yaml')):
+    #for i in skdb.load(open('60twist.yaml')):
+    #for i in skdb.load(open('60all.yaml')):
+    #for i in skdb.load(open('90vert.yaml')):
+    #for i in skdb.load(open('90horz.yaml')):
+    for i in skdb.load(open('90twist.yaml')):
+        trsf = build_trsf(i.point, i.x_vec, i.y_vec, func_stuffer=coordinate_arrow)
+        display.DisplayShape(BRepBuilderAPI_Transform(brick.shapes[0], trsf).Shape())
+
 def init_display():
     '''The reason for recreating is that myGroup is gone after an EraseAll call'''
     global myGroup

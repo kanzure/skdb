@@ -1,0 +1,86 @@
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, 0.939693, 0.34201999999999999]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, 0.76604399999999995, 0.64278800000000003]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, 0.5, 0.86602500000000004]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, 0.173648, 0.98480800000000002]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, -0.173648, 0.98480800000000002]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, -0.5, 0.86602500000000004]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, -0.76604399999999995, 0.64278800000000003]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, -0.939693, 0.34201999999999999]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, -1.0, 0.0]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, 0.0, 0.0]
+  y_vec: [0.0, -0.939693, -0.34201999999999999]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, -0.0, 0.0]
+  y_vec: [0.0, -0.76604399999999995, -0.64278800000000003]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, -0.0, 0.0]
+  y_vec: [0.0, -0.5, -0.86602500000000004]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, -0.0, 0.0]
+  y_vec: [0.0, -0.173648, -0.98480800000000002]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, -0.0, 0.0]
+  y_vec: [0.0, 0.173648, -0.98480800000000002]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, -0.0, 0.0]
+  y_vec: [0.0, 0.5, -0.86602500000000004]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, -0.0, 0.0]
+  y_vec: [0.0, 0.76604399999999995, -0.64278800000000003]
+- !interface
+  point: [0.0, 0.0, 0.0]
+  type: Coordinate System
+  x_vec: [1.0, -0.0, 0.0]
+  y_vec: [0.0, 0.939693, -0.34201999999999999]
+
