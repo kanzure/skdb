@@ -190,17 +190,15 @@ def make_lego(event=None, brick=None):
     global current_brick, all_bricks
     if brick is None: brick = get_brick()
     current_brick = brick
+    
     #orient the part so that i[0] is aligned with the origin's z-axis
     trsf = gp_Trsf()
     i = current_brick.interfaces[0]
-    point = Point(i.point)
     trsf = i.get_transformation()
     current_brick.transformation = trsf #side effect
     shapes = current_brick.shapes 
     shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape() #move it
     display.DisplayColoredShape(shapes[0], 'RED')
-    for i in current_brick.interfaces:
-        display.DisplayShape(make_vertex(Point(i.point).Transformed(trsf)))
     all_bricks.append(current_brick)
 
 def add_lego(event=None, brick=None):
@@ -224,15 +222,11 @@ def add_lego(event=None, brick=None):
     trsf = mate_connection(conn)
     brick2.transformation = trsf
     brick2.shapes[0] = BRepBuilderAPI_Transform(brick2.shapes[0], trsf, True).Shape() #move it
-    trsf2 = gp_Trsf()
-    trsf.Multiply(conn.interface1.get_transformation())
-    trsf.Multiply(trsf)
-    display.DisplayShape(Arrow(scale=3).to(trsf2))
     
-    trsf3 = gp_Trsf()
-    trsf3.Multiply(conn.interface2.get_transformation())
-    #trsf3.Multiply(trsf)
-    display.DisplayShape(Arrow(scale=3).to(trsf3))
+    conn.interface1.show()
+    print Point(conn.interface1.point).Transformed(conn.interface1.part.transformation).Coord()
+    conn.interface2.show()
+    print Point(conn.interface2.point).Transformed(conn.interface2.part.transformation).Coord()
 
     all_bricks.append(brick2)
     display.DisplayShape(brick2.shapes[0])
@@ -256,15 +250,18 @@ def show_next_mate(event=None, mate=None):
     display.DisplayShape(make_vertex(Point(conn.interface1.point).Transformed(trsf)))
     display.DisplayShape(make_vertex(Point(conn.interface2.point).Transformed(trsf)))
     
+def blarney(self):
+        tmp = self.part.transformation
+        tmp2 = self.get_transformation()
+        trsf1 = tmp.Multiplied(tmp2)
+        display.DisplayShape(make_vertex(Point(0,0,0).Transformed(trsf1)))
+        display.DisplayShape(Arrow(scale=5).to(trsf1))
+skdb.Interface.show = blarney
 
 def show_interfaces(event=None, brick=None):
     if brick is None: brick = current_brick
     for i in brick.interfaces:
-        #display.DisplayShape(arrow_to(dest=i.part.transformation.Multiplied(i.get_transformation()), text=brick.interfaces.index(i), scale=5))
-        dest = Transformation()
-        dest.Multiply(i.part.transformation)
-        dest.Multiply(i.get_transformation())
-        display.DisplayShape(arrow_to(dest=dest, text=brick.interfaces.index(i), scale=5))
+        i.show()
 
 def make_arrow(event=None, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1, text=None, color="YELLOW"):
     '''draw a small arrow from origin to dest, labeled with 2d text'''
@@ -279,11 +276,16 @@ class Arrow(TopoDS_Shape):
         self.direction = Direction(direction)
         self.scale = scale
         self.build_shape()
-        #apparently we must translate and then rotate
-        tmp = gp_Trsf(); tmp.SetTranslation(gp_Pnt(0,0,0), origin)
-        self.transformation = tmp
-        tmp = point_along(direction)
-        self.transformation.Multiply(tmp)
+        #apparently this screws up later transformations somehow
+        ##apparently we must translate and then rotate
+        #tmp = gp_Trsf()
+        #tmp.SetTranslation(gp_Pnt(0,0,0), origin)
+        #self.transformation = tmp.Multiplied(point_along(direction))
+        self.transformation = gp_Trsf()
+        #self.to(tmp)
+
+        #tmp = point_along(direction)
+        #self.transformation.Multiply(tmp)
     def build_shape(self):
         scale = self.scale
         body = BRepPrimAPI_MakeCylinder(0.02*scale, 0.7*scale).Shape()
@@ -297,7 +299,7 @@ class Arrow(TopoDS_Shape):
     def to(self, dest):
         assert isinstance(dest, gp_Trsf)
         self.transformation.Multiply(dest)
-        return BRepBuilderAPI_Transform(self.Shape(), dest).Shape()
+        return self.Shape()
 
 class Flag(Arrow):
     def __init__(self, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1):
@@ -316,7 +318,7 @@ def chain_arrows(event=None):
     s=math.sqrt(3)/3
     make_arrow(origin=gp_Pnt(s,s,s+1), direction=gp_Dir(1,1,1), text='hmm')
 
-def coordinate_arrow(direction, color='YELLOW', flag=True, scale=3):
+def coordinate_arrow(direction, color='YELLOW', flag=False, scale=3):
     if flag: shape = Flag(scale=scale, direction=direction)
     else: shape = Arrow(scale=scale, direction=direction)
     display.DisplayColoredShape(shape.Shape(), color)
@@ -341,13 +343,13 @@ def test_transformation(event=None):
     colors = [ 'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW',
                     'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW',
                     'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW']
-    testfile = '20vert.yaml'
+    #testfile = '20vert.yaml'
     #testfile = '60horz.yaml'
     #testfile = '60twist.yaml'
     #testfile = '60all.yaml'
     #testfile = '90vert.yaml'
     #testfile = '90horz.yaml'
-    #testfile = '90twist.yaml'
+    testfile = '90twist.yaml'
     for (i, color) in zip(skdb.load(open(testfile)), colors):
         trsf = build_trsf(i.point, i.x_vec, i.y_vec)
         display.DisplayColoredShape(BRepBuilderAPI_Transform(brick.shapes[0], trsf).Shape(), color)
@@ -461,10 +463,10 @@ if __name__ == '__main__':
             add_function_to_menu('demo', f)
         #random_sweep()
         init_display()
-        #make_lego()
-        #add_lego()
+        make_lego()
+        add_lego()
         coordinate_arrows()
-        test_transformation()
+        #test_transformation()
         start_display()
 
         
