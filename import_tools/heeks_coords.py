@@ -42,7 +42,6 @@ def main():
     else:
         for i in sys.argv[1:]:
             rval[i] = parse_file(open(i))
-    print type(rval)
     print yaml.dump(rval)
     return rval
 

@@ -338,38 +338,19 @@ def test_coordinate_arrows(event=None):
 def test_transformation(event=None):
     brick = get_brick()
     point = [10,10,10]
-    
-    up =    build_trsf(point,[0,1,0],[-1,0,0])
-    right = build_trsf(point,[1,0,0],[0,1,0])
-    down =  build_trsf(point,[0,-1,0],[1,0,0])
-    left =  build_trsf(point,[-1,0,0],[0,-1,0])
-    
-    #up =    build_trsf(point,[1,1,0],[1,-1,0])
-    #right = build_trsf(point,[1,-1,0],[-1,-1,0])
-    #down =build_trsf(point,[-1,-1,0],[-1,1,0])
-    #left =   build_trsf(point,[-1,1,0],[1,1,0])
-    
-    #print 'the real deal'
-    #up =    build_trsf(point,[0,1,0.1],[-1,0,-0.1])
-    #right = build_trsf(point,[1,0,0],[0,1,0])
-    #down =build_trsf(point,[0,-1,0],[1,0,0])
-    #left =   build_trsf(point,[-1,0,0],[0,-1,0])
-    #for (i, color) in [(up,'YELLOW'), (right,"RED"), (down,"GREEN"), (left,"BLUE")]:
-        ##display.DisplayColoredShape(BRepBuilderAPI_Transform(brick.shapes[0], i).Shape(), color)
-        #pass
-    #for i in range(15):
-        #foo = build_trsf(point, [0,1,i/10], [-1,0,-i/10])
-        #foo = build_trsf(point, [i,10-i,i], [-10+i,i,-i])
-        #display.DisplayShape(BRepBuilderAPI_Transform(brick.shapes[0], foo).Shape())
-    #for i in skdb.load(open('20vert.yaml')):
-    #for i in skdb.load(open('60horz.yaml')):
-    #for i in skdb.load(open('60twist.yaml')):
-    #for i in skdb.load(open('60all.yaml')):
-    #for i in skdb.load(open('90vert.yaml')):
-    #for i in skdb.load(open('90horz.yaml')):
-    for i in skdb.load(open('90twist.yaml')):
-        trsf = build_trsf(i.point, i.x_vec, i.y_vec, func_stuffer=coordinate_arrow)
-        display.DisplayShape(BRepBuilderAPI_Transform(brick.shapes[0], trsf).Shape())
+    colors = [ 'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW',
+                    'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW',
+                    'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW']
+    testfile = '20vert.yaml'
+    #testfile = '60horz.yaml'
+    #testfile = '60twist.yaml'
+    #testfile = '60all.yaml'
+    #testfile = '90vert.yaml'
+    #testfile = '90horz.yaml'
+    #testfile = '90twist.yaml'
+    for (i, color) in zip(skdb.load(open(testfile)), colors):
+        trsf = build_trsf(i.point, i.x_vec, i.y_vec)
+        display.DisplayColoredShape(BRepBuilderAPI_Transform(brick.shapes[0], trsf).Shape(), color)
 
 def init_display():
     '''The reason for recreating is that myGroup is gone after an EraseAll call'''
