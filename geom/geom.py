@@ -39,13 +39,20 @@ def point_along(direction):
     trsf2.Multiply(trsf)
     return trsf2
     
-def build_trsf(point, x_vec, y_vec): 
+def build_trsf(point, x_vec, y_vec, func_stuffer=None): 
+    if func_stuffer is not None: coordinate_arrow = func_stuffer
+    else: coordinate_arrow = lambda x,y,z: True
     point, x_vec, y_vec = Point(point), Direction(x_vec), Direction(y_vec)
     z_vec = Direction(x_vec.Crossed(y_vec))
     normal = Direction(0,0,1).Transformed(point_along(z_vec))
+    coordinate_arrow(normal, 'BLUE', scale=20)
     orthogonal = Direction(1,0,0).Transformed(point_along(z_vec)) #dummy to keep track of X
-    roll_angle = orthogonal.AngleWithRef(x_vec, z_vec)-math.pi/2 #rotation around z_vec
+    coordinate_arrow(orthogonal, 'RED', scale=20)
+    another = Direction(0,1,0).Transformed(point_along(z_vec)) #for show
+    coordinate_arrow(orthogonal, 'GREEN', scale=20)
 
+    roll_angle = orthogonal.AngleWithRef(x_vec, z_vec)#-math.pi/2 #rotation around z_vec
+    roll_angle = orthogonal.Angle(x_vec) #rotation around z_vec
     print roll_angle, roll_angle*180/math.pi
     trsf = gp_Trsf()
     trsf.SetTranslation(gp_Pnt(0,0,0), point)
@@ -53,6 +60,17 @@ def build_trsf(point, x_vec, y_vec):
     tmp.SetRotation(gp_Ax1(gp_Pnt(0,0,0), normal), roll_angle)
     trsf.Multiply(tmp)
     #trsf.SetTransformation(gp_Ax3(point, z_vec, Direction(x_vec)))
+    
+    trsf=gp_Trsf() #just for clarification
+    
+    #from heekscad/src/Geom.cpp, sorta
+    #TODO make sure x,y,z are orthonormal
+    o, x, y, z = point.Coord(), x_vec.Coord(), y_vec.Coord(), z_vec.Coord()
+    trsf.SetValues( x[0], y[0], z[0], o[0],
+                            x[1], y[1], z[1], o[1],
+                            x[2], y[2], z[2], o[2],
+                            #0,     0,      0,     1,   #for you math types
+                            0.0001, 0.00000001) #angular tolerance, linear tolerance
     return trsf
 
 class OCC_triple(FennObject):
