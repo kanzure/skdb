@@ -190,11 +190,12 @@ def make_lego(event=None, brick=None):
     global current_brick, all_bricks
     if brick is None: brick = get_brick()
     current_brick = brick
-    
+    tmp = gp_Trsf()
+    tmp.SetTranslation(Point(0,0,0), Point(3.14, 3.14, 3.14))
     #orient the part so that i[0] is aligned with the origin's z-axis
-    trsf = gp_Trsf()
     i = current_brick.interfaces[0]
     trsf = i.get_transformation().Inverted()
+    trsf.Multiply(tmp.Inverted()) #side effect
     current_brick.transformation = trsf #side effect
     shapes = current_brick.shapes 
     shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape() #move it
