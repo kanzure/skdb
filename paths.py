@@ -176,8 +176,8 @@ current_brick = None
 all_bricks = [] #not currently used
 
 def get_brick():
-    #brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
-    brick = deepcopy(lego.parts[random.randint(2,2)])
+    brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
+    #brick = deepcopy(lego.parts[random.randint(2,2)])
     brick.post_init_hook()
     brick.load_CAD()
     return brick
@@ -194,7 +194,7 @@ def make_lego(event=None, brick=None):
     #orient the part so that i[0] is aligned with the origin's z-axis
     trsf = gp_Trsf()
     i = current_brick.interfaces[0]
-    trsf = i.get_transformation()
+    trsf = i.get_transformation().Inverted()
     current_brick.transformation = trsf #side effect
     shapes = current_brick.shapes 
     shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape() #move it
@@ -209,6 +209,7 @@ def add_lego(event=None, brick=None):
     else: brick2 = get_brick()
     while True:
         i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
+        i1 = current_brick.interfaces[0]
         opts = list(i1.options(brick2))
         if opts or n > 20: break
         brick2 = get_brick() #try again
@@ -222,11 +223,11 @@ def add_lego(event=None, brick=None):
     trsf = mate_connection(conn)
     brick2.transformation = trsf
     brick2.shapes[0] = BRepBuilderAPI_Transform(brick2.shapes[0], trsf, True).Shape() #move it
-    
+    print Point(current_brick.interfaces[0].point).Transformed(current_brick.transformation).Coord() #0,0,0
     conn.interface1.show()
-    print Point(conn.interface1.point).Transformed(conn.interface1.part.transformation).Coord()
+    print "%.2f %.2f %.2f" % Point(conn.interface1.point).Transformed(conn.interface1.part.transformation).Coord()
     conn.interface2.show()
-    print Point(conn.interface2.point).Transformed(conn.interface2.part.transformation).Coord()
+    print "%.2f %.2f %.2f" %  Point(conn.interface2.point).Transformed(conn.interface2.part.transformation).Coord()
 
     all_bricks.append(brick2)
     display.DisplayShape(brick2.shapes[0])
@@ -250,6 +251,7 @@ def show_next_mate(event=None, mate=None):
     display.DisplayShape(make_vertex(Point(conn.interface1.point).Transformed(trsf)))
     display.DisplayShape(make_vertex(Point(conn.interface2.point).Transformed(trsf)))
     
+#TODO move to geom.py
 def blarney(self):
         tmp = self.part.transformation
         tmp2 = self.get_transformation()
@@ -270,6 +272,7 @@ def make_arrow(event=None, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=
     if text is not None:
         make_text(text, origin, 6)
 
+#TODO move to geom.py
 class Arrow(TopoDS_Shape):
     def __init__(self, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1):
         self.origin = Point(origin)

@@ -228,19 +228,27 @@ def mate_connection(connection):
     '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
     i1, i2 = connection.interface1, connection.interface2
     connection.connect()
-    if i1.part.transformation is None: i1.part.transformation = build_trsf(Point(0,0,0), Vector(1,0,0), Vector(0,1,0))
+    assert i1.part.transformation is not None
+    if i1.part.transformation is None: i1.part.transformation = build_trsf(Point(0,0,0), Vector(1,0,0), Vector(0,1,0)); print 'hi'
     if hasattr(i1.part, "transformation"):
        tmp_point = Point(i1.point).Transformed(i1.part.transformation)
     else: tmp_point = i1.point #FIXME actually use this value or stacked parts won't work
-    #opposite = Transformation().SetRotation(pivot_point =Vector(i2.point), direction=Direction(Vector(1,0,0)), 
-    #    angle=math.pi) #rotate 180 so that interface z axes are opposed
-    #i2.part.transformation = i1.part.transformation.Multiplied(i1.get_transformation().Multiplied(i2.get_transformation()))
-    #i2.part.transformation = i2.get_transformation().Multiplied(i1.get_transformation().Multiplied(i1.part.transformation))
+    opposite = gp_Trsf()
+    opposite.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), math.pi) #rotate 180 so that interface z axes are opposed
     t = gp_Trsf()
     #t.Multiply(i2.get_transformation().Inverted())
+    t.Multiply(opposite)
     t.Multiply(i1.get_transformation())
     t.Multiply(i1.part.transformation)
-    t.Multiply(i2.get_transformation())
+    t.Multiply(i2.get_transformation().Inverted())
+
+    #t.Invert()
+
+    ##ok now everything is just spiffy, but for some reason the translation is negative (why?), so undo that
+    #offset = gp_Trsf()
+    #offset.SetTranslation(Vector(t.TranslationPart().Reversed()))
+    #t.Multiply(offset)
+    #t.Multiply(offset)
     return t
 
     #i2.part.transformation.Multiply(opposite)
