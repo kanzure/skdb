@@ -296,5 +296,32 @@ def transformed(self, trsf):
 for i in [load_CAD, add_shape, get_gp_Pnt, transformed]:
     setattr(Part, i.__name__, i)
 
-#for some reason property doesn't accept properties or have a __name__. so much for OO
-Part.point = property(get_point, set_point, del_point)
+def common_volume(part1, part2):
+    '''returns the volume of the intersection of two parts'''
+    shape1 = part1.shapes[0]
+    shape2 = part2.shapes[0]
+    fused_shape = BRepAlgoAPI_Common(shape1, shape2)
+    #use BRepGProp.VolumeProperties()
+    #see http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/ModelingAlgorithms/html/classBRepGProp.html
+    #see http://www.opencascade.org/org/forum/thread_4685/
+    #see http://www.opencascade.org/org/forum/thread_6622/ (a comment by rob bachrach)
+    tmp_useless = GProp.GProp_GProps()
+    calculator = BRepGProp()
+    calculator.VolumeProperties(fused_shape.Shape(), tmp_useless)
+    volume = tmp_useless.Mass()
+    return volume 
+
+def part_collision(part1, part2, threshold=0.0):
+    '''determines whether or not two parts are colliding, given a threshold of maximum allowable intersection
+    returns True or False'''
+    volume = common_volume(part1, part2)
+    if volume > threshold: return True
+    else: return False
+
+def connection_interference(conn, threshold=0.0):
+    '''determines whether or not a connection has a geometric collision (only for the two mating parts) within a threshold
+    returns True or False'''
+    part1 = conn.interface1.part
+    part2 = conn.interface2.part
+    return part_collision(part1, part2, threshold=threshold)
+
