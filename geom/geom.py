@@ -325,3 +325,13 @@ def connection_interference(conn, threshold=0.0):
     part2 = conn.interface2.part
     return part_collision(part1, part2, threshold=threshold)
 
+def deep_part_collider(parts):
+    '''given a list of parts, checks whether or not any of them geometrically overlap
+    returns a list of triples in the form: (volume, part1, part2) where volumetric interference was found'''
+    errors = []
+    for part in parts:
+        for part2 in parts:
+            volume = common_volume(part1, part2)
+            if volume > 0:
+               errors.append((volume, part1, part2))
+    return errors
