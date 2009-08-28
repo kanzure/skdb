@@ -234,21 +234,12 @@ def mate_connection(connection):
        tmp_point = Point(i1.point).Transformed(i1.part.transformation)
     else: tmp_point = i1.point #FIXME actually use this value or stacked parts won't work
     opposite = gp_Trsf()
-    opposite.SetRotation(gp_Ax1(gp_Pnt(0,0,0), gp_Dir(1,0,0)), math.pi) #rotate 180 so that interface z axes are opposed
+    opposite.SetRotation(gp_Ax1(Point(i1.point), Direction(i1.x_vec)), math.pi) #rotate 180 so that interface z axes are opposed
     t = gp_Trsf()
-    #t.Multiply(i2.get_transformation().Inverted())
+    t.Multiply(i1.part.transformation)
     t.Multiply(opposite)
     t.Multiply(i1.get_transformation())
-    t.Multiply(i1.part.transformation)
     t.Multiply(i2.get_transformation().Inverted())
-
-    #t.Invert()
-
-    ##ok now everything is just spiffy, but for some reason the translation is negative (why?), so undo that
-    #offset = gp_Trsf()
-    #offset.SetTranslation(Vector(t.TranslationPart().Reversed()))
-    #t.Multiply(offset)
-    #t.Multiply(offset)
     return t
 
     #i2.part.transformation.Multiply(opposite)
