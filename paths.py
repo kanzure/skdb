@@ -25,6 +25,9 @@ from OCC.Prs3d import *
 from OCC.TCollection import *
 from OCC.Graphic3d import *
 
+#for volume interference
+from OCC.BRepGProp import *
+
 from OCC.GccEnt import *
 from OCC.GccAna import *
 from OCC.Geom2dGcc import *
@@ -179,6 +182,7 @@ for brick in lego.parts:
     brick.load_CAD()
 
 def get_brick():
+    '''returns a basic lego brick part from the catalog (no side effects)'''
     brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
     #brick = deepcopy(lego.parts[random.randint(2,2)])
     brick.post_init_hook()
@@ -190,7 +194,7 @@ def show_bricks():
 
 def make_lego(event=None, brick=None):
     global current_brick, all_bricks
-    if brick is None: brick = get_brick()
+    if brick is None: brick = get_brick() #load a brick from the catalog
     current_brick = brick
     tmp = gp_Trsf()
     #give it an interesting starting orientation (not 0)
@@ -226,6 +230,7 @@ def add_lego(event=None, brick=None):
 
     trsf = mate_connection(conn)
     brick2.transformation = trsf
+    #brick2.shapes[0] keeps on being overwritten. what's the point of having it be a list?
     brick2.shapes[0] = BRepBuilderAPI_Transform(brick2.shapes[0], trsf, True).Shape() #move it
     conn.interface1.show()
     print "%.2f %.2f %.2f" % Point(conn.interface1.point).Transformed(conn.interface1.part.transformation).Coord()
