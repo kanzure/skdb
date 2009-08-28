@@ -42,6 +42,16 @@ from geom import Point, Vector, Direction, Transformation, mate_connection, move
 
 current = gp_Pnt2d(0,0)
 
+def add_key(key,method_to_call):
+    '''binds a key to a particular method
+    ex: add_key("G",some_method)
+    '''
+    upper_case = key.upper()
+    orded = ord(upper_case) #see wxDisplay.py line 171
+    OCC.Display.wxSamplesGui.frame.canva._key_map[orded] = method_to_call
+    print "added a key with name = ", orded, " mapped to method = ", method_to_call
+    return
+
 def random_line(scale=10):
     global current
     p1 = current  #should be a gp_Pnt2d
@@ -443,8 +453,6 @@ def clear(event=None):
 def exit(event=None):
     sys.exit() 
 
-
-from pymates import add_key
 add_key('a', add_lego)
 add_key('c', clear)
 add_key('m', make_lego)
