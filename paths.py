@@ -175,11 +175,13 @@ lego = skdb.load_package('lego'); lego.load_data()
 current_brick = None
 all_bricks = [] #not currently used
 
+for brick in lego.parts:
+    brick.load_CAD()
+
 def get_brick():
     brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
     #brick = deepcopy(lego.parts[random.randint(2,2)])
     brick.post_init_hook()
-    brick.load_CAD()
     return brick
 
 def show_bricks():
@@ -191,7 +193,9 @@ def make_lego(event=None, brick=None):
     if brick is None: brick = get_brick()
     current_brick = brick
     tmp = gp_Trsf()
+    #give it an interesting starting orientation (not 0)
     tmp.SetTranslation(Point(0,0,0), Point(3.14, 3.14, 3.14))
+    tmp.SetRotation(gp_Ax1(Point(0,0,0), Direction(1,0,0)), math.pi/3)
     #orient the part so that i[0] is aligned with the origin's z-axis
     i = current_brick.interfaces[0]
     trsf = i.get_transformation().Inverted()
@@ -210,7 +214,6 @@ def add_lego(event=None, brick=None):
     else: brick2 = get_brick()
     while True:
         i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
-        i1 = current_brick.interfaces[0]
         opts = list(i1.options(brick2))
         if opts or n > 20: break
         brick2 = get_brick() #try again
@@ -224,7 +227,6 @@ def add_lego(event=None, brick=None):
     trsf = mate_connection(conn)
     brick2.transformation = trsf
     brick2.shapes[0] = BRepBuilderAPI_Transform(brick2.shapes[0], trsf, True).Shape() #move it
-    print Point(current_brick.interfaces[0].point).Transformed(current_brick.transformation).Coord() #0,0,0
     conn.interface1.show()
     print "%.2f %.2f %.2f" % Point(conn.interface1.point).Transformed(conn.interface1.part.transformation).Coord()
     conn.interface2.show()
