@@ -1,0 +1,489 @@
+title: "pictorial handbook of technical devices"
+
+TOC:
+    machine technology:
+        machine elements:
+            springs:
+                helical compression:
+                    squared:
+                    plain:
+                helical tension:
+                volute:
+                conical:
+                single volute band:
+                torsion:
+                double volute:
+                flat spiral:
+                leaf spring:
+                ribbon torsion:
+                belleville:
+                slotted washer:
+                curved washer:
+                finger washer:
+                wave washer:
+                split ring:
+                air cushion:
+                sear:
+                flat:
+                compound curved washer:
+                compression:
+                hair:
+                Hunter:
+                motor:
+                torsion bar:
+                flex ator:
+                concentric:
+                rolamite:
+                spindle:
+                liquid:
+            clutches and breaks:
+                spiral jaw clutch:
+                square jaw clutch:
+                conical clutch:
+                friction clutch:
+                spring friction clutch:
+                adjustable friction clutch: #with double grip bearings
+                cone friction crutch:
+                automotive type single plate clutch:
+                one way clutch:
+                friction clutch bevel gear:
+                pin clutch:
+                friction clutch: #german
+                twin cone friction clutch:
+                maxitorq multiple disc clutch:
+                fawick airflex clutch:
+                fawick clutch: #standardized for punch presses
+                centrifugal clutch:
+                mercury centrifugal clutch:
+                formsprag overrunning clutch:
+                caliper disc:
+                magnetic particle clutch:
+                hydraulicly operated automative brake:
+                simple handbrake:
+                double shoe brake:
+                combination disc and jaw clutch:
+                helical spring clutch:
+            rigid couplings:
+                flanged shaft coupling:
+                keyed sleeve coupling:
+                precision sleeve coupling:
+                split box shaft coupling:
+                sellers cone shaft coupling:
+                combination pulley and coupling:
+                flange coupling:
+                friction clip shaft coupling:
+                plain sleeve coupling:
+                multijaw coupling:
+                flange compression coupling:
+            flexible couplings:
+                flexible coupling:
+                reinforced rubber hose with metal hubs:
+                american flexible coupling:
+                internal gear:
+                roller chain and sprocket:
+                flexible ring coupling:
+                oldham coupling:
+                falk steelflex coupling:
+                ajax flexible coupling:
+                morflex coupling:
+                metal bellows:
+            angular couplings and universal joints:
+                bent pin coupling:
+                angular shaft coupling:
+                flexible angular coupling:
+                pin and slot shaft coupling:
+                sliding contact shaft coupling:
+                hooks coupling:
+                bendix weiss constant velocity universal joint:
+                double link universal joint:
+                rzeppa constant velocity universal joint:
+                flexible shaft:
+            guides and slides:
+                double v bed:
+                typical guide bed:
+                deep v guide:
+                lathe bed:
+                double v bed:
+                v guide:
+                guide bed:
+                crosshead:
+                rope guide:
+                engine crosshead:
+                radial slide:
+                plain bar:
+                sliding bed:
+            pulleys:
+                crowned:
+                double coned:
+                cast split:
+                expanding:
+                wooden split:
+                split steel:
+                v belt sheave:
+                timing belt:
+            handles:
+                faucet handle:
+                dished handle:
+                locked handle:
+                ventilated twisted handle:
+                hand crank handle:
+                hand wheel lock nut handle:
+                hinged spanner handle:
+                key handle:
+                bent looped end handle:
+                capstan handle:
+                capstan:
+                cross handle:
+                t handle:
+                handle bar:
+                loop handle fixed:
+                loop handle hinged:
+                handle bar:
+                hinged lifting lever:
+                knob:
+                radial handle:
+                stirrup handle:
+                swing door handle:
+                tap wrench handle:
+                lifting handle: #bow handle
+            ball bearings:
+                deep groove ball bearing:
+                filling notch ball bearing:
+                split ball bearing:
+                angular contact bearing:
+                duplex ball bearing:
+                double row ball bearing:
+                self aligning ball bearing:
+                fan or water pump bearing:
+                flanged miniature bearing:
+                pivot bearing:
+                ball bushing:
+                ball bearing flange unit:
+                reciprocating ball bearing:
+                single row ball bearing pillow block:
+                front wheel bearing:
+                ball thrust bearing:
+                ball spline:
+                snap ring bearing:
+                self aligning rod end bearing:
+                ball bearing:
+            roller bearings and needle bearings:
+                cylindrical:
+                spherical double row roller bearing:
+                spherical thrust roller bearing:
+                tapered roller thrust bearing:
+                tapered roller bearing:
+                spherical roller bearing pillow block:
+                needle bearing:
+                double row needle bearing:
+                needle bearing cam follower:
+                self aligning needle bearing: #aircraft type
+            methods of bearing mounting: #pg 32
+                #most of these are just illustrations and not new devices
+                lockwasher:
+                locknut:
+                shaft:
+            plain or sliding bearings:
+                #types: thick film bearings (complete separation of surface types), thin film bearings (surfaces partly in contact), zero film bearings (no lubrication)
+                solid bearing:
+                plain bushing:
+                double flanged:
+                oil groove:
+                babbit layer:
+                shaft shoulder:
+                multiple thrust collars:
+                vertical pivot:
+                split journal:
+                bearing metal:
+                hydrostatic journal bearing:
+                tilting pad journal bearing:
+                graphited bronze thrust bearing:
+                graphite bronze bearing:
+                water lubricated rubber bearing:
+                vertical thrust bearing:
+                half bearing:
+            bearings journals and hangings:
+                transmission shaft bearing:
+                typical pedestal:
+                ceiling hanger:
+                german ceiling hangers:
+                hanger for i beam:
+                self aligning shaft bearing in hanger:
+                wall hanger:
+                ring oiling for solid bearing:
+            bearings miscellaneous:
+                pivot bearing:
+                slot bearing:
+                verticle spindle pivot:
+                sliding bearing:
+                spherical journal:
+                oval journal:
+                collar groove:
+                plain double bearing:
+                ball and socket:
+                plain double:
+                tapered shaft:
+                horizontal pivot:
+                vertical pivot:
+                half bearing:
+                adjustable bearing:
+            hinges:
+                common double leaf hinges:
+                elevator hinge:
+                pintle hinge:
+                door hinge:
+                link hinges:
+                heavy door hinge:
+                gate hinge:
+                door spring hinge:
+                multiple door hinge:
+                link hinge: #for trap door
+                cup and ball hinge:
+                tape hinge:
+                spring hinge:
+                hinged handle: #hinge hasp
+                slip pin hinge:
+            levers:
+                plain lever:
+                first class:
+                second class:
+                third class:
+                bell crank:
+                t or double crank:
+                brake release:
+                double hand:
+                double: #especially for old time fire pumps
+                slotted valve:
+                wrist plate: #t-lever
+                equalizing:
+                straight second class:
+                foot treadle frame:
+                level and rack lifting:
+                balance weight:
+                starting: #with spring catch
+                hand:
+                foot:
+                spherical washer:
+                spring:
+                universal motion:
+                rope twist bar:
+                compound:
+                with rachet:
+                toggle joint: #press or punch
+            links and connecting rods:
+                link:
+                adjustable link:
+                solid rod end:
+                connecting rod head:
+                forked end rod:
+                solid end:
+                straphead:
+                marine connecting:
+                forked end:
+                rod end:
+                solid end rod:
+            keys cotters pins and splines:
+                plain square key:
+                plain taper key:
+                gib head taper key:
+                woodruff key:
+                saddle key:
+                flat key:
+                sunk key:
+                double keying:
+                typical feather key:
+                round key:
+                round taper pin:
+                tapered pin:
+                boss:
+                hub staked to shaft:
+                cotter:
+                gib combined with cotter:
+                split pin:
+                cotter pin:
+                typical cotter joint:
+            gaskets seals and packings:
+                bolted flanges:
+                gasket installation:
+                o ring:
+                press fitted cork seal:
+                cork seal:
+                grooved shaft labyrinth seal:
+                typical felt seal:
+                labryinth with oil slinger:
+                rubbing double seal:
+                nonrubbing double seal:
+                metal gaskets:
+                diaphragms:
+                double seal:
+                piston rings:
+                split rings:
+                cups:
+                labryinth packaging:
+                square rod plunger:
+                nested v packings:
+                conical packing:
+                floating metal ring packing:
+                v leather packing:
+                v ring type hydraulic packing:
+                condenser tube sheet ferrule:
+                gasket:
+                pump valve:
+                valve seat:
+                sliding contact packings:
+            lubrication:
+                oil pressure:
+                axial pressure:
+                axial distribution:
+                fluid lubrication:
+                pivot lubrication:
+                needle method of fluid lubrication:
+                syphon method of lubrication:
+                pad method of lubrication:
+                bath method of lubrication:
+                ring method of fluid lubrication:
+                oil cup lubrication using wick feed:
+                slight gravity feed oiler: #needle valve shut-off and breather tube
+                gits wick feed multiple oiler:
+                lubrication fitting for grease gun:
+                oil cup for gravity feed:
+                force feed:
+                lubricator:
+                jet lubrication:
+                cross feed lubrication:
+                puddling lubrication:
+                oil mist lubrication:
+                wick lubrication:
+        gearing:
+            toothed gearing:
+                spur gears:
+                internal spur gear:
+                involute helical gear:
+                double helical gear:
+                continuous tooth herring bone gear:
+                bevel gear:
+                spiral bevel gear:
+                helical gear:
+                zerol bevel gear:
+                worm gear:
+                worm:
+                double enveloping worm: #hourglass worm
+                hypoid gear:
+                spur punion:
+                face gear:
+                tapered gear:
+                epicyclic train:
+                epicyclic gear train:
+                change motion gearing:
+                sun and planet crank motion:
+                sun and planet winding gear:
+                alternating motion:
+                epicyclic bevel gears:
+                continuous shaft motion:
+                high speed epicyclic gear train:
+                automatic clutch:
+                ball wheel:
+                pin wheel:
+                variable speed square gear: 
+                lantern wheel:
+                combined spur and bevel gear:
+                irregular gear:
+                scroll bevel gear:
+                snail worm gear:
+                oval gears:
+                scroll ratchet:
+                conical rotary gear:
+                hook tooth:
+                segment reversing gear:
+                miter intermittent gears:
+                variable vibration motion:
+                differential spur gear:
+                hunting tooth worm gear:
+                elliptical spur gear:
+                stop roller motion gear: #wool-carding machine
+                spiral stop motion gear:
+                variable recpirocating motion:
+                mangle machine gear:
+                right and left hand worm gear: #for drums or feed rolls
+                spirral hoop gear:
+                three part worm:
+                two toothed pinion:
+            rack and pinions:
+                rack:
+                pinion:
+                circular rack:
+                pump povement:
+                worm screw rack:
+                rectilinear vibrating motion:
+                mangle rack:
+                vertical drop hammer movement: #impact rod
+                reciprocating double rack:
+                crank substitute:
+                sawmill feed:
+                reciprocating rectilinear motion:
+            pawls and ratchets:
+                vibrating arm and pawl:
+                ratchet lift:
+                double acting ratchet mechanism:
+                pawl lift:
+                ratchet and lever pawl:
+                ratchet head:
+                windlass grip pawl:
+                continuous rotary motion:
+                intermittent rotary motion:
+                friction pawls:
+                #to be continued..
+        mechanical transmissions:
+        mechanisms and kinematics:
+        fastening and fasteners:
+    magnetics and electronics:
+        magnetics:
+        electricity:
+        electrical devices:
+        electronic devices:
+        computer technology:
+    light and optics:
+        light sources:
+        lenses prisms and mirrors:
+        cameras and projectors:
+        optical instruments:
+    fluid technology:
+        hydraulic elements:
+        pumps:
+        valves:
+        hydraulic components:
+        hydraulic systems:
+    industrial processes:
+        tools:
+        machinery:
+        fabrication methods:
+    power generation:
+        engines:
+        turbines:
+        rockets and jets:
+        electric power:
+    structural engineering:
+        structures:
+        cranes derricks and elevators:
+    comfort heating and cooling:
+        refrigeration:
+        air conditioning:
+        steam heating:
+        heating systems:
+    transducers:
+        displacement types:
+        pressure transducers:
+        temperature:
+        force and torque:
+        velocity and acceleration:
+    metrology:
+        dimensional measurement:
+        volume weights and area:
+        pressure and weight:
+        torque and temperature:
+        velocity:
+        angles:
+        miscellaneous measuring instruments and techniques:
+        time:
+
+
