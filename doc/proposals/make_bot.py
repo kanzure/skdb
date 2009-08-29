@@ -2,6 +2,7 @@
 #
 # Creates a gcode file and list of rod lengths to build an auto-assembling frame based on various parameters.
 #
+#http://blog.reprap.org/2009/02/pull-yourself-together-bot.html
 #wget https://reprap.svn.sourceforge.net/svnroot/reprap/trunk/users/hoeken/pythagoras/make_bot.py
 """Make a Bot
 
