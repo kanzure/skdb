@@ -5,22 +5,20 @@ skdb-get.py - "apt-get for real stuff"
 environmental variables:
     - SKDB_PACKAGE_PATH
 """
-import sys
-from skdb import settings
-import cmdsyntax
-
 __version__ = "0.0.1"
 
-if __name__ == '__main__':
-    syntax = "<command> <option>"
-    syntax_obj = cmdsyntax.Syntax(syntax)
-    matches = syntax_obj.get_args(sys.args[1:])
-    
-    if len(matches) != 1:
-        sys.stderr.write("Usage: %s %s\n\n" % (sys.argv[0], syntax))
-        sys.stderr.write("skdb-get.py (version %s)" % (__version__))
-        sys.stderr.write("usage information goes here")
-        sys.exit(1)
+import sys
+from skdb import settings
 
-#other stuff happens here
+#for parsing command line arguments
+from skdb.core import optfunc
+
+def get_package(package_name, verbose=False, repo=settings.SKDB_PACKAGE_DIR):
+    '''Usage: %prog <package name> [--verbose] [--repo http://adl.serveftp.org/skdb-packages/]
+    download hardware and exit'''
+    print "getting package: ", package_name
+    return
+
+if __name__ == '__main__':
+    optfunc.run(get_package)
 
