@@ -7,6 +7,24 @@ import os, math
 from copy import copy, deepcopy
 from string import Template
 
+#for volume interference
+from OCC.BRepGProp import *
+
+#for make_text
+from OCC.BRepPrimAPI import *
+from OCC.BRepBuilderAPI import *
+from OCC.BRepFilletAPI import *
+from OCC.BRepOffsetAPI import *
+from OCC.BRepAlgoAPI import *
+from OCC.BRep import *
+from OCC.TopExp import *
+from OCC.TopAbs import *
+from OCC.TopoDS import *
+from OCC.AIS import *
+from OCC.Prs3d import *
+from OCC.TCollection import *
+from OCC.Graphic3d import *
+
 def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
     trsf.SetTranslation(from_pnt, to_pnt)
@@ -226,6 +244,7 @@ def mate_first(part1):
 
 def mate_connection(connection): 
     '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
+    import math
     i1, i2 = connection.interface1, connection.interface2
     connection.connect()
     assert i1.part.transformation is not None
@@ -295,6 +314,51 @@ def transformed(self, trsf):
 #stuff the class with new funcs
 for i in [load_CAD, add_shape, get_gp_Pnt, transformed]:
     setattr(Part, i.__name__, i)
+
+def show_interfaces(event=None, brick=None):
+    if brick is None: brick = current_brick
+    for i in brick.interfaces:
+        i.show()
+
+def test_coordinate_arrows(event=None):
+    for a in 0, 1, -1:
+        for b in 0, 1, -1:
+            for c in 0, 1, -1:
+                try: coordinate_arrow([a, b, c], flag=True)
+                except RuntimeError:
+                    pass
+
+def test_transformation(event=None):
+    brick = get_brick()
+    point = [10,10,10]
+    colors = [ 'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW',
+                    'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW',
+                    'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW']
+    #testfile = '20vert.yaml'
+    #testfile = '60horz.yaml'
+    #testfile = '60twist.yaml'
+    #testfile = '60all.yaml'
+    #testfile = '90vert.yaml'
+    #testfile = '90horz.yaml'
+    testfile = '90twist.yaml'
+    for (i, color) in zip(skdb.load(open(testfile)), colors):
+        trsf = build_trsf(i.point, i.x_vec, i.y_vec)
+        display.DisplayColoredShape(BRepBuilderAPI_Transform(brick.shapes[0], trsf).Shape(), color)
+
+def make_face(shape):
+    face = BRepBuilderAPI_MakeFace(shape)
+    face.Build()
+    return face.Face()
+
+def make_edge2d(shape):
+    spline = BRepBuilderAPI_MakeEdge2d(shape)
+    spline.Build()
+    return spline.Edge()
+
+def make_edge(shape):
+    spline = BRepBuilderAPI_MakeEdge(shape)
+    spline.Build()
+    return spline.Edge()
 
 def common_volume(part1, part2):
     '''returns the volume of the intersection of two parts'''
