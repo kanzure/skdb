@@ -19,6 +19,9 @@ core/
 geom/
     optional code to work with pythonOCC/OpenCASCADE
 
+gui/
+    optional code to work with pythonOCC/wxPython (graphical user interface)
+
 dep/
     start of a general purpose dependency resolution engine, for figuring out what tools are necessary to make the tools to make the tools...
 
