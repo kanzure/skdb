@@ -432,10 +432,868 @@ TOC:
                 continuous rotary motion:
                 intermittent rotary motion:
                 friction pawls:
-                #to be continued..
+                roller:
+                ratchet bosses:
+                ratchet brace:
+                cylinder escapement:
+                reverse ratchets:
+                slot wheel and pin gear:
+                reciprocating circular motion changed into intermittent circular motion:
+                pendulum and double ratchet wheel escapement:
+                pendulum and ratchet escapement:
+                pundulum and ratchet escapement:
+                v pawl:
+                racket and screw press:
+                fixed pawl and star wheel:
+                gravity pawl and ratchet wheel:
+            friction gearing:
+                friction bevel gears:
+                variable speed gear:
+                wedge gearing:
+                friction gear:
+                wedge surface friction gearing:
+                grooved spur friction gears:
+                variable speed friction gearing:
+                antifriction rolling contact:
+                friction drive:
+                variable friction cone drive:
+                variable drive with v belt:
+            epicyclic gearing:
+                single planetary arrangement:
+                compound planetary arrangement:
+                planetary arrangement with four armed spider:
+                planetary gear:
+                planetary gear train:
+                automobile differential gear:
+                epicyclic train:
         mechanical transmissions:
+            wire rope:
+                wire core:
+                fiber center:
+                wire center:
+                hemp center:
+                wire strand center:
+                wire rope center:
+                flexible wire rope center:
+                seven hemp centers:
+                steel wires:
+                armored wire rope:
+                marline covered rope:
+                regular lay wire rope:
+                lang lay wire rope:
+            wire rope pulleys:
+                guide pulley:
+                driving pulley:
+                lined pulley:
+                clip pulley:
+                differential wire rope pulley:
+                mining car:
+                tramway cable grip:
+                shackle for wire rope:
+                single rope lined sheave:
+                bolted steel sheave:
+                corrected arc:
+            wire rope transmission:
+                guide pulley:
+                toothed gearing:
+                mounted intermediate pulley:
+                mounted pulley:
+                angle bar guide:
+                driving friction drum:
+                tension producer:
+                rope supporting underground haulage:
+                rope clips and clamps:
+                shackles:
+                wire rope socket:
+            textile rope transmissions:
+                textile rope drive:
+                pulley for hand rope:
+                guide pulley:
+                canted groove for oblique drive:
+                short splice:
+                long splice:
+                rope fastening: #for coupling textile ropes
+                american continuous rope drive with winder:
+                split driven pulley:
+                flywheel rim:
+                engine rope drum:
+                mill driven by cotton ropes:
+                pulley acting as flywheel:
+                traveling crane driven by a cotton rope: #pg 84
+                variable pitch sheave:
+                texrope vari pitch:
+                square leather rope drive:
+                core leather rope cover:
+                v core leather rope:
+                twisted leather rope:
+                round leather rope:
+                twisted leather rope:
+                twisted leather rope sheave:
+                square core leather rope:
+                round leather flexible sectional belt:
+                veelos laminated adjustable v belt:
+            belt transmission:
+                quarter turn:
+                three step cone pulley:
+                five step cone pulley:
+                belt gear:
+                safety cap:
+                guide pulley:
+                v belt:
+                keyed v belt sheave:
+                double v belt:
+                poly v belt:
+                gilmer timing belts:
+            belt tighteners and pulleys:
+                belt tightener:
+                tandem drive:
+                pulley:
+                crowned pulley:
+                vertical pulley:
+                fast and loose pulley with bushing:
+                loose pulley bushing:
+                fast and loose pulley with no bushing:
+                wall guide pulley:
+                ceiling guide pulley:
+                floor guide pulley:
+            belt joints and fasteners:
+                laps:
+                preparing laps:
+                belt stretcher:
+                wire hooks:
+                sewn joint:
+                flanged and bolted joint:
+                moxons fastener:
+                laminated leather belting:
+                link leather belt:
+                flat link leather belt:
+                moran steel belt coupling:
+                stitched and cemented belt joint:
+                double belting:
+                laced lap joint:
+                butt joint:
+                laced butt joints:
+                pin and link joint:
+                riveted and cemented joint:
+                lacrelles fastening:
+                flattened hook joint:
+                blakes stud fastener:
+                hook and eye joint:
+                hinge fastening:
+                metal spikes:
+                sonnenthals belt screw:
+                greens belt stud:
+            chain drives:
+                single flat link pitch chain:
+                standard roller chain:
+                double flat link pitch chain:
+                benoit roller chain:
+                block chain:
+                renolds chain:
+                morse silent chain:
+                frictionless rocker joint:
+                morse roller chain:
+                brampton block chain:
+                ASA standard triple strand roller chain:
+                ladder chain:
+                applebys adjustable chain for bicycles:
+                applebys machine chain:
+                hornsbys chain link:
+                halls detachable pitch chain:
+                ewarts detachable link belt:
+                drip feed lubrication of chain drives:
+                oil bath lubrication:
+                sprocket wheel and pitch chain assembly:
+                link belt and sprocket:
+                toothed link chain:
+                link chain and sprocket:
+                bead chain:
+                ewart detachable chain:
+                pintle chain:
+                inverted tooth chain:
+                various pin links:
+                straight link plate extension:
+                ASA double pitch drive chain:
+                hollow pin chain double pitch:
+                delrin clip:
+            differential pulleys and winches:
+                moores differential pulley block:
+                westons differential pulley block:
+                worm gear pulley block:
+                differential pulley block:
+                hoisting drums:
+                electric hoist:
+                hand hoist:
+                travelling hoist:
+                jack:
+                chain offset:
+                chain sheaves and fittings:
+            chains hooks and fittings:
+                close chain link:
+                short link:
+                rigging chain link:
+                crane chain link:
+                oval stud link:
+                parallel sided stud link:
+                obtuse angled stud link:
+                scarfed joints:
+                wear on links:
+                spring catch:
+                ball bearing hook:
+                foundry charge hook:
+                ramshorn or double crane hooks:
+                ordinary swivel hook:
+                double hook: #ramshorn
+                single sling or lashing chain:
+                shackle and swivel:
+                stopper for riding bits:
+                ordinary cable swivel:
+                chain and shackle:
+                screwed messenger link:
+                screwed d shackle:
+                cotter messenger link:
+                francis split link:
+                split link:
+                harp shackle with forelock:
+                screwed connecting link:
+                chain tighteners:
+                chain sheaves:
+                cargo hook:
+                shunting hook:
+                locking device:
+                fixed bar hook:
+                snap hook:
+                slip hook:
+                match hooks:
+                lewis:
+                claw grab:
+                grab bucket:
+                snap link:
+                automatic slip hook:
+                draw bar hook:
+                safety link:
+                s link:
+                split link:
+                hook:
+                hook eye:
+                swivel shackle:
+                spring snap hook:
+                grip hook:
+                towing hook:
+                swivel snap hook:
+                double link and bolt:
+            blocks and tackles:
+                differential pulley:
+                single whip:
+                block and tackle:
+                gun tackle purchase:
+                luff tackle:
+                double purchase:
+                spanish burton:
+                double spanish burton:
+                bell purchase:
+                luff upon luff:
+            motion transmissions:
+                flexible shaft:
+                radiating arm:
+                bevel gear:
+                feather shaft:
+                screw and worm wheel gear:
+                steam or hydraulic pivoting arm:
+                jointed radiating arms:
+                swivel jointed tube:
+                traveling gear:
+                traveling spur gear:
+                telescopic swinging shaft:
+                helical gear drive:
+                endless cord drive:
+                parallel motion swivelling driving device:
+                traveling gear and slot:
+                pivoting arm and belt:
+                endless round rope belt drive:
+                motion conveyed by belt:
+                rock drill:
+                locomotive air brake:
+                flexible steam joint:
+                transmission of motion by electricity:
+                electric and magnetic waves: #generated by an oscillating electric current
+                electric hoist:
+                idler gear and slot:
+                piston centers:
+                eyelet center:
+                pivoting ball center:
+                rocking center:
+                swivelling pipe joint:
+                universal hinge:
+                ball joint:
+                ball and cup joint:
+                hookes universal joints:
+                universal hinge:
+                ball castor:
+                typical line shaft:
+            shock mounts and vibration isolators:
+                vibration isolator:
+                rubber in shear:
+                chan l mount:
+                lattice mounting:
+                helical isolator:
+                stewart platform:
         mechanisms and kinematics:
+            contracting and expanding mechanisms:
+                parallel bar:
+                lazy tongs:
+                expanding screen:
+                venetian blind:
+                expanding basket:
+                car bumper:
+                epanding chuck:
+                expanding mandrel:
+                expanding socket formed from spring wire:
+                expanding socket:
+                expanding tripod:
+                expanding gate:
+                expanding pulley:
+                expanding pipe grip:
+                expanding legs for tripod:
+                expanding link device with four guides:
+                perforated bar:
+                hooked rod hanger:
+                expanding grating:
+                pipe stoppers:
+                collar:
+                boring tool:
+                tube expander:
+                telescopic ram:
+                mandrel with taper screw:
+                reamer:
+                collet:
+                steam trap:
+                thermostat:
+                organ bellows:
+                diaphragm:
+                spiral type bimetallic thermostat:
+                taper tube rolling:
+                mannesmann process:
+                straight strip type bimetallic thermostat:
+                gasometer:
+            differential gearing:
+                standard differential winch:
+                two gears:
+                simple differential using bevel gears:
+                spur gear differential:
+                automative differential:
+                modern precision differential:
+                differential screw:
+                differential accumulator:
+                differential pulley block:
+                differential screw valve fitting:
+                differential piston indicator:
+                differential screw bolt and sleeve movement:
+                planetary automotive transmission of ford model T:
+                planetary gear train of buick dynaflow transmission:
+                harmonic drive:
+                planocentric drive:
+            variable motion devices:
+                variable driving friction gear:
+                variable radius crank:
+                expanding v belt pulley:
+                belt speed cone device:
+                four speed gear train:
+                six speed gear train:
+                two speed bevel gear:
+                elliptical spur gears:
+                three speed gear train:
+                four speed face gear:
+                four speed gear train:
+                planetary friction drive:
+                reeves beier drive:
+                roller disc drive:
+                impulse drive:
+                adjustable impulse drive:
+                links transfer motion:
+                varipitch drive:
+                torque converter:
+            circular and reciprocating motions: #pg 128
+                oncenter slide crank:
+                scotch yoke:
+                rotating slotted crank:
+                elliptical crank end motion:
+                double crank:
+                ball jointed links:
+                double piston crank motion:
+                multiple trammel gear:
+                variable single acting pistons:
+                variable crank pin:
+                excentric gears:
+                hydraulic steam or pneumatic cylinder:
+                sliding motion:
+                offset crosshead:
+                whitworth quick return:
+                maccord quick return:
+                quick return motion:
+                friction gear:
+                bent crank:
+                bobbin winder:
+                variable rectilinear motion:
+                offaxis slider crank:
+                rocking motion:
+                ovoid curve:
+                crank and toggle:
+                reciprocating motion:
+                double screw arrangement for steering gear:
+                pinion driving racks:
+                transport mechanism:
+                ball and socket crank motion:
+                multiple return cylinder:
+                continuous rotary motion:
+                slot link and treadle:
+                cone change speed device using endless belt:
+                variable fulcrum changes:
+                variable radius lever:
+                grooved cam traverse mechanism:
+            gear and belt shifting:
+                leather belt shifter:
+                lever in dead center:
+                stepped cone gear:
+                reversing pulley:
+                four speed change gear:
+                gear shifter:
+                shifter:
+                reversing gear:
+                manual belt reversing shift gear:
+                stop motion:
+                drive motion:
+                reverse motion:
+                driving gear:
+                radius bar and slot:
+                shaft:
+                sliding back shaft:
+                bolt and slot device:
+                adjustable belt shift bar:
+                cam slot:
+                slackening belt:
+                sliding shaft:
+                gear and wheel puller:
+                herkimers chain gear puller:
+                two half nuts:
+                revolving worm:
+                gearshift:
+            clock and watch mechanisms:
+                centrifugal pendulum:
+                cycloidal pendulum movement:
+                compound compensation pendulum:
+                compensating pendulum weight:
+                compensating watch balance:
+                anchor escapement:
+                verge escapement: &verge-escapement
+                antique clock escapement: *verge-escapement
+                star wheel escapement:
+                dead beat clock escapement:
+                recoil escapement:
+                lantern wheel escapement:
+                crown tooth escapement with ball balance:
+                pin wheel escapement:
+                three toothed escapement:
+                stud escapement:
+                endless cord winding device:
+                pendulum escapement:
+                lever escapement:
+                sections of plate and balance jewels:
+                incablock shock absorber:
+                duplex escapement:
+                lever escapement:
+                guernsey escapement:
+                regulator:
+                anchor and lever escapement:
+                arnold chronometer escapement:
+                geneva stop:
+                watch stop:
+                pin geared watch stop:
+                geared stop watch:
+                chronometer escapement:
+                lever chronometer escapement:
+                double three tooth gravity escapement:
+                clock train:
+                fusee chain and spring drum:
+                watch train:
+            kinematic mechanisms:
+                link:
+                slider crank chain:
+                chain varieties:
+                    direct acting engine:
+                    oscillating engine and quick return:
+                    whitworths quick return:
+                    stannahs pendulum pump:
+                    scott russells straight line motion:
+                double slider crank:
+                four link mechanism:
+                    watts parallel motion:
+                    parallel crank chain:
+                    robervals balance:
+            cam mechanisms:
+                heart cams:
+                crown cam:
+                eight lobed disc cam:
+                three lobed disc cam:
+                heart shaped face cam:
+                cylindrical cam:
+                lever cam:
+                twisted bar:
+                cam plate and levers:
+                cam lever motion:
+                crank pin and slotted lever:
+                spiral cam:
+                compound cam:
+                internal compound cam:
+                spherical cam:
+                modified scotch yoke:
+                three dimensional space cam:
+                cam application:
+                vibrating rectilinear motion from revolving three lobed cam:
+                face cam:
+                wiper cam: #for stamp mill
+                double cam motion:
+                cam slot:
+                cam sectors of logarithmic spiral wheels:
+                power escapement:
+                reciprocating rectilinear motion:
+                bell crank toe levers:
+                cam lever grip:
+                cam operated shears:
+                rotary motion:
+                equalizing levers:
+                triangular curved eccentric:
+                yoke strap:
+                needle bar slot cam:
+                eccentric and slotted arm:
+                swash plate:
+                translation cam:
+                automotive cam:
+                toe and wiper cam:
+                constant breadth cam:
+                multiple face cam:
+                spiral radius bar:
+                diagonal disc cam:
+                translation cam:
+                double disc positive action cam:
+                ferguson indexing drive:
+                beveled disc cam:
+                multiple revolution cam:
+                triangular eccentric:
+                irregular reciprocating motion:
+                double end cam:
+            parallel and straight line motion:
+                drafting machine:
+                parallel rule:
+                peaucellier straight line mechanism:
+                sector and rack motion:
+                floating tables:
+                parallel opening doors:
+                beam with rocking fulcrum:
+                parallel moving slides:
+                parallel motion for an indicator:
+                cartwrights parallel motion:
+                epicycloidal parallel motion:
+                parallel motion for an indicator pencil:
+                multiple grinding fixture using parallel motion:
+                parallel motion of pliers:
+                steering wheels:
+                double link balanced scale:
+                parallel motion:
+                duplex air compressor:
+                beam with rocking fulcrum:
+                pivoted steps:
+                watt straight line motion:
+                pantograph:
+                drafting machine:
+                marine engine:
+            energy converting mechanisms:
+                inclined plane:
+                wedge:
+                screw:
+                worm gear:
+                differential axle:
+                differential windlass:
+                differential shaft derrick:
+                steam hoisting engine:
+                spanish windlass:
+                jack screw:
+                light weight hoist:
+                capstan:
+                steering gear:
+                winding engine:
+                compound lever: #pg 158
+                double toothed cam:
+                double lever and link motion:
+                lever and toggle:
+                compound lever shears:
+                lever and frame gear:
+                compound lever cutting shears:
+                stake puller:
+                hydraulic press:
+                portable riveter:
+                lever toggle:
+                screw stamping press:
+                double screw toggle press:
+                single toggle arm letter press:
+                toggle joint stone breaker:
+                lewis wedge for lifting stone:
+                toggle joint stone breaker:
+                weston differential gear hoist:
+                toggle bar press:
+                sector press:
+                adjustable grip tongs:
+                lever grip tongs:
+                tire puncher:
+                screw jack:
+                letter press with stanhope levers:
+                toggle joint wagon brake:
+                rack and lever jack:
+                hydraulic jack:
+            adjusting devices:
+                adjustable rod:
+                adjustable lever:
+                adjustable arm:
+                split joint:
+                adjustable stays:
+                adjustable turbine jet:
+                adjustable table:
+                adjustable base:
+                slotted link:
+                disc and ring:
+                pin and hole adjustment:
+                wedge bearing:
+                adjustable engine crossheads:
+                adjustable floor stand shaft bearing:
+                horizontal center adjustment:
+                shaft step adjustment:
+                adjustable post hanger:
+                adjustable rack:
+                ratchet rod:
+                spring pawl:
+                micrometer adjustment:
+                calipers:
+                screw adjustment:
+                variable curve adjustment:
+                adjustable vertical sheave:
+                lathe tailstock adjustment:
+                combined ratchet and hand feed gear:
+                conical pivot bearing:
+                adjustable hanger:
+                adjusting screw:
+                collar bearing:
+                spiral torsion spring adjustment:
+                micrometer adjustment:
+                adjusting pawl and head:
+                leveling adjustment:
+                adjustable center pin:
+                fine screw adjustment:
+                split cone sleeves:
+                center line adjustment:
+                fine screw adjustment:
+                expanding a split borer:
+                division plate:
+                differential screw:
+            space mechanisms:
+                four link mechanism:
+                    conic four link mechanism:
+                    spherical four link mechanism:
+                modified conic linkage:
+                conic slider crank:
+                plane form of slider crank:
+                plane parallelogram:
+                spherical parallelogram:
         fastening and fasteners:
+            marine and masonry anchors:
+                mushroom anchor:
+                trawl or sand anchor:
+                grapnel:
+                navy type swivelling fluke:
+                danforth anchor:
+                northill utility anchor:
+                fishermans anchor:
+                laughlin CQR plow anchor:
+                anchor trip hook:
+                rock anchor:
+                concrete:
+                mooring screws:
+                anchor plate:
+                wall eye:
+                foundation bolt head:
+                rope pulley leader anchor:
+                fencing posts in ground:
+                miscellaneous foundation bolt anchors:
+                expansion bolts:
+            expansion anchors:
+                spring wine toggle bolt:
+                one piece toggle:
+                lead expansion anchors:
+                expansion plug:
+                single machine bolt:
+                double machine bolt shield:
+                rawhide wood and lag screw anchor:
+                steel expansion shells:
+                four point star drill:
+                pipe hook:
+                adjustable combination pipe hanger:
+                BX staple:
+                flattened end lag screw:
+                rawl drive expansion plugs:
+                two hole straps:
+                one hole strap:
+                gimlet point lag screw:
+                expansion shield:
+            nails:
+                railroad spike:
+                tie plate screws:
+                diamond and button head boat spikes:
+                cut nail:
+                common nail:
+                carpet tack:
+                sash pin:
+                casing nail:
+                finishing nails:
+                flooring brad:
+                common brad:
+                boat nail:
+                slating nail:
+                shingle nail:
+                hook metal lathe nail:
+                large head roofing nail:
+                regular head:
+                clinch nail:
+                cigar box nail:
+                hook head:
+                lath:
+                points:
+                    diamond point:
+                    extra blunt point:
+                    round point:
+                    blunt point:
+                    long point:
+                    needle point:
+                    side point:
+                    clout point:
+                    chisel point:
+            nuts and screws:
+                threads:
+                    american national standard thread:
+                        UNC:
+                        NC:
+                        NEF:
+                        UNF:
+                        NF:
+                    brown and sharpe worm thread:
+                    whitworths thread:
+                    sellers thread:
+                    sharp V thread:
+                    square thread:
+                    buttress thread:
+                    acme standard thread:
+                    round or knuckle thread:
+                nuts:
+                    machine screw nut:
+                    regular square nut:
+                    hex slotted nut:
+                    hex thick nut:
+                    hex jam nut:
+                    hex castle nut:
+                    hex thick slotted nut:
+                    high slotted nut:
+                    twelve point nut:
+                    acorn nut: &acorn-nut
+                    cap nut: *acorn-nut
+                    hex flange nut:
+                screw heads:
+                    truss head:
+                    binding head:
+                    button:
+                    fillister:
+                    flat head:
+                    undercut flat head:
+                    hex head:
+                    headless:
+                    pan head:
+                    oval undercut:
+                    round head:
+                    flat fillister head:
+                    hex socket head:
+                    phillips recess:
+                    fluted socket:
+                    one way:
+                    drilled spanner:
+                    pozidriv recess:
+                special bolt heads:
+                    eye bolt:
+                    hook bolt:
+                    countersunk head:
+                    special head:
+                    t head:
+                    wedge head:
+                    eye bolt:
+                    boss head bolt:
+                    lifting eye bolt:
+                    conical head bolt:
+                    fluted nut:
+                    screw driver nut:
+                    capstan nut:
+                    spring pawl:
+                    nut with stop pin:
+                    split nut:
+                    nut with cotter pin:
+                    nut with taper pin:
+                    locking plate:
+                    lock washer:
+                    ring nuts:
+                    nut with setscrew:
+                    pin nut:
+                    wing nut:
+                    nut with holes for a forked spanner:
+                    stud driver:
+                    jam nuts:
+                lock washers:
+                    spring lock washer:
+                    external tooth lock washer:
+                    internal tooth lock washer:
+                special nuts:
+                    flexloc:
+                    elastic self locking stop nut:
+                    speed nut:
+                    tinnerman speed nut:
+                    clinch nut:
+                    cage nut:
+                    clevis:
+                    cotter pin:
+                bolts:
+                    bolt:
+                    cylinder head bolt:
+                    socket head bolt:
+                    milled head screw:
+                    bolt with head for a forked spanner:
+                    t head bolt:
+                    hexagon collar bolt:
+                    hexagon head bolt with collar:
+                    eye bolt:
+                    hook bolt:
+                    lewis bolt:
+                    solid head and collar bolt: #bed bolt
+                    turnbuckle:
+                    belt screw:
+                    ball head bolt and nut:
+                    multilated screw and nut:
+                    coned bolt:
+                    molly bolt:
+                miscellaneous bolts:
+                    countersunk head square neck carriage bolt:
+                    step bolt:
+                    countersunk bolt:
+                    round head bolt:
+                    hex cap bolt:
+                    square head bolt:
+                    round head short square neck carriage bolt:
+                    square countersunk head plow bolt:
+                    round 
+            blah:
     magnetics and electronics:
         magnetics:
         electricity:
