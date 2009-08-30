@@ -1855,47 +1855,1182 @@ TOC:
                 basic logic gates:
                 bistable multivibrator flip flop circuit:
                 half adder circuit:
+                arithmetic logic unit:
     light and optics:
         light sources:
+            luminaries and light distribution:
+                shallow bowl reflectors:
+                translucent bowls:
+                white glass enclosing globe:
+                parabolic polished metal reflectors:
+                large area diffusing panels:
+                high boy open reflectors:
+                large area diffusing reflectors:
+                fundamental fluorescent lamp circuit:
+                nonuniform illuminater:
+                uniform distributor:
+                aluminum troffer:
+                medium distribution reflector:
+                bare lamp unit:
+                louvered coffer:
+                porcelain enameled standard dome incandescent:
+                suspended luminous indirect fluorescent:
+                four bare lamps:
+                chandelier:
         lenses prisms and mirrors:
+            refractor:
+            mirrors:
+            lenses:
+                thin lens:
+                thick lens:
+                plano convex: #converging
+                double concave: #diverging
+                double convex thick lens:
+                chromatic abberation:
+                human eye:
+                eye:
+                pincushion distorter:
+                barrel distorter:
+                gauss type:
+                barlow type:
+                field stop:
+                vignettor:
+            prisms:
+                penta prism:
+                deviation prism:
         cameras and projectors:
+            zeiss tessar:
+            cooke triplet:
+            petzval objective:
+            triple protar:
+            iris diaphragm:
+            leaf type shutter:
+            telescope type view finder:
+            cameras:
+                exacta camera:
+                movie camera:
+                single lens reflex camera:
+            projectors:
+                parabolic searchlight:
+                transparency projector:
+                headlamp:
+                optical comparator:
+                microfilm reader:
+                lighthouse:
         optical instruments:
+            telescopes:
+                keplerian telescope:
+                galilean telescope:
+                galilean field glass:
+                huygenian eyepiece:
+                ramsden eyepiece:
+                terrestrial eyepiece:
+                newtonian reflecting telescope:
+                cassegrainian form:
+                gregorian form:
+            microscopes:
+                magnifying glass:
+                compound microscope:
+                microscope objective:
+                eyepiece:
+                condenser:
+                vertical illuminator:
+                stereoscopic microscope:
+            miscellaneous:
+                tank periscope:
+                trench periscope:
+                submarine periscope:
+                range finder:
+                prism binoculars:
+                direct vision spectroscope:
+                prism spectroscope:
     fluid technology:
         hydraulic elements:
+            pistons and cylinders:
+                cushioned cylinder:
+                spring return cylinder:
+                ram:
+                telescoping cylinder:
+                bleeders:
+                flange mounting:
+                clevis mounting:
+                u cup packing:
+                v packing:
+                flange packing:
+                o ring:
+                hydraulic cylinder:
+            reeservoirs:
+                reservoir:
+                accessory:
+            boosters and heat exchangers:
+                reciprocating intensifier:
+                booster:
+                continuous booster:
+                plate type heat exchanger:
+                shell and tube heat exchanger:
+                air to oil coolers:
+            accumulators:
+                separator bag type accumulator:
+                piston type accumulator:
+                diaphragm type aircraft accumulator:
+                floating piston type accumulator:
+            filters:
+                square weave wire mesh screen filter:
+                sintered metal powder filter:
+                paper filter:
+                felt filter:
+                single bolt cartridge type filter:
+                ribbon type element:
+                pleated type filter:
         pumps:
+            early type rotary pumps:
+                pappenheim rotary pump:
+                cochrane rotary pump:
+                rotary pump:
+                cary rotary pump:
+                pattison rotary pump:
+                ramelli rotary pump:
+                emery rotary pump:
+                heppel rotary pump:
+                knott rotary pump:
+                repsol rotary pump:
+                holley rotary pump:
+                quimby screw pump:
+                roots blower:
+                roots pump:
+                mackenzies blower:
+                goulds rotary pump:
+                mellory rotary pump:
+                rotary motor:
+                star wheel geared rotary pump:
+                hasafan eccentric revolving piston:
+                eccentric rotor:
+                eccentric piston:
+            geared and vane pumps:
+                gear pump:
+                vane pump:
+                rotary spur gear pump:
+                herringbone gear pump:
+                internal gear pump:
+                gerotor pump:
+                blackmer swinging vane type rotary pump:
+                relief valve:
+                vickers vane pump:
+            piston pumps:
+                valve plate axial piston pump:
+                bent axis:
+                axial hydraulic pump:
+                axial piston pump:
+                checkvalve radial piston pump:
+                radial piston:
+            centrifugal pumps:
+                volute type centrifugal pump:
+                diffuser type pump:
+                impeller:
+                semi open impeller:
+                closed impeller:
+                propeller type pump:
+                screw type pump:
+                steam jacketed cam:
+                three lobe pump:
+                special vane pump:
+                two lobe pump:
+            miscellaneous:
+                racine vane pump:
+                hele shaw radial piston pump:
+                screw type rotary pump:
+                external screw pump:
         valves:
+            manual valves:
+                globe valve:
+                angle valve:
+                rotary spool:
+                rotary plate:
+                ball valve:
+                gate valve:
+                manual lever:
+            pressure controlled valves:
+                angle check valve:
+                in line check valve:
+                shuttle valve:
+                non adjustable safety valve:
+                hydraulic fuse:
+                deceleration valve:
+            flow controllers:
+                vickers relief valve:
+                pressure control valve:
+                pressure reducing valve:
+                vickers sequence valve:
+                adjustable compensated flow control valve:
+                solenoid controlled dump and shut off valve:
+                two stage solenoid pilot operated valve:
+                spool configuration:
         hydraulic components:
+            tube fittings:
+                standard pipe:
+                    schedule: 40
+                extra strong pipe:
+                    schedule: 80
+                double extra strong pipe:
+                    schedule: 160
+                NPT threaded pipe section:
+                tubes:
+                three piece flareless fitting:
+                ferulok tube fitting:
+                assembled ferulok tube fitting:
+                flareless tube fitting:
+                welding of pipe joint to flange:
+                welding two pipes together:
+            hoses and hose fittings:
+                hoze lok:
+                    type: 20
+            seals:
+                piston:
+                v ring hydraulic packing:
+                leather cup packing:
+                press for molding cup leathers:
+                spring expander:
+                coil spring expander:
+                o ring seal:
+                parker T seal:
+                polypak:
+                v packings:
+                parker rockwell lip type packing:
+                molythane wiper ring:
         hydraulic systems:
-    industrial processes:
+            symbols:
+                working line:
+                pilot line:
+                drain line:
+                joining lines:
+                crossing lines:
+                fixed displacement pump: #unidirectional
+                motor: 
+                variable displacement pump:
+                variable displacement motor:
+                single acting cylinder:
+                double acting cylinder:
+                double acting double rod end cylinder:
+                oversize rod:
+                enclosure:
+                relief valve:
+                sequence valve:
+                unloading valve:
+                pressure regulating valve:
+                fixed restriction orifice:
+                variable flow control valve:
+                pressure compensated flow control valve:
+                variable pressure:
+                check valve:
+                three way valve:
+                four way valve:
+                reservoir line:
+                fluid return line:
+                drain line:
+    industrial processes: #pg 391
         tools:
+            hand tools:
+                flat file:
+                hand file:
+                square file:
+                pillar file:
+                round file:
+                triangular file:
+                half round file:
+                needle file:
+                rifflers:
+                surface plate:
+                flat drill:
+                twist drill:
+                v block:
+                clamp:
+                center punch:
+                automatic center punch:
+                table vise:
+                pin vises:
+                taper reamer:
+                straight reamer:
+                reamer:
+                stanley block plane:
+                quarter round molding plane:
+                hand shears:
+                small beach shear:
+                chisel:
+                side chisel:
+                caulking tool:
+                fullering tool:
+                hand taps:
+                die stock:
+                internal thread chaser:
+                external hand thread chaser:
+                parallel jaw vise:
+                pipe burring reamer:
+                pipe vise:
+                chain vise:
+                special jaws for vise:
+                body hammer:
+                dolly:
+                gear puller:
+                battery terminal puller:
+                body dent puller:
+                brass punch:
+                aligning punch:
+                hammer with brass jaws:
+                ball peen hammer:
+                torque wrench:
+                pipe extension:
+                long nose pliers:
+                external snap ring pliers:
+                wrench pliers:
+                box wrench offset:
+                adjustable wrench:
+                open end wrench:
+                opticians screw driver:
+                pocket screw driver:
+            drilling:
+                straight shank drill:
+                taper shank drill:
+                center drill:
+                washer cutter:
+                countersink:
+                drill grinding fixture:
+                v drill for metal:
+                flat point:
+                bottoming drill:
+                drill jig:
+                drill press:
+                turret spindle:
+                counterbore:
+                tap:
+                jacobs drill chuck:
+                counter sink:
+            cutting and turning tools:
+                pipe cutter:
+                slitting discs:
+                revolving cutter head:
+                reaping machine:
+                wire cutter discs:
+                shears:
+                tubular machine cutter:
+                scroll saw:
+                fret saw:
+                jigger:
+                three cutter tube shears:
+                pin borer:
+                inserted circular saw:
+                expansive facing:
+                boring pin bit:
+                revolving cutter:
+                wobbling circular saw:
+                chain cutter:
+                turning knife:
+                turning front:
+                chasing tool:
+                hollow taper bung borer:
+                screw tool:
+                cutting discs:
+                compound lever shears:
+                square hole boring bit:
+                cylinder drill:
+                fluted drill:
+                single point cutting tool:
+                thread cutting tool:
+                right hand turning tool:
+                boring tool:
+                v tool:
+                side tool:
+                square shoulder boring tools:
+                hand planning tool:
+                paring gouge:
+                hollowing gouge:
+                tool holder:
+                compound cylinder drill:
+                wheel:
+                boring bar head:
+                diamond studded borer:
+                broaching tool:
+                boring bar:
+            hobs and milling cutters:
+                gearing hob:
+                hobbing:
+                plain milling cutter:
+                milling cutter:
+                side milling cutter:
+                inserted blade milling cutter:
+                gear cutter:
+                multiple thread miller:
+                slitting saw:
+                end mill:
+            saws and sawing:
+                hydraulic cold saw:
+                hydraulic metal saw:
+                hack saw:
+                back saw:
+                cross cut wood saw:
+                rip wood saw:
+                rip saw:
+                compass saw:
+                flooring saw:
+                pattern makers saw:
+                dovetail saw:
+                keyhole saw:
+                bench or joiner saw:
+                slitting saw:
+            miscellaneous:
+                oxy acetylene torch:
+                earth borer:
+                auger:
+                diamond rock drill:
+                boring tool:
+                hand riveting tools:
+                magnetic chuck:
+                magnetic parallel blocks:
+                compound sliding table:
+                shell reamer:
+                breast drill:
+                handgrinder:
         machinery:
+            lathes:
+                lathe:
+                lathe apron:
+                tail stock:
+                live center:
+                saddle type universal turret lathe:
+                forming tool:
+                knurling tool:
+                collet:
+                spindle:
+            millers:
+                universal milling machine:
+                formed milling cutter convex:
+                formed milling cutter concave:
+                up milling:
+                down milling:
+                straddle milling:
+                vertical milling machine:
+                milling cutters:
+                universal dividing head set:
+                dividing table:
+            grinders:
+                grinding machine:
+                centerless grinder:
+                cylindrical grinder:
+                internal grinding:
+                planetary internal grinding:
+                grinding wheel:
+                straight grinding wheel:
+                flaring cup grinding wheel:
+                cylinder type grinding wheel:
+            presses:
+                inclinable power press:
+                punch and die:
+                drawing operation:
+                blanking die:
+                drawing die:
+                double action press:
+                v bending die:
+                double bending die:
+                curling die:
+                coining die:
+            shapers and planers:
+                shaper:
+                planer:
+            miscellaneous:
+                portable pneumatic drill:
+                electric hand drill:
+                engraving machine:
+                spot welding machine:
+                oxyacetylene welding:
+                soldering blowtorch:
+                blow pipe:
+            agricultural machinery:
+                spanish plow:
+                daniel websters plow:
+                chilled plow:
+                sulky plow:
+                reversible plow: &reversible-plow
+                hillside plow: *reversible-plow
+                disc plow:
+                disc engine gang:
+                spike tooth harrow:
+                weeder:
+                curved knife tooth riding harrow:
+                spading disc harrow:
+                orchard disc harrow:
+                smooth iron roller:
+                corrugated roller:
+                riding cultivator:
+                disc cultivator:
+                original campbell combined cultivator and grain drill:
+                potato planter:
+                potato digger:
         fabrication methods:
-    power generation:
+            chopping slicing and mincing:
+                wire bending machine:
+                cutting machine:
+                revolving cutter rollers:
+                disc cutter:
+                revolving cutter:
+                spiral tapered revolving cutter:
+                revolving spiral cutter:
+                rectangular cutters:
+                apple slicer and corer:
+                chopping grinding mill:
+                hand mincing compound knife:
+                bark mill: &bark-mill
+                cob mill: *bark-mill
+                disc shears:
+                hollow chuck:
+            crushing and grinding:
+                conical mill:
+                stone breaker:
+                vertical cone mill:
+                revolving stamp:
+                pan mill:
+                revolving pan:
+                ball mill:
+                crushing rollers:
+                eccentric disc grinding mill:
+                cone roller mill:
+                double edge runners:
+                toothed sector mill:
+                centrifugal puverizer:
+                cylindrical ball mill:
+                two roll coal crusher:
+                barrel finishing:
+                horizontal centrifugal roller mill:
+                concrete mixer:
+                ball mill:
+                lens grinder:
+                stamp mill:
+            sifting screening straining:
+                square mesh wire gauze:
+                perforated plate with round holes:
+                parallel bars or wires:
+                triangular mesh:
+                hexagonal mesh:
+                slit end square hole perforated plate:
+                sloping screen:
+                cylindrical screen:
+                cylindrical graduated screen:
+                sizer:
+                rotary screen:
+                shaking screen:
+                jigging screen:
+                rotary horizontal screen:
+                eccentric barrel screen:
+                angular barrel mixer:
+                air blast sixing apparatus:
+                graduating apparatus:
+                pressure strainer:
+                suction strainer:
+                cottin gin:
+                cyclone collector:
+                cyclone separator:
+            mixing:
+                candy mixer:
+                kneading mill:
+                pan mixer:
+                mixing machine:
+                dough mixer:
+                diagonal mixing pan:
+                diagonal mixing barrel:
+                two armed mixer:
+                egg beater:
+                horizontal table mixing machine:
+                conical mixing barrel:
+                mill with spiral paddles:
+                pug mill with radial paddles:
+                concrete mixer:
+                circulating and screw impeller mixer:
+                vertical brine agitator ice making tank:
+                flash mixer:
+            washing and winding apparatus:
+                revolving cylindrical screen washer:
+                coal washer:
+                ore washer:
+                archimedean circulator:
+                tub and paddle washer:
+                cylindrical perforated drum:
+                corrugated roller:
+                continuous circulator:
+                boiling tubs:
+                rotary clothes washer:
+                drum:
+                barrel:
+                winding barrel:
+                winches:
+                cranes:
+                fusee barrel:
+                grooved barrel:
+                hexagon frame winder for chain:
+                spool:
+                cord winder:
+                bobbins:
+                bobbin winder for cotton:
+                drum for flat rope:
+                fusee for round rope:
+                oscillating arm thread feeder:
+            smithing:
+                brick built blacksmiths hearth:
+                power hammer:
+                blast fan:
+                english anvil:
+                french anvil:
+                blacksmiths tools:
+                swage block:
+                dolly:
+                industrial blacksmith shop arrangement:
+            foundry work:
+                trowels:
+                rammers:
+                pour basin:
+                flask:
+                ladles:
+                matchplate:
+                jolt squeeze molding machine:
+            miscellaneous:
+                electroforming:
+                grinding:
+                electrolytic grinding:
+                chemical milling:
+    power generation: #pg 441
         engines:
+            steam engines:
+                uniflow engine:
+                basic steam engine:
+                simple single D slide valve:
+                valve:
+                D slide valve:
+                corliss engine:
+                corliss valve gear:
+                throttle valve:
+                indicator diagram:
+                flyball governor:
+                tandem compound engine:
+                cross compound engine:
+            diesel engine:
+                engine scavenging:
+                exhaust valve:
+                junkers four cylinder cycle events:
+                mechanical injection fuel system:
+                air injection fuel system:
+                rotary type scavening air blower:
+            internal combustion engines:
+                high tension ignition system:
+                valve assembly:
+                breaker mechanism:
+                carburetor:
+                combustion chamber:
+                v8 ford engine:
         turbines:
+            steam turbines:
+                high pressure element:
+                low pressure element:
+            hydraulic turbine principles:
+                jonval turbine:
+                lancaster turbine:
+                model turbine:
+                swain turbine:
+                camden turbine:
+                munson double turbine:
+                warren central discharge turbine:
+                fourneyron turbine:
+                leffel double runner turbine:
+                right angle jet:
+                governor:
+            hydraulic wheel design:
+                gravity machines:
+                overshot wheel:
+                leffe overshot wheel:
+                oscillating cylinder pressure engine:
+                pressure type hydraulic riveter:
+                hydraulic cylinder:
+                Thorp controller:
+                hydraulic lifts:
+                pelton wheel:
+                double bucket:
+                breast water wheel:
+                undershot water wheel:
+                saw mill water wheel:
+                flutter water wheel:
+                current wheel:
+                barker wheel:
+                breast wheel:
+                water wheel governor:
+                pelton wheel buckets:
+            gas turbines:
+                herons gas turbine: #130 B.C.
+                smoke jack: #17th century
+                steam engine:
+                steam turbine:
+                aviation gasoline:
+                aviation diesel engine:
+                gas turbine:
+                single turbine unit:
+                turbo charger:
         rockets and jets:
+            jet propulsion:
+                campini:
+                gas turbine jet:
+                jet propulsion:
+                swedens ljungstroms gas turbine:
+                all rotary jet propulsion:
+                ljungstroms gas turbine screw:
+            rockets and jets:
+                dry fuel reaction rocket motor:
+                liquid fuel reaction rocket motor:
+                thermal jet engine: &thermal-jet-engine
+                turbojet: *thermal-jet-engine
+                duct engine: &duct-engine
+                buzz bomb engine: *duct-engine
+                air stream engine: *duct-engine
+                simple sky rocket:
+                sounding rocket:
         electric power:
+            electrical generators:
+                simple coil:
+                horseshoe core:
+                electric conductor:
+                electric generator:
+                alternator:
+                two phase alternator:
+                transformer:
+                autotransformer:
+                single phase alternator:
+                slip rings:
+                RTG:
     structural engineering:
         structures:
+            fabricated sections:
+                i beam:
+                standard channel:
+                wide flange section:
+                structural tee:
+                tee:
+                z section:
+                bulb angle:
+                angle:
+                h section:
+                bulb t:
+                flat bar:
+            built up sections girders and columns:
+                box girder:
+                welded girder:
+                craneway:
+                tubular swelled strut:
+                strut:
+                braced strut:
+                heavy girder:
+                separator:
+                coping:
+                blocking:
+                rolled wide flange:
+                column splicer:
+            structural steel fasteners:
+                riveted truss:
+                sleeve nuts:
+                column base plate:
+                arc welded double web bar frame:
+            i beam supports and tracks:
+                double i beam overhead track:
+                single i beam overhead track:
+                coburn type track:
+                bar track:
+                monorail hoist:
+                welded type crane rail support:
+                i beam track support:
+            trusses:
+                king post truss:
+                simple fink truss:
+                fan truss:
+                fink truss:
+                steep roof truss:
+                timber truss:
+                floor truss:
+            bridges:
+                single strut deck truss:
+                double strut deck truss:
+                multiple strut deck:
+                truss:
+                arch deck truss bridge:
+                swing bridge:
+                cantilever bridge:
+                suspension bridge:
+                thatcher bridge: #steel-arched concrete bridge
+                chicago bridge: #rolling lift bridge
+                brooklyn new york bridge: #roebling suspension system
+            welded joints:
+                electric welder:
+                gas welder:
+                square groove joint:
+                single u groove joint:
+                single fillet lap joint:
+                double fillet lap joint:
+                double bevel groove joint:
+                single bevel groove joint:
+                single vee groove joint:
+                double vee groove joint:
+                single j tee joint:
+                square tee joint:
+                finish corner joint:
+                half open corner joint:
+                oxygen torch:
+                acetylene torch:
+                staggered intermittent fillet welds:
+            masonry and concrete:
+                hollow tile floor arches:
+                mortar joint:
+                ionic column:
+                corinthian column:
+                doric column:
+                roman column:
+                concrete slab:
+                concrete beam:
+                face brick:
+                english brick bond:
+                flemish brick bond:
+                stone work:
         cranes derricks and elevators:
+            cranes:
+                gantry crane:
+                semigantry crane:
+                cantilever gantry crane:
+                hammer head crane:
+                overhead traveling crane:
+                locomotive crane:
+                crawler crane:
+            derricks:
+                a frame derrick:
+                breast derrick:
+                shears:
+                gin pole derrick:
+                stiff leg derrick:
+                fixed guy derrick:
+            elevators and conveyors:
+                track hopper:
+                apron feeder:
+                centrifugal discharge type bucket elevator:
+                bucket elevator:
+                continuous bucket elevator:
+                super capacity continuous bucket elevator:
+                v bucket carrier:
+                peck carrier:
+                inclinede continuous bucket elevator:
+                pivoted bucket carrier:
+                gravity discharge elevator carrier:
+            hoists and details:
+                worm gear hoist:
+                electric hoist:
+                air motor hoist:
+                double purchase crab:
+                hoisting drum:
+                direct acting pneumatic hoist:
+                hydraulic jack:
+                rack and lever jack:
+            knots and hitches:
+                simple overhand knot:
+                figure 8 knot:
+                english knot:
+                round turn and hitch:
+                moorish knot:
+                larks head knot:
+                simple boat knot:
+                timber hitch:
+                splice with thimble:
+                clove hitch:
+                slippery clove hitch:
+                killich hitch:
+                double larks head:
+                rolling hitch:
+                stopper hitch:
+                lifting hitch:
+                lifting hitch with strap:
+                two half hitches:
+                round turn and two half hitches:
+            accessories:
+                lifting magnet:
+                hayward grab bucket:
+                williams grab bucket:
+                lifting tongs:
+                beam and sling:
+                single tongs:
+                bale and clamp hook:
+                movable hook beam:
+                hoist chain:
     comfort heating and cooling:
         refrigeration:
-        air conditioning:
+            system classification:
+                direct system:
+                indirect open spray system:
+                indirect closed surface system:
+                indirect vented closed surface system:
+                double indirect vented open spray system:
+            home refrigeration:
+                aircooled servel refrigeration cycle:
+                refrigerator:
+                capillary tube:
+                compressor:
+                rotary compressor:
+        air conditioning unit:
+            home air conditioners and humidifers:
+                window air conditioning unit:
+                propellar fan room cooler:
+                humidifying unit:
+                surface type cooling unit:
+                brine spray cooling unit:
+                spray type unit humidifier:
+                steam pan humidifier:
+                steam grid humidifier:
+            car air conditioners:
+                add on air conditioner:
+                all season air conditioner:
+            unit air conditioners:
+                humidifying unit:
+                oil fired air conditioning unit:
+                air conditioning:
+                residential central carrier:
+            air analysis:
+                psychrometer:
+                aspirating psychrometer:
+                thermometer:
+                barometer:
         steam heating:
+            vapor heating system:
+            vacuum heating system:
+            steam heating:
+                strainer:
+                dirt pocket:
+                dripping down feed riser:
+                thermostatic steam trap:
+                radiator connections:
+                dry return:
+                hartford connection:
+                liquid level controller:
+                blast surface:
+                bucket trap:
+                lifts:
         heating systems:
+            hot water heating system:
+                expansion tank:
+                    open:
+                    closed:
+            radiant heating:
+                radiant heating coil:
+                square coil:
+                grid coil:
+                continuous coil:
+            gravity warm air heating system:
+            heat pump:
     transducers:
         displacement types:
         pressure transducers:
+            sensing elements:
+                flat diaphragm:
+                corrugated diaphragm:
+                aneroid:
+                bellows:
+                c shaped bourdon tube:
+                spiral type bourdon:
+                helical bourdon tube:
+                twisted bourdon tube:
+                straight tube:
+            capacitive inductive piezoelectric:
+            variable reluctance and resistance types:
         temperature:
+            thermocouples:
+                wire thermocouple:
+                foil thermocouple:
+                immersion probe:
+                resistive temperature transducers:
+                surface temperature transducer:
+            thermistors:
+                bead thermistor:
+                rod:
+                glass probe:
+                wafer:
+                disc:
+            thermostatic types:
+                bimetallic strip:
+                rod and tube:
+                spiral bimetallic thermostat:
+                straight strip bimetallic thermostat:
+                curved strip bimetallic thermostat:
+                surface thermometer:
+            pyrometers:
+                pyrometer:
+                optical pyrometer:
+                thermopile sensor:
+                cryogenic probe:
         force and torque:
+            sensing elements:
+                cantilever beam:
+                clamped clamped beam:
+                standard proving ring:
+                proving frame:
+                solid cylinder column:
+                rectangular cylinder:
+                hollow strain tube:
+                strain gages:
+                solid cylindrical shaft torque sensor:
+                torque sensing shaft:
+                rod bridged notch torque sensing shaft:
+            strain gages:
+                bonded wire strain gage:
+                wire rosette:
+                helical wrap around grid type:
+                grid of metal foil strain gage:
+                spiral foil gage:
+                stress strain foil gage:
+            instruments:
+                strain gage force transducer:
+                torque transducer:
+                piezoelectric force transducer:
+                variable reluctance load cell:
+                reluctive force transducer:
+                magnetostrictive type:
         velocity and acceleration:
+            electromagnetic:
+                electromagnetic velocity transducer:
+                electrodynamic pick up: #seismic type
+                differential transformer:
+                toothed rotor tachometer:
+            miscellaneous transducer types:
+                angular strain gage type:
+                basic damped spring mass system:
+                piezoelectric accelerometer:
+                quartz crystal piezoelectric accelerometer:
+                stretched wire linear accelerotometer:
     metrology:
         dimensional measurement:
+            scales:
+                tempered steel rule:
+                narrow tempered steel rule:
+                flexible steel fillet rule:
+                tempered hook rule:
+                steel rule:
+                improved scale: #lufkin
+                depth gage:
+                combination square:
+            micrometers and calipers:
+                micrometer:
+                screw thread micrometer:
+                vernier caliper:
+                knife edge vernier:
+                digital caliper:
+                inside caliper:
+                outside caliper:
+                hermaphrodite caliper:
+                tube micrometer caliper:
+                inside outside pocket slide caliper rule:
+                gear tooth caliper:
+            gages:
+                plug gage:
+                snap gage:
+                limit gage:
+                taper plug gage:
+                spline plug gage:
+                no go thread gage:
+                adjustable caliper snap gage:
+                temporary snap gage:
+                radius gage:
+                ring and plug thread gage:
+                screw pitch gage:
+                feeler gages:
+                micrometer plug gage:
+                woodruff keyway gage:
+                flat plug gage:
+                ring gage:
+                small hole gage:
+                telescoping gages:
+                micrometer depth gage:
+                toolmakers surface gage:
+                dial indicator:
+                radius gage:
+                three wire method of thread measurement:
+                electrolimit gage:
+                planer gage:
+                gage blocks:
         volume weights and area:
+            measuring volume and area: #pg 582
+                double slide measure:
+                automatic tipping scale:
+                automatic measuring device:
+                measuring tap for liquids:
+                automatic feeder:
+                weighometer:
+                rotary disc water meter:
+                worthington piston water meter:
+                planimeter:
+                orifice and plug steam meter:
+                revolving drum condensate meter:
+                air operated gage:
         pressure and weight:
+            measurement of pressure:
+                #see also pressure transducers
+                manometer:
+                bourdon tube gage mechanism:
+                diaphragm gage:
+                reciprocating engine compressor indicator:
+                metal bellows:
+                draft gage:
+                aneroid barometer:
+                precision aneroid barometer:
+                altimeter:
+                cistern type manometer:
+                differential manometer:
+            balances and scales:
+                spring balance:
+                circular spring balance:
+                hand balance:
+                roberval balance:
+                beranger balance:
+                steelyard weighing machine:
+                weighing machine:
+                laboratory balance:
+                trip scale:
+                dial scale:
+                prescription weight:
         torque and temperature:
+            pony brake:
+            brake wheel:
+            rope brake:
+            fan brake dynamometer:
+            cradle dynamometer:
+            beckman thermometer:
+            platinum resistance thermometer:
+            thermocouple:
+            domestic thermostat:
         velocity:
+            air speed indicator:
+            centrifugal speedometer:
+            pitot tube:
+            stroboscopic disc:
+            speed indicator:
+            surface speed attachment:
+            electromagnetic speedometer:
+            magnetic proximity pick up:
         angles:
+            universal drafting machine:
+            triangle:
+            adjustable bench level:
+            plumb bob:
+            universal bevel protractor:
+            combination square:
+            sine bar:
         miscellaneous measuring instruments and techniques:
+            zyglo:
+            magnafluxing:
+            profilometer tracer unit:
+            pedestal comparator:
+            optical flat:
+            beam trammel:
+            six inch pla check gage:
+            elasticometer:
+            air o limit gage: #pressure type air gage
         time:
+            stop watch:
+            cycle timer:
+            programmable stop watch:
+            multi pen event recorder:
 
