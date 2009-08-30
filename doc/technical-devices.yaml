@@ -35,8 +35,8 @@ TOC:
                 concentric:
                 rolamite:
                 spindle:
-                liquid:
-            clutches and breaks:
+                liquid: #liquid springs??
+            clutches and brakes:
                 spiral jaw clutch:
                 square jaw clutch:
                 conical clutch:
@@ -63,42 +63,43 @@ TOC:
                 double shoe brake:
                 combination disc and jaw clutch:
                 helical spring clutch:
-            rigid couplings:
-                flanged shaft coupling:
-                keyed sleeve coupling:
-                precision sleeve coupling:
-                split box shaft coupling:
-                sellers cone shaft coupling:
-                combination pulley and coupling:
-                flange coupling:
-                friction clip shaft coupling:
-                plain sleeve coupling:
-                multijaw coupling:
-                flange compression coupling:
-            flexible couplings:
-                flexible coupling:
-                reinforced rubber hose with metal hubs:
-                american flexible coupling:
-                internal gear:
-                roller chain and sprocket:
-                flexible ring coupling:
-                oldham coupling:
-                falk steelflex coupling:
-                ajax flexible coupling:
-                morflex coupling:
-                metal bellows:
-            angular couplings and universal joints:
-                bent pin coupling:
-                angular shaft coupling:
-                flexible angular coupling:
-                pin and slot shaft coupling:
-                sliding contact shaft coupling:
-                hooks coupling:
-                bendix weiss constant velocity universal joint:
-                double link universal joint:
-                rzeppa constant velocity universal joint:
-                flexible shaft:
-            guides and slides:
+            shaft couplings:
+                rigid couplings:
+                    flanged shaft coupling:
+                    keyed sleeve coupling:
+                    precision sleeve coupling:
+                    split box shaft coupling:
+                    sellers cone shaft coupling:
+                    combination pulley and coupling:
+                    flange coupling:
+                    friction clip shaft coupling:
+                    plain sleeve coupling:
+                    multijaw coupling:
+                    flange compression coupling:
+                flexible couplings:
+                    flexible coupling:
+                    reinforced rubber hose with metal hubs:
+                    american flexible coupling:
+                    internal gear:
+                    roller chain and sprocket:
+                    flexible ring coupling:
+                    oldham coupling:
+                    falk steelflex coupling:
+                    ajax flexible coupling:
+                    morflex coupling:
+                    metal bellows:
+                angular couplings and universal joints:
+                    bent pin coupling:
+                    angular shaft coupling:
+                    flexible angular coupling:
+                    pin and slot shaft coupling:
+                    sliding contact shaft coupling:
+                    hooks coupling:
+                    bendix weiss constant velocity universal joint:
+                    double link universal joint:
+                    rzeppa constant velocity universal joint:
+                    flexible shaft:
+            guides and slides: #how are these not bearings?
                 double v bed:
                 typical guide bed:
                 deep v guide:
@@ -146,103 +147,100 @@ TOC:
                 swing door handle:
                 tap wrench handle:
                 lifting handle: #bow handle
-            ball bearings:
-                deep groove ball bearing:
-                filling notch ball bearing:
-                split ball bearing:
-                angular contact bearing:
-                duplex ball bearing:
-                double row ball bearing:
-                self aligning ball bearing:
-                fan or water pump bearing:
-                flanged miniature bearing:
-                pivot bearing:
-                ball bushing:
-                ball bearing flange unit:
-                reciprocating ball bearing:
-                single row ball bearing pillow block:
-                front wheel bearing:
-                ball thrust bearing:
-                ball spline:
-                snap ring bearing:
-                self aligning rod end bearing:
-                ball bearing:
-            roller bearings and needle bearings:
-                cylindrical:
-                spherical double row roller bearing:
-                spherical thrust roller bearing:
-                tapered roller thrust bearing:
-                tapered roller bearing:
-                spherical roller bearing pillow block:
-                needle bearing:
-                double row needle bearing:
-                needle bearing cam follower:
-                self aligning needle bearing: #aircraft type
-            methods of bearing mounting: #pg 32
-                #most of these are just illustrations and not new devices
-                lockwasher:
-                locknut:
-                shaft:
-            plain or sliding bearings:
-                #types: thick film bearings (complete separation of surface types), thin film bearings (surfaces partly in contact), zero film bearings (no lubrication)
-                solid bearing:
-                plain bushing:
-                double flanged:
-                oil groove:
-                babbit layer:
-                shaft shoulder:
-                multiple thrust collars:
-                vertical pivot:
-                split journal:
-                bearing metal:
-                hydrostatic journal bearing:
-                tilting pad journal bearing:
-                graphited bronze thrust bearing:
-                graphite bronze bearing:
-                water lubricated rubber bearing:
-                vertical thrust bearing:
-                half bearing:
-            bearings journals and hangings:
-                transmission shaft bearing:
-                typical pedestal:
-                ceiling hanger:
-                german ceiling hangers:
-                hanger for i beam:
-                self aligning shaft bearing in hanger:
-                wall hanger:
-                ring oiling for solid bearing:
-            bearings miscellaneous:
-                pivot bearing:
-                slot bearing:
-                verticle spindle pivot:
-                sliding bearing:
-                spherical journal:
-                oval journal:
-                collar groove:
-                plain double bearing:
-                ball and socket:
-                plain double:
-                tapered shaft:
-                horizontal pivot:
-                vertical pivot:
-                half bearing:
-                adjustable bearing:
-            hinges:
-                common double leaf hinges:
-                elevator hinge:
-                pintle hinge:
-                door hinge:
-                link hinges:
-                heavy door hinge:
-                gate hinge:
-                door spring hinge:
-                multiple door hinge:
-                link hinge: #for trap door
-                cup and ball hinge:
-                tape hinge:
-                spring hinge:
-                hinged handle: #hinge hasp
-                slip pin hinge:
+            bearings:
+                rolling element:
+                    ball bearings:
+                        deep groove ball bearing:
+                        filling notch ball bearing:
+                        split ball bearing:
+                        angular contact bearing:
+                        duplex ball bearing:
+                        double row ball bearing:
+                        self aligning ball bearing:
+                        fan or water pump bearing:
+                        flanged miniature bearing:
+                        pivot bearing:
+                        ball bushing:
+                        ball bearing flange unit:
+                        reciprocating ball bearing:
+                        single row ball bearing pillow block:
+                        front wheel bearing:
+                        ball thrust bearing:
+                        ball spline:
+                        snap ring bearing:
+                        self aligning rod end bearing:
+                        ball bearing:
+                    roller bearings and needle bearings:
+                        cylindrical:
+                        spherical double row roller bearing:
+                        spherical thrust roller bearing:
+                        tapered roller thrust bearing:
+                        tapered roller bearing:
+                        spherical roller bearing pillow block:
+                        needle bearing:
+                        double row needle bearing:
+                        needle bearing cam follower:
+                        self aligning needle bearing: #aircraft type
+                plain or sliding bearings:
+                    #types: thick film bearings (complete separation of surface types), thin film bearings (surfaces partly in contact), zero film bearings (no lubrication)
+                    solid bearing:
+                    plain bushing:
+                    double flanged:
+                    oil groove:
+                    babbit layer:
+                    shaft shoulder:
+                    multiple thrust collars:
+                    vertical pivot:
+                    split journal:
+                    bearing metal:
+                    hydrostatic journal bearing:
+                    tilting pad journal bearing:
+                    graphited bronze thrust bearing:
+                    graphite bronze bearing:
+                    water lubricated rubber bearing:
+                    vertical thrust bearing:
+                    half bearing:
+                bearings journals and hangings: #wut?
+                    transmission shaft bearing:
+                    typical pedestal:
+                    ceiling hanger:
+                    german ceiling hangers:
+                    hanger for i beam:
+                    self aligning shaft bearing in hanger:
+                    wall hanger:
+                    ring oiling for solid bearing:
+                bearings miscellaneous:
+                    pivot bearing:
+                    slot bearing:
+                    verticle spindle pivot:
+                    sliding bearing:
+                    spherical journal:
+                    oval journal:
+                    collar groove:
+                    plain double bearing:
+                    ball and socket:
+                    plain double:
+                    tapered shaft:
+                    horizontal pivot:
+                    vertical pivot:
+                    half bearing:
+                    adjustable bearing:
+                hinges:
+                    common double leaf hinges:
+                    elevator hinge:
+                    pintle hinge:
+                    door hinge:
+                    link hinges:
+                    heavy door hinge:
+                    gate hinge:
+                    door spring hinge:
+                    multiple door hinge:
+                    link hinge: #for trap door
+                    cup and ball hinge:
+                    tape hinge:
+                    spring hinge:
+                    hinged handle: #hinge hasp
+                    slip pin hinge:
             levers:
                 plain lever:
                 first class:
@@ -319,7 +317,7 @@ TOC:
                 piston rings:
                 split rings:
                 cups:
-                labryinth packaging:
+                labryinth packing:
                 square rod plunger:
                 nested v packings:
                 conical packing:
@@ -338,7 +336,7 @@ TOC:
                 fluid lubrication:
                 pivot lubrication:
                 needle method of fluid lubrication:
-                syphon method of lubrication:
+                siphon method of lubrication:
                 pad method of lubrication:
                 bath method of lubrication:
                 ring method of fluid lubrication:
@@ -459,13 +457,13 @@ TOC:
                 variable friction cone drive:
                 variable drive with v belt:
             epicyclic gearing:
-                single planetary arrangement:
-                compound planetary arrangement:
-                planetary arrangement with four armed spider:
-                planetary gear:
-                planetary gear train:
-                automobile differential gear:
-                epicyclic train:
+                    single planetary arrangement:
+                    compound planetary arrangement:
+                    planetary arrangement with four armed spider:
+                    planetary gear:
+                    planetary gear train:
+                    automobile differential gear:
+                    epicyclic train:
         mechanical transmissions:
             wire rope:
                 wire core:
@@ -917,6 +915,7 @@ TOC:
                 fusee chain and spring drum:
                 watch train:
             kinematic mechanisms:
+                peaucellier straight line mechanism:
                 link:
                 slider crank chain:
                 chain varieties:
@@ -927,9 +926,9 @@ TOC:
                     scott russells straight line motion:
                 double slider crank:
                 four link mechanism:
-                    watts parallel motion:
+                    watt parallel motion:
                     parallel crank chain:
-                    robervals balance:
+                    roberval balance:
             cam mechanisms:
                 heart cams:
                 crown cam:
@@ -985,14 +984,13 @@ TOC:
             parallel and straight line motion:
                 drafting machine:
                 parallel rule:
-                peaucellier straight line mechanism:
                 sector and rack motion:
                 floating tables:
                 parallel opening doors:
                 beam with rocking fulcrum:
                 parallel moving slides:
                 parallel motion for an indicator:
-                cartwrights parallel motion:
+                cartwright parallel motion:
                 epicycloidal parallel motion:
                 parallel motion for an indicator pencil:
                 multiple grinding fixture using parallel motion:
