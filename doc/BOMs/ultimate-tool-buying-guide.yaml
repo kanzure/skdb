@@ -1,5 +1,6 @@
 description: "a complete list of tools you need to make almost anything. think of it as an extremely biased guide to outfitting yourself with the ultimate shop for launching your own space program."
 author: 'saul griffith'
+maintainer: bryan bishop
 urls:
 - "http://www.saulgriffith.com/Make/Make03.pdf"
 #these were the original "usefulness" values. i hope i sorted them into numerical ratings correctly
