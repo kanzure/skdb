@@ -1292,14 +1292,569 @@ TOC:
                     square head bolt:
                     round head short square neck carriage bolt:
                     square countersunk head plow bolt:
-                    round 
-            blah:
+                    round countersunk heavy key head plow bolt:
+                    joint bolt:
+                    round head ribbed neck carriage bolt:
+                    closed eye bolt:
+                    open eye bolt:
+                    u bolt round bend:
+                    hook bolt:
+                    liner bolt:
+                    silo rod:
+                    double end rod:
+                    upset rod:
+                    pipe band:
+                    mutilated screw:
+                    bolt with keyed washer to prevent turning:
+                    flat head wood screw:
+                    oval fillister head wood screw:
+                    stud:
+                    drive screw:
+                taping screws:
+                    self drilling taping screw:
+                    tapping screw:
+                    multiple threaded drive screw:
+                set screws:
+                    hexagon socket head set screw:
+                    fluted socket head set screw:
+                    slotted headless set screw:
+                    square head set screw:
+                    cup point:
+                    cone point:
+                    oval point:
+                    flat point:
+                    half dog:
+                    full dog:
+                    self locking knurled cup point:
+                    nu cup point:
+                    hexagon cup point:
+                metal joints:
+                    dovetail metal joint:
+                    bayonet joint:
+                    common male and female or nipple and socket joint:
+                    double scarfed joint:
+                    knuckle joint for levers:
+                    pivot:
+                    double riveted butt joint:
+                    forked joint with stepped gibs:
+                    forked joint and swivel block:
+                    swivel joint:
+                    screw socket and spigot joint for rods:
+                    conical socket:
+                    scarfed joint:
+                    tapered drill socket:
+                    rod coupling:
+                    sheet metal joint:
+                    t fillet weld:
+                    groove butt weld:
+                    plug weld:
+                    small solid rivots:
+                        pan head:
+                        button head:
+                        countersunk head:
+                        flat head:
+                        belt:
+                        coopers:
+                        tinners:
+                        truss head:
+                    large rivets:
+                        button:
+                        high button head:
+                        flat top countersunk:
+                        pan head:
+                        round top countersunk:
+                    non standard heads:
+                        steeple: &steeple
+                        boiler rivet: *steeple
+                        oval:
+                        machine:
+                        globe:
+                        rivet tools:
+                        double riveted lap joint zig zag pattern:
+                        single riveted butt joint:
+                        caulking tool:
+                woodworking joints:
+                    plain butt:
+                    corner butt:
+                    rabbet:
+                    rabbet and miter:
+                    rabbet and dado:
+                    housed dado:
+                    halved cross lap joint:
+                    corner lap joint:
+                    half lap butt:
+                    plain miter butt:
+                    miter half lap butt:
+                    mortise and tenon:
+                    end mortise and tenon:
+                    peg tenon: &peg-tenon
+                    doweled butt: *peg-tenon
+                    blind housed tenon:
+                    notched butt:
+                    plain dovetail butt:
+                    half blind dovetaill butt:
+                    dovetail half lap joint:
+                    scarf joints:
+                    checking:
+                    chamfering:
+                    groove:
+                    tongue and groove:
+                    rabbeting:
+                    stave work:
+                    segment work:
+                    closed mortise and tenon:
+                timber joints:
+                    straight splice:
+                    lap splice:
+                    butt joint:
+                    compression beam:
+                    splicing by breaking joints:
+                    scarf and butt joint:
+                    lap and scarf butt joint:
+                    queen post roof truss:
+                    wooden road bridge truss:
+                    natural splitting of tree:
+                    shrinkage of planks:
+                    dried timber warped:
+                    fang plate:
+                    fang plate washer:
+                    staple bolt:
+                    washer plate:
+                    colonial plank floor:
+                    brass dowels:
+                    butt and lap plate scarf joint:
+                    bending scarf joint:
+                    notched mortoise and tenon joint:
+                    anchored butt joint:
+                    rabbeted housed buff joint:
+                clamping and locking devices:
+                    bolt lock:
+                    combination lock:
+                    gib key:
+                    catch and hook:
+                    hinged catch:
+                    half nut locking:
+                    swinging catch:
+                    locking screw:
+                    lever mechanism:
+                    locked shutter bar:
+                    drop catch:
+                    wedge plate:
+                    hinged bolt:
+                    handle nut:
+                    parallel bar:
+                    setscrew:
+                    locked center pin:
+                    hinged handle:
+                    wire ring locking device:
+                    cotter:
+                    locking pawl:
+                    spring catch:
+                    disc and pin:
+                    side pawl:
+                    common latch:
+                    cam locking bolt:
+                    crank movement locking bolt:
+                    bolt of common lock:
+                    common sliding bolt:
+                    drilling machine clamp:
+                    automatic bench clamp:
+                    screw bench clamp:
+                    twisting a flat bolt:
+                    chain stop:
+                    spindle grips:
+                    clamp and screw:
+                    sliding shaft locking pin:
+                    lever locking hook:
+                    bow catch for ladles:
+                    cross bar and hooks:
+                    hand setscrew:
+                    t catch:
+                    hasp and staple:
+                    hook latch:
+                    hasp and staple:
+                    trap door automatic catch:
+                    screw and hook suspension:
+                    spring stud lock:
+                    radial hinged lever:
+                    locking bar:
+                    crank arm:
+                    pawl:
+                    fastening eye bolt:
+                    door fastening staple or cotter:
+                    common cotter:
+                    roller and inclined slot:
+                    revolving bush:
+                    wire fencing notches:
+                    radius bar:
+                    horseshoe shifter:
+                    coned screw lock:
+                    wing screw:
+                    split block:
+                    cam catch:
+                    locking gear:
+                    locked nut:
+                    spring pawl umbrella catch:
+                    spring snap:
+                    locking pawl for spur teeth:
+                    springe spindle:
+                    spring pawl:
+                    locking device:
+                holders and grips:
+                    elevating tool box:
+                    tool holder:
+                    handle:
+                    turret:
+                    sockets:
+                    adjustable tap wrench:
+                    lathe dog:
+                    tool box:
+                    clamping devices for jigs:
+                    adjustable grip holders:
+                    grapnel:
+                    parallel vice grip:
+                    square hole central grip:
+                    tool holder gripping device:
+                    spring grip:
+                    split tool bar:
+                    socket and setscrew for drills:
+                    split tool holder:
+                    v grip:
+                    screw clamp:
+                    rod clamp:
+                    screw clamp:
+                    adjustable tool holder:
+                    toothed v grip for chucks:
+                    cam clamp for jigs:
+                    gripping dog clamp for jigs:
+                    three jaw chuck:
+                    independent four jaw lathe chuck:
+                    strap in chuck:
+                    chuck:
+                    four jaw chuck:
+                    two jaw chuck:
+                    fork chuck:
+                    three jaw universal chuck:
+                    cup chuck:
+                    three jaw guide: &three-jaw-guide
+                    three jaw chuck: *three-jaw-guide
+                    brown and sharpe adapter:
+                    bell chuck:
+                    cone and screw lever grip:
+                    taper grip for vices:
+                    rail grip:
+                    cam lever grip:
+                    cone centering grips:
+                    hinged clamp:
+                    fitters clamp:
+                    bench clamp:
+                    grip tongs:
+                    split cone expanding chuck:
+                    expanding mandrel:
+                    three jaws grip:
+                    collar grip:
+                    cam lever grip:
+                    cable railway grip:
+                    automatic disengaging grip for a pile driver:
+                    wire rope grip pulley:
+                    pipe tongs:
+                    paper grip:
+                    self adjusting jaws:
+                    adjustable gripping tongs:
+                    double screw gripping tongs:
+                    grip for vice:
+                    split sleeve:
+                    spring taper socket:
+                    cap and socket:
+                    stepped jaw:
+                    spanner:
+                    split end:
+                    hand screws:
+                    double v grip for pipes:
+                    central grip:
+                    eccentric clamping lever for jigs:
+                    wrench grip:
+                miscellaneous:
+                    internal retaining ring:
+                    external retaining ring:
+                    weatherseal sealing head:
+                    wire coil insert:
+                    wire clip:
+                    stud type assembly:
+                    supersonic quarter turn fastener:
+                    turn fastener:
+                    drive rivet:
+                    quarter turn fastener:
+                    drive screw:
+                    well nut insert:
+                    conoe clip:
+                    air loc quarter turn:
+                    self tapping self locking insert:
+                    one piece clamp:
+                    slide snap fastener:
+                    quick acting fastener:
     magnetics and electronics:
         magnetics:
+            magnetism:
+                pole:
+                iron bar:
+                magnetic field:
+                magnetic compass:
+                magnetic induction:
+                magnetostriction:
+            permanent magnets:
+                simple bar magnet:
+                u shape magnet:
+                soft steel plates:
+                simple air gap:
+                soft steel return circuit:
+                magnet surrounding air gap:
+                air gap:
+                annular air gap:
+                rotating magnet:
+                built up rotors:
+                four pole rotating magnet:
+                cylindrical magnet:
+                fundamnetal types of air gaps:
+                loadstone:
+                demagnetiziation:
+                hysteresis loop:
+            electromagnets:
+                simple electromagnet:
+                iron filings:
+                right hand thumb rule:
+                reversed right hand thumb rule:
+                horseshoe electromagnet:
+                electric bell:
+                electric bell circuit:
+                telegraph key:
+                sounder:
+                telegraph relay:
+                complete telegraph system:
         electricity:
+            static electricity:
+                charging by induction:
+                electric field:
+                electric charge:
+                electroscope: #measures potential
+                plate condenser:
+                capacitor:
+                positive charge:
+                    note: "when glass is rubbed with silk, it becomes positively charged"
+                negative charge:
+                    note: "when sealing wax or gutta percha is rubbed with flannel, it becomes negatively charged"
+                electrophorus:
+            batteries:
+                voltaic cell:
+                gravity cell:
+                weston standard cell:
+                leclanche dry cell:
+            chemical effects of electricity:
+                electrolysis of water:
+                copper plating:
+                charging a storage battery:
+                electrolytic copper refining:
+                silver plating:
+                downs cell:
+            infrared heating:
+                open reflector:
+                closed reflector:
+                reflector type lamp:
+                tunnel design:
+                parabolic reflector:
+                circular source:
+                elliptical reflector:
+                circular reflector:
+                paracyl:
+            electrical heating:
+                portable radiant electric heater:
+                radiant heater recessed in the wall:
+                large industrail type fan unit electric heater:
+                large industrial type portable fan unit electric heater:
+                ceiling mounted unit heater:
+                wall mounted unit heater:
+                boiler:
+                piping:
+                domestic electrode type hot water heater:
+                wiring diagram:
+                electrode boiler:
+            resistance inductance and capacitance:
+                resistor:
+                inductor:
+                capacitor:
+                electrolytic capacitor:
+            wave theory:
+                hertzian oscillator:
+                electric field:
+                magnetic field:
+                crystal rectifying effect:
+            transformers:
+                step down transformer:
+                v connections:
+                t connection:
         electrical devices:
-        electronic devices:
+            mechanical switches:
+                single pole throw toggle switch:
+                snap acting switch:
+                limit switch:
+                magnetic proximity switch:
+                miniature rotary selector switch:
+                rotary stepping switch:
+            mercury switches:
+                single pole single throw mercury switch:
+                single pole double throw mercury switch:
+                mercury switch:
+                double pole double throw switch:
+                magnetically operated nontilting switch:
+                centrifugal switches:
+                inclination switch:
+                vertical type coil operated contacts:
+                reverse actinv vertical type coil operated contacts:
+            miscellaneous switches:
+                coordinate acting electromagnetic crossbar switch:
+                rotary magnetic reed switch:
+                button:
+                snap reed slide switch:
+                reed switch:
+                limit switch:
+                thermally operated vacuum switch:
+                burgess vacuum contact switch:
+            relays and solenoids:
+                relay:
+                siemens high speed relay:
+                slow operating relay:
+                slow releasing relay:
+                heel slug:
+                polarized relay:
+                reed relay: &reed-relay
+                mercury wetted contact switch: *reed-relay
+                arc suppression:
+                latching relay:
+                stepping relay:
+                solenoid:
+            measuring instruments:
+                voltmeter:
+                d arsonval galvanometer:
+                ammeter:
+                kelvin multicellular electrostatic voltmeter:
+                leeds and northrup reflecting galvanometer:
+                voltaic cell:
+                tangent galvanometer:
+                moving indicators:
+                piston damper:
+                vane damper:
+                moving coil permanent magnet system:
+                attraction type moving iron instrument:
+                repulsion type moving iron instrument:
+                galvanascope:
+                thermagalvanometer:
+                thermocouple instrument:
+                weston direct current movable coil system:
+                standard dynamometer type wattmeter:
+                hotwire instrument:
+                induction instrument:
+                shaded pole induction:
+                induction wattmeter:
+                taut band meter:
+                meter relay:
+                large scale vacuum tube voltmeter: #VTVM
+                digital voltmeter:
+            telephone:
+                transmitter:
+                receiver:
+            servomechanisms:
+                position servo:
+            synchros and resolvers:
+                remote pointer system:
+                synchro transmitter:
+                servomotor:
+                gyro system:
+                resolver:
+                radar display:
+            vacuum tubes:
+                diode two electrode tube:
+                diode:
+                multigrid tube:
+                heater type diode:
+                triode elements:
+                beam power tube:
+                remote cut off pentode:
+            cathode and x ray tubes:
+                cathode ray tube:
+                focus tube:
+                crookes tube:
+                jj thomson cathode ray tube:
+                electrostatic tube:
+                electrostatic focuser:
+                magnetic tube:
+                magnetic focuser:
+                electron microscope:
+                x ray tube:
+                magnetic electron lens:
+                electrostatic electron lens:
+                bragg type x ray spectrometer:
+                television picture tube:
+            gas filled tubes:
+                thyratron:
+                ignitron:
+                stroboscope:
+                nixie tube:
+                slow transfer tube:
+            radio communication and amplifiers:
+                amplitude modulated transmitter:
+                electrodynamic loud speaker:
+                permanent magnet loud speaker:
+                half wave rectifier:
+                full wave rectifier:
+                filter:
+                resistance coupled radio frequency amplifier circuit:
+                tickler feedback oscillator circuit:
+                hartley oscillator:
+                intermediate frequency amplifier circuit:
+                bypass condenser:
+                diode detector circuit:
+            semiconductor devices:
+                transistor:
+                npn transistor:
+                pnp transistor:
+                emitter:
+                base:
+                collector:
+                NPN tetrode transistor:
+                silicon controlled rectifier:
+                diode:
+                diac: #bidirectional avalanche diode
+                zener diode:
+                tunnel diode:
+                trigistor:
+                unijunction transistor:
+                binistor:
+                four layer diode:
+                field effect transistor: #JFET
+                metal oxide semiconductor field effect transistor: #MOSFET
+                varactor diode:
+                photoconductive cell:
+                high input impedance amplifier:
+                push pull audio amplifier circuit:
+                hartley oscillator:
+                two stage direct coupled circuit:
         computer technology:
+            digital computers:
+                magnetic tape reel:
+                paper tape reel:
+                magnetic tape:
+                perforated tape reader:
+            storage elements:
+                magnetic ferrite core:
+                memory plane:
+                core switching:
+                magnetic core memory:
+                disc:
+                magnetic drum storage:
+            digital logic:
+                basic logic gates:
+                bistable multivibrator flip flop circuit:
+                half adder circuit:
     light and optics:
         light sources:
         lenses prisms and mirrors:
@@ -1343,5 +1898,4 @@ TOC:
         angles:
         miscellaneous measuring instruments and techniques:
         time:
-
 
