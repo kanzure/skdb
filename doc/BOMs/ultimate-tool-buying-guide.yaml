@@ -278,7 +278,7 @@ power tools:
         cost: 50..500 USD
     vacuum pump:
         level: infrequent but handy
-        cost: 100..1000+ USD
+        cost: 100..1000 USD
     oxy torch:
         mcmaster: 7754a12 #maybe
         level: surprisingly useful
