@@ -93,8 +93,8 @@ def make_arrow(event=None, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=
         make_text(text, origin, 6)
 
 def coordinate_arrow(direction, color='YELLOW', flag=False, scale=3):
-    if flag: shape = Flag(scale=scale).to(point_along(direction))
-    else: shape = Arrow(scale=scale).to(point_along(direction))
+    if flag: shape = Flag(scale=scale, direction=direction).Shape()
+    else: shape = Arrow(scale=scale, direction=direction).Shape()
     display.DisplayColoredShape(shape, color)
 
 def coordinate_arrows(event=None):
