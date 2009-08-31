@@ -11,7 +11,7 @@ import sys, os
 from skdb import settings
 
 #for parsing command line arguments
-from skdb.core import optfunc
+from skdb.thirdparty import optfunc
 
 def get_package(package_name, verbose=False, repo=settings.paths["SKDB_PACKAGE_REPO"], package_dir=settings.paths["SKDB_PACKAGE_DIR"], **kwarg):
     '''Usage: %prog <package name> [--verbose] [--repo http://adl.serveftp.org/skdb-packages/] [--package-dir /usr/share/skdb-packages]
