@@ -212,7 +212,7 @@ def add_lego(event=None, brick=None):
     else: brick2 = get_brick()
     while True:
         i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
-        opts = list(i1.options(brick2))
+        opts = i1.options(brick2)
         if opts or n > 20: break
         brick2 = get_brick() #try again
         n+=1
@@ -237,7 +237,7 @@ def add_lego(event=None, brick=None):
 
 current_brick = get_brick()
 brick2 = get_brick()
-opts = list(current_brick.options(brick2))
+opts = current_brick.options(brick2)
 opt = 0
 
 skdb.Interface.show = blarney

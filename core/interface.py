@@ -1,14 +1,12 @@
 #!/usr/bin/python
-#defines pymates.interface.Interface
 from yamlcrap import FennObject
 import math
-
 
 class Interface(FennObject):
     '''"units" should be what is being transmitted through the interface, not about the structure.
     a screw's head transmits a force (N), but not a pressure (N/m**2) because the m**2 is actually interface geometry. theinterface geometry is located at "point" (in mm for now, sorry) and rotated about its Z vector clockwise "rotation" degrees looking away from the origin. (TODO: verify) The geometry is then rotated such that its Z vector points along "orientation".
     
-    an alternative way to specify geometry is with "point" and two vectors: "x_vec" and "y_vec".
+    An alternative way to specify geometry is with "point" and two vectors: "x_vec" and "y_vec".
     in both cases the mating trajectory is along the Z vector.'''
     yaml_tag = '!interface'
     converted = False
@@ -28,8 +26,7 @@ class Interface(FennObject):
             if isinstance(other, t): return True
         return False
     def options(self, parts):
-        '''what can this interface connect to?'''
-        #FIXME: what about options(self,interface)?
+        '''what other interfaces can this interface connect to?'''
         parts = self.setify(parts) #yay sets!
         if self.part in parts: parts.remove(self.part) #unless it's really flexible
         rval = set()
@@ -38,7 +35,7 @@ class Interface(FennObject):
                 if i.compatible(self) and self.compatible(i):
                     if not i.is_busy() and not self.is_busy():
                         rval.add(Connection(self,i))
-        return rval     
+        return list(rval)     
     def __repr__(self):
         if self.part:
             part_name = self.part.name
@@ -55,10 +52,6 @@ class Connection:
         
     def connect(self):
         '''make interface1 and interface2 aware of this connection; update interface2.part's transformation attribute.'''
-        #import skdb
-        #lego = skdb.load_package('lego').load_data().parts
-        #brick1 = lego.index(self.interface1.part)
-        #brick2 = lego.index(self.interface2.part)
         i1 = self.interface1.part.interfaces.index(self.interface1)
         i2 = self.interface2.part.interfaces.index(self.interface2)
         print "connecting %s's %s  to %s's %s brick1[%s] to brick2[%s])" %(self.interface1.part.name,  self.interface1.name, self.interface2.part.name, self.interface2.name,  i1, i2)
@@ -71,8 +64,4 @@ class Connection:
         
     def makes_sense(self): #should we include is_busy()?
         return self.interface1.compatible(self.interface2) and self.interface2.compatible(self.interface1)
-      
-#from skdb.geom import Mate
-#except ImportError:      
-#class Mate(Connection):
-#        pass
+

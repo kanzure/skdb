@@ -48,10 +48,10 @@ class Part(FennObject):
                     for j in self.interfaces:
                         if i.compatible(j) and j.compatible(i):
                             rval.add(Connection(i, j))
-        return rval
+        return list(rval)
         
-    def __add__(self, other):
-        return list(self.options(other))
+    def __add__(self, other): #i'm afraid this metaphor doesn't hold up under scrutiny
+        return self.options(other)
         
     def __repr__(self):
         return "%s(name=%s, interfaces=%s)" % (self.__class__.__name__, self.name, self.interfaces)

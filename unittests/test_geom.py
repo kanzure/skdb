@@ -109,7 +109,6 @@ class TestGeom(unittest.TestCase):
         #they should be the same thing so far
         #self.assertTrue(brick1 == brick2)
         options = brick1.options([brick2])
-        options = list(options)
         #select one of the Connection instances to test with
         selected = options[1]
         selected.connect()
