@@ -224,24 +224,6 @@ class Translation(Transformation):
         xyz = gp_Trsf.TranslationPart(self)
         return "Translation[%s, %s, %s]" % (xyz.X(), xyz.Y(), xyz.Z())
 
-def mate_first(part1):
-    '''sets up the first part in your system. should be thrown into a class somewhere.'''
-    def compatible(self, other):
-        return True
-    fake_interface = Interface(name="fake interface")
-    fake_interface.compatible = compatible
-    fake_interface.point = Point(0,0,0)
-    fake_interface.orientation = Vector(0, 0, 1)
-    fake_interface.connected = []
-    fake_interface.x_vec = Vector(1,0,0) #ask fenn?
-    fake_interface.y_vec = Vector(0,-1,0) #ask fenn?
-    fake_part = Part(name="fake part", interfaces=[fake_interface]) #should never be seen by the user
-    fake_part.post_init_hook()
-    connecter = Connection(fake_part.interfaces[0], part1.interfaces[0])
-    connecter.connect()
-    return mate_connection(connecter)
-
-
 def mate_connection(connection): 
     '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
     import math
@@ -260,9 +242,6 @@ def mate_connection(connection):
     t.Multiply(i1.get_transformation())
     t.Multiply(i2.get_transformation().Inverted())
     return t
-
-    #i2.part.transformation.Multiply(opposite)
-    return i2.part.transformation
    
 #skdb.Interface
 def get_transformation(self): #i wish this were a property instead
