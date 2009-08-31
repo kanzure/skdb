@@ -176,7 +176,7 @@ for brick in lego.parts:
 def get_brick():
     '''returns a basic lego brick part from the catalog (no side effects)'''
     brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
-    #brick = deepcopy(lego.parts[random.randint(2,2)])
+    brick = deepcopy(lego.parts[random.randint(2,2)])
     brick.post_init_hook()
     return brick
 
@@ -234,11 +234,37 @@ def add_lego(event=None, brick=None):
     all_bricks.append(brick2)
     display.DisplayShape(brick2.shapes[0])
     current_brick = brick2
+    naive_coincidence_fixer()
 
 current_brick = get_brick()
 brick2 = get_brick()
 opts = current_brick.options(brick2)
 opt = 0
+
+def naive_coincidence_fixer():
+    '''this is slow because it compares every interface to every other interface.'''
+    global all_bricks
+    all_i = set()
+    for brick in all_bricks:
+        for i in brick.interfaces:
+            all_i.add(i)
+    for i in all_i:
+        for j in all_i:
+            if i is j: break
+            ipt = Point(i.point).transformed(i.part.transformation)
+            jpt = Point(j.point).transformed(j.part.transformation)
+            if ipt == jpt: # and Direction(i.x_vec) == Direction(j.x_vec).Reversed():
+                if i.connected and j.connected: break
+                print "score!"
+                Connection(i, j).connect()
+                i.show(); j.show()
+                
+def clear(event=None):
+    global current_brick, all_bricks
+    current = None
+    current_brick = None
+    all_bricks=[]
+    display.EraseAll()
 
 def save(event=None):
     '''dump the current construction'''
