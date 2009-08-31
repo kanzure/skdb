@@ -46,9 +46,6 @@ class Arrow(TopoDS_Shape):
         assert isinstance(dest, gp_Trsf)
         self.transformation.Multiply(dest)
         return self.Shape()
-    
-    def __eq__(self, other):
-        return False
 
 class Flag(Arrow):
     def __init__(self, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1):
@@ -95,6 +92,24 @@ def make_arrow(event=None, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=
     if text is not None:
         make_text(text, origin, 6)
 
+def coordinate_arrow(direction, color='YELLOW', flag=False, scale=3):
+    if flag: shape = Flag(scale=scale).to(point_along(direction))
+    else: shape = Arrow(scale=scale).to(point_along(direction))
+    display.DisplayColoredShape(shape, color)
+
+def coordinate_arrows(event=None):
+    #typical origin symbol
+    display.DisplayShape(make_vertex(gp_Pnt(0,0,0)))
+    for (v, c) in [[(1,0,0), 'RED'], [(0,1,0), 'GREEN'], [(0,0,1), 'BLUE']]:
+        coordinate_arrow(v, c)
+
+def chain_arrows(event=None):
+    #a silly chain of arrows
+    make_arrow(origin=gp_Pnt(0,0,1), direction=gp_Dir(1,1,1))
+    display.DisplayShape(make_vertex(gp_Pnt(1,1,2)))
+    s=math.sqrt(3)/3
+    make_arrow(origin=gp_Pnt(s,s,s+1), direction=gp_Dir(1,1,1), text='hmm')
+
 def add_key(key,method_to_call):
     '''binds a key to a particular method
     ex: add_key("G",some_method)
@@ -138,23 +153,6 @@ def show_next_mate(event=None, mate=None):
     display.DisplayShape(make_vertex(Point(conn.interface1.point).Transformed(trsf)))
     display.DisplayShape(make_vertex(Point(conn.interface2.point).Transformed(trsf)))
 
-def coordinate_arrow(direction, color='YELLOW', flag=False, scale=3):
-    if flag: shape = Flag(scale=scale).to(point_along(direction))
-    else: shape = Arrow(scale=scale).to(point_along(direction))
-    display.DisplayColoredShape(shape, color)
-
-def coordinate_arrows(event=None):
-    #typical origin symbol
-    display.DisplayShape(make_vertex(gp_Pnt(0,0,0)))
-    for (v, c) in [[(1,0,0), 'RED'], [(0,1,0), 'GREEN'], [(0,0,1), 'BLUE']]:
-        coordinate_arrow(v, c)
-
-def chain_arrows(event=None):
-    #a silly chain of arrows
-    make_arrow(origin=gp_Pnt(0,0,1), direction=gp_Dir(1,1,1))
-    display.DisplayShape(make_vertex(gp_Pnt(1,1,2)))
-    s=math.sqrt(3)/3
-    make_arrow(origin=gp_Pnt(s,s,s+1), direction=gp_Dir(1,1,1), text='hmm')
 
 def make_vertex(pnt):
     if isinstance(pnt, gp_Pnt2d):
