@@ -269,6 +269,8 @@ def clear(event=None):
 def save(event=None):
     '''dump the current construction'''
     global all_bricks
+    import yaml
+    print yaml.dump(Shape(all_bricks[0].shapes[0]))
     return
 
 add_key('a', add_lego)

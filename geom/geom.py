@@ -373,7 +373,9 @@ class Shape(TopoDS_Shape, FennObject):
         elif isinstance(shape, TopoDS_Shape):
            TopoDS_Shape.__init__(self)
            self.__dict__ = copy(shape.__dict__)
-           self.__repr__ = Shape.__repr__(self)
+           self.__repr__ = Shape.__repr__
+           self.__eq__ = Shape.__eq__
+           self.__dict__["__eq__"] = Shape.__eq__
     def __repr__(self):
         return "some shape"
     def yaml_repr(self):
