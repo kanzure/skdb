@@ -9,6 +9,7 @@ from string import Template
 
 #for volume interference
 from OCC.BRepGProp import *
+from OCC.GProp import *
 
 #for make_text
 from OCC.BRepPrimAPI import *
@@ -16,14 +17,7 @@ from OCC.BRepBuilderAPI import *
 from OCC.BRepFilletAPI import *
 from OCC.BRepOffsetAPI import *
 from OCC.BRepAlgoAPI import *
-from OCC.BRep import *
-from OCC.TopExp import *
-from OCC.TopAbs import *
 from OCC.TopoDS import *
-from OCC.AIS import *
-from OCC.Prs3d import *
-from OCC.TCollection import *
-from OCC.Graphic3d import *
 
 def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
@@ -231,9 +225,6 @@ def mate_connection(connection):
     connection.connect()
     assert i1.part.transformation is not None
     if i1.part.transformation is None: i1.part.transformation = build_trsf(Point(0,0,0), Vector(1,0,0), Vector(0,1,0)); print 'hi'
-    if hasattr(i1.part, "transformation"):
-       tmp_point = Point(i1.point).Transformed(i1.part.transformation)
-    else: tmp_point = i1.point #FIXME actually use this value or stacked parts won't work
     opposite = gp_Trsf()
     opposite.SetRotation(gp_Ax1(Point(i1.point), Direction(i1.x_vec)), math.pi) #rotate 180 so that interface z axes are opposed
     t = gp_Trsf()
@@ -345,15 +336,11 @@ def common_volume(part1, part2):
     '''returns the volume of the intersection of two parts'''
     shape1 = part1.shapes[0]
     shape2 = part2.shapes[0]
-    fused_shape = BRepAlgoAPI_Common(shape1, shape2)
-    #use BRepGProp.VolumeProperties()
-    #see http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/ModelingAlgorithms/html/classBRepGProp.html
-    #see http://www.opencascade.org/org/forum/thread_4685/
-    #see http://www.opencascade.org/org/forum/thread_6622/ (a comment by rob bachrach)
-    tmp_useless = GProp.GProp_GProps()
-    calculator = BRepGProp()
-    calculator.VolumeProperties(Shape(fused_shape.Shape()), tmp_useless)
-    volume = tmp_useless.Mass()
+    common = BRepAlgoAPI_Common(shape1, shape2).Shape() #this takes too long
+
+    tmp = GProp_GProps()
+    BRepGProp().VolumeProperties(common, tmp)
+    volume = tmp.Mass()
     return volume 
 
 def part_collision(part1, part2, threshold=0.0):
@@ -363,12 +350,13 @@ def part_collision(part1, part2, threshold=0.0):
     if volume > threshold: return True
     else: return False
 
-def connection_interference(conn, threshold=0.0):
+def _connection_interference(self, threshold=0.0): #call this as a method please
     '''determines whether or not a connection has a geometric collision (only for the two mating parts) within a threshold
     returns True or False'''
-    part1 = conn.interface1.part
-    part2 = conn.interface2.part
+    part1 = self.interface1.part
+    part2 = self.interface2.part
     return part_collision(part1, part2, threshold=threshold)
+Connection.interference = _connection_interference
 
 def deep_part_collider(parts):
     '''given a list of parts, checks whether or not any of them geometrically overlap
