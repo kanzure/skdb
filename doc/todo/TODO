@@ -1,6 +1,5 @@
-todo list for skdb-related work
-
-
+documentation:
+    everybody loves documentation!
 skdb core:
     units:
         peak and continuous ratings: what are default time constants?
@@ -9,14 +8,24 @@ skdb core:
     statistics:
         arbitrary distributions: processes often follow odd laws (non-gaussian)
         evaluate typical feasible: but dont dump some messy construct
+        think about how to utilize statistical data: in search/optimization algorithms
     geom:
+        get rid of STEP loading spam:
+            and other OCC spam:
+        real wrapper code: instead of subclassing from OCC. openGL example
         connection graph:
-            apply transforms at each arc while traversing:
+            apply transforms at each arc while traversing: is this done?
             wrap some graph class instead of using directly for easy swapping:
         part mating:
             collision detection: and percentage interference allowed
+        cam algorithm selection: some parts are more 2.5d than others...
+inventory:
+    container tags: ['!ziploc', '!fishtub', etc]
+    location schema: any ideas? no dGPS or RFID please. '!shelf'?
 package code:
-    generate instructions for making a package:
+    generate instructions for making a package: lego explohzionn
+    technology readiness level:
+    metadata resolution description: [stub, incomplete, usable, finished, obsessive]
 clients: #desktop, unless you really like writing javascript?
     skdb-get:
         description: "it's like apt-get/dpkg except for hardware and real stuff"
@@ -25,7 +34,7 @@ clients: #desktop, unless you really like writing javascript?
     visualization:
         dependency tree browser:
         CAD file visualization:
-        screenshot gallery generator from CAD files:
+        screenshot gallery generator from CAD files: #is this not the same thing as above?
             partially working: imgcad.py (ask kanzure)
             better version:
 servers:
@@ -34,8 +43,8 @@ servers:
         debugging:
         views:
             generic yaml tree: 
-                js code folding: 
-                highlighting: 
+                js code folding: pyjamas
+                highlighting: geshi?
                 links to skdb tags:
             package metadata:
                 links to dependencies:
@@ -46,7 +55,7 @@ servers:
                 step:
                 iges:
                 stl:
-                dxf:
+                dxf: ew
             pcb formats:
                 gerber:
                 eagle:
@@ -76,19 +85,42 @@ import:
 export: #external simulations
     pyODE:
     pybox2d:
+    cam algorithms:
+        pycam: 
+        kurve: 
+        libactp:
+        celeron55 gerber: maybe
 stuff to package:
     screw: 
         catalog generator script:
         cad generator:
+            how to deal with generated data:
+            not blow up without OCC:
     thread:
         common metric sizes:
         common SAE sizes:
-        cad generator:
+        cad generator: 
     lego:
         finish technic grammar:
         parse .lst and catalog files:
         bricklink cost evaluator: scraper
         cad generator:
+        do inventory:
+        fix existing cad models: scale is wrong. re-measure?
+    trans-tech: at least at low resolution
+    construction materials: #these are categories, not individual materials. low-tech and inexpensive to start with
+        metal:
+        plastic:
+        wood:
+        foam:
+        paper:
+        glass:
+        rubber:
+        ceramic:
+        composite:
+            concrete:
+        food: cheese robots, attack!
+        phase change materials: does cheese count? maybe tags instead of categories
     bearing:
     plastic gel box case:
         get cad files from tito:
@@ -100,7 +132,9 @@ stuff to package:
             links:
             - "http://groups.google.com/group/diybio/msg/fb0cb0b7d6bf9b35"
             - "http://logarchy.org/electrophoresis.py"
-    test tube holder: why?
+    test tube holder: #why?
+        standard eppendorf tube rack: much more useful
+        96 well plate: 
     transilluminator: #gel imager
     mechmate:
     arduino:
