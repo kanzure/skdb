@@ -12,15 +12,7 @@ from units import Unit, Range, Uncertainty, UnitError, NaNError
 from interface import Interface, Connection
 from part import Part
 from yamlcrap import FennObject, Dummy, tag_hack
-#from threads import Thread
 import settings
-
-debug = False
-
-# the following aren't our responsibility, actually (pythonOCC?)
-#class Circle(yaml.YAMLObject)
-#class Cylinder(yaml.YAMLObject)
-#class InterfaceGeom(yaml.YAMLObject):
 
 def prettyfloat(num):                                                                                      
     '''round down to 0 if abs(num) < +-1e-13, gets rid of icky floating point errors'''              
@@ -46,7 +38,6 @@ def package_file(package, filename, mode='r'):
     except AssertionError: 
         raise IOError, 'error in package "'+package+'": could not read file "'+filename+'"'
 
-
 def open_package(path):
     '''just a synonym for load_package'''
     return load_package(path)
@@ -64,12 +55,10 @@ def load_package(name):
     #must have the required files
     required_files = ["metadata.yaml", "data.yaml"]
     for file in required_files:
-        package_file(name, file)
-        #assert os.access(os.path.join(package_path, file), os.F_OK), str(package_path)+": "+file+" not found or unreadable"
+        assert package_file(name, file) #just check if present
     loaded_package = load(package_file(name, 'metadata.yaml'))
     import_package_classes(loaded_package, package_path)
     return loaded_package
-
 
 def import_package_classes(loaded_package, package_path):
     '''assigns classes to the Package's namespace; for example:
@@ -119,7 +108,7 @@ class Package(FennObject): #should this be a FennObject? ideally it should spit 
     def dump_data(self):
         '''dump only the content for or from data.yaml'''
         raise NotImplementedError
-    def makes_sense(self):
+    def makes_sense(self): #FIXME this is really lame
         '''checks for whether or not the package data makes sense'''
         assert self.name is not None, "package name"
         assert self.functionality is not None, "functionality"
@@ -249,7 +238,6 @@ def dump(value, filename=None):
         f.write(retval)
     else:
         return retval
-    #some stdout call here might not be a bad idea
 
 def main():
     #basic self-test demo
