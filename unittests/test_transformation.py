@@ -1,10 +1,12 @@
 #!/usr/bin/python
-from paths import *
+from geom import *
 from OCC.Display.wxSamplesGui import start_display
 #test that a shape can be transformed in the same way that a make_vertex object is transformed
 #test also gp_Pnt.Transform and BRepBuilderAPI_Transform
 #do the points line up? vert2 and obj should be the same.
 #now use SetTransformation
+
+#TODO use TopExp to find the point of the arrow, then compare gp_Pnt's
 
 if __name__ == "__main__":
     trsf1 = gp_Trsf()
@@ -24,7 +26,7 @@ if __name__ == "__main__":
     my_ax = gp_Ax3(my_ax)
     print my_ax.Direct() #when my_ax is gp_Ax3
     blahr = gp_Trsf(); blahr.SetTransformation(my_ax)
-    arrow3 = make_arrow_to(dest=blahr) #tests BRepBuilderAPI_Transform
+    arrow3 = Arrow().to(dest=blahr) #tests BRepBuilderAPI_Transform
 
     display.DisplayShape(make_vertex(Point(0,0,0))) #display origin marker
     display.DisplayShape(obj) #vert1 but with BRepBuilderAPI_Transform applied to it
