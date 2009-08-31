@@ -10,6 +10,9 @@ skdb core:
         evaluate typical feasible: but dont dump some messy construct
         think about how to utilize statistical data: in search/optimization algorithms
     geom:
+        wrap TopoDS_Shape in Shape class:
+            fix __eq__ error in yaml dump:
+            make assembly graph yaml dump work:
         get rid of STEP loading spam:
             and other OCC spam:
         real wrapper code: instead of subclassing from OCC. openGL example
