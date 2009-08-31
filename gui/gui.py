@@ -134,10 +134,6 @@ def init_display():
     myGroup = Prs3d_Root().CurrentGroup(myPresentation.Presentation()).GetObject()
 
 def clear(event=None):
-    global current_brick, all_bricks
-    current = None
-    current_brick = None
-    all_bricks=[]
     display.EraseAll()
 
 def show_next_mate(event=None, mate=None):
