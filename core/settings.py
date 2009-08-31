@@ -20,6 +20,7 @@ except KeyError, err:
 
 paths = {
         'SKDB_PACKAGE_DIR': SKDB_PACKAGE_DIR,
+        'SKDB_PACKAGE_REPO': "http://adl.serveftp.org/skdb-packages/",
         }
 
 def package_path(package_name):
