@@ -22,7 +22,7 @@ debug = False
 #class Cylinder(yaml.YAMLObject)
 #class InterfaceGeom(yaml.YAMLObject):
 
-def round(num):                                                                                      
+def prettyfloat(num):                                                                                      
     '''round down to 0 if abs(num) < +-1e-13, gets rid of icky floating point errors'''              
     return str(float("%.13f" % (float(num))))     
 

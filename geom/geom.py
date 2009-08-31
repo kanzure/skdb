@@ -14,7 +14,7 @@ from OCC.BRepOffsetAPI import *
 from OCC.BRepAlgoAPI import *
 from OCC.TopoDS import *
 
-from skdb import Connection, Part, Interface, Unit, FennObject, round
+from skdb import Connection, Part, Interface, Unit, FennObject, prettyfloat
 import os, math
 from copy import copy, deepcopy
 from string import Template
@@ -91,9 +91,9 @@ class OCC_triple(FennObject):
         if not isinstance(other, self.__class__.occ_class): return False
         else: return self.IsEqual(other, Precision().Confusion()) == 1
     def __repr__(self):
-        return "%s(%s, %s, %s)" % (self.__class__.__name__, round(self.X()), round(self.Y()), round(self.Z()))
+        return "%s(%s, %s, %s)" % (self.__class__.__name__, prettyfloat(self.X()), prettyfloat(self.Y()), prettyfloat(self.Z()))
     def yaml_repr(self):
-        return [round(self.X()), round(self.Y()), round(self.Z())]
+        return [prettyfloat(self.X()), prettyfloat(self.Y()), prettyfloat(self.Z())]
     def transformed(self, transformation):
         '''transform is a verb'''
         result = self.occ_class.Transformed(self, transformation)
