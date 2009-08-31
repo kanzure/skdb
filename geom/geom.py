@@ -23,11 +23,11 @@ from string import Template
 def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
     trsf.SetTranslation(from_pnt, to_pnt)
-    return Shape(BRepBuilderAPI_Transform(shape, trsf, True).Shape())
+    return BRepBuilderAPI_Transform(shape, trsf, True).Shape()
     
 def point_shape(shape, direction):
     '''rotates a shape to point along origin's direction. this function ought to be unnecessary'''
-    shape = Shape(BRepBuilderAPI_Transform(shape, point_along(Direction(direction)), True).Shape())
+    shape = BRepBuilderAPI_Transform(shape, point_along(Direction(direction)), True).Shape()
     return shape
     
 def angle_to(x,y,z):                                                         
@@ -256,7 +256,7 @@ def load_CAD(self):
         my_step_importer.ReadFile()
         self.shapes = my_step_importer.GetShapes()
         for i in range(len(self.shapes)):
-            self.shapes[i] = Shape(self.shapes[i])
+            self.shapes[i] = self.shapes[i]
         self.compound = my_step_importer.GetCompound()
     #i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
     #x,y,point = self.interfaces[0].x,self.interfaces[0].y,self.interfaces[0].point
@@ -310,7 +310,7 @@ def test_transformation(event=None):
     testfile = '90twist.yaml'
     for (i, color) in zip(skdb.load(open(testfile)), colors):
         trsf = build_trsf(i.point, i.x_vec, i.y_vec)
-        display.DisplayColoredShape(Shape(BRepBuilderAPI_Transform(brick._shapes[0], trsf).Shape()), color)
+        display.DisplayColoredShape(BRepBuilderAPI_Transform(brick._shapes[0], trsf).Shape(), color)
 
 def make_face(shape):
     face = BRepBuilderAPI_MakeFace(shape)
@@ -365,6 +365,7 @@ def deep_part_collider(parts):
     return errors
 
 #wrap OCC.TopoDS.TopoDS_Shape
+#can we call this something else please?
 class Shape(TopoDS_Shape, FennObject):
     def __init__(self, shape=None):
         if isinstance(shape, self.__class__): #Shape(Shape(blah))
