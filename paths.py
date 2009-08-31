@@ -240,8 +240,6 @@ brick2 = get_brick()
 opts = current_brick.options(brick2)
 opt = 0
 
-skdb.Interface.show = blarney
-
 def save(event=None):
     '''dump the current construction'''
     global all_bricks

@@ -287,11 +287,6 @@ def transformed(self, trsf):
 for i in [load_CAD, add_shape, get_gp_Pnt, transformed]:
     setattr(Part, i.__name__, i)
 
-def show_interfaces(event=None, brick=None):
-    if brick is None: brick = current_brick
-    for i in brick.interfaces:
-        i.show()
-
 def test_coordinate_arrows(event=None):
     for a in 0, 1, -1:
         for b in 0, 1, -1:

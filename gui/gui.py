@@ -11,7 +11,8 @@ from OCC.Prs3d import *
 from OCC.TCollection import *
 from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display, display
 import OCC.Display.wxSamplesGui
-from skdb.geom import Point, Direction, move_shape
+from skdb.geom import Point, Direction, move_shape, point_along
+from skdb import Interface
 
 class Arrow(TopoDS_Shape):
     def __init__(self, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1):
@@ -21,11 +22,13 @@ class Arrow(TopoDS_Shape):
         self.build_shape()
         #apparently this screws up later transformations somehow
         ##apparently we must translate and then rotate
-        #tmp = gp_Trsf()
-        #tmp.SetTranslation(gp_Pnt(0,0,0), origin)
+        tmp = gp_Trsf()
+        tmp.SetTranslation(gp_Pnt(0,0,0), origin)
         #self.transformation = tmp.Multiplied(point_along(direction))
         self.transformation = gp_Trsf()
-        #self.to(tmp)
+        self.to(point_along(direction))
+        self.to(tmp)
+
 
         #tmp = point_along(direction)
         #self.transformation.Multiply(tmp)
@@ -57,12 +60,20 @@ class Flag(Arrow):
         head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move flag to top of arrow
         self._shape = BRepAlgoAPI_Fuse(head, body).Shape()
 
-def blarney(self):
+def show_interfaces(event=None, brick=None):
+    if brick is None: brick = current_brick
+    for i in brick.interfaces:
+        i.show()
+
+def show_interface_arrow(self):
         tmp = self.part.transformation
         tmp2 = self.get_transformation()
         trsf1 = tmp.Multiplied(tmp2)
+        arrow = Arrow(scale=5)
+        arrow.transformation = trsf1
         display.DisplayShape(make_vertex(Point(0,0,0).Transformed(trsf1)))
-        display.DisplayShape(Arrow(scale=5).to(trsf1))
+        display.DisplayShape(arrow.Shape())
+Interface.show = show_interface_arrow
 
 def make_text(string, pnt, height):
     '''render a bunch of text at pnt's location
@@ -128,9 +139,9 @@ def show_next_mate(event=None, mate=None):
     display.DisplayShape(make_vertex(Point(conn.interface2.point).Transformed(trsf)))
 
 def coordinate_arrow(direction, color='YELLOW', flag=False, scale=3):
-    if flag: shape = Flag(scale=scale, direction=direction)
-    else: shape = Arrow(scale=scale, direction=direction)
-    display.DisplayColoredShape(shape.Shape(), color)
+    if flag: shape = Flag(scale=scale).to(point_along(direction))
+    else: shape = Arrow(scale=scale).to(point_along(direction))
+    display.DisplayColoredShape(shape, color)
 
 def coordinate_arrows(event=None):
     #typical origin symbol
