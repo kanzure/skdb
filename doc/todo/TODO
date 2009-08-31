@@ -2,14 +2,19 @@ todo list for skdb-related work
 
 
 skdb core:
+    units:
+        peak and continuous ratings: what are default time constants?
+        yaml path resolver: for max/min/peak/continuous/power/torque/height/width etc
+        yaml regex resolver: how to do this without matching over entire units .dat?
+    statistics:
+        arbitrary distributions: processes often follow odd laws (non-gaussian)
+        evaluate typical feasible: but dont dump some messy construct
     geom:
         connection graph:
             apply transforms at each arc while traversing:
             wrap some graph class instead of using directly for easy swapping:
         part mating:
-            method of computing roll (rotation around the normal vector)
-            start with origin. rotate both Z and X in global el and az so that Z lines
-            up with z_vec. now roll is the angle between twice rotated X and final x_vec 
+            collision detection: and percentage interference allowed
 package code:
     generate instructions for making a package:
 clients: #desktop, unless you really like writing javascript?
@@ -74,12 +79,16 @@ export: #external simulations
 stuff to package:
     screw: 
         catalog generator script:
+        cad generator:
     thread:
         common metric sizes:
         common SAE sizes:
+        cad generator:
     lego:
         finish technic grammar:
         parse .lst and catalog files:
+        bricklink cost evaluator: scraper
+        cad generator:
     bearing:
     plastic gel box case:
         get cad files from tito:
@@ -91,7 +100,9 @@ stuff to package:
             links:
             - "http://groups.google.com/group/diybio/msg/fb0cb0b7d6bf9b35"
             - "http://logarchy.org/electrophoresis.py"
-    test tube holder:
+    test tube holder: why?
     transilluminator: #gel imager
     mechmate:
     arduino:
+    technical devices: i guess? at least its a source of ideas for components
+    mcmaster catalog: same deal
