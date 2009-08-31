@@ -20,7 +20,8 @@ skdb core:
             apply transforms at each arc while traversing: is this done?
             wrap some graph class instead of using directly for easy swapping:
         part mating:
-            collision detection: and percentage interference allowed
+            collision detection:
+                unit test:
         cam algorithm selection: some parts are more 2.5d than others...
 inventory:
     container tags: ['!ziploc', '!fishtub', etc]
