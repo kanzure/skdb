@@ -41,7 +41,7 @@ if __name__ == "__main__":
     print pt1.Transformed(trsf1).XYZ().X(); pt1.Transformed(trsf1).XYZ().Y(); pt1.Transformed(trsf1).XYZ().Z() #0, 1, 0
 
 
-def tlater(point, origin, normal, vx): # nx, ny, nz, vxx, vxy, vxz):
+def tlater(point=Point(1,0,0), origin=Point(0,0,0), normal=Direction(0,0,1), vx=Direction(1,0,0)):
     '''
     constructs a transformation
     point = Point(point)
@@ -49,19 +49,29 @@ def tlater(point, origin, normal, vx): # nx, ny, nz, vxx, vxy, vxz):
     normal_vec = Direction(normal)
     x_vec = Direction(vx)
     '''
-    #FIXME: match docstring
-    point = gp_Pnt(point[0], point[1], point[2])
-    origin = gp_Pnt(px, py, pz)
-    normal_vec = gp_Dir(nx, ny, nz)
-    x_vec = gp_Dir(vxx, vxy, vxz)
+    point = Point(point)
+    origin = Point(origin)
+    normal_vec = Direction(normal)
+    x_vec = Direction(vx)
     trsf = gp_Trsf()
     trsf.SetTransformation(gp_Ax3(gp_Ax2(origin, normal_vec, x_vec)))
     resulting_point = point.Transformed(trsf)
-    print "(%s, %s, %s)" % (resulting_point.XYZ().X(), resulting_point.XYZ().Y(), resulting_point.XYZ().Z())
+    print "\t(%s, %s, %s)" % (resulting_point.XYZ().X(), resulting_point.XYZ().Y(), resulting_point.XYZ().Z())
     return resulting_point
 
-#tlater(1.2,1.3,1.4, 0,0,0, 0,1,0, 1,0,0)
-#(1.2, -1.4, 1.3)
-
-
+def big_test():
+    for a in [0, 1, -1]:
+        for b in [0, 1, -1]:
+            for c in [0, 1, -1]:
+                for d in [0, 1, -1]:
+                    for e in [0, 1, -1]:
+                        for f in [0, 1, -1]:
+                            try:
+                                normal = Direction(a,b,c)
+                                vx = Direction(d,e,f)
+                                print "normal=%s, vx=%s" % ([a,b,c], [d,e,f]) #% (normal, vx) <-- doesn't produce the right results
+                                tlater(normal=normal, vx=vx)
+                            except RuntimeError, v:
+                                True #oops?
+    return
 

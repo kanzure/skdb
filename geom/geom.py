@@ -28,11 +28,11 @@ from OCC.Graphic3d import *
 def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
     trsf.SetTranslation(from_pnt, to_pnt)
-    return BRepBuilderAPI_Transform(shape, trsf, True).Shape()
+    return Shape(BRepBuilderAPI_Transform(shape, trsf, True).Shape())
     
 def point_shape(shape, direction):
     '''rotates a shape to point along origin's direction. this function ought to be unnecessary'''
-    shape = BRepBuilderAPI_Transform(shape, point_along(Direction(direction)), True).Shape()
+    shape = Shape(BRepBuilderAPI_Transform(shape, point_along(Direction(direction)), True).Shape())
     return shape
     
 def angle_to(x,y,z):                                                         
@@ -285,6 +285,8 @@ def load_CAD(self):
         my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(full_path)
         my_step_importer.ReadFile()
         self.shapes = my_step_importer.GetShapes()
+        for i in range(len(self.shapes)):
+            self.shapes[i] = Shape(self.shapes[i])
         self.compound = my_step_importer.GetCompound()
     #i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
     #x,y,point = self.interfaces[0].x,self.interfaces[0].y,self.interfaces[0].point
@@ -343,7 +345,7 @@ def test_transformation(event=None):
     testfile = '90twist.yaml'
     for (i, color) in zip(skdb.load(open(testfile)), colors):
         trsf = build_trsf(i.point, i.x_vec, i.y_vec)
-        display.DisplayColoredShape(BRepBuilderAPI_Transform(brick.shapes[0], trsf).Shape(), color)
+        display.DisplayColoredShape(Shape(BRepBuilderAPI_Transform(brick._shapes[0], trsf).Shape()), color)
 
 def make_face(shape):
     face = BRepBuilderAPI_MakeFace(shape)
@@ -371,7 +373,7 @@ def common_volume(part1, part2):
     #see http://www.opencascade.org/org/forum/thread_6622/ (a comment by rob bachrach)
     tmp_useless = GProp.GProp_GProps()
     calculator = BRepGProp()
-    calculator.VolumeProperties(fused_shape.Shape(), tmp_useless)
+    calculator.VolumeProperties(Shape(fused_shape.Shape()), tmp_useless)
     volume = tmp_useless.Mass()
     return volume 
 
@@ -399,3 +401,22 @@ def deep_part_collider(parts):
             if volume > 0:
                errors.append((volume, part1, part2))
     return errors
+
+#wrap OCC.TopoDS.TopoDS_Shape
+class Shape(TopoDS_Shape, FennObject):
+    def __init__(self, shape=None):
+        if isinstance(shape, self.__class__): #Shape(Shape(blah))
+            raise NotImplementedError
+        elif isinstance(shape, TopoDS_Shape):
+           TopoDS_Shape.__init__(self)
+           self.__dict__ = copy(shape.__dict__)
+           self.__repr__ = Shape.__repr__(self)
+    def __repr__(self):
+        return "some shape"
+    def yaml_repr(self):
+        return "unyamlifiable"
+    def __eq__(self, other):
+        return True
+        if not isinstance(other, TopoDS_Shape): return False
+        else: return True #self.IsEqual(other)
+

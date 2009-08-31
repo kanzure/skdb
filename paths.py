@@ -92,7 +92,7 @@ def random_cone(event=None):
     cone = gce_MakeCone(p1, p2, p3, p4).Value()
     cone = BRepPrimAPI_MakeCone(gp.gp().XOY(), 1,1.1,1)
     try: 
-        cone = BRepPrimAPI_MakeCone(gp.gp().XOY(), random.uniform(0,1), random.uniform(0,1), random.uniform(0,1)).Shape()
+        cone = Shape(BRepPrimAPI_MakeCone(gp.gp().XOY(), random.uniform(0,1), random.uniform(0,1), random.uniform(0,1)).Shape())
         display.DisplayShape([cone])
     except RuntimeError: cone = random_cone()
     return cone
@@ -200,7 +200,7 @@ def make_lego(event=None, brick=None):
     trsf.Multiply(tmp.Inverted()) #side effect
     current_brick.transformation = trsf #side effect
     shapes = current_brick.shapes 
-    shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape() #move it
+    shapes[0] = Shape(BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape()) #move it
     display.DisplayColoredShape(shapes[0], 'RED')
     all_bricks.append(current_brick)
 
@@ -225,7 +225,7 @@ def add_lego(event=None, brick=None):
     trsf = mate_connection(conn)
     brick2.transformation = trsf
     #brick2.shapes[0] keeps on being overwritten. what's the point of having it be a list?
-    brick2.shapes[0] = BRepBuilderAPI_Transform(brick2.shapes[0], trsf, True).Shape() #move it
+    brick2.shapes[0] = Shape(BRepBuilderAPI_Transform(brick2.shapes[0], trsf, True).Shape()) #move it
     conn.interface1.show()
     print "%.2f %.2f %.2f" % Point(conn.interface1.point).Transformed(conn.interface1.part.transformation).Coord()
     conn.interface2.show()
@@ -242,11 +242,65 @@ opt = 0
 
 skdb.Interface.show = blarney
 
+def save(event=None):
+    '''dump the current construction'''
+    global all_bricks
+    import yaml
+    dump_recursion(all_bricks)
+    return
+    #print yaml.dump(all_bricks)
+    #for each in all_bricks:
+    #    print "each = ", each
+    #    brick = each
+    #    dict = brick.__dict__
+    #    keys = dict.keys()
+    #    values = dict.values()
+    #    for key in keys:
+    #        print "key = ", key
+    #        yaml.dump(dict[key])
+    #return
+
+def dump_recursion(data, predumped=[]):
+    import yaml
+    if data in predumped: #don't redo
+        return
+    if isinstance(data, list):
+        for each in data:
+            #predumped.append(each)
+            dump_recursion(each, predumped=predumped)
+        return
+    elif not hasattr(data, "__dict__"):
+        print "data = ", data
+        #help(data)
+        predumped.append(data)
+        print yaml.dump(data, predumped=predumped)
+        return
+    for key in data.__dict__.keys():
+        value = data.__dict__[key]
+        try:
+            print yaml.dump(value)
+        except ValueError:
+            predumped.append(value)
+            dump_recursion(value, predumped=predumped)
+        #if hasattr(value, "__dict__"): #len(value)>0:
+        #    dump_recursion(value)
+        ##elif len(value)>0:
+        ##    dump_recursion(value)
+        #else:
+        #    print "value = ", value
+        #    try:
+        #        print yaml.dump(value)
+        #    except ValueError:
+        #        raise ValueError, "blah!"
+        #        exit(1)
+    return
+
 add_key('a', add_lego)
 add_key('c', clear)
 add_key('m', make_lego)
 add_key('i', show_interfaces)
 add_key(' ', show_next_mate)
+add_key('v', save)
 
 if __name__ == '__main__':
         from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display
@@ -266,6 +320,7 @@ if __name__ == '__main__':
                     make_lego,
                     add_lego,
                     clear,
+                    save,
                     exit
                     ]:
             add_function_to_menu('demo', f)

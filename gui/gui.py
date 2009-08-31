@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import sys
 from OCC.gp import *
 from OCC.TopoDS import *
 from OCC.BRepBuilderAPI import *
@@ -40,6 +41,9 @@ class Arrow(TopoDS_Shape):
         assert isinstance(dest, gp_Trsf)
         self.transformation.Multiply(dest)
         return self.Shape()
+    
+    def __eq__(self, other):
+        return False
 
 class Flag(Arrow):
     def __init__(self, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1):
@@ -149,5 +153,4 @@ def make_vertex(pnt):
 
 def exit(event=None):
     sys.exit()
-
 
