@@ -6,7 +6,9 @@ from OCC.BRepBuilderAPI import *
 from OCC.BRepPrimAPI import *
 from OCC.BRepAlgoAPI import *
 from OCC.AIS import *
+from OCC.Graphic3d import *
 from OCC.Prs3d import *
+from OCC.TCollection import *
 from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display, display
 import OCC.Display.wxSamplesGui
 from skdb.geom import Point, Direction, move_shape

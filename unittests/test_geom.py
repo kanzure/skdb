@@ -65,7 +65,7 @@ class TestGeom(unittest.TestCase):
     def test_build_trsf(self):
         a = build_trsf([0,0,0], [1,0,0], [0,1,0])
         self.assertEqual(a.TranslationPart().Coord(), (0,0,0))
-        print Point(Point(1,2,3).Transformed(a)), Point(1,2,3)
+        #print Point(Point(1,2,3).Transformed(a)), Point(1,2,3)
         self.assertEqual(Point(1,2,3).Transformed(a), Point(1,2,3))
         self.assertTrue(Direction(1,1,0).Angle(Direction(1,1,math.sqrt(2)))/(math.pi/180) - 45 < 1e-10)
 
@@ -113,7 +113,7 @@ class TestGeom(unittest.TestCase):
         selected = options[1]
         selected.connect()
         blah = mate_connection(selected)
-        print blah #TopoDS shape (is this useful?)
+        #print blah #TopoDS shape (is this useful?)
         #not sure what to do with that. brick2 has already been transformed, brick2.transformation = some new transformation. 
         self.assertNotEqual(brick1.transformation, brick2.transformation)
         self.assertNotEqual(brick1, brick2)

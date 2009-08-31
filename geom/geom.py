@@ -2,11 +2,6 @@ from OCC.gp import *
 from OCC.Precision import *
 from OCC.BRepBuilderAPI import *
 import OCC.Utils.DataExchange.STEP
-from skdb import Connection, Part, Interface, Unit, FennObject, round
-import os, math
-from copy import copy, deepcopy
-from string import Template
-
 #for volume interference
 from OCC.BRepGProp import *
 from OCC.GProp import *
@@ -18,6 +13,12 @@ from OCC.BRepFilletAPI import *
 from OCC.BRepOffsetAPI import *
 from OCC.BRepAlgoAPI import *
 from OCC.TopoDS import *
+
+from skdb import Connection, Part, Interface, Unit, FennObject, round
+import os, math
+from copy import copy, deepcopy
+from string import Template
+
 
 def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
@@ -223,8 +224,7 @@ def mate_connection(connection):
     import math
     i1, i2 = connection.interface1, connection.interface2
     connection.connect()
-    assert i1.part.transformation is not None
-    if i1.part.transformation is None: i1.part.transformation = build_trsf(Point(0,0,0), Vector(1,0,0), Vector(0,1,0)); print 'hi'
+    if i1.part.transformation is None: i1.part.transformation = gp_Trsf()
     opposite = gp_Trsf()
     opposite.SetRotation(gp_Ax1(Point(i1.point), Direction(i1.x_vec)), math.pi) #rotate 180 so that interface z axes are opposed
     t = gp_Trsf()
