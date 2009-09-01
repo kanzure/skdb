@@ -27,7 +27,14 @@ class FakeIGraph:
             vi = self.new_vertex()
             vi['interface'] = i
             self.g.add_edges((vp.index, vi.index))
-            
+    def del_part(self, part):
+        vp = self.g.vs(part_eq=part)
+        assert len(vp) == 1, "there should be exactly one of each part in the graph"
+        for i in vp[0]['part'].interfaces:
+            vi = self.g.vs(interface_eq=i)
+            assert len(vi) == 1, "there should be exactly one of each interface in the graph"
+            self.g.delete_vertices(vi)
+        self.g.delete_vertices(vp)
     def new_edge(self, v1, v2):
         self.g.add_edges((v1.index, v2.index))
         return self.g.es[self.g.ecount()-1]
@@ -87,8 +94,6 @@ class Interface(FennObject):
             part_name = self.part.name
         else: part_name = None
         return 'Interface("%s", part="%s")' % (self.name, part_name)
-
-cgraph = FakeIGraph() #connection graph
 
 class Connection:
     '''a temporary scenario to see if we should connect these two interfaces'''
