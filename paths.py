@@ -21,6 +21,7 @@ from OCC.Display.wxSamplesGui import display
 import math #OCC.math gets in the way? wtf
 
 import skdb
+from skdb.core.interface import FakeIGraph
 from geom import *
 from gui import *
 
@@ -168,7 +169,8 @@ from random import randint
 #move most of this into the lego package
 lego = skdb.load_package('lego'); lego.load_data()
 current_brick = None
-all_bricks = [] #not currently used
+all_bricks = []
+cgraph = FakeIGraph()
 
 for brick in lego.parts:
     brick.load_CAD()
@@ -176,7 +178,7 @@ for brick in lego.parts:
 def get_brick():
     '''returns a basic lego brick part from the catalog (no side effects)'''
     brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
-    brick = deepcopy(lego.parts[random.randint(2,2)])
+    #brick = deepcopy(lego.parts[random.randint(2,2)])
     brick.post_init_hook()
     return brick
 
@@ -186,14 +188,13 @@ def show_bricks():
     display.DisplayShape([brick.shapes[0] for brick in all_bricks])
 
 def make_lego(event=None, brick=None):
-    import math
-    global current_brick, all_bricks
+    global current_brick, all_bricks, cgraph
     if brick is None: brick = get_brick() #load a brick from the catalog
     current_brick = brick
     tmp = gp_Trsf()
     #give it an interesting starting orientation (not 0)
     tmp.SetTranslation(Point(0,0,0), Point(3.14, 3.14, 3.14))
-    tmp.SetRotation(gp_Ax1(Point(0,0,0), Direction(1,0,0)), math.pi/3)
+    tmp.SetRotation(gp_Ax1(Point(0,0,0), Direction(1,0,0)), 3.14/3)
     #orient the part so that i[0] is aligned with the origin's z-axis
     i = current_brick.interfaces[0]
     trsf = i.get_transformation().Inverted()
@@ -203,9 +204,10 @@ def make_lego(event=None, brick=None):
     shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape() #move it
     display.DisplayColoredShape(shapes[0], 'RED')
     all_bricks.append(current_brick)
+    cgraph.add_part(current_brick)
 
 def add_lego(event=None, brick=None):
-    global current_brick, all_bricks
+    global current_brick, all_bricks, cgraph
     opts = None
     n=0
     if brick is not None: brick2 = brick
@@ -232,6 +234,9 @@ def add_lego(event=None, brick=None):
     print "%.2f %.2f %.2f" %  Point(conn.interface2.point).Transformed(conn.interface2.part.transformation).Coord()
 
     all_bricks.append(brick2)
+    cgraph.add_part(brick2)
+    conn.connect(cgraph=cgraph)
+    
     display.DisplayShape(brick2.shapes[0])
     current_brick = brick2
     naive_coincidence_fixer()
@@ -256,22 +261,21 @@ def naive_coincidence_fixer():
             if ipt == jpt: # and Direction(i.x_vec) == Direction(j.x_vec).Reversed():
                 if i.connected and j.connected: break
                 print "score!"
-                Connection(i, j).connect()
-                i.show(); j.show()
+                if i.compatible(j):
+                    Connection(i, j).connect(cgraph=cgraph)
+                    i.show(); j.show()
                 
 def clear(event=None):
-    global current_brick, all_bricks
+    global current_brick, all_bricks, cgraph
     current = None
     current_brick = None
     all_bricks=[]
+    cgraph = FakeIGraph()
     display.EraseAll()
-
+    
 def save(event=None):
     '''dump the current construction'''
-    global all_bricks
-    import yaml
-    print yaml.dump(Shape(all_bricks[0].shapes[0]))
-    return
+    cgraph.graph.write('cgraph.dot', format='graphviz')
 
 add_key('a', add_lego)
 add_key('c', clear)
