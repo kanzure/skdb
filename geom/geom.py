@@ -233,6 +233,25 @@ def mate_connection(connection):
     t.Multiply(i2.get_transformation().Inverted())
     return t
    
+def naive_coincidence_fixer(parts, cgraph=None):
+    '''connects compatible interfaces that happen to be in the same place; think lego.
+    this is slow because it compares every interface to every other interface.'''
+    all_i = set()
+    for brick in parts:
+        for i in brick.interfaces:
+            all_i.add(i)
+    for i in all_i:
+        for j in all_i:
+            if i is j: break
+            ipt = Point(i.point).transformed(i.part.transformation)
+            jpt = Point(j.point).transformed(j.part.transformation)
+            if ipt == jpt: # and Direction(i.x_vec) == Direction(j.x_vec).Reversed():
+                if i.connected and j.connected: break
+                if i.compatible(j):
+                    Connection(i, j).connect(cgraph=cgraph)
+                    i.show(); j.show()
+                
+   
 #skdb.Interface
 def get_transformation(self): #i wish this were a property instead
     '''returns the transformation to align the interface vector at the origin along the Z axis'''
