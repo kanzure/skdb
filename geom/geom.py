@@ -223,7 +223,6 @@ def mate_connection(connection):
     '''returns the gp_Trsf to move/rotate i2 to connect with i1. should have no side effects'''
     import math
     i1, i2 = connection.interface1, connection.interface2
-    connection.connect()
     if i1.part.transformation is None: i1.part.transformation = gp_Trsf()
     opposite = gp_Trsf()
     opposite.SetRotation(gp_Ax1(Point(i1.point), Direction(i1.x_vec)), math.pi) #rotate 180 so that interface z axes are opposed
