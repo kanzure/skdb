@@ -96,8 +96,9 @@ class OCC_triple(FennObject):
         return [prettyfloat(self.X()), prettyfloat(self.Y()), prettyfloat(self.Z())]
     def transformed(self, transformation):
         '''transform is a verb'''
-        result = self.occ_class.Transformed(self, transformation)
-        return self.__class__(result)
+        return self.__class__(self.occ_class.Transformed(self, transformation))
+    def reversed(self):
+        return self.__class__(self.occ_class.Reversed(self))
 
 class Point(OCC_triple, gp_Pnt):
     yaml_tag='!point'
@@ -232,7 +233,9 @@ def mate_connection(connection):
     t.Multiply(i1.get_transformation())
     t.Multiply(i2.get_transformation().Inverted())
     return t
-   
+
+class GayError(Exception): pass
+
 def naive_coincidence_fixer(parts, cgraph=None):
     '''connects compatible interfaces that happen to be in the same place; think lego.
     this is slow because it compares every interface to every other interface.'''
@@ -245,20 +248,27 @@ def naive_coincidence_fixer(parts, cgraph=None):
             if i is j: break
             ipt = Point(i.point).transformed(i.part.transformation)
             jpt = Point(j.point).transformed(j.part.transformation)
-            if ipt == jpt: # and Direction(i.x_vec) == Direction(j.x_vec).Reversed():
-                if i.connected and j.connected: break
-                if i.compatible(j):
-                    Connection(i, j).connect(cgraph=cgraph)
-                    i.show(); j.show()
-            #else: raise StupidError: your nubs are touching, that's so gay
+            if ipt.IsEqual(jpt, 1): #within 1 mm
+                if i.get_z_vec().transformed(i.part.transformation).IsEqual( j.get_z_vec().transformed(i.part.transformation).reversed(), 1, 0.01): #within 1mm and some angle
+                    #interfaces lined up
+                    if i.compatible(j):
+                        if i.connected and j.connected: break
+                        Connection(i, j).connect(cgraph=cgraph)
+                        i.show(color='GREEN'); j.show(color='RED')
+                    else: raise GayError, "your nubs are touching"
    
 #skdb.Interface
 def get_transformation(self): #i wish this were a property instead
     '''returns the transformation to align the interface vector at the origin along the Z axis'''
     trsf = gp_Trsf()
-    z_vec = Vector(self.x_vec).Crossed(Vector(self.y_vec)) #find the interface vector
+    z_vec = self.get_z_vec #find the interface vector
     return build_trsf(self.point, self.x_vec, self.y_vec)
 Interface.get_transformation = get_transformation
+
+def get_z_vec(self):
+    '''return the interface mating vector relative to the part'''
+    return Vector(Vector(self.x_vec).Crossed(Vector(self.y_vec)))
+Interface.get_z_vec = get_z_vec
 
 #skdb.Part
 def load_CAD(self):

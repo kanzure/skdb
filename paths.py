@@ -179,6 +179,7 @@ def get_brick():
     '''returns a basic lego brick part from the catalog (no side effects)'''
     brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
     #brick = deepcopy(lego.parts[random.randint(2,2)])
+   # brick = deepcopy(lego.parts[0])
     brick.post_init_hook()
     return brick
 
@@ -215,8 +216,9 @@ def add_lego(event=None, brick=None):
     while True:
         i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
         opts = i1.options(brick2)
-        if opts or n > 20: break
-        brick2 = get_brick() #try again
+        if opts: break 
+        elif n > 20: raise OverflowError, "I can't figure it out!"  #timeout; impossible situation
+        else: brick2 = get_brick() #try again
         n+=1
     conn =opts[random.randint(0, len(opts)-1)]
     
@@ -234,12 +236,16 @@ def add_lego(event=None, brick=None):
     print "%.2f %.2f %.2f" %  Point(conn.interface2.point).Transformed(conn.interface2.part.transformation).Coord()
 
     all_bricks.append(brick2)
-    cgraph.add_part(brick2)
-    conn.connect(cgraph=cgraph)
+    try:
+        cgraph.add_part(brick2)
+        naive_coincidence_fixer(all_bricks, cgraph=cgraph)
+    except GayError: 
+        cgraph.del_part(brick2)
+        add_lego() #try again
+    #conn.connect(cgraph=cgraph) #this should whine about interface busy
     
     display.DisplayShape(brick2.shapes[0])
     current_brick = brick2
-    naive_coincidence_fixer(all_bricks, cgraph=cgraph)
 
 current_brick = get_brick()
 brick2 = get_brick()
