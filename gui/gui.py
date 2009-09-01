@@ -62,14 +62,19 @@ def show_interfaces(event=None, brick=None):
     for i in brick.interfaces:
         i.show()
 
-def show_interface_arrow(self):
+def show_interface_arrow(self, color=None):
         tmp = self.part.transformation
         tmp2 = self.get_transformation()
         trsf1 = tmp.Multiplied(tmp2)
         arrow = Arrow(scale=5)
         arrow.transformation = trsf1
-        display.DisplayShape(make_vertex(Point(0,0,0).Transformed(trsf1)))
-        display.DisplayShape(arrow.Shape())
+        if color:
+            display.DisplayColoredShape(make_vertex(Point(0,0,0).Transformed(trsf1)), color)
+            display.DisplayColoredShape(arrow.Shape(), color)
+        else:
+            display.DisplayShape(make_vertex(Point(0,0,0).Transformed(trsf1)))
+            display.DisplayShape(arrow.Shape())
+
 Interface.show = show_interface_arrow
 
 def make_text(string, pnt, height):
