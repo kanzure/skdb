@@ -4,34 +4,38 @@ import yaml
 import time
 from yamlcrap import FennObject
 from interface import Connection
-from graph.Digraph import digraph
 import os
 
-class Assembly(FennObject, digraph):
-    yaml_tag = "!assembly"
-    def __init__(self, name=None, description=None, created=time.time()):
-        digraph.__init__(self)
-    def __eq__(self, other):
-        '''two assemblies are equal if each has the same parts and same connections'''
-        return True
-    #def __repr__
-    #def from_yaml
-    #def to_yaml
-    def add_part(self, part):
-        self.add_node(part)
-    def remove_part(self, part):
-        self.del_node(part)
-        #not sure what to do about the stored edges
-    def add_connection(self, connection):
-        self.add_edge(connection.interface1, connection.interface2)
-    def remove_connection(self, connection):
-        self.del_edge(connection.interface1, connection.interface2)
-    def parts(self):
-        '''returns a list of the parts in the assembly graph'''
-        return self.nodes()
-    def connections(self):
-        '''returns a list of the edges in the assembly graph'''
-        return self.edges()
+try:
+    from graph.Digraph import digraph
+
+    class Assembly(FennObject, digraph):
+        yaml_tag = "!assembly"
+        def __init__(self, name=None, description=None, created=time.time()):
+            digraph.__init__(self)
+        def __eq__(self, other):
+            '''two assemblies are equal if each has the same parts and same connections'''
+            return True
+        #def __repr__
+        #def from_yaml
+        #def to_yaml
+        def add_part(self, part):
+            self.add_node(part)
+        def remove_part(self, part):
+            self.del_node(part)
+            #not sure what to do about the stored edges
+        def add_connection(self, connection):
+            self.add_edge(connection.interface1, connection.interface2)
+        def remove_connection(self, connection):
+            self.del_edge(connection.interface1, connection.interface2)
+        def parts(self):
+            '''returns a list of the parts in the assembly graph'''
+            return self.nodes()
+        def connections(self):
+            '''returns a list of the edges in the assembly graph'''
+            return self.edges()
+except ImportError: print "why are we using something that's not even in debian?"
+
 
 class Part(FennObject):
     '''used for part mating. argh I hope OCC doesn't already implement this and I just don't know it.

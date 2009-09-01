@@ -250,7 +250,7 @@ def naive_coincidence_fixer(parts, cgraph=None):
                 if i.compatible(j):
                     Connection(i, j).connect(cgraph=cgraph)
                     i.show(); j.show()
-                
+            #else: raise StupidError: your nubs are touching, that's so gay
    
 #skdb.Interface
 def get_transformation(self): #i wish this were a property instead
