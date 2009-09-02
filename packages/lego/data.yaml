@@ -19,6 +19,7 @@ parts:
  - !lego 
   name: 2x2 round brick
   description: some crap i found in the national design repository
+  ldraw: 3941
   size: 2x2 #the Lego class should be able to generate the interfaces from this
   material: ABS
   files:
@@ -83,6 +84,7 @@ parts:
  - !lego
   name: 2x4 brick
   description: the classic lego brick. i think the cad model scale might be off a bit
+  ldraw: 3001
   size: 2x4
   material: ABS
   files:
@@ -172,6 +174,7 @@ parts:
  - !lego
   name: 1x4 technic beam
   description: has 3 holes and hollow studs. i think the cad model scale might be off a bit
+  ldraw: 3701
   size: 1x4
   material: ABS
   files:
@@ -251,6 +254,7 @@ parts:
  - !lego
   name: technic pin
   description: i think the cad model scale might be off a bit
+  ldraw: 3673
   size:
   material: ABS
   files:
