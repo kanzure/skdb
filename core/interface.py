@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from yamlcrap import FennObject
+from package import package_file
 import math
 import igraph
 
@@ -23,10 +24,24 @@ class FakeIGraph:
     def add_part(self, part):
         vp = self.new_vertex()
         vp['part'] = part
+        vp['label'] = str(part.name)
+        vp['fontcolor'] = 'saddlebrown'
+        if hasattr(part, 'ldraw'): #FIXME should be 'icon'
+            vp['image'] = package_file(part.package.name, str(part.ldraw)+'.png').name #abs path
+            vp['shape'] = 'none' #otherwise it will draw a circle around the icon
+        else:
+            vp['image'] = ''
+            vp['shape'] = 'box'
         for i in part.interfaces:
             vi = self.new_vertex()
             vi['interface'] = i
+            vi['label'] = str(part.interfaces.index(i))
+            #vi['label'] = i.name
+            vi['fontcolor'] = 'black'
+            vi['shape'] = 'none'
+            vi['image'] = 'none'
             self.g.add_edges((vp.index, vi.index))
+            
     def del_part(self, part):
         vp = self.g.vs(part_eq=part)
         assert len(vp) == 1, "there should be exactly one of each part in the graph"
@@ -35,6 +50,7 @@ class FakeIGraph:
             assert len(vi) == 1, "there should be exactly one of each interface in the graph"
             self.g.delete_vertices(vi)
         self.g.delete_vertices(vp)
+        
     def new_edge(self, v1, v2):
         self.g.add_edges((v1.index, v2.index))
         return self.g.es[self.g.ecount()-1]
