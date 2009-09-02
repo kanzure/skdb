@@ -1,5 +1,33 @@
 import yaml, re
 
+def add_yaml_resolvers(classes):
+    for cls in classes: #only one at a time works so far?
+        if hasattr(cls, 'yaml_pattern') and cls not in implicit_resolved:
+            yaml.add_implicit_resolver(cls.yaml_tag, re.compile(cls.yaml_pattern))
+            implicit_resolved.append(cls)
+
+implicit_resolved=[]
+def load(string):
+    global implicit_resolved
+
+    tmp = yaml.load_all(string)
+    rval = tmp.next() #this might be tag_hack
+    if type(rval) == tag_hack:
+        other_return_value = tmp.next() #a document listing which tags to ignore comes before the real metadata
+        #now remove the tag_hack tags from the system
+        for tag in rval.tags:
+            rval.undo_tag_hack_for_tag(tag)
+        return other_return_value
+    else: return rval
+
+def dump(value, filename=None):
+    retval = yaml.dump(value, default_flow_style=False)
+    if filename is not None:
+        f = open(filename, 'w')
+        f.write(retval)
+    else:
+        return retval
+
 class FennObject(yaml.YAMLObject):
     '''so i dont repeat generic yaml stuff everywhere'''
     #TODO fix bad characters spaces etc

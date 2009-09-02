@@ -7,119 +7,16 @@ import os
 import sys
 from string import Template as string_template
 from template import Template
-
+from package import Package, package_file, load_package
 from units import Unit, Range, Uncertainty, UnitError, NaNError
 from interface import Interface, Connection
 from part import Part
-from yamlcrap import FennObject, Dummy, tag_hack
+from yamlcrap import FennObject, Dummy, tag_hack, add_yaml_resolvers, load
 import settings
 
 def prettyfloat(num):                                                                                      
     '''round down to 0 if abs(num) < +-1e-13, gets rid of icky floating point errors'''              
     return str(float("%.13f" % (float(num))))     
-
-def check_unix_name(name):
-    '''returns True if name (string) is a valid unix_name'''
-    assert name, "name is empty"
-    check = re.match('^[a-zA-Z0-9_\-.]*$', name)
-    assert check, 'allowed characters in a name are: a-z, 0-9, "-", ".", and "_". Instead, got: "'+str(name)+'"'
-    if check: return True
-    else: return False
-
-def package_file(package, filename, mode='r'):
-    '''construct a dummy package and return a filehandler for filename.
-    needed for packages to find their own files (can't be used as a method of Package)'''
-    dummy = Package(package)
-    package_path = dummy.path()
-    filepath = os.path.join(package_path, filename)
-    try: #fail early
-        assert os.access(filepath, os.F_OK)
-        return open(filepath, mode)
-    except AssertionError: 
-        raise IOError, 'error in package "'+package+'": could not read file "'+filename+'"'
-
-def open_package(path):
-    '''just a synonym for load_package'''
-    return load_package(path)
-
-def load_package(name):
-    '''returns a package loaded from the filesystem
-    input should be something like "f-16" or "human-exoskeleton-1.0"
-    see settings.paths['SKDB_PACKAGES_DIR']'''
-    if not check_unix_name(name): #fail even if asserts are turned off
-        return None
-    assert hasattr(settings,"paths")
-    assert settings.paths.has_key("SKDB_PACKAGE_DIR")
-    package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],name)
-    assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
-    #must have the required files
-    required_files = ["metadata.yaml", "data.yaml"]
-    for file in required_files:
-        assert package_file(name, file) #just check if present
-    loaded_package = load(package_file(name, 'metadata.yaml'))
-    import_package_classes(loaded_package, package_path)
-    return loaded_package
-
-def import_package_classes(loaded_package, package_path):
-    '''assigns classes to the Package's namespace; for example:
-    package = load_package('lego')
-    mybrick = package.Brick()'''
-    for module_name in loaded_package.classes.keys():
-        try: 
-            module = __import__(module_name)
-        except ImportError:
-            sys.path.append(package_path)
-            module = __import__(module_name)
-        for class_name in loaded_package.classes[module_name]:
-            cls = getattr(module, class_name)
-            setattr(loaded_package, class_name, cls )
-            setattr(cls, "package", loaded_package)
-
-class Package(FennObject): #should this be a FennObject? ideally it should spit out metadata.yaml, data.yaml, etc.
-    yaml_tag='!package'
-    def __init__(self, name=None, license=None, urls=None, modules=None):
-        self.name = name
-        self.license = license
-        self.urls = urls
-    def post_init_hook(self):
-        '''yaml calls this after loading a package'''
-        check_unix_name(self.name)
-    def path(self):
-        '''returns the absolute path on the file system to the package folder'''
-        check_unix_name(self.name)
-        return settings.package_path(self.name)
-    def load_data(self, file=None):
-        '''loads all the files listed in "source data:" from metadata.yaml'''
-        if not file:
-            catalog = getattr(self, 'source data')
-        else: catalog = [file]
-        for x in catalog:
-            self.overlay(load(package_file(self.name, x))) #merge data from entire catalog into package
-            return self
-    def dump(self):
-        '''returns this object in yaml'''
-        return yaml.dump(self)
-    def dump_metadata(self):
-        '''dump only the content for or from metadata.yaml'''
-        raise NotImplementedError
-    def dump_template(self):
-        '''dump only the content for or from template.yaml'''
-        raise NotImplementedError
-    def dump_data(self):
-        '''dump only the content for or from data.yaml'''
-        raise NotImplementedError
-    def makes_sense(self): #FIXME this is really lame
-        '''checks for whether or not the package data makes sense'''
-        assert self.name is not None, "package name"
-        assert self.functionality is not None, "functionality"
-        assert self.created is not None, "created"
-        assert self.updated is not None, "updated"
-        assert self.version is not None, "version"
-        assert self.description is not None, "description"
-        assert self.classes is not None, "classes"
-        assert self.source_data is not None, "source data"
-        assert self.dependencies is not None, "dependencies" #unless you really know what you're doing?
-        return True
     
 class Distribution(FennObject):
     yaml_path = ['typical', 'feasible']
@@ -214,30 +111,7 @@ class Bolt(Fastener):
         self.screw = screw
         self.nut = nut
 
-implicit_resolved=[]
-def load(string):
-    global implicit_resolved
-    for cls in [Range, RuntimeSwitch, Formula, Uncertainty]: #only one at a time works so far?
-        if hasattr(cls, 'yaml_pattern') and cls not in implicit_resolved:
-            yaml.add_implicit_resolver(cls.yaml_tag, re.compile(cls.yaml_pattern))
-            implicit_resolved.append(cls)
-    tmp = yaml.load_all(string)
-    rval = tmp.next() #this might be tag_hack
-    if type(rval) == tag_hack:
-        other_return_value = tmp.next() #a document listing which tags to ignore comes before the real metadata
-        #now remove the tag_hack tags from the system
-        for tag in rval.tags:
-            rval.undo_tag_hack_for_tag(tag)
-        return other_return_value
-    else: return rval
-
-def dump(value, filename=None):
-    retval = yaml.dump(value, default_flow_style=False)
-    if filename is not None:
-        f = open(filename, 'w')
-        f.write(retval)
-    else:
-        return retval
+add_yaml_resolvers([Range, RuntimeSwitch, Formula, Uncertainty])
 
 def main():
     #basic self-test demo
