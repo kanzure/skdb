@@ -57,11 +57,11 @@ features:
         technique: press_fit
         kinematics: revolute
     bar: !lego_feature
-        complement: [claw, hollow stud]
+        complement: [clip, hollow stud]
         example: 3957
         technique: [snap_fit, press_fit]
         kinematics: revolute
-    claw: !lego_feature
+    clip: !lego_feature
         complement: bar
         example: 6019
         technique: snap_fit
@@ -206,7 +206,7 @@ features:
         technique: snap_fit
         kinematics: hinge
     trailer hinge m: !lego_feature
-        complement: [trailer hinge f, claw]
+        complement: [trailer hinge f, clip]
         example: 3639
         technique: snap_fit
         kinematics: hinge
