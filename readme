@@ -6,6 +6,8 @@ Completed features:
   - the package has a set of packages it needs to work right (threads package)
   - the package contains metadata such as homepage URL, author, copyright license
 - run packages/lego/demo.py to demonstrate interface compatibility
+- run paths.py to demonstrate making a lego assembly
+- generate an assembly graph via igraph
 
 
 here is a break down of the current directory structure:
