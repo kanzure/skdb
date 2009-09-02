@@ -115,13 +115,14 @@ def chain_arrows(event=None):
     s=math.sqrt(3)/3
     make_arrow(origin=gp_Pnt(s,s,s+1), direction=gp_Dir(1,1,1), text='hmm')
 
-def add_key(key,method_to_call):
+def add_key(key,method_to_call,**keywords):
     '''binds a key to a particular method
     ex: add_key("G",some_method)
     '''
+    import functools
     upper_case = key.upper()
     orded = ord(upper_case) #see wxDisplay.py line 171
-    OCC.Display.wxSamplesGui.frame.canva._key_map[orded] = method_to_call
+    OCC.Display.wxSamplesGui.frame.canva._key_map[orded] = functools.partial(method_to_call, keywords)
     print "added a key with name = ", orded, " mapped to method = ", method_to_call
     return
 

@@ -252,9 +252,10 @@ brick2 = get_brick()
 opts = current_brick.options(brick2)
 opt = 0
 
-def clear(event=None):
-    global current_brick, all_bricks, cgraph
-    current = None
+def clear(event=None, **keywords):
+    all_bricks = keywords["all_bricks"]
+    current_brick = keywords["current_brick"]
+    cgraph = keywords["cgraph"]
     current_brick = None
     all_bricks=[]
     cgraph = FakeIGraph()
@@ -265,7 +266,7 @@ def save(event=None):
     cgraph.graph.write('cgraph.dot', format='graphviz')
 
 add_key('a', add_lego)
-add_key('c', clear)
+add_key('c', clear, all_bricks=all_bricks, current_brick=current_brick, cgraph=cgraph)
 add_key('m', make_lego)
 add_key('i', show_interfaces)
 add_key(' ', show_next_mate)
