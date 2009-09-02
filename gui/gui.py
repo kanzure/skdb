@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+import functools
 from OCC.gp import *
 from OCC.TopoDS import *
 from OCC.BRepBuilderAPI import *
@@ -119,11 +120,10 @@ def add_key(key,method_to_call,**keywords):
     '''binds a key to a particular method
     ex: add_key("G",some_method)
     '''
-    import functools
     upper_case = key.upper()
     orded = ord(upper_case) #see wxDisplay.py line 171
     OCC.Display.wxSamplesGui.frame.canva._key_map[orded] = functools.partial(method_to_call, keywords)
-    print "added a key with name = ", orded, " mapped to method = ", method_to_call
+    print "key '", orded, "' mapped to ", method_to_call
     return
 
 def init_display():
