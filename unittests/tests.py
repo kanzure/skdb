@@ -16,6 +16,8 @@ class TestUnits(unittest.TestCase):
         self.assertTrue(skdb.Unit(-1).compatible(skdb.Unit(1)))
     def test_conversion(self):
         self.assertEqual(skdb.Unit('25.4mm').to('in').string, '1.0*in')
+        self.assertRaises(skdb.UnitError, skdb.Unit('60 degrees').to, 'rad')
+        self.assertRaises(skdb.UnitError, skdb.Unit('60 degrees').to, 'fart')
     def test_inf(self):
         #self.assertEqual(str(skdb.Unit('1/0').simplify()), 'inf') #hmmmm
         pass
