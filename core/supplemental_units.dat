@@ -13,6 +13,8 @@ piece ! #basic unit of functionality or material
 quantity 1 piece
 qty 1 piece
 
+TPI turn/in #for nice sounding thread specs, not sure it really matters tho
+thread turn #for all intents and purposes
 ipm inches/min
 sfm feet/min
 sfpm sfm
