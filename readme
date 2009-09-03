@@ -53,3 +53,17 @@ pymates/
 
 unittests/
     run these after hacking to make sure you didn't break anything
+
+
+====
+
+Here are some brief explanations of skdb that we have used in the past.
+
+skdb is a method for downloading hardware over the internet. Technically, it's a free and open source hardware package manager. We're making it because we don't want to reinvent the wheel every time we begin a new project. There are many common tools and parts involved in making thermocyclers, microprocessors, cnc machines, coils, pcb projects, robot armies, etc. Essentially it is like "apt-get" and "emerge" for debian and gentoo, and all the other linux software package managers. You could even say it is like "apt-get but for real stuff". In skdb, hardware is organized into packages, a standard and consistent way for programs to know where data is going to be found. For every part in a package, there are a number of interfaces that define possible ways to connect with other parts (part mating). And for every package there are listed dependencies which tell skdb what else has to be downloaded and built in order to successfully carry out a project-- all of which is dealt with automatically, unless you're a die-hard Gingery fan, which is perfectly fine. With OpenCASCADE integration, an open source CAD geometry kernel, parts can be visualized and with skdb combined in real-time to show new assemblies and constructions. The next steps are automatic instruction generation for assembling these parts and projects, with human-readable instructions as well as robot instructions (i.e., g code). In the pipeline is also a python/django-based wiki frontend to skdb with a git back-end called "djangit", which could be used as a free alternative to instructables, thingiverse, etc. These tools are imperative to do-it-yourself and free manufacturing, so please feel free to check out skdb over the web:
+
+git repository: http://adl.serveftp.org/skdb.git/
+repository contents: http://adl.serveftp.org/skdb/
+presentation: http://adl.serveftp.org/lab/presentations/updates-from-austin.pdf
+email: openmanufacturing@googlegroups.com
+IRC: #hplusroadmap on irc.freenode.net
+
