@@ -59,6 +59,9 @@ class TestUnits(unittest.TestCase):
         self.assertTrue((skdb.Unit('V') * skdb.Unit('A')).compatible('W'))
         self.assertFalse((skdb.Unit('V') * skdb.Unit('W')).compatible('W'))
         self.assertEqual(skdb.Unit('V') * skdb.Unit('A'), skdb.Unit('A') * skdb.Unit('V'))
+    def test_div(self):
+        self.assertEqual(1/skdb.Unit('16rev/in'), skdb.Unit('(1/16)*(in/rev)'))
+        self.assertEqual(1/skdb.Unit('16rev/in'), 1./skdb.Unit('16rev/in'))
     def test_cmp(self):
         self.assertTrue(skdb.Unit('1') >= skdb.Unit('1'))
         self.assertTrue(skdb.Unit('1') <= skdb.Unit('1'))
