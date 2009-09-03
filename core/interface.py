@@ -2,9 +2,11 @@
 from yamlcrap import FennObject
 from package import package_file
 import math
-import igraph
 
-class FakeIGraph:
+try: 
+  import igraph; use_igraph=True
+  #TODO this should go in its own file i guess
+  class FakeIGraph:
     '''provides more pythonic interface to igraph'''
     def __init__(self):
         self.graph = igraph.Graph(0)
@@ -70,6 +72,14 @@ class FakeIGraph:
             if interface is not None:
                 rval.update({i.index : interface})
         return rval
+except ImportError: 
+    use_igraph=False
+    class FakeIGraph:
+        '''igraph is not installed'''
+        def add_connection(self, conn): pass
+        def add_part(self, part): pass
+        def del_part(self, part): pass
+        def dict(self): return {}
 
 class Interface(FennObject):
     '''"units" should be what is being transmitted through the interface, not about the structure.
