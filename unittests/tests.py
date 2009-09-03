@@ -16,6 +16,8 @@ class TestUnits(unittest.TestCase):
         self.assertTrue(skdb.Unit(-1).compatible(skdb.Unit(1)))
     def test_conversion(self):
         self.assertEqual(skdb.Unit('25.4mm').to('in').string, '1.0*in')
+        self.assertRaises(skdb.UnitError, skdb.Unit('60 degrees').to, 'rad')
+        self.assertRaises(skdb.UnitError, skdb.Unit('60 degrees').to, 'fart')
     def test_inf(self):
         #self.assertEqual(str(skdb.Unit('1/0').simplify()), 'inf') #hmmmm
         pass
@@ -57,6 +59,9 @@ class TestUnits(unittest.TestCase):
         self.assertTrue((skdb.Unit('V') * skdb.Unit('A')).compatible('W'))
         self.assertFalse((skdb.Unit('V') * skdb.Unit('W')).compatible('W'))
         self.assertEqual(skdb.Unit('V') * skdb.Unit('A'), skdb.Unit('A') * skdb.Unit('V'))
+    def test_div(self):
+        self.assertEqual(1/skdb.Unit('16rev/in'), skdb.Unit('(1/16)*(in/rev)'))
+        self.assertEqual(1/skdb.Unit('16rev/in'), 1./skdb.Unit('16rev/in'))
     def test_cmp(self):
         self.assertTrue(skdb.Unit('1') >= skdb.Unit('1'))
         self.assertTrue(skdb.Unit('1') <= skdb.Unit('1'))
@@ -95,7 +100,7 @@ class TestScrew(unittest.TestCase):
     import skdb.packages.screw.screw as screw
     import skdb.packages.threads.threads as threads
     def test_conversions(self):
-            screw1 = skdb.load(open('../packages/screw/data.yaml'))['screw'] #yaml.load(open('screw.yaml'))['screw']
+            screw1 = skdb.load(skdb.package_file('screw', 'data.yaml'))['parts'][0]
             #print yaml.dump(screw)
             self.assertEqual(screw1.thread.clamping_force('20N*m/rev'), '354.02982*lbf')
             self.assertEqual(screw1.thread.clamping_force('100ft*lbf/rev'), '2400.0*lbf')
