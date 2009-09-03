@@ -97,7 +97,7 @@ class TestScrew(unittest.TestCase):
     import skdb.packages.screw.screw as screw
     import skdb.packages.threads.threads as threads
     def test_conversions(self):
-            screw1 = skdb.load(open('../packages/screw/data.yaml'))['screw'] #yaml.load(open('screw.yaml'))['screw']
+            screw1 = skdb.load(skdb.package_file('screw', 'data.yaml'))['parts'][0]
             #print yaml.dump(screw)
             self.assertEqual(screw1.thread.clamping_force('20N*m/rev'), '354.02982*lbf')
             self.assertEqual(screw1.thread.clamping_force('100ft*lbf/rev'), '2400.0*lbf')
