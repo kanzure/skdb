@@ -20,6 +20,10 @@ skdb core:
             wrap some graph class instead of using directly for easy swapping:
         part mating:
             collision detection:
+                explore python collision detection libraries:
+                explore OpenCASCADE collision detection methods:
+                interference fit:
+                play:
                 unit test:
                 improve occ mass calculation:
         cam algorithm selection: some parts are more 2.5d than others...
@@ -159,7 +163,6 @@ description: pymates-todo (old)
     * use tags/names for geometories in pymates/models/blockhole.yaml
     * unit tests for part mating
         * turn skdb/doc/proposals/assemblies.txt into unit tests
-    * more example parts: legos?
         * attempt to extract data from LeoCAD and ldraw
             # ok. had some fun.
         * attempt to extract data from Regli's National Design Repository (lego VRML files)
@@ -230,15 +233,6 @@ description: pymates-todo (old)
             * write a wrapper for pypov: export to IGES/STEP instead of povray.
                 * ex: when pypov.Circle() is called, call the OpenCASCADE BRepPrimAPI_MakeCircle method
             * convert lgeo's pov library of lego components (~700 parts)
-    * improve pymates.compatibility():
-        * algorithms to implement:
-            * volume overlap algorithm
-            * collision detection
-            * interference fit
-            * play
-            * slop
-        * explore python collision detection libraries
-        * explore OpenCASCADE collision detection methods
     * [eventually] combine skdb/pymates/models/blockhole.yaml with skdb/packages/screw/metadata.yaml
     * [eventually] add list of compliant/rigid faces to the YAML metadata for a part
     * generate instructions to make a lego assembly
