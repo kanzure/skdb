@@ -11,7 +11,6 @@ skdb core:
         think about how to utilize statistical data: in search/optimization algorithms
     geom:
         wrap TopoDS_Shape in Shape class:
-            fix __eq__ error in yaml dump:
             make assembly graph yaml dump work:
         get rid of STEP loading spam:
             and other OCC spam:
@@ -22,7 +21,10 @@ skdb core:
         part mating:
             collision detection:
                 unit test:
+                improve occ mass calculation:
         cam algorithm selection: some parts are more 2.5d than others...
+    generating instructions:
+        figure out something better than the techniques.py proposal:
 inventory:
     container tags: ['!ziploc', '!fishtub', etc]
     location schema: any ideas? no dGPS or RFID please. '!shelf'?
@@ -31,6 +33,7 @@ package code:
     technology readiness level:
     metadata resolution description: [stub, incomplete, usable, finished, obsessive]
 clients: #desktop, unless you really like writing javascript?
+    pyjamas: ?
     skdb-get:
         description: "it's like apt-get/dpkg except for hardware and real stuff"
         see: skdb/clients/tb-get/
@@ -100,6 +103,10 @@ stuff to package:
         cad generator:
             how to deal with generated data:
             not blow up without OCC:
+        internal graph model of a spring:
+            two bearings:
+            spring:
+            equation:
     thread:
         common metric sizes:
         common SAE sizes:
@@ -144,3 +151,97 @@ stuff to package:
     arduino:
     technical devices: i guess? at least its a source of ideas for components
     mcmaster catalog: same deal
+
+---
+description: pymates-todo (old)
+
+2009-07-27:
+    * use tags/names for geometories in pymates/models/blockhole.yaml
+    * unit tests for part mating
+        * turn skdb/doc/proposals/assemblies.txt into unit tests
+    * more example parts: legos?
+        * attempt to extract data from LeoCAD and ldraw
+            # ok. had some fun.
+        * attempt to extract data from Regli's National Design Repository (lego VRML files)
+        * come up with a lego brick generator?
+        * integrate skdb/doc/proposals/legos.py with pymates/pymates.py
+    * shaft in a lego brick:
+        * slop (a distance)
+           * the minimum distance between those two surfaces
+           * whereas intersection is the maximum distance between those two interfaces
+        * play
+        * sine distance function
+            * circular peg in a square hole
+            * zero: perfect fit
+            * positive: a little bit of slop
+            * negative: interference fit
+            * distances between two surfaces in OpenCASCADE
+                * in which case you need faces
+         * Constructive Solid Geometry
+            * any volume leftover?
+         * put the block into a bigger block and get the "mold"
+            * amount of space remaining
+            * do the subtraction again and get the space remaining - to get the slop
+         * distances between faces v. solid geometry approach
+    * read STEP ISO 10303
+        * figure out how to add a feature to the file (instead of using pymates/models/blockhole.yaml)
+            # well that was a dead end. Solidworks, AutoCAD, and even PRO/E can't seem to do annotations with STEP ISO 10303 AP214.
+
+2009-07-30:
+    * unit tests for part mating
+        * turn skdb/doc/proposals/assemblies.txt into unit tests
+            * python-graph dependency?
+        * skdb/doc/proposals/legos.py unit tests
+        * skdb/pymates/test_part.py tests
+    # code: visualization of arrows/vectors for "interface points"/"control points" (yay feedback)
+        # make_arrow() in skdb/paths.py
+        # show_all_arrows() in skdb/pymates/pymates.py
+    * code: write pymates.compatibility()
+        * incorporate type-checking first (see skdb/doc/proposals/legos.py for a start)
+        * then move on to rotations and checking for alignment of "interface points"/"control points"
+        * then move on to the algorithms
+    * code: graph traversal of pymates.Assembly
+        * traversal
+        * searching for parts/mates
+    * merges:
+        * merge skdb/doc/proposals/assemblies.txt + skdb/pymates/
+        # merge skdb/doc/proposals/legos.py + skdb/pymates/pymates.py
+    # make a 'legos' package in skdb/packages/ for Lego, Hole, and Peg interfaces (right?)
+    * play with legos:
+        # see the lego IGES/STEP files
+            * not enough of them: model more lego bricks in HeeksCAD (save as IGES and STEP)
+        * are the VRML parts of any use?
+            * if so, see ldr2vrml
+                * generate LDR files for all parts from LDraw
+                * run ldr2vrml on all of these LDR files
+        * pyldraw: interactive visualization of legos in python interpreter session + OpenCASCADE
+            * alternatively: OpenGL rendering of the STL files (ldr2stl.py) (see pyopengl)
+            # vpython loading of STL files (slow)
+            * fix slow loading of STL files in OpenCASCADE
+                * skdb/doc/proposals/occ_stl.py (slow)
+                * skdb/import_tools/occ_pyldraw.py (also slow)
+            * are the STEP/IGES files named the same as the parts are in the LDraw part library?
+        * pov2rib: figure out antlr, play with dot g files
+            * generate povray parser
+                * figure out antlr
+                * figure out pyparsing
+                * convert from BNF->g grammar?
+            * make something like pypov (the python-povray library that lets you use classes to generate povray objects)
+            * write a wrapper for pypov: export to IGES/STEP instead of povray.
+                * ex: when pypov.Circle() is called, call the OpenCASCADE BRepPrimAPI_MakeCircle method
+            * convert lgeo's pov library of lego components (~700 parts)
+    * improve pymates.compatibility():
+        * algorithms to implement:
+            * volume overlap algorithm
+            * collision detection
+            * interference fit
+            * play
+            * slop
+        * explore python collision detection libraries
+        * explore OpenCASCADE collision detection methods
+    * [eventually] combine skdb/pymates/models/blockhole.yaml with skdb/packages/screw/metadata.yaml
+    * [eventually] add list of compliant/rigid faces to the YAML metadata for a part
+    * generate instructions to make a lego assembly
+        * generate images (frame by frame)
+            # wrote "stepper", a STEP file viewer. it sucks, unless there's some way to make screenshots other than the way InteractiveViewer.py does it
+    * "make spacebase"
