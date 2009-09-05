@@ -156,21 +156,6 @@ class Unit(FennObject):
         '''return the unit portion of the unit string'''
         return 'not yet implemented, sorry!'
 
-class Uncertainty(Unit):
-    '''predicted range of error in the measurement'''
-    yaml_tag = "!uncertainty" #ehh.. going to do something with this eventually
-    sci =Unit.sci
-    yaml_pattern = '^\+-' + sci + '\s*(\D?.*)$' #+-, number, units
-    def __init__(self, string=None):
-        match = re.match('^\+-(.*)', string)
-        if match: unit = match.group(1)
-        else: raise SyntaxError, "'"+ string +"'" + ": uncertainty must begin with +-, for now at least" #got any better ideas?
-        Unit.__init__(self, unit)
-    def __repr__(self):
-        return 'Uncertainty('+ Unit.__repr__(self) +')'
-    def yaml_repr(self):
-        return "+-%s" % (self.string)
-
 class Range(FennObject):
     yaml_tag = "!range"
     sci =Unit.sci
@@ -205,3 +190,21 @@ class Range(FennObject):
             a = eval(a)
             b = eval(b)
         return cls(min(a,b), max(a,b))
+
+class Uncertainty(Range):
+    '''predicted or observed range of error in the measurement'''
+    yaml_tag = "!uncertainty" #ehh.. going to do something with this eventually
+    sci =Unit.sci
+    yaml_pattern = '^\+-' + sci + '\s*(\D?.*)$' #+-, number, units
+    #TODO from_yaml method using existing __init__
+    #TODO args should be (min, max), assert isinstance Unit
+    def __init__(self, string=None):
+        match = re.match('^\+-(.*)', string)
+        if match: unit = match.group(1)
+        else: raise SyntaxError, "'"+ string +"'" + ": uncertainty must begin with +-, for now at least" #got any better ideas?
+        Unit.__init__(self, unit)
+    def __repr__(self):
+        return 'Uncertainty('+ Unit.__repr__(self) +')'
+    def yaml_repr(self):
+        return "+-%s" % (self.string)
+
