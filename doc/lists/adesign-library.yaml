@@ -1,39 +1,49 @@
 adesign library components:
-- bearing-rotational
-- bearing-translational
-- belt
-- cable
-- capacitor
-- chain
-- coupler
-- cylinder
-- damper-rotational
-- damper-translational
-- dial
-- footpad
-- gear
-- generator
-- inductor
-- lever-1st-class
-- lever-2nd-class
-- lever-3rd-class
-- motor
-- pipe
-- piston
-- potentiometer
-- pulley
-- rack
-- relay
-- resistor
-- shaft
-- solenoid
-- spring
-- sprocket
-- stop
-- switch
-- tank
-- torsion-spring
-- transistor
-- valve-elect-control
-- valve-rotat-control
-- worm-gear 
+- bearing rotational:
+- bearing translational:
+- belt:
+- cable:
+- capacitor:
+- chain:
+- coupler:
+- cylinder:
+- damper rotational:
+- damper translational:
+- dial:
+- footpad:
+- gear:
+- generator:
+- inductor:
+- lever 1st class:
+- lever 2nd class:
+- lever 3rd class:
+- motor:
+- pipe:
+- piston:
+- potentiometer:
+- pulley:
+- rack:
+- relay:
+- resistor:
+- shaft:
+- solenoid:
+- spring:
+- sprocket:
+- stop:
+- switch:
+- tank:
+- torsion spring:
+- transistor:
+- valve elect control:
+- valve rotat control:
+- worm gear:
+
+nordex: !catalog
+    name: Nordex
+    year: 1983
+    page: 247
+allied electronics: !catalog
+    name: Allied Electronics Online
+    page: 445
+
+

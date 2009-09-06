@@ -39,6 +39,12 @@ skdb core:
                 improve occ mass calculation:
         cam algorithm selection: some parts are more 2.5d than others...
     generating instructions:
+        assembly planner: #aka assembly sequence planner, assembly operation planner, etc.
+            motion path planner:
+                collision detection: #for collision-free insertion
+                    investigate third party libraries for collision detection:
+                    search literature for other methods:'
+            write an open source assembly planner:
         figure out something better than the techniques.py proposal:
         lego assembly instructions demo:
             "make space base":
