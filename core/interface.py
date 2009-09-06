@@ -3,6 +3,10 @@ from yamlcrap import FennObject
 from package import package_file
 import math
 
+#Interface.volume should be some positive float if it is the male
+#or some negative number if it is the female.
+#thus summing the volume of two interfaces in a Connection should give 0 for a perfect fit
+
 try: 
   import igraph; use_igraph=True
   #TODO this should go in its own file i guess
