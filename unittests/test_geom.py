@@ -2,6 +2,11 @@ import unittest, math
 from skdb.geom import *
 from skdb import load_package
 
+#for test_shape_volume
+from OCC.BRepAlgoAPI import *
+from OCC.BRepPrimAPI import *
+from OCC.gp import *
+
 def point_trsf(point1, transformation):
     '''point_trsf(point1, transformation) -> [x,y,z]'''
     point1 = Point(point1)
@@ -117,6 +122,20 @@ class TestGeom(unittest.TestCase):
         #not sure what to do with that. brick2 has already been transformed, brick2.transformation = some new transformation. 
         self.assertNotEqual(brick1.transformation, brick2.transformation)
         self.assertNotEqual(brick1, brick2)
+
+    def test_shape_volume(self):
+        box1 = BRepPrimAPI_MakeBox(gp_Pnt(0,0,0), gp_Pnt(10,10,10))
+        box2 = BRepPrimAPI_MakeBox(gp_Pnt(0,0,0), gp_Pnt(10,10,10))
+        fuse = BRepAlgoAPI_Fuse(box1.Shape(), box2.Shape())
+        fused_shape = fuse.Shape()
+
+        from skdb.geom import shape_volume
+        box1_volume = shape_volume(box1.Shape())
+        box2_volume = shape_volume(box2.Shape())
+        fused_volume = shape_volume(fused_shape)
+
+        self.assertEqual(box1_volume, box2_volume)
+        self.assertEqual(box1_volume, fused_volume)
 
 if __name__ == "__main__":
     unittest.main()
