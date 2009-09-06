@@ -1,6 +1,6 @@
 #!/usr/bin/python
-from geom import *
-from OCC.Display.wxSamplesGui import start_display
+from skdb.geom import *
+from skdb.gui import *
 #test that a shape can be transformed in the same way that a make_vertex object is transformed
 #test also gp_Pnt.Transform and BRepBuilderAPI_Transform
 #do the points line up? vert2 and obj should be the same.
