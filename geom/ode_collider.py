@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#http://pyode.sourceforge.net/tutorials/tutorial3.html
 #collision detection with pyODE
 import ode, random
 from math import *
