@@ -1,5 +1,4 @@
 from __future__ import division
-#from skdb import Unit, Package
 import yaml
 from string import Template
 from skdb import Unit
@@ -104,13 +103,12 @@ _num = numbered_thread_diameter
 class UN_Thread(BoltThread):
     '''base class for constructing UN thread series. don't use.'''
     yaml_tag = '!thread_UN'
-
-
+    sources = ["machinery's handbook 27th, p.1774"]
 
     _diam_regex = '((#(?P<size>\d+))|((?P<whole>\d+)\s+)?(?P<frac>(?P<numer>\d+)/(?P<denom>\d+)))"?' #'1 5/16' or '1/4' or '#10' 
     _separator = '\s*-\s*'
     _tpi_regex = '(?P<tpi>\d+\s*(TPI|tpi)?)'
-    def parse_bolt_spec(self, spec):
+    def parse_thread_spec(self, spec):
         '''returns diameter and pitch given something like '#8x32' or '3/8" - 16'. '''
         match = re.match(_diam_regex+'('+_separator+_tpi_regex+')?')
         if not match: raise ValueError, "couldn't parse "+self.__class__.series+" series bolt spec '"+str(spec)+"'"
@@ -134,8 +132,9 @@ class UN_Thread(BoltThread):
 
 class UNC_Thread(UN_Thread):
     '''unified national coarse thread. found on most american nuts and bolts'''
-    urls = ['http://www.efunda.com/DesignStandards/screws/screwunc.cfm',
-                'http://en.wikipedia.org/wiki/Unified_Thread_Standard']
+    sources=['http://www.efunda.com/DesignStandards/screws/screwunc.cfm',
+                    'http://en.wikipedia.org/wiki/Unified_Thread_Standard',
+                    "machinery's handbook 27th, p.1735"]
     yaml_tag = '!thread_UNC'
     series = 'UNC' 
     preferred_sizes={_num(2):56, _num(4):48, _num(6):32, _num(8):32, _num(10):24,
@@ -151,8 +150,10 @@ class UNF_Thread(UN_Thread):
     '''unified national fine thread. found on some american nuts and bots'''
     yaml_tag = '!thread_UNF'
     series = 'UNF'
-    urls = ['http://www.efunda.com/DesignStandards/screws/screwunf.cfm',
-                'http://en.wikipedia.org/wiki/Unified_Thread_Standard']
+    sources=['http://www.efunda.com/DesignStandards/screws/screwunf.cfm',
+                    'http://en.wikipedia.org/wiki/Unified_Thread_Standard',
+                    "machinery's handbook 27th, p.1735"]
+
     preferred_sizes ={_num(0):80, _num(2):64, _num(4):48, _num(6):40, _num(8):36, _num(10):32,
                                 1/4:28, 5/16:24, 3/8:24, 7/16:20, 1/2:20,
                                 9/16:18, 5/8:18, 3/4:16, 7/8:14, 1:12, 
@@ -164,7 +165,8 @@ class UNEF_Thread(UN_Thread):
     '''often used on thin tubing'''
     yaml_tag = '!thread_UNEF'
     series = 'UNEF'
-    urls = ['http://www.efunda.com/DesignStandards/screws/screwunf.cfm']
+    sources = ['http://www.efunda.com/DesignStandards/screws/screwunf.cfm',
+                      "machinery's handbook 27th, p.1735"]
     preferred_sizes={1/4:32, 5/16:32, 3/8:32, 7/16:28, 1/2:28, 9/16:28,
                                 5/8:24, 3/4:20, 7/8:20, 1:20, 1+1/8:18, 1+1/4:18,
                                 1+3/8:18, 1+1/2:18, 1+5/8:18}
