@@ -137,5 +137,23 @@ class TestGeom(unittest.TestCase):
         self.assertEqual(box1_volume, box2_volume)
         self.assertEqual(box1_volume, fused_volume)
 
+        #change box size
+        box2 = BRepPrimAPI_MakeBox(gp_Pnt(5,5,5), gp_Pnt(10,10,10))
+        fuse = BRepAlgoAPI_Fuse(box1.Shape(), box2.Shape())
+        fused_shape = fuse.Shape()
+        box2_volume = shape_volume(box2.Shape())
+        fused_volume = shape_volume(fused_shape)
+        self.assertEqual(int(box1_volume/8), box2_volume) #plz use close_enough
+        #self.assertEqual(box2_volume, fused_volume) #fused_volume should be 1000
+
+        #now move the other box over a bit
+        box2 = BRepPrimAPI_MakeBox(gp_Pnt(10,10,10), gp_Pnt(20,20,20))
+        fuse = BRepAlgoAPI_Fuse(box1.Shape(), box2.Shape())
+        fused_shape = fuse.Shape()
+        box2_volume = shape_volume(box2.Shape())
+        fused_volume = shape_volume(fused_shape)
+        self.assertEqual(round(fused_volume,4)/2, round(box1_volume,4)) #plz use close_enough
+        #fused_volume = 2000
+
 if __name__ == "__main__":
     unittest.main()
