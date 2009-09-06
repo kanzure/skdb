@@ -73,7 +73,7 @@ class FennObject(yaml.YAMLObject):
             data = loader.construct_scalar(node)
             return cls(data) #assuming that the class has one positional arg
         elif type(node) == yaml.MappingNode:
-            data = loader.construct_mapping(node) #will this break path_resolver?
+            data = loader.construct_mapping(node, deep=True) #will this break path_resolver?
             rval = cls()
             #stuff data into object's attributes
             for (key, value) in data.iteritems():
@@ -84,7 +84,7 @@ class FennObject(yaml.YAMLObject):
                 rval.post_init_hook()
             return rval
         elif type(node) == yaml.SequenceNode:
-            data = loader.construct_sequence(node)
+            data = loader.construct_sequence(node, deep=True)
             return cls(data)
         else: raise ValueError, "node type must be scalar, mapping, or sequence; got: " + str(cls.yaml_type)
 
