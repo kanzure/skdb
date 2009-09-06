@@ -1,6 +1,6 @@
 import unittest, math
 from skdb.geom import *
-from skdb import load_package
+from skdb import load_package, Package
 
 #for test_shape_volume
 from OCC.BRepAlgoAPI import *
@@ -103,14 +103,9 @@ class TestGeom(unittest.TestCase):
         self.assertEqual(new_point, Point(1,-3,0))
     #now some unit tests for part mating
     def test_part_mating(self):
-        lego_pack = load_package("lego")
-        lego_pack.load_data()
+        lego_pack = Package("lego")
         brick1 = deepcopy(lego_pack.parts[0])
-        brick1.post_init_hook()
         brick2 = deepcopy(lego_pack.parts[0])
-        brick2.post_init_hook()
-        #brick1.load_CAD()
-        #brick2.load_CAD()
         #they should be the same thing so far
         #self.assertTrue(brick1 == brick2)
         options = brick1.options([brick2])
@@ -154,6 +149,17 @@ class TestGeom(unittest.TestCase):
         fused_volume = shape_volume(fused_shape)
         self.assertEqual(round(fused_volume,4)/2, round(box1_volume,4)) #plz use close_enough
         #fused_volume = 2000
+    def test_lego_volume(self):
+        pack = Package("lego")
+        round_brick_volume = shape_volume(pack.parts[0].shapes[0])
+        self.assertEqual(round(round_brick_volume), 865)
+
+        brick1 = deepcopy(pack.parts[0])
+        brick2 = deepcopy(pack.parts[0])
+        options = brick1.options(brick2)
+        option = options[0]
+        option.connect()
+        print estimate_collision_existence([brick1, brick2])
 
 if __name__ == "__main__":
     unittest.main()

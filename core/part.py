@@ -7,7 +7,8 @@ from interface import Connection
 import os
 
 try:
-    from graph.Digraph import digraph
+    from graph import Digraph
+    digraph = Digraph.digraph
 
     class Assembly(FennObject, digraph):
         yaml_tag = "!assembly"
@@ -34,7 +35,7 @@ try:
         def connections(self):
             '''returns a list of the edges in the assembly graph'''
             return self.edges()
-except ImportError: print "why are we using something that's not even in debian?"
+except ImportError: print "why are we using something that's not even in debian (python-graph)?"
 
 
 class Part(FennObject):
@@ -53,23 +54,23 @@ class Part(FennObject):
             self.files = files
         if not hasattr(self, "interfaces"):
             self.interfaces = interfaces
-            for interface in interfaces:
-                interface.part = self
-
+        for interface in self.interfaces:
+            interface.part = self
     def post_init_hook(self):
         for i in self.interfaces:
             i.part = self #so we dont have to do this over and over in the data.yaml
             i.connected = []
+        self.load_CAD()
     def makes_sense(self):
         '''checks whether or not this part makes sense
         classes that inherit from Part should have their own makes_sense method.
         returns True if the data loaded up for the part makes sense.
         returns False if the data loaded up for the part does not make sense.
         '''
-        raise NotImplementedError
-        
+        raise NotImplementedError, "this should be customized in a part class"
     def options(self, parts):
-        '''what can this part connect to?'''
+        '''what can this part connect to?
+        returns a list'''
         parts = self.setify(parts)
         if self in parts: parts.remove(self) #unless this part is really flexible
         for part in parts:
@@ -80,11 +81,11 @@ class Part(FennObject):
                         if i.compatible(j) and j.compatible(i):
                             rval.add(Connection(i, j))
         return list(rval)
-        
     def __add__(self, other): #i'm afraid this metaphor doesn't hold up under scrutiny
         return self.options(other)
-        
     def __repr__(self):
         return "%s(name=%s, interfaces=%s)" % (self.__class__.__name__, self.name, self.interfaces)
-
+    def load_CAD(self):
+        '''this doesn't do anything, please do: from skdb.geom import *'''
+        raise ImportWarning, "skdb.geom not loaded. load_CAD not available."
 

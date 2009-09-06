@@ -2,6 +2,7 @@ from OCC.gp import *
 from OCC.Precision import *
 from OCC.BRepBuilderAPI import *
 import OCC.Utils.DataExchange.STEP
+
 #for volume interference
 from OCC.BRepGProp import *
 from OCC.GProp import *
@@ -18,7 +19,6 @@ from skdb import Connection, Part, Interface, Unit, FennObject, prettyfloat
 import os, math
 from copy import copy, deepcopy
 from string import Template
-
 
 def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
@@ -273,24 +273,20 @@ Interface.get_z_vec = get_z_vec
 #skdb.Part
 def load_CAD(self):
     '''load this object's CAD file. assumes STEP.'''
-    if len(self.files) == 0: return #no files to load
-    assert hasattr(self,"package"), "Part.load_CAD doesn't have its package loaded."
-    #FIXME: assuming STEP
-    #TODO: check/verify filename path
-    #FIXME: does not properly load in models from multiple files (2009-07-30)
+    assert hasattr(self,"package"), "Part.load_CAD doesn't have its package loaded (load_package)."
+    #FIXME: assuming step
     for file in self.files:
         full_path = os.path.join(self.package.path(), str(file))
+        #TODO: silence STEPImporter
         my_step_importer = OCC.Utils.DataExchange.STEP.STEPImporter(full_path)
         my_step_importer.ReadFile()
         self.shapes = my_step_importer.GetShapes()
         for i in range(len(self.shapes)):
             self.shapes[i] = self.shapes[i]
         self.compound = my_step_importer.GetCompound()
-    #i, j, k, point = self.interfaces[0].i, self.interfaces[0].j, self.interfaces[0].k, self.interfaces[0].point
-    #x,y,point = self.interfaces[0].x,self.interfaces[0].y,self.interfaces[0].point
-    return self.shapes
-
+    return
 Part.load_CAD = load_CAD
+
 def add_shape(self, result):
     '''add a shape to self.ais_shapes. this isn't as exciting as you think it is.'''
     if type(result) == type([]): self.ais_shapes = result[0]
@@ -357,10 +353,10 @@ def make_edge(shape):
 
 def shape_volume(shape): #should probably be a method of Shape
     '''returns the volume of a TopoDS_Shape or Shape'''
-    tmp = GPRop_GProps()
+    tmp = GProp_GProps()
     BRepGProp().VolumeProperties(shape, tmp)
     volume = tmp.Mass()
-    return shape
+    return volume
 
 def assembly_volume_estimate(parts):
     '''returns the volume of an assembly given a list of parts
@@ -375,8 +371,13 @@ def assembly_volume_actual(parts):
     '''computes the actual volume of an assembly
     interference between two parts tends to decrease the volume'''
     #total_volume = assembly_volume_sum(parts)
-    shape = TopoDS_Shape() #start with nothing
+    box = BRepPrimAPI_MakeBox(Point(0,0,0), Point(1,1,1))
+    shape = box.Shape()
+    shape = TopoDS_Solid()
+    #FIXME you should actually set no initial shape, and then make an initial shape in the for loop if there isn't one already
+    #shape = TopoDS_Shape() #start with nothing
     for part in parts:
+        print "part is: ", part.name
         #is it ok to fuse non-touching objects into the same shape?
         tmp_shape = BRepAlgoAPI_Fuse(shape, part.shapes[0])
         shape = tmp_shape.Shape()

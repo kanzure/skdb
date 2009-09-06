@@ -1,47 +1,53 @@
 #(c) ben lipkowitz 11/16/08, distributed under the GPL version 2 or later
 
 import unittest
-import skdb
-name = 'screw'
+from skdb import *
+from copy import copy, deepcopy
+name = 'lego'
 
 class TestPackage(unittest.TestCase):
-    def test_package_file(self):
-        myfile = skdb.package_file(name, 'metadata.yaml')
-        self.assertTrue(isinstance(myfile, file))
-    def test_load_metadata(self):
-        md = skdb.load(skdb.package_file(name, 'metadata.yaml'))
-        self.assertTrue(isinstance(md, skdb.Package))
-        self.assertTrue(isinstance(md.template, skdb.Template))
-        self.assertTrue(isinstance(md.template.parts[0], skdb.Part))
-    def test_open_package(self):
-        '''tests skdb.open_package'''
-        lego = skdb.load_package(name)
-        self.assertTrue(isinstance(lego, skdb.Package))
-        self.assertTrue(lego.makes_sense())
-    def test_md_then_data(self):
-        package = skdb.load_package('screw')
-        package.load_data('metadata.yaml')
-         
-        package.load_data('data.yaml')
-        self.assertTrue(type(package.parts[0] == package.Screw))
+    def test_unit_test(self):
+        '''check whether or not the chosen package is good'''
+        pack = Package(name, data=False)
+        self.assertTrue(len(getattr(pack, 'source data')) > 0) #yum, data!
+        self.assertTrue(check_unix_name(name))
+    def test_bare(self):
+        '''this tests a bare Package object that doesn't exist'''
+        pack = Package("f-32")
+        self.assertTrue(isinstance(pack, Package))
+        self.assertTrue(not hasattr(pack, "source data"))
+        self.assertFalse(os.path.exists(pack.path()))
+    def test_loaders(self):
+        #first let's test with no data
+        package = Package(name, data=False)
+        self.assertTrue(isinstance(package, Package))
+        self.assertTrue(os.path.exists(package.path())) #but sometimes you just want a package object
+
+        package = Package(name, data=True)
+        self.assertTrue(isinstance(package, Package))
+        self.assertTrue(package.makes_sense())
+        #FIXME test package.template here?
+        self.assertTrue(isinstance(package.parts[0], package.Lego))
+        self.assertTrue(isinstance(package.parts[0], Part))
+        for part in package.parts: #probably unnecessary
+            self.assertTrue(part.makes_sense())
+
+        #test archaic way
+        package = load_package(name)
+        self.assertTrue(isinstance(package.parts[0], package.Lego))
+        self.assertTrue(isinstance(package.parts[0], Part))
+        self.assertTrue(package.makes_sense)
     def test_generic_package_compatibile(self):
         '''this tests whether or not two packages are even generically compatible.
         what this means is that it does not check whether or not two parts are compatible,
         but instead checks whether or not two given packages are going to have compatible parts.'''
-        lego_package = skdb.load_package(name)
-        lego_package2 = skdb.load_package(name)
-        self.assertTrue(lego_package.compatible(lego_package2))
-        self.assertTrue(lego_package2.compatible(lego_package))
-    def test_package_part(self):
-        '''this makes sure we can load up a part defined by the package.'''
-        part = skdb.load_package(name).load_data().parts[0]
-        self.assertTrue(isinstance(part, skdb.Part))
-    def test_package_load_data(self):
-        '''tests Package's ability to instantiate objects from data.yaml in the package'''
-        screw_package = skdb.load_package(name)
-        package = screw_package.load_data()
-        for part in package.parts: 
-            self.assertTrue(part.makes_sense())
+        pack1 = Package(name, data=False)
+        pack2 = deepcopy(Package)
+        
+        self.assertTrue(isinstance(pack1.template, Template))
+        self.assertTrue(hasattr(Package, "compatible"))
+        self.assertTrue(pack1.compatible(pack2))
+        self.assertTrue(pack2.compatible(pack1))
          
 if __name__ == '__main__':
     unittest.main()

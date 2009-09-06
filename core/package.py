@@ -1,7 +1,7 @@
 import settings
-from yamlcrap import FennObject, load
+from yamlcrap import FennObject, load, yaml
 import re, os, sys
-
+from copy import copy, deepcopy
 
 def check_unix_name(name):
     '''returns True if name (string) is a valid unix_name'''
@@ -11,21 +11,37 @@ def check_unix_name(name):
     if check: return True
     else: return False
 
-def package_file(package, filename, mode='r'):
+def package_file(package_name, filename, mode='r'):
     '''construct a dummy package and return a filehandler for filename.
     needed for packages to find their own files (can't be used as a method of Package)'''
-    dummy = Package(package)
-    package_path = dummy.path()
+    package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"], package_name)
     filepath = os.path.join(package_path, filename)
     try: #fail early
         assert os.access(filepath, os.F_OK)
         return open(filepath, mode)
     except AssertionError: 
-        raise IOError, 'error in package "'+package+'": could not read file "'+filename+'"'
+        raise IOError, 'error in package "'+package_name+'": could not read file "'+filename+'"'
 
 def open_package(path):
     '''just a synonym for load_package'''
     return load_package(path)
+
+def __lame_asserts__():
+    assert hasattr(settings,"paths")
+    assert settings.paths.has_key("SKDB_PACKAGE_DIR")
+
+def load_metadata(name):
+    '''returns a package loaded from the filesystem
+    input should be something like "f-16" or "human-exoskeleton-1.0"
+    this only loads the metadata and is safe if you haven't actually downloaded the entire package'''
+    if not check_unix_name(name):
+        return None
+    __lame_asserts__()
+    assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
+    #must have the required files
+    assert package_file(name, "metadata.yaml")
+    loaded_package = load(package_file(name, "metadata.yaml"))
+    return loaded_package
 
 def load_package(name):
     '''returns a package loaded from the filesystem
@@ -33,8 +49,7 @@ def load_package(name):
     see settings.paths['SKDB_PACKAGES_DIR']'''
     if not check_unix_name(name): #fail even if asserts are turned off
         return None
-    assert hasattr(settings,"paths")
-    assert settings.paths.has_key("SKDB_PACKAGE_DIR")
+    __lame_asserts__()
     package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],name)
     assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
     #must have the required files
@@ -42,7 +57,9 @@ def load_package(name):
     for file in required_files:
         assert package_file(name, file) #just check if present
     loaded_package = load(package_file(name, 'metadata.yaml'))
-    import_package_classes(loaded_package, package_path)
+    loaded_package.package_path = package_path
+    loaded_package.import_package_classes()
+    #import_package_classes(loaded_package, package_path)
     return loaded_package
 
 def import_package_classes(loaded_package, package_path):
@@ -62,25 +79,74 @@ def import_package_classes(loaded_package, package_path):
 
 class Package(FennObject): #should this be a FennObject? ideally it should spit out metadata.yaml, data.yaml, etc.
     yaml_tag='!package'
-    def __init__(self, name=None, license=None, urls=None, modules=None):
-        self.name = name
-        self.license = license
-        self.urls = urls
-    def post_init_hook(self):
-        '''yaml calls this after loading a package'''
+    def __init__(self, name=None, data=True):
+        '''name is name of the package
+        data is True or False for whether or not to load the source data'''
+        if not hasattr(self, "name") and name is None: return #not like we can do much of anything
+        if hasattr(self, "name") and name is None: self.name = name
+        if not hasattr(self, "name") and name is not None: self.name = name
+        #check if the package already exists
+        filepath = self.path()
+        pkg_exists = os.access(filepath, os.F_OK)
+        if pkg_exists:
+            #load it from a file
+            pkg = deepcopy(Package.__load_package__(name, data=data))
+            #put the values in the local dictionary
+            for key in pkg.__dict__.keys():
+                value = pkg.__dict__[key]
+                self.__dict__[key] = deepcopy(value)
+            self.post_init_hook(data=data) #this isn't yaml so we have to call the hook on our own
+    def post_init_hook(self, data=True):
+        '''FennObject.from_yaml calls this 'after' loading a package'''
         check_unix_name(self.name)
-    def path(self):
+        if data and hasattr(self, "source data"):
+            self.load_data()
+    @staticmethod
+    def __load_package__(package_name, data=True):
+        '''loads a package. call the constructor instead.'''
+        __lame_asserts__()
+        package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],package_name)
+        assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
+        #must have the required files
+        required_files = ["metadata.yaml"]
+        if data: required_files.append("data.yaml")
+        for file in required_files:
+            assert os.access(os.path.join(settings.package_path(package_name), file), os.F_OK) #check if present
+        loaded_package = load(open(os.path.join(settings.package_path(package_name), "metadata.yaml"),"r"))
+        loaded_package.package_path = package_path
+        loaded_package.import_package_classes()
+        if data: loaded_package.load_data()
+        return loaded_package
+    def import_package_classes(self):
+        '''assigns classes to the Package's namespace; for example:
+        package = Package("lego")
+        mybrick = package.Lego()'''
+        package_path = self.path()
+        for module_name in self.classes.keys():
+            try: 
+                module = __import__(module_name)
+            except ImportError:
+                sys.path.append(package_path)
+                module = __import__(module_name)
+            for class_name in self.classes[module_name]:
+                cls = getattr(module, class_name)
+                setattr(self, class_name, cls )
+                setattr(cls, "package", self)
+    def path(self,package_name=None):
         '''returns the absolute path on the file system to the package folder'''
+        if not hasattr(self, "name"): self.name = package_name
+        elif self.name is None and package_name is not None: self.name = package_name
         check_unix_name(self.name)
         return settings.package_path(self.name)
+    #def load_metdata(self, file=None):
+    #'''loads metadata based off of the package name from the skdb package directory on localhost'''
     def load_data(self, file=None):
         '''loads all the files listed in "source data:" from metadata.yaml'''
         if not file:
             catalog = getattr(self, 'source data')
         else: catalog = [file]
         for x in catalog:
-            self.overlay(load(package_file(self.name, x))) #merge data from entire catalog into package
-            return self
+            self.overlay(load(open(os.path.join(self.path(), x)))) #merge data from entire catalog into package
     def dump(self):
         '''returns this object in yaml'''
         return yaml.dump(self)
@@ -98,10 +164,10 @@ class Package(FennObject): #should this be a FennObject? ideally it should spit 
         assert self.name is not None, "package name"
         assert self.functionality is not None, "functionality"
         assert self.created is not None, "created"
-        assert self.updated is not None, "updated"
         assert self.version is not None, "version"
         assert self.description is not None, "description"
         assert self.classes is not None, "classes"
-        assert self.source_data is not None, "source data"
+        assert getattr(self, 'source data') is not None, "source data"
         assert self.dependencies is not None, "dependencies" #unless you really know what you're doing?
         return True
+

@@ -16,6 +16,7 @@ class Lego(Part):
     def __init__(self, name=None, num_pegs=0, num_holes=0):
         self.name = name
         self.interfaces = []
+        self.files = []
         for each in range(num_holes):
             new_hole = grammar['anti stud']
             import yaml
