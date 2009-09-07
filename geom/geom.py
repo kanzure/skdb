@@ -370,17 +370,18 @@ def assembly_volume_estimate(parts):
 def assembly_volume_actual(parts):
     '''computes the actual volume of an assembly
     interference between two parts tends to decrease the volume'''
-    #total_volume = assembly_volume_sum(parts)
-    box = BRepPrimAPI_MakeBox(Point(0,0,0), Point(1,1,1))
-    shape = box.Shape()
-    shape = TopoDS_Solid()
+    #total_volume = assembly_volume_estimate(parts)
+    #box = BRepPrimAPI_MakeBox(Point(0,0,0), Point(1,1,1))
+    shape = None
     #FIXME you should actually set no initial shape, and then make an initial shape in the for loop if there isn't one already
     #shape = TopoDS_Shape() #start with nothing
     for part in parts:
-        print "part is: ", part.name
-        #is it ok to fuse non-touching objects into the same shape?
-        tmp_shape = BRepAlgoAPI_Fuse(shape, part.shapes[0])
-        shape = tmp_shape.Shape()
+        if shape is None:
+            shape = part.shapes[0]
+        else:
+            #is it ok to fuse non-touching objects into the same shape?
+            tmp_shape = BRepAlgoAPI_Fuse(shape, part.shapes[0])
+            shape = tmp_shape.Shape()
     return shape_volume(shape)
 
 def estimate_interference_volume(parts):
@@ -408,16 +409,22 @@ def estimate_interference_volume(parts):
     return total_expected_missing_volume
 
 #this is the one you want to use after adding a part to an assembly
-def estimate_collision_existence(parts, threshold=0.0):
+def estimate_collision_existence(parts, threshold=-1):
     '''determines whether or not there is an illegal collision in the assembly.
     threshold determines how much leeway you're willing to give the assembly. 0 means nothing should be out of place.
     uses estimate_interference_volume, assembly_volume_actual, assembly_volume_estimate'''
-    estimated = assembly_volume_estimate(parts)
-    actual = assembly_volume_actual(parts)
+    assembly_volume = assembly_volume_estimate(parts)
     estimated_interference = estimate_interference_volume(parts)
-    difference = estimated - estimated_interference
-    computed_diff = actual - difference
-    if computed_diff >= threshold:
+    better_estimate = assembly_volume - estimated_interference
+    actual_volume = assembly_volume_actual(parts)
+    difference = actual_volume - better_estimate
+    if diff_diff >= threshold: return True
+    else: return False
+    print "estimated volume = ", estimated
+    print "estimated_interference = ", estimated_interference
+    print "difference = ", difference
+    print "threshold = ", threshold
+    if difference >= threshold:
         return True
     else:
         return False
