@@ -21,6 +21,7 @@ from OCC.Display.wxSamplesGui import display
 import math #OCC.math gets in the way? wtf
 
 import skdb
+from skdb.core import *
 from skdb.core.interface import FakeIGraph
 from geom import *
 from gui import *
@@ -167,20 +168,14 @@ from copy import copy, deepcopy
 from random import randint
 
 #move most of this into the lego package
-lego = skdb.load_package('lego'); lego.load_data()
+lego = Package("lego")
 current_brick = None
 all_bricks = []
 cgraph = FakeIGraph()
 
-for brick in lego.parts:
-    brick.load_CAD()
-
 def get_brick():
     '''returns a basic lego brick part from the catalog (no side effects)'''
     brick = deepcopy(lego.parts[random.randint(0,len(lego.parts)-1)])
-    #brick = deepcopy(lego.parts[random.randint(2,2)])
-   # brick = deepcopy(lego.parts[0])
-    brick.post_init_hook()
     return brick
 
 #not sure where to move this
@@ -206,6 +201,97 @@ def make_lego(event=None, brick=None):
     display.DisplayColoredShape(shapes[0], 'RED')
     all_bricks.append(current_brick)
     cgraph.add_part(current_brick)
+
+def pick_interface(brick):
+    if brick.interfaces_saturated():
+        raise ValueError, "no more interfaces to choose from"
+        return False
+    result = brick.interfaces[random.randint(0, len(brick.interfaces)-1)]
+    if result.connected:
+        return pick_interface(brick)
+    return result
+
+def valid_options(options):
+    '''uses bounding boxes interference detection to figure out which among a list of options are not going to totally suck'''
+    global all_bricks, current_brick
+    results = []
+    shape1 = deepcopy(options[0].interface1.part.shapes[0])
+    box1 = BoundingBox(shape=shape1)
+    for connection in options:
+        if connection.interface1.connected or connection.interface2.connected: next
+        bad = False
+        trsf = mate_connection(connection)
+        #shape1 = deepcopy(connection.interface1.part.shapes[0])
+        #box1 = BoundingBox(shape1)
+        shape2 = deepcopy(connection.interface2.part.shapes[0])
+        shape2 = BRepBuilderAPI_Transform(shape2, trsf, True).Shape()
+        box2 = BoundingBox(shape=shape2)
+        #we're going to assume it can connect to the target brick .. sorry.
+        for brick in all_bricks:
+            if brick is not connection.interface1.part and brick is not current_brick: #but! it can still connect and interfere simultaneously
+                #recalculate bounding box because the shape may have updated since load_CAD
+                tmp_box = BoundingBox(shape=brick.shapes[0])
+                if box2.interferes(tmp_box) is True:
+                    bad=True
+                    print "ok it was bad."
+                    break
+            #else 
+        if not bad:
+            results.append(connection)
+    return results
+
+def add_valid_lego(event=None, brick=None, n=0):
+    global current_brick, all_bricks
+    if n>20:
+        assert OverflowError, "too many iterations"
+        return
+    working_brick=current_brick
+    working_brick = all_bricks[random.randint(0, len(all_bricks)-1)]
+    options = None
+    
+    #get a second brick
+    if brick is not None:
+        brick2 = brick
+        user_brick = True
+    else: brick2 = get_brick()
+    
+    j=0
+    #get some options for an interface
+    while True:
+        random_interface = False
+        p=0
+        while random_interface == False:
+            random_interface = pick_interface(working_brick)
+            if random_interface == False: #no more interfaces available (shouldn't happen)
+                random_interface = pick_interface(working_brick)
+            p=p+1
+        options = random_interface.options(brick2)
+        if options: break
+        elif j>20: raise OverflowError, "can't figure it out"
+        else: brick2 = get_brick() #try again
+        j=j+1
+    #make sure the options don't suck too much
+    valid_opts = valid_options(options)
+    if len(valid_opts) == 0:
+        #raise ValueError, "collision detected for all possibilities. trying again.."
+        print "colllision detected for all possibilities. trying again.."
+        add_valid_lego(event=event, brick=get_brick(), n=n+1)
+        return
+
+    #now pick one
+    connection = valid_opts[random.randint(0, len(valid_opts)-1)]
+    trsf = mate_connection(connection)
+    brick2.transformation = trsf
+    brick2.shapes[0] = BRepBuilderAPI_Transform(brick2.shapes[0], trsf, True).Shape()
+
+    #set the globals
+    all_bricks.append(brick2)
+    current_brick = brick2
+
+    #visual stuff
+    connection.interface1.show()
+    connection.interface2.show()
+    display.DisplayShape(brick2.shapes[0])
 
 def add_lego(event=None, brick=None):
     global current_brick, all_bricks, cgraph
@@ -266,6 +352,7 @@ def save(event=None):
     cgraph.graph.write('cgraph.dot', format='graphviz')
 
 add_key('a', add_lego)
+add_key('b', add_valid_lego)
 add_key('c', clear, all_bricks=all_bricks, current_brick=current_brick, cgraph=cgraph)
 add_key('m', make_lego)
 add_key('i', show_interfaces)
@@ -276,6 +363,7 @@ if __name__ == '__main__':
         from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display
         add_menu('demo')
         for f in [
+                    add_valid_lego,
                     draw_all_tangents,
                     draw_random_line,
                     draw_random_arc,

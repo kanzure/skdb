@@ -68,6 +68,12 @@ class Part(FennObject):
         returns False if the data loaded up for the part does not make sense.
         '''
         raise NotImplementedError, "this should be customized in a part class"
+    def interfaces_saturated(self):
+        '''returns False if there is an available unconnected interface'''
+        for interface in self.interfaces:
+            if interface.connected == [] or interface.connected is None:
+                return False
+        return True
     def options(self, parts):
         '''what can this part connect to?
         returns a list'''

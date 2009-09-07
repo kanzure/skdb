@@ -292,6 +292,8 @@ def load_CAD(self):
         for i in range(len(self.shapes)):
             self.shapes[i] = self.shapes[i]
         self.compound = my_step_importer.GetCompound()
+        #set the bounding box
+        self._bounding_box = BoundingBox(self.shapes[0])
     return
 Part.load_CAD = load_CAD
 
@@ -603,7 +605,8 @@ class BoundingBox:
         #for example, if one object's left or right bound lies between the other object's left and right bounds,
         #then the two objects have overlapping X ranges.
         #if two objects overlap along all three axes, they have collided.
-
+    def __deepcopy__(self, memo):
+        return self.__class__(x=[self.x_min, self.x_max], y=[self.y_min, self.y_max], z=[self.z_min, self.z_max])
     def __repr__(self):
         return "BoundingBox(x=[%s, %s], y=[%s, %s], z=[%s, %s])" % (self.x_min, self.x_max, self.y_min, self.y_max, self.z_min, self.z_max)
 
