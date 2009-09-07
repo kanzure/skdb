@@ -164,6 +164,13 @@ def make_vertex(pnt):
     vertex.Build()
     return vertex.Vertex()
 
+def find_part(shape, all_bricks):
+    for brick in all_bricks:
+        if brick.shapes[0] == shape:
+            return brick
+    print "selected shape not found"
+    return False
+
 def exit(event=None):
     sys.exit()
 

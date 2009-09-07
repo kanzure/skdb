@@ -28,14 +28,6 @@ from gui import *
 
 current = gp_Pnt2d(0,0)
 
-#this should go in gui/gui.py when we stop using globals
-def find_part(shape):
-    for brick in all_bricks:
-        if brick.shapes[0] == shape:
-            return brick
-    print "selected shape not found"
-    return False
-
 def random_line(scale=10):
     global current
     p1 = current  #should be a gp_Pnt2d
@@ -254,9 +246,10 @@ def add_valid_lego(event=None, brick=None, n=0):
     if n>20:
         assert OverflowError, "too many iterations"
         return
+    #different configurations for this function:
     #working_brick=current_brick
     #working_brick = all_bricks[random.randint(0, len(all_bricks)-1)]
-    working_brick = find_part(display.selected_shape)
+    working_brick = find_part(display.selected_shape, all_bricks)
     if not working_brick:
         return
     options = None
