@@ -28,6 +28,14 @@ from gui import *
 
 current = gp_Pnt2d(0,0)
 
+#this should go in gui/gui.py when we stop using globals
+def find_part(shape):
+    for brick in all_bricks:
+        if brick.shapes[0] == shape:
+            return brick
+    print "selected shape not found"
+    return False
+
 def random_line(scale=10):
     global current
     p1 = current  #should be a gp_Pnt2d
@@ -211,9 +219,10 @@ def pick_interface(brick):
         return pick_interface(brick)
     return result
 
-def valid_options(options):
+def valid_options(options, working_brick=None):
     '''uses bounding boxes interference detection to figure out which among a list of options are not going to totally suck'''
     global all_bricks, current_brick
+    if working_brick == None: working_brick=current_brick
     results = []
     shape1 = deepcopy(options[0].interface1.part.shapes[0])
     box1 = BoundingBox(shape=shape1)
@@ -228,7 +237,7 @@ def valid_options(options):
         box2 = BoundingBox(shape=shape2)
         #we're going to assume it can connect to the target brick .. sorry.
         for brick in all_bricks:
-            if brick is not connection.interface1.part and brick is not current_brick: #but! it can still connect and interfere simultaneously
+            if brick is not connection.interface1.part and brick is not working_brick: #but! it can still connect and interfere simultaneously
                 #recalculate bounding box because the shape may have updated since load_CAD
                 tmp_box = BoundingBox(shape=brick.shapes[0])
                 if box2.interferes(tmp_box) is True:
@@ -245,8 +254,11 @@ def add_valid_lego(event=None, brick=None, n=0):
     if n>20:
         assert OverflowError, "too many iterations"
         return
-    working_brick=current_brick
-    working_brick = all_bricks[random.randint(0, len(all_bricks)-1)]
+    #working_brick=current_brick
+    #working_brick = all_bricks[random.randint(0, len(all_bricks)-1)]
+    working_brick = find_part(display.selected_shape)
+    if not working_brick:
+        return
     options = None
     
     #get a second brick
@@ -271,7 +283,7 @@ def add_valid_lego(event=None, brick=None, n=0):
         else: brick2 = get_brick() #try again
         j=j+1
     #make sure the options don't suck too much
-    valid_opts = valid_options(options)
+    valid_opts = valid_options(options, working_brick=working_brick)
     if len(valid_opts) == 0:
         #raise ValueError, "collision detected for all possibilities. trying again.."
         print "colllision detected for all possibilities. trying again.."
