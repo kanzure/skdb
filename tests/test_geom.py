@@ -160,6 +160,40 @@ class TestGeom(unittest.TestCase):
         option = options[0]
         option.connect()
         print estimate_collision_existence([brick1, brick2])
+    def test_boundingbox(self):
+        len_x, len_y, len_z = 10, 11, 12
+        box_shape = BRepPrimAPI_MakeBox(Point(0,0,0), Point(len_x, len_y, len_z)).Shape()
+        box = BoundingBox(shape=box_shape)
+        #max on x, y, z should be len_x, len_y, len_z .. especially for a box.
+        self.assertTrue([box.x_max, box.y_max, box.z_max] == [len_x, len_y, len_z])
+
+        #what about a more complicated shape?
+        pack = Package("lego")
+        brick1 = deepcopy(pack.parts[0])
+        box2 = BoundingBox(shape=brick1.shapes[0])
+        print box2
+        #for brick_thick_round.stp, you should get something like:
+        #BoundingBox(x=[-15.6, 0.0], y=[0.0, 11.3284], z=[-14.0176443928, -1.58235560717])
+        #was verified in heekscad
+        self.assertTrue(box2.x_max == 0)
+        self.assertTrue(box2.y_min == 0)
+        self.assertTrue(box2.x_min < 0)
+        self.assertTrue(box2.y_max > 11.3)
+        self.assertTrue(box2.z_min < -14)
+        self.assertTrue(box2.z_max < -1)
+    def test_boundingbox_collision(self):
+        '''this where the fun begins :-)'''
+        len_x, len_y, len_z = 10, 11, 12
+        box_shape = BRepPrimAPI_MakeBox(Point(0,0,0), Point(len_x, len_y, len_z)).Shape()
+        box = BoundingBox(shape=box_shape)
+
+        box_shape2 = BRepPrimAPI_MakeBox(Point(0,0,0), Point(len_x, len_y, len_z)).Shape()
+        box2 = BoundingBox(shape=box_shape2)
+        self.assertTrue(box.interferes(box2))
+
+        box_shape3 = BRepPrimAPI_MakeBox(Point(5,5,5), Point(len_x, len_y, len_z)).Shape()
+        box3 = BoundingBox(shape=box_shape3)
+        self.assertTrue(box.interferes(box3))
 
 if __name__ == "__main__":
     unittest.main()

@@ -103,7 +103,16 @@ class OCC_triple(FennObject):
 class Point(OCC_triple, gp_Pnt):
     yaml_tag='!point'
     occ_class = gp_Pnt
+    #other_occ_class = OCC.BRep.BRep_Tool.Pnt(TopoDS_Vertex) -> gp_Pnt
     __doc__ = OCC_triple.doc_format.safe_substitute(occ_class=occ_class, cls='Point', occ_name = occ_class.__name__)
+    @staticmethod
+    def from_vertex(v):
+        '''converts from TopoDS_Vertex to a Point
+        until fenn turns occ_class into a list or something
+        returns a Point object'''
+        assert isinstance(v, TopoDS_Vertex), "from_vertex only works with TopoDS_Vertex"
+        from OCC.BRep import BRep_Tool
+        return Point(BRep_Tool.Pnt(v))
 
 class XYZ(OCC_triple, gp_XYZ):
     occ_class = gp_XYZ
@@ -125,7 +134,6 @@ class Direction(OCC_triple, gp_Dir):
     occ_class = gp_Dir
     __doc__ = OCC_triple.doc_format.safe_substitute(occ_class=occ_class, cls='Vector', occ_name = occ_class.__name__)
 
-    
 class Transformation(gp_Trsf):
     '''wraps gp_Trsf for stackable transformations'''
     def __init__(self, parent=None, description="root node"):
@@ -495,4 +503,107 @@ class Shape(TopoDS_Shape, FennObject):
         return True
         if not isinstance(other, TopoDS_Shape): return False
         else: return True #self.IsEqual(other)
+
+from OCC.TopExp import *
+from OCC.BRep import BRep_Tool
+from OCC.BRepTools import BRepTools_WireExplorer
+from OCC.TopAbs import *
+class BoundingBox:
+    '''BoundingBox(shape=TopoDS_Shape, x=[x_min, x_max], y=[y_min, y_max], z=[z_min, z_max])
+    implements axis-aligned bounding box: http://www.gamedev.net/dict/term.asp?TermID=309
+    .. actually I'm not sure if it properly implements AABB or not.
+    use this after applying rotations and translations to your shape
+    doesn't support rectangular prisms at the moment'''
+    def __init__(self, shape=None, x=[], y=[], z=[]):
+        '''please either provide only shape or provide only minimums and maximums
+        if given both, the values are recomputed'''
+        if shape is None and [x,y,z]==[[],[],[]]:
+            raise ValueError, "BoundingBox.__init__ needs something to work off of."
+            return
+        if [x, y, z] is not [None, None, None] and x is not [] and y is not [] and z is not [] and shape is None:
+            self.x_min = x[0]; self.x_max = x[1]
+            self.y_min = y[0]; self.y_max = y[1]
+            self.z_min = z[0]; self.z_max = z[1]
+            self._determine_points()
+            return
+        
+        #FIXME: assuming the edges define the maximum boundaries of the object (bad assumption?)
+        #get the vertices defining the box
+        (x_list, y_list, z_list) = self._compute_from_edges(shape)
+
+        self.x_min = min(x_list)
+        self.x_max = max(x_list)
+        self.y_min = min(y_list)
+        self.y_max = max(y_list)
+        self.z_min = min(z_list)
+        self.z_max = max(z_list)
+
+        self._determine_points()
+    def _compute_from_edges(self, shape):
+        '''this is where the magic happens. uses BRepTools_WireExplorer on a BRepBuilderAPI_MakeWire(edge).'''
+        edges = []
+        vertices = []
+        wire = []
+        
+        explorer = TopExp_Explorer(shape, TopAbs_EDGE); 
+        while explorer.More(): 
+            edge = TopoDS().Edge(explorer.Current()) 
+            wire = BRepBuilderAPI_MakeWire(edge).Wire() 
+            wire_explorer = BRepTools_WireExplorer(wire)
+            edge_points = []
+            #shouldn't there be more than one vertex per edge?
+            while wire_explorer.More(): 
+                vertex = TopoDS().Vertex(wire_explorer.CurrentVertex()) 
+                xyz = Point(BRep_Tool().Pnt(vertex)) 
+                #xyz = Point(vertex.Location().Transformation().TranslationPart()) 
+                vertices.append(xyz) 
+                edge_points.append(xyz)
+                wire_explorer.Next() 
+            explorer.Next()
+            edges.append(edge_points)
+        #print "number of vertices: ", len(vertices)/3
+        #print "number of edges: ", len(edges)
+        #print "edges: ", edges
+        #counter=0
+        #for edge in edges:
+        #    if len(edge) == 1:
+        #        counter=counter+1
+        #print "counter: ", counter
+
+        x_list, y_list, z_list = [], [], []
+        for vertex in vertices:
+            x_list.append(vertex.X())
+            y_list.append(vertex.Y())
+            z_list.append(vertex.Z())
+        return (x_list, y_list, z_list)
+    def _determine_points(self):
+        '''when a bounding box has its points, you need to figure out how to define the box by 2 points:
+        bottom, left, near corner ... and ... top, right, far corner
+        this method returns representations of those two points
+        (not a reference or pointer to the actual vertex, however).'''
+        self.point1 = Point(self.x_min, self.y_min, self.z_min)
+        self.point2 = Point(self.x_max, self.y_max, self.z_max)
+        return [self.point1, self.point2]
+    def make_box(self):
+        '''returns a Shape (which inherits from TopoDS_Shape) representing this bounding box. maybe useful for visualization?'''
+        self._determine_points()
+        return Shape(BRepPrimAPI_MakeBox(self.point1, self.point2).Shape())
+    def interferes(self, other_box): #this doesn't work
+        '''determines whether or not there is a collision between the two boxes.
+        see http://www.gamedev.net/community/forums/topic.asp?topic_id=378193&whichpage=1&#2496692 (Marcus Speight)
+        returns True or False'''
+        if self.point1.X() > other_box.point2.X(): return False
+        if self.point1.Y() > other_box.point2.Y(): return False
+        if self.point1.Z() > other_box.point2.Z(): return False
+        if self.point2.X() < other_box.point1.X(): return False
+        if self.point2.Y() < other_box.point1.Y(): return False
+        if self.point2.Z() < other_box.point1.Z(): return False
+        return True
+        #from there it's a simple matter of comparing their extents.
+        #for example, if one object's left or right bound lies between the other object's left and right bounds,
+        #then the two objects have overlapping X ranges.
+        #if two objects overlap along all three axes, they have collided.
+
+    def __repr__(self):
+        return "BoundingBox(x=[%s, %s], y=[%s, %s], z=[%s, %s])" % (self.x_min, self.x_max, self.y_min, self.y_max, self.z_min, self.z_max)
 
