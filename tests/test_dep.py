@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import unittest
 import yaml
-import dep
+from skdb.core import dep
 
 class TestResolver(unittest.TestCase):
     def test_Dependency(self):
