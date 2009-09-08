@@ -171,11 +171,7 @@ from random import randint
 #move most of this into the lego package
 lego = Package("lego")
 
-class App: pass
 app = App()
-app.current_brick = None
-app.all_bricks = []
-app.cgraph = FakeIGraph()
 
 def get_brick():
     '''returns a basic lego brick part from the catalog (no side effects)'''
@@ -357,7 +353,7 @@ add_key('a', add_lego)
 add_key('b', add_valid_lego)
 add_key('c', functools.partial(clear, app=app))
 add_key('m', make_lego)
-add_key('i', show_interfaces)
+add_key('i', functools.partial(show_interfaces, app=app))
 add_key(' ', show_next_mate)
 add_key('v', save)
 

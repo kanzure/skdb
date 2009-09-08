@@ -15,6 +15,12 @@ import OCC.Display.wxSamplesGui
 from skdb.geom import Point, Direction, move_shape, point_along
 from skdb import Interface
 
+class App:
+    def __init__(self):
+        self.current_brick = None
+        self.all_bricks = []
+        self.cgraph = FakeIGraph()
+
 class Arrow(TopoDS_Shape):
     def __init__(self, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1):
         self.origin = Point(origin)
@@ -58,8 +64,8 @@ class Flag(Arrow):
         head = move_shape(head, gp_Pnt(0,0,0), gp_Pnt(0,0,0.7*scale)) #move flag to top of arrow
         self._shape = BRepAlgoAPI_Fuse(head, body).Shape()
 
-def show_interfaces(event=None, brick=None):
-    if brick is None: brick = current_brick
+def show_interfaces(event=None, brick=None, app=None):
+    if brick is None: brick = app.current_brick
     for i in brick.interfaces:
         i.show()
 
@@ -122,7 +128,7 @@ def add_key(key,method_to_call,**keywords):
     '''
     upper_case = key.upper()
     orded = ord(upper_case) #see wxDisplay.py line 171
-    OCC.Display.wxSamplesGui.frame.canva._key_map[orded] = functools.partial(method_to_call, None, keywords)
+    OCC.Display.wxSamplesGui.frame.canva._key_map[orded] = functools.partial(method_to_call, keywords)
     print "key '", orded, "' mapped to ", method_to_call
     return
 
