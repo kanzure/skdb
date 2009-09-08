@@ -47,7 +47,7 @@ skdb core:
             motion path planner:
                 collision detection: #for collision-free insertion
                     investigate third party libraries for collision detection:
-                    search literature for other methods:'
+                    search literature for other methods:
             write an open source assembly planner:
         figure out something better than the techniques.py proposal:
         lego assembly instructions demo:
