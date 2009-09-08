@@ -1,7 +1,7 @@
 #process geometry framework
 #provides code to interpret geometrical constraints and carry out random operations
 
-import random, sys
+import random, sys, functools
 
 from OCC.gp import *
 from OCC.Geom2d import *
@@ -164,14 +164,18 @@ def draw_all_tangents(event=None):
     
     tangents(C_gp, L_gp, radius=2)
 
+
 from copy import copy, deepcopy
 from random import randint
 
 #move most of this into the lego package
 lego = Package("lego")
-current_brick = None
-all_bricks = []
-cgraph = FakeIGraph()
+
+class App: pass
+app = App()
+app.current_brick = None
+app.all_bricks = []
+app.cgraph = FakeIGraph()
 
 def get_brick():
     '''returns a basic lego brick part from the catalog (no side effects)'''
@@ -181,26 +185,25 @@ def get_brick():
 #not sure where to move this
 def show_bricks():
     display.EraseAll()
-    display.DisplayShape([brick.shapes[0] for brick in all_bricks])
+    display.DisplayShape([brick.shapes[0] for brick in app.all_bricks])
 
-def make_lego(event=None, brick=None):
-    global current_brick, all_bricks, cgraph
+def make_lego(event=None, brick=None, app=app):
     if brick is None: brick = get_brick() #load a brick from the catalog
-    current_brick = brick
+    app.current_brick = brick
     tmp = gp_Trsf()
     #give it an interesting starting orientation (not 0)
     tmp.SetTranslation(Point(0,0,0), Point(3.14, 3.14, 3.14))
     tmp.SetRotation(gp_Ax1(Point(0,0,0), Direction(1,0,0)), 3.14/3)
     #orient the part so that i[0] is aligned with the origin's z-axis
-    i = current_brick.interfaces[0]
+    i = app.current_brick.interfaces[0]
     trsf = i.get_transformation().Inverted()
     trsf.Multiply(tmp.Inverted()) #side effect
-    current_brick.transformation = trsf #side effect
-    shapes = current_brick.shapes 
+    app.current_brick.transformation = trsf #side effect
+    shapes = app.current_brick.shapes 
     shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape() #move it
     display.DisplayColoredShape(shapes[0], 'RED')
-    all_bricks.append(current_brick)
-    cgraph.add_part(current_brick)
+    app.all_bricks.append(app.current_brick)
+    app.cgraph.add_part(app.current_brick)
 
 def pick_interface(brick):
     if brick.interfaces_saturated():
@@ -211,10 +214,9 @@ def pick_interface(brick):
         return pick_interface(brick)
     return result
 
-def valid_options(options, working_brick=None):
+def valid_options(options, working_brick=None, app=app):
     '''uses bounding boxes interference detection to figure out which among a list of options are not going to totally suck'''
-    global all_bricks, current_brick
-    if working_brick == None: working_brick=current_brick
+    if working_brick == None: working_brick=app.current_brick
     results = []
     shape1 = deepcopy(options[0].interface1.part.shapes[0])
     box1 = BoundingBox(shape=shape1)
@@ -228,7 +230,7 @@ def valid_options(options, working_brick=None):
         shape2 = BRepBuilderAPI_Transform(shape2, trsf, True).Shape()
         box2 = BoundingBox(shape=shape2)
         #we're going to assume it can connect to the target brick .. sorry.
-        for brick in all_bricks:
+        for brick in app.all_bricks:
             if brick is not connection.interface1.part and brick is not working_brick: #but! it can still connect and interfere simultaneously
                 #recalculate bounding box because the shape may have updated since load_CAD
                 tmp_box = BoundingBox(shape=brick.shapes[0])
@@ -241,15 +243,14 @@ def valid_options(options, working_brick=None):
             results.append(connection)
     return results
 
-def add_valid_lego(event=None, brick=None, n=0):
-    global current_brick, all_bricks
+def add_valid_lego(event=None, brick=None, n=0, app=app):
     if n>20:
         assert OverflowError, "too many iterations"
         return
     #different configurations for this function:
-    #working_brick=current_brick
-    #working_brick = all_bricks[random.randint(0, len(all_bricks)-1)]
-    working_brick = find_part(display.selected_shape, all_bricks)
+    #working_brick=app.current_brick
+    #working_brick = app.all_bricks[random.randint(0, len(app.all_bricks)-1)]
+    working_brick = find_part(display.selected_shape, app.all_bricks)
     if not working_brick:
         return
     options = None
@@ -290,22 +291,21 @@ def add_valid_lego(event=None, brick=None, n=0):
     brick2.shapes[0] = BRepBuilderAPI_Transform(brick2.shapes[0], trsf, True).Shape()
 
     #set the globals
-    all_bricks.append(brick2)
-    current_brick = brick2
+    app.all_bricks.append(brick2)
+    app.current_brick = brick2
 
     #visual stuff
     connection.interface1.show()
     connection.interface2.show()
     display.DisplayShape(brick2.shapes[0])
 
-def add_lego(event=None, brick=None):
-    global current_brick, all_bricks, cgraph
+def add_lego(event=None, brick=None, app=app):
     opts = None
     n=0
     if brick is not None: brick2 = brick
     else: brick2 = get_brick()
     while True:
-        i1 = current_brick.interfaces[random.randint(0, len(current_brick.interfaces)-1)]
+        i1 = app.current_brick.interfaces[random.randint(0, len(app.current_brick.interfaces)-1)]
         opts = i1.options(brick2)
         if opts: break 
         elif n > 20: raise OverflowError, "I can't figure it out!"  #timeout; impossible situation
@@ -313,7 +313,7 @@ def add_lego(event=None, brick=None):
         n+=1
     conn =opts[random.randint(0, len(opts)-1)]
     
-    #i1 = current_brick.interfaces[3]
+    #i1 = app.current_brick.interfaces[3]
     #i2 = brick2.interfaces[7]
     #conn = skdb.Connection(i1, i2)
 
@@ -326,39 +326,36 @@ def add_lego(event=None, brick=None):
     conn.interface2.show()
     print "%.2f %.2f %.2f" %  Point(conn.interface2.point).Transformed(conn.interface2.part.transformation).Coord()
 
-    all_bricks.append(brick2)
+    app.all_bricks.append(brick2)
     try:
-        cgraph.add_part(brick2)
-        naive_coincidence_fixer(all_bricks, cgraph=cgraph)
+        app.cgraph.add_part(brick2)
+        naive_coincidence_fixer(app.all_bricks, cgraph=app.cgraph)
     except GayError: 
-        cgraph.del_part(brick2)
+        app.cgraph.del_part(brick2)
         add_lego() #try again
-    #conn.connect(cgraph=cgraph) #this should whine about interface busy
+    #conn.connect(app.cgraph=app.cgraph) #this should whine about interface busy
     
     display.DisplayShape(brick2.shapes[0])
-    current_brick = brick2
+    app.current_brick = brick2
 
-current_brick = get_brick()
+app.current_brick = get_brick()
 brick2 = get_brick()
-opts = current_brick.options(brick2)
+opts = app.current_brick.options(brick2)
 opt = 0
 
-def clear(event=None, **keywords):
-    all_bricks = keywords["all_bricks"]
-    current_brick = keywords["current_brick"]
-    cgraph = keywords["cgraph"]
-    current_brick = None
-    all_bricks=[]
-    cgraph = FakeIGraph()
+def clear(event=None, app=app):
+    app.current_brick = None
+    app.all_bricks=[]
+    app.cgraph = FakeIGraph()
     display.EraseAll()
     
 def save(event=None):
     '''dump the current construction'''
-    cgraph.graph.write('cgraph.dot', format='graphviz')
+    app.cgraph.graph.write('app.cgraph.dot', format='graphviz')
 
 add_key('a', add_lego)
 add_key('b', add_valid_lego)
-add_key('c', clear, all_bricks=all_bricks, current_brick=current_brick, cgraph=cgraph)
+add_key('c', functools.partial(clear, app=app))
 add_key('m', make_lego)
 add_key('i', show_interfaces)
 add_key(' ', show_next_mate)
