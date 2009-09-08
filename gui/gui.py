@@ -14,6 +14,7 @@ from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_displ
 import OCC.Display.wxSamplesGui
 from skdb.geom import Point, Direction, move_shape, point_along
 from skdb import Interface
+from skdb.core.interface import FakeIGraph
 
 class App:
     def __init__(self):
