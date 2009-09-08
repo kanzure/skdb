@@ -1,5 +1,6 @@
 documentation:
     everybody loves documentation!
+bug tracker:
 skdb core:
     units:
         peak and continuous ratings: what are default time constants?
@@ -24,9 +25,14 @@ skdb core:
             turn skdb/doc/proposals/assemblies.txt into unit tests:
         part mating:
             collision detection:
-                explore python collision detection libraries:
+                fix BoundingBox:
+                    rewrite it: ask fenn why
+                    extract minima and maxima from surfaces: kinda important
                 explore OpenCASCADE collision detection methods:
                     Constructive Solid Geometry: any volume leftover?
+                    OCC bounding box classes:
+                        - http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/ModelingAlgorithms/html/classBRepBndLib.html
+                        - http://www.opencascade.org/org/forum/thread_13902/
                 interference fit:
                     list of compliant/rigid faces: is this right? shouldnt we be doing FEA instead?
                 play:
@@ -35,8 +41,6 @@ skdb core:
                     positive: a little bit of slop
                     negative: interference fit
                     signed distance function:
-                unit test:
-                improve occ mass calculation:
         cam algorithm selection: some parts are more 2.5d than others...
     generating instructions:
         assembly planner: #aka assembly sequence planner, assembly operation planner, etc.
