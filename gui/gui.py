@@ -122,7 +122,7 @@ def add_key(key,method_to_call,**keywords):
     '''
     upper_case = key.upper()
     orded = ord(upper_case) #see wxDisplay.py line 171
-    OCC.Display.wxSamplesGui.frame.canva._key_map[orded] = functools.partial(method_to_call, keywords)
+    OCC.Display.wxSamplesGui.frame.canva._key_map[orded] = functools.partial(method_to_call, None, keywords)
     print "key '", orded, "' mapped to ", method_to_call
     return
 
