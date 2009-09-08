@@ -11,6 +11,7 @@ skdb core:
         evaluate typical feasible: but dont dump some messy construct
         think about how to utilize statistical data: in search/optimization algorithms
     geom:
+        pythonOCC sympy parametric modeling PAF:
         wrap TopoDS_Shape in Shape class:
             make assembly graph yaml dump work:
         get rid of STEP loading spam:
