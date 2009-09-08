@@ -1,0 +1,43 @@
+
+csv_converter.py
+    simple csv-to-yaml tool, also a little csv demo.
+
+heeks_coords.py
+    extracts coordinate frames from heekscad files.
+    useful when making metadata for a part, like interface definitions.
+
+ldr2stl.py
+    command line interface to STLWriter for pyldraw
+    converts from ldr (dat) files to stl
+
+pyldraw_STLWriter.py
+    the actual stl writer that needs to be put in the pyldraw folder somewhere
+
+occ_pyldraw.py
+    pyldraw module that also uses pythonOCC for displaying triangles etc.
+    (also uses numpy)
+
+SMILES_graphviz.py
+    convert from smiles to dot dot
+
+STL_pyvtk_visualizer.py
+    renders an stl file through the vtk library
+    couldn't quite get it to read a string instead of a file
+
+STL_read.py
+STL_write.py
+    read and write stl files from or into a list of triangles and faces
+
+vizlegos.py
+    pyldraw lego visualization using vpython
+
+del_repo/base64decode.pl
+    decode the content of the files from inside a dot repo file
+
+del_repo/extract_internal_repo_files.pl
+    gets the files hidden in a dot repo file
+
+del_repo/read_indices.pl
+    reads "index files" to figure out how to rename the crummy extracted xml files.
+    "When a given file (like camera/742) matches a certain line from the index file, we rename 742 to the actual file name."
+
