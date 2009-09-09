@@ -4,6 +4,12 @@ from string import Template
 from skdb import Unit
 import skdb
 
+try: 
+    import geom
+    using_OCC = True
+except ImportError:
+    using_OCC = False
+
 #used to inherit from skdb.Package but that no longer works?
 class Thread(yaml.YAMLObject): #inherit from Helix?
     yaml_tag = '!thread'
