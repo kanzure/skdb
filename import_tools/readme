@@ -41,3 +41,6 @@ del_repo/read_indices.pl
     reads "index files" to figure out how to rename the crummy extracted xml files.
     "When a given file (like camera/742) matches a certain line from the index file, we rename 742 to the actual file name."
 
+del_repo/repo_to_yaml.py
+    converts from a dot repo file to yaml
+
