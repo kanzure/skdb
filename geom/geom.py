@@ -523,9 +523,9 @@ class BoundingBox:
         if shape is not None:
             assert isinstance(shape, TopoDS_Shape)
             #compute the box from the shape
-            box = Bnd_Box()
-            BRepBndLib().Add(shape, box)
-            self.x_min, self.y_min, self.z_min, self.x_max, self.y_max, self.z_max = box.Get()
+            self.box = Bnd_Box()
+            BRepBndLib().Add(shape, self.box)
+            self.x_min, self.y_min, self.z_min, self.x_max, self.y_max, self.z_max = self.box.Get()
             self.point1, self.point2 = self._determine_points()
         else: 
             x1, y1, z1 = point1.Coord()
@@ -543,6 +543,7 @@ class BoundingBox:
         '''returns a Shape (which inherits from TopoDS_Shape) representing this bounding box. maybe useful for visualization?'''
         self._determine_points()
         return Shape(BRepPrimAPI_MakeBox(self.point1, self.point2).Shape())
+        
     def interferes(self, other): 
         '''if one object's left or right bound lies between the other object's left and right bounds,
         then the two objects have overlapping X ranges.
@@ -555,6 +556,11 @@ class BoundingBox:
         if self.point2.Y() < other.point1.Y(): return False
         if self.point2.Z() < other.point1.Z(): return False
         return True
+        
+    def contains(self, other):
+        '''uses OCC Bnd_Box method'''
+        if self.box.IsOut(other): return false
+        else: return True
 
     def __deepcopy__(self, memo):
         return self.__class__(point1=Point(self.x_min, self.y_min, self.z_min), point2=Point(self.x_max, self.y_max, self.z_max))
