@@ -297,30 +297,6 @@ def load_CAD(self):
     return
 Part.load_CAD = load_CAD
 
-def add_shape(self, result):
-    '''add a shape to self.ais_shapes. this isn't as exciting as you think it is.'''
-    if type(result) == type([]): self.ais_shapes = result[0]
-    else: self.ais_shapes = result
-    return
-Part.add_shape = add_shape
-
-def get_point(self): return list(self.__gp_Pnt_point.Coord())
-def set_point(self, value): 
-    if isinstance(value, Unit):
-        raise NotImplementedError, 'coords must be in mm'
-    self.__gp_Pnt_point = gp_Pnt(val[0], val[1], val[2])
-def del_point(self): del self.__gp_Pnt_point
-
-def get_gp_Pnt(self):
-    return self.__gp_Pnt
-
-def transformed(self, trsf):
-    return self.__gp_Pnt.Transformed(trsf)
-
-#stuff the class with new funcs
-for i in [load_CAD, add_shape, get_gp_Pnt, transformed]:
-    setattr(Part, i.__name__, i)
-
 def make_face(shape):
     face = BRepBuilderAPI_MakeFace(shape)
     face.Build()
