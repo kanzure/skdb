@@ -3,6 +3,7 @@ from OCC.Precision import *
 from OCC.BRepBuilderAPI import *
 import OCC.Utils.DataExchange.STEP
 from OCC.BRepPrimAPI import *
+from OCC.TopoDS import *
 
 #for BoundingBox
 from OCC.Bnd import *
