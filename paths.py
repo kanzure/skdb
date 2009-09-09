@@ -212,7 +212,7 @@ def pick_interface(brick):
 
 def valid_options(options, working_brick=None, app=app):
     '''uses bounding boxes interference detection to figure out which among a list of options are not going to totally suck'''
-    if working_brick == None: working_brick=app.current_brick
+    if working_brick is None: working_brick = app.working_brick()
     results = []
     shape1 = deepcopy(options[0].interface1.part.shapes[0])
     box1 = BoundingBox(shape=shape1)
@@ -234,7 +234,6 @@ def valid_options(options, working_brick=None, app=app):
                     bad=True
                     print "ok it was bad."
                     break
-            #else 
         if not bad:
             results.append(connection)
     return results
@@ -244,35 +243,24 @@ def add_valid_lego(event=None, brick=None, n=0, app=app):
         assert OverflowError, "too many iterations"
         return
     #different configurations for this function:
-    #working_brick=app.current_brick
     #working_brick = app.all_bricks[random.randint(0, len(app.all_bricks)-1)]
     working_brick = app.working_brick()
-    options = None
     
     #get a second brick
     if brick is not None:
         brick2 = brick
-        user_brick = True
     else: brick2 = get_brick()
     
     j=0
-    #get some options for an interface
     while True:
-        random_interface = False
-        p=0
-        while random_interface == False:
-            random_interface = pick_interface(working_brick)
-            if random_interface == False: #no more interfaces available (shouldn't happen)
-                random_interface = pick_interface(working_brick)
-            p=p+1
-        options = random_interface.options(brick2)
+        options = pick_interface(working_brick).options(brick2)
         if options: break
         elif j>20: raise OverflowError, "can't figure it out"
         else: brick2 = get_brick() #try again
-        j=j+1
+        j+=1
     #make sure the options don't suck too much
     valid_opts = valid_options(options, working_brick=working_brick)
-    if len(valid_opts) == 0:
+    if not valid_opts:
         #raise ValueError, "collision detected for all possibilities. trying again.."
         print "colllision detected for all possibilities. trying again.."
         add_valid_lego(event=event, brick=get_brick(), n=n+1)
@@ -331,7 +319,7 @@ def add_lego(event=None, brick=None, app=app):
     except GayError: 
         app.cgraph.del_part(brick2)
         add_lego() #try again
-    #conn.connect(app.cgraph=app.cgraph) #this should whine about interface busy
+    #conn.connect(cgraph=app.cgraph) #this should whine about interface busy
     
     display.DisplayShape(brick2.shapes[0])
     app.current_brick = brick2
