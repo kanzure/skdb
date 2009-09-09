@@ -283,7 +283,8 @@ def add_valid_lego(event=None, brick=None, n=0, app=app):
 
 def show_bounding_box(event=None, app=app):
     brick = app.working_brick()
-    display.DisplayShape(BoundingBox(brick.shapes[0]).make_box())
+    displayed_shape = display.DisplayShape(BoundingBox(brick.shapes[0]).make_box())
+    display.Context.SetTransparency( displayed_shape, 0.3 )
 
 def add_lego(event=None, brick=None, app=app):
     opts = None
@@ -362,7 +363,7 @@ if __name__ == '__main__':
                     make_arrow,
                     chain_arrows,
                     coordinate_arrows,
-                    test_coordinate_arrows,
+                    #test_coordinate_arrows,
                     show_interfaces,
                     make_lego,
                     add_lego,
