@@ -2,16 +2,11 @@ from OCC.gp import *
 from OCC.Precision import *
 from OCC.BRepBuilderAPI import *
 import OCC.Utils.DataExchange.STEP
-
-
-
-#for make_text
 from OCC.BRepPrimAPI import *
-from OCC.BRepBuilderAPI import *
-from OCC.BRepFilletAPI import *
-from OCC.BRepOffsetAPI import *
-from OCC.BRepAlgoAPI import *
-from OCC.TopoDS import *
+
+#for BoundingBox
+from OCC.Bnd import *
+from OCC.BRepBndLib import *
 
 from skdb import Connection, Part, Interface, Unit, FennObject, prettyfloat
 import os, math
@@ -103,14 +98,6 @@ class Point(OCC_triple, gp_Pnt):
     occ_class = gp_Pnt
     #other_occ_class = OCC.BRep.BRep_Tool.Pnt(TopoDS_Vertex) -> gp_Pnt
     __doc__ = OCC_triple.doc_format.safe_substitute(occ_class=occ_class, cls='Point', occ_name = occ_class.__name__)
-    @staticmethod
-    def from_vertex(v):
-        '''converts from TopoDS_Vertex to a Point
-        until fenn turns occ_class into a list or something
-        returns a Point object'''
-        assert isinstance(v, TopoDS_Vertex), "from_vertex only works with TopoDS_Vertex"
-        from OCC.BRep import BRep_Tool
-        return Point(BRep_Tool.Pnt(v))
 
 class XYZ(OCC_triple, gp_XYZ):
     occ_class = gp_XYZ
@@ -332,12 +319,6 @@ class Shape(TopoDS_Shape, FennObject):
         if not isinstance(other, TopoDS_Shape): return False
         else: return True #self.IsEqual(other)
 
-from OCC.TopExp import *
-from OCC.BRep import BRep_Tool
-from OCC.BRepTools import BRepTools_WireExplorer
-from OCC.TopAbs import *
-from OCC.Bnd import *
-from OCC.BRepBndLib import *
 class BoundingBox:
     '''finds the extents of an object along each axis. useful for checking against sorted coordinates.
     implements axis-aligned bounding box: http://www.gamedev.net/dict/term.asp?TermID=309
