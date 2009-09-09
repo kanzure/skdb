@@ -17,7 +17,11 @@ import settings
 def prettyfloat(num):                                                                                      
     '''round down to 0 if abs(num) < +-1e-13, gets rid of icky floating point errors'''              
     return str(float("%.13f" % (float(num))))     
-    
+
+def close_enough(num1, num2, tolerance=1e-6):
+    if abs(num2 - num1) < tolerance: return True
+    else: return False
+
 class Distribution(FennObject):
     yaml_path = ['typical', 'feasible']
 
