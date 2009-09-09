@@ -21,6 +21,22 @@ class App:
         self.current_brick = None
         self.all_bricks = []
         self.cgraph = FakeIGraph()
+        self.display = None
+        
+    def working_brick(self):
+        working_brick = None
+        if self.display.selected_shape:
+            working_brick = self.find_part(self.display.selected_shape)
+        if not working_brick: #find_part might not find a brick that matches, or maybe nothing was clicked
+            working_brick = self.current_brick
+        return working_brick
+
+    def find_part(self, shape):
+            for brick in self.all_bricks:
+                if brick.shapes[0] == shape:
+                    return brick
+            raise Warning, "selected shape not found:" + str(shape)
+            return False
 
 class Arrow(TopoDS_Shape):
     def __init__(self, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1):
@@ -171,12 +187,7 @@ def make_vertex(pnt):
     vertex.Build()
     return vertex.Vertex()
 
-def find_part(shape, all_bricks):
-    for brick in all_bricks:
-        if brick.shapes[0] == shape:
-            return brick
-    print "selected shape not found"
-    return False
+
 
 def exit(event=None):
     sys.exit()
