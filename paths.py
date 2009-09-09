@@ -172,6 +172,7 @@ from random import randint
 lego = Package("lego")
 
 app = App()
+app.display = display
 
 def get_brick():
     '''returns a basic lego brick part from the catalog (no side effects)'''
@@ -202,13 +203,12 @@ def make_lego(event=None, brick=None, app=app):
     app.cgraph.add_part(app.current_brick)
 
 def pick_interface(brick):
-    if brick.interfaces_saturated():
-        raise ValueError, "no more interfaces to choose from"
-        return False
-    result = brick.interfaces[random.randint(0, len(brick.interfaces)-1)]
-    if result.connected:
-        return pick_interface(brick)
-    return result
+    tmp = copy(brick.interfaces)
+    random.shuffle(tmp)
+    for i in tmp:
+        if not i.is_busy():
+            return i
+    raise Warning, "no more interfaces to choose from: "+str([i for i in brick.interfaces])
 
 def valid_options(options, working_brick=None, app=app):
     '''uses bounding boxes interference detection to figure out which among a list of options are not going to totally suck'''
@@ -246,9 +246,7 @@ def add_valid_lego(event=None, brick=None, n=0, app=app):
     #different configurations for this function:
     #working_brick=app.current_brick
     #working_brick = app.all_bricks[random.randint(0, len(app.all_bricks)-1)]
-    working_brick = find_part(display.selected_shape, app.all_bricks)
-    if not working_brick:
-        return
+    working_brick = app.working_brick()
     options = None
     
     #get a second brick
@@ -294,6 +292,10 @@ def add_valid_lego(event=None, brick=None, n=0, app=app):
     connection.interface1.show()
     connection.interface2.show()
     display.DisplayShape(brick2.shapes[0])
+
+def show_bounding_box(event=None, app=app):
+    brick = app.working_brick()
+    display.DisplayShape(BoundingBox(brick.shapes[0]).make_box())
 
 def add_lego(event=None, brick=None, app=app):
     opts = None
@@ -350,7 +352,8 @@ def save(event=None):
     app.cgraph.graph.write('app.cgraph.dot', format='graphviz')
 
 add_key('a', add_lego)
-add_key('b', add_valid_lego)
+add_key('n', add_valid_lego)
+add_key('b', show_bounding_box)
 add_key('c', functools.partial(clear, app=app))
 add_key('m', make_lego)
 add_key('i', functools.partial(show_interfaces, app=app))
