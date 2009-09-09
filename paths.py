@@ -338,7 +338,7 @@ def clear(event=None, app=app):
     
 def save(event=None):
     '''dump the current construction'''
-    app.cgraph.graph.write('app.cgraph.dot', format='graphviz')
+    app.cgraph.graph.write('cgraph.dot', format='graphviz')
 
 add_key('a', add_lego)
 add_key('n', add_valid_lego)
