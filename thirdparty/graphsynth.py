@@ -3,6 +3,8 @@ import math
 import yaml #maybe one day?
 from copy import copy
 
+bryan_message = "bryan hasnt got that far yet"
+
 def set_list(self, variable, index, label):
     '''called a few times in Arc, like in set_label and set_variable'''
     while len(variable) <= index:
@@ -83,7 +85,7 @@ class Vertex(Node):
     #this was blank in the graphsynth codebase for some reason?
     pass
 
-class DesignGraph:
+class Graph:
     
     #just for reference
     name = ""
@@ -137,7 +139,7 @@ class DesignGraph:
     def make_unique_arc_name(self):
         return self._make_unique_name(self.arcs)
     def internally_connect_graph(self):
-        raise NotImplementedError, "bryan hasnt got this far yet"
+        raise NotImplementedError, bryan_message
     def last_node(self):
         return self.nodes[-1:]
     def last_arc(self):
@@ -161,7 +163,7 @@ class DesignGraph:
         if arc_name == "": arc_name = self.make_unique_arc_name()
         #complain when we don't get anything
         if arc_name == "" and from_node is None and to_node is None:
-            raise ValueError, "DesignGraph.add_arc must be given at least one parameter."
+            raise ValueError, "Graph.add_arc must be given at least one parameter."
         #construct a new arc
         temp = Arc(name=arc_name, from_node=from_node, to_node=to_node)
         self.arcs.append(temp)
@@ -176,11 +178,11 @@ class DesignGraph:
         elif isinstance(identifier, int):
             self.arcs.pop(identifier)
         else:
-            raise IndexError, "DesignGraph.remove_arc: identifier not in list."
+            raise IndexError, "Graph.remove_arc: identifier not in list."
         return
     def add_node(self, new_name="", node_ref=None):
         if node_ref is not None and new_name is not None:
-            raise ValueError, "DesignGraph.add_node: can't both add the node and make a node with the new name, do it yourself."
+            raise ValueError, "Graph.add_node: can't both add the node and make a node with the new name, do it yourself."
         if node_ref is not None:
             self.nodes.append(node_ref)
         if new_name == "": new_name = self.make_unique_node_name()
@@ -196,9 +198,9 @@ class DesignGraph:
         removeNodeRef will change the references within the attached arcs to null
         if set to true, or will leave them if false (default is true).'''
         #some initial logic to deal with the given parameters
-        if node_index is None and node_ref is None: raise ValueError, "DesignGraph.remove_node: must be given either a node or a node_index"
+        if node_index is None and node_ref is None: raise ValueError, "Graph.remove_node: must be given either a node or a node_index"
         if node_index is not None:
-            if node_index > len(self.nodes)-1: raise IndexError, "DesignGraph.remove_node: node_index is bad."
+            if node_index > len(self.nodes)-1: raise IndexError, "Graph.remove_node: node_index is bad."
             node_ref = self.nodes[node_index]
             
         if remove_arcs_too:
@@ -216,8 +218,8 @@ class DesignGraph:
 class Candidate:
 
     #just for reference:
-    previous_states = [] #a list of DesignGraph objects
-    current_state = None #a DesignGraph
+    previous_states = [] #a list of Graph objects
+    current_state = None #a Graph
     _graph = None
     recipe = []
     performance_params = []
@@ -273,7 +275,6 @@ class Candidate:
         handler.write(yaml.dump(self, default_flow_style=False))
         handler.close()
 
-##### no-man's land
 #this is only from grammarRule.Basic.cs
 class Rule: #GrammarRule
     name = ""
@@ -288,21 +289,104 @@ class Rule: #GrammarRule
     apply_functions = []
     apply_funcs = []
     DLLofFunctions = None
-    locations = [] #list of DesignGraph objects
-    L = None #DesignGraph
-    R = None #DesignGraph
+    locations = [] #list of Graph objects
+    L = None #Graph
+    R = None #Graph
 
     def no_other_arcs_in_host(self, host_graph, located_nodes, located_arcs):
-        pass
+        '''are there any arcs in the host between recognized nodes?'''
+        #check each arc of the host
+        #if the arc is not in located nodes but connects two located in nodes then return false
+        for arc in host_graph.arcs:
+            if not (arc in located_arcs) and arc._from in located_nodes and arc._to in located_nodes:
+                return False
+        #if the check makes it through all arcs, return true
+        return True
     def labels_match(self, host_labels=[]):
         if self.ordered_global_labels: return self.order_labels_match(host_labels)
         else: return self.unordered_labels_match(host_labels)
     def order_labels_match(self, host_labels=[]):
-        pass
+        any_found = False
+        found = True
+        #first an easy check to see if any negating labels exist in host_labels
+        #if so, return false
+        for label in self.negate_labels:
+            if label in host_labels: return False
+        for label in host_labels:
+            if not (host_labels.index(label) == self.L.global_labels.index(label)):
+                found = False
+                break
+        if found:
+            loc = Graph()
+            any_found = True
+            #TODO: confirm if this is right (see grammarRule.Basic.cs line 137)
+            loc.global_labels.extend(host_labels)
+            self.locations.append(loc)
+        return any_found
     def unordered_labels_match(self, host_labels=[]):
+        for label in self.negate_labels:
+            if label in host_labels: return False
+        #note: you may have multiple identical labels
+        temp_labels = copy(host_labels)
+        for label in self.L.global_labels:
+            if label in temp_labels:
+                temp_labels.remove(label)
+            else: return False
+        #if there are no more temp_labels, then the two match up completely
+        #else return false
+        if self.contains_all_global_labels and not len(temp_labels)==0: return False
+        return True
+    def make_unique_node_name(self): #FIXME
+        raise NotImplementedError, bryan_message
+    def make_unique_arc_name(self): #FIXME
+        raise NotImplementedError, bryan_message
+    '''here is the big one! Although it looks compact, a lot of time can be spent in 
+    the recursion that it invokes. Before we get to that, we wanna make sure that 
+    our time there is well spent. As a result, we try to rule out whether the rule
+    can even be applied at first -- hence the series of nested if-thens. If you don't
+    meet the first, leave now! likewise for the second. The third is a little trickier.
+    if there are no nodes or arcs in this rule, then it has already proven to be valid
+    by the global labels - thus return a single location labeled "anywhere".
+    if there are no nodes in the rule, then jump to the special function recognizeInitialArcInHost
+    finally, if the node with the highest degree is higher than the highest degree
+    of the host, then no need to recurse any further. Else, get into recognizeInitialNodeInHost,  
+    which further calls recognizeRecursion.'''
+    def recognize(self, host, transform_matrices=[]):
+        self.locations = []
+        if self.labels_match(host.global_labels):
+            if not self.spanning or self.spanning and (len(self.L.nodes) == len(host.nodes)):
+                if len(self.L.nodes)==0 and len(self.L.arcs)==0: self.locations.append(Graph())
+                elif len(self.L.nodes)==0: self.recognize_initial_arc_in_host(host)
+                elif self.L.max_degree() < host.max_degree(): self.recognize_initial_node_in_host(host)
+        i = 0
+        length = len(self.locations) #we dont have to do -1 because while is < and not <=
+        while i < length:
+            location = self.locations[i]
+            T = self.find_transform(location.nodes)
+            if not self.use_shape_restrictions or (self.valid_transform(T) and self.other_nodes_comply(T, location.nodes)):
+                transform_matrices.append(T)
+                i++;
+            else: locations.pop(i)
+        return locations
+    def recognize_initial_node_in_host(self, host):
         pass
-    def make_unique_node_name(self):
+    def recognize_initial_arc_in_host(self, host):
         pass
-    def make_unique_arc_name(self):
-       pass
+    def recognize_recursion(self, located_nodes, located_arcs, from_L_node, from_host_node):
+        pass
+    def case1_location_found(self, host, located_nodes, located_arcs):
+        pass
+    def case2_find_new_from_node(self, host, located_nodes, located_arcs):
+        pass
+    def case3_dangling_nodes(self, host, located_nodes, located_arcs, from_L_node, from_host_node, current_L_arc_index, traverse_forward):
+        pass
+    def case4_connecting_back_to_prev_rec_node(self, host, located_nodes, located_arcs, next_L_node, from_host_node, current_L_arc_index, traverse_forward):
+        pass
+    def case5_finding_new_nodes(self, host, located_nodes, located_arcs, next_L_node, from_host_node, current_L_arc_index, traverse_forward):
+        pass
+    def apply(self, L_mapping, host, position_t, parameters=[]):
+        pass
+    #more..
+
+
 
