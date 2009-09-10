@@ -143,7 +143,10 @@ class TestGeom(unittest.TestCase):
         self.assertTrue(close_enough(box.x_max, len_x))
         self.assertTrue(close_enough(box.y_max, len_y))
         self.assertTrue(close_enough(box.z_max, len_z))
-
+        
+        #this could get filled out more but who cares
+        self.assertTrue(box.contains(gp_Pnt(len_x, len_y, len_z)))
+        
         #what about a more complicated shape?
         how_about_not_right_now='''
         pack = Package("lego")

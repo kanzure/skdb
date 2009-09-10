@@ -25,7 +25,7 @@ class App:
         
     def working_brick(self):
         working_brick = None
-        if self.display.selected_shape:
+        if self.display.selected_shape: #should I use AIS/Context stuff instead?
             working_brick = self.find_part(self.display.selected_shape)
         if not working_brick: #find_part might not find a brick that matches, or maybe nothing was clicked
             working_brick = self.current_brick
@@ -37,7 +37,21 @@ class App:
                     return brick
             raise Warning, "selected shape not found:" + str(shape)
             return False
-
+            
+    def delete(self, shape):
+        '''erase selected shape and remove it from the connection graph if it's there'''
+        done = False
+        if self.display.selected_shape:
+            for brick in self.all_bricks:
+                if hasattr(brick, 'AIS_handle'):
+                    if brick.shapes[0] == self.display.selected_shape:
+                        self.display.Context.Erase(brick.AIS_handle) #should be the same as EraseSelected
+                        self.cgraph.del_part(brick)
+                        self.all_bricks.remove(brick)
+                        done = True
+        if not done: self.display.Context.EraseSelected()
+                    
+            
 class Arrow(TopoDS_Shape):
     def __init__(self, origin=gp_Pnt(0,0,0), direction=gp_Dir(0,0,1), scale=1):
         self.origin = Point(origin)

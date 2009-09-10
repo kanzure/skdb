@@ -2,18 +2,12 @@ from OCC.gp import *
 from OCC.Precision import *
 from OCC.BRepBuilderAPI import *
 import OCC.Utils.DataExchange.STEP
-
-#for volume interference
-from OCC.BRepGProp import *
-from OCC.GProp import *
-
-#for make_text
 from OCC.BRepPrimAPI import *
-from OCC.BRepBuilderAPI import *
-from OCC.BRepFilletAPI import *
-from OCC.BRepOffsetAPI import *
-from OCC.BRepAlgoAPI import *
 from OCC.TopoDS import *
+
+#for BoundingBox
+from OCC.Bnd import *
+from OCC.BRepBndLib import *
 
 from skdb import Connection, Part, Interface, Unit, FennObject, prettyfloat
 import os, math
@@ -105,14 +99,6 @@ class Point(OCC_triple, gp_Pnt):
     occ_class = gp_Pnt
     #other_occ_class = OCC.BRep.BRep_Tool.Pnt(TopoDS_Vertex) -> gp_Pnt
     __doc__ = OCC_triple.doc_format.safe_substitute(occ_class=occ_class, cls='Point', occ_name = occ_class.__name__)
-    @staticmethod
-    def from_vertex(v):
-        '''converts from TopoDS_Vertex to a Point
-        until fenn turns occ_class into a list or something
-        returns a Point object'''
-        assert isinstance(v, TopoDS_Vertex), "from_vertex only works with TopoDS_Vertex"
-        from OCC.BRep import BRep_Tool
-        return Point(BRep_Tool.Pnt(v))
 
 class XYZ(OCC_triple, gp_XYZ):
     occ_class = gp_XYZ
@@ -297,55 +283,6 @@ def load_CAD(self):
     return
 Part.load_CAD = load_CAD
 
-def add_shape(self, result):
-    '''add a shape to self.ais_shapes. this isn't as exciting as you think it is.'''
-    if type(result) == type([]): self.ais_shapes = result[0]
-    else: self.ais_shapes = result
-    return
-Part.add_shape = add_shape
-
-def get_point(self): return list(self.__gp_Pnt_point.Coord())
-def set_point(self, value): 
-    if isinstance(value, Unit):
-        raise NotImplementedError, 'coords must be in mm'
-    self.__gp_Pnt_point = gp_Pnt(val[0], val[1], val[2])
-def del_point(self): del self.__gp_Pnt_point
-
-def get_gp_Pnt(self):
-    return self.__gp_Pnt
-
-def transformed(self, trsf):
-    return self.__gp_Pnt.Transformed(trsf)
-
-#stuff the class with new funcs
-for i in [load_CAD, add_shape, get_gp_Pnt, transformed]:
-    setattr(Part, i.__name__, i)
-
-def test_coordinate_arrows(event=None):
-    for a in 0, 1, -1:
-        for b in 0, 1, -1:
-            for c in 0, 1, -1:
-                try: coordinate_arrow([a, b, c], flag=True)
-                except RuntimeError:
-                    pass
-
-def test_transformation(event=None):
-    brick = get_brick()
-    point = [10,10,10]
-    colors = [ 'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW',
-                    'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW',
-                    'WHITE', 'BLUE', 'RED', 'GREEN', 'YELLOW']
-    #testfile = '20vert.yaml'
-    #testfile = '60horz.yaml'
-    #testfile = '60twist.yaml'
-    #testfile = '60all.yaml'
-    #testfile = '90vert.yaml'
-    #testfile = '90horz.yaml'
-    testfile = '90twist.yaml'
-    for (i, color) in zip(skdb.load(open(testfile)), colors):
-        trsf = build_trsf(i.point, i.x_vec, i.y_vec)
-        display.DisplayColoredShape(BRepBuilderAPI_Transform(brick._shapes[0], trsf).Shape(), color)
-
 def make_face(shape):
     face = BRepBuilderAPI_MakeFace(shape)
     face.Build()
@@ -361,129 +298,6 @@ def make_edge(shape):
     spline.Build()
     return spline.Edge()
 
-def shape_volume(shape): #should probably be a method of Shape
-    '''returns the volume of a TopoDS_Shape or Shape'''
-    tmp = GProp_GProps()
-    BRepGProp().VolumeProperties(shape, tmp)
-    volume = tmp.Mass()
-    return volume
-
-def assembly_volume_estimate(parts):
-    '''returns the volume of an assembly given a list of parts
-    returns a sum of the volumes of each part
-    does not consider interference (see assembly_volume_actual)'''
-    total_volume = 0
-    for part in parts:
-        total_volume += part.volume()
-    return total_volume
-
-def assembly_volume_actual(parts):
-    '''computes the actual volume of an assembly
-    interference between two parts tends to decrease the volume'''
-    #total_volume = assembly_volume_estimate(parts)
-    #box = BRepPrimAPI_MakeBox(Point(0,0,0), Point(1,1,1))
-    shape = None
-    #FIXME you should actually set no initial shape, and then make an initial shape in the for loop if there isn't one already
-    #shape = TopoDS_Shape() #start with nothing
-    for part in parts:
-        if shape is None:
-            shape = part.shapes[0]
-        else:
-            #is it ok to fuse non-touching objects into the same shape?
-            tmp_shape = BRepAlgoAPI_Fuse(shape, part.shapes[0])
-            shape = tmp_shape.Shape()
-    return shape_volume(shape)
-
-def estimate_interference_volume(parts):
-    '''figures out how much volume should be missing from assembly_volume_actual compared to assembly_volume_estimate
-    not particularly special or enlightening'''
-    total_expected_missing_volume = 0
-    interfaces = []
-    for part in parts:
-        for interface in part.interfaces:
-            if interface.connected == True and interface not in interfaces:
-                #it's important to go over the interfaces as many times as they are mated
-                #because complementary interfaces should have complementary (positive, negative) volumes
-                #thus the total resulting volume should be zero if everything has a perfect fit
-
-                #if you disagree:
-                ##no_go = False #it's ok
-                ##mates = interface.connected
-                ##for mate in mates:
-                ##    if mate in interfaces:
-                ##        no_go = True #not ok, it's already considered
-                ##if not no_go:
-
-                total_expected_missing_volume += interface.volume
-                interfaces.append(interface) #so we don't count it twice
-    return total_expected_missing_volume
-
-#this is the one you want to use after adding a part to an assembly
-def estimate_collision_existence(parts, threshold=-1):
-    '''determines whether or not there is an illegal collision in the assembly.
-    threshold determines how much leeway you're willing to give the assembly. 0 means nothing should be out of place.
-    uses estimate_interference_volume, assembly_volume_actual, assembly_volume_estimate'''
-    assembly_volume = assembly_volume_estimate(parts)
-    estimated_interference = estimate_interference_volume(parts)
-    better_estimate = assembly_volume - estimated_interference
-    actual_volume = assembly_volume_actual(parts)
-    difference = actual_volume - better_estimate
-    if diff_diff >= threshold: return True
-    else: return False
-    print "estimated volume = ", estimated
-    print "estimated_interference = ", estimated_interference
-    print "difference = ", difference
-    print "threshold = ", threshold
-    if difference >= threshold:
-        return True
-    else:
-        return False
-
-def common_volume(part1, part2):
-    '''returns the volume of the intersection of two parts'''
-    shape1 = part1.shapes[0]
-    shape2 = part2.shapes[0]
-    common = BRepAlgoAPI_Common(shape1, shape2).Shape() #this takes too long
-
-    tmp = GProp_GProps()
-    BRepGProp().VolumeProperties(common, tmp)
-    volume = tmp.Mass()
-    return volume 
-
-def part_collision(part1, part2, threshold=0.0):
-    '''determines whether or not two parts are colliding, given a threshold of maximum allowable intersection
-    returns True or False'''
-    volume = common_volume(part1, part2)
-    if volume > threshold: return True
-    else: return False
-
-def _connection_interference(self, threshold=0.0): #call this as a method please
-    '''determines whether or not a connection has a geometric collision (only for the two mating parts) within a threshold
-    returns True or False'''
-    part1 = self.interface1.part
-    part2 = self.interface2.part
-    #the threshold should be the volume of interface1 + interface2 if we can isolate those regions
-    return part_collision(part1, part2, threshold=threshold)
-Connection.interference = _connection_interference
-
-def _volume(self):
-    '''determines the volume of the shape'''
-    tmp = GProp_GProps()
-    BRepGProp().VolumeProperties(self.shapes[0], tmp)
-    vol = tmp.Mass()
-    return vol
-Part.volume = _volume
-
-def deep_part_collider(parts):
-    '''given a list of parts, checks whether or not any of them geometrically overlap
-    returns a list of triples in the form: (volume, part1, part2) where volumetric interference was found'''
-    errors = []
-    for part in parts:
-        for part2 in parts:
-            volume = common_volume(part1, part2)
-            if volume > 0:
-               errors.append((volume, part1, part2))
-    return errors
 
 #wrap OCC.TopoDS.TopoDS_Shape
 #can we call this something else please?
@@ -506,12 +320,6 @@ class Shape(TopoDS_Shape, FennObject):
         if not isinstance(other, TopoDS_Shape): return False
         else: return True #self.IsEqual(other)
 
-from OCC.TopExp import *
-from OCC.BRep import BRep_Tool
-from OCC.BRepTools import BRepTools_WireExplorer
-from OCC.TopAbs import *
-from OCC.Bnd import *
-from OCC.BRepBndLib import *
 class BoundingBox:
     '''finds the extents of an object along each axis. useful for checking against sorted coordinates.
     implements axis-aligned bounding box: http://www.gamedev.net/dict/term.asp?TermID=309
@@ -523,9 +331,9 @@ class BoundingBox:
         if shape is not None:
             assert isinstance(shape, TopoDS_Shape)
             #compute the box from the shape
-            box = Bnd_Box()
-            BRepBndLib().Add(shape, box)
-            self.x_min, self.y_min, self.z_min, self.x_max, self.y_max, self.z_max = box.Get()
+            self.box = Bnd_Box()
+            BRepBndLib().Add(shape, self.box)
+            self.x_min, self.y_min, self.z_min, self.x_max, self.y_max, self.z_max = self.box.Get()
             self.point1, self.point2 = self._determine_points()
         else: 
             x1, y1, z1 = point1.Coord()
@@ -543,6 +351,7 @@ class BoundingBox:
         '''returns a Shape (which inherits from TopoDS_Shape) representing this bounding box. maybe useful for visualization?'''
         self._determine_points()
         return Shape(BRepPrimAPI_MakeBox(self.point1, self.point2).Shape())
+        
     def interferes(self, other): 
         '''if one object's left or right bound lies between the other object's left and right bounds,
         then the two objects have overlapping X ranges.
@@ -555,6 +364,11 @@ class BoundingBox:
         if self.point2.Y() < other.point1.Y(): return False
         if self.point2.Z() < other.point1.Z(): return False
         return True
+        
+    def contains(self, other):
+        '''uses OCC Bnd_Box method'''
+        if self.box.IsOut(other): return false
+        else: return True
 
     def __deepcopy__(self, memo):
         return self.__class__(point1=Point(self.x_min, self.y_min, self.z_min), point2=Point(self.x_max, self.y_max, self.z_max))

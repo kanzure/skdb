@@ -198,7 +198,7 @@ def make_lego(event=None, brick=None, app=app):
     app.current_brick.transformation = trsf #side effect
     shapes = app.current_brick.shapes 
     shapes[0] = BRepBuilderAPI_Transform(shapes[0], trsf, True).Shape() #move it
-    display.DisplayColoredShape(shapes[0], 'RED')
+    app.current_brick.AIS_handle = display.DisplayColoredShape(shapes[0], 'RED')
     app.all_bricks.append(app.current_brick)
     app.cgraph.add_part(app.current_brick)
 
@@ -279,11 +279,12 @@ def add_valid_lego(event=None, brick=None, n=0, app=app):
     #visual stuff
     connection.interface1.show()
     connection.interface2.show()
-    display.DisplayShape(brick2.shapes[0])
+    brick2.AIS_handle = display.DisplayShape(brick2.shapes[0])
 
 def show_bounding_box(event=None, app=app):
     brick = app.working_brick()
-    display.DisplayShape(BoundingBox(brick.shapes[0]).make_box())
+    displayed_shape = display.DisplayShape(BoundingBox(brick.shapes[0]).make_box())
+    display.Context.SetTransparency( displayed_shape, 0.3 )
 
 def add_lego(event=None, brick=None, app=app):
     opts = None
@@ -321,7 +322,7 @@ def add_lego(event=None, brick=None, app=app):
         add_lego() #try again
     #conn.connect(cgraph=app.cgraph) #this should whine about interface busy
     
-    display.DisplayShape(brick2.shapes[0])
+    brick2.AIS_handle = display.DisplayShape(brick2.shapes[0])
     app.current_brick = brick2
 
 app.current_brick = get_brick()
@@ -337,12 +338,13 @@ def clear(event=None, app=app):
     
 def save(event=None):
     '''dump the current construction'''
-    app.cgraph.graph.write('app.cgraph.dot', format='graphviz')
+    app.cgraph.graph.write('cgraph.dot', format='graphviz')
 
 add_key('a', add_lego)
 add_key('n', add_valid_lego)
 add_key('b', show_bounding_box)
 add_key('c', functools.partial(clear, app=app))
+add_key('d', app.delete)
 add_key('m', make_lego)
 add_key('i', functools.partial(show_interfaces, app=app))
 add_key(' ', show_next_mate)
@@ -362,7 +364,7 @@ if __name__ == '__main__':
                     make_arrow,
                     chain_arrows,
                     coordinate_arrows,
-                    test_coordinate_arrows,
+                    #test_coordinate_arrows,
                     show_interfaces,
                     make_lego,
                     add_lego,
