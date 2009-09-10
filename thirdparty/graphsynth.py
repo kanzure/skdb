@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import math
 import yaml #maybe one day?
+from numpy import identity, multiply
 from copy import copy
 
 bryan_message = "bryan hasnt got that far yet"
@@ -10,6 +11,9 @@ def set_list(self, variable, index, label):
     while len(variable) <= index:
         variable.append("")
     variable[index] = label
+
+def make_identity(size):
+    return identity(size)
 
 class Arc:
     
@@ -386,7 +390,171 @@ class Rule: #GrammarRule
         pass
     def apply(self, L_mapping, host, position_t, parameters=[]):
         pass
-    #more..
+    #more ...
+    #from grammarRule.ShapeMethods.cs
+    epsilon = 0.000001f
+    regularization_matrix = []
+    def rest_regularization_matrix(self):
+        pass
+    def calculate_regularization_matrix(self):
+        pass
+    use_shape_restrictions = False
+    transform_node_shapes = False
+    translate, scale, skew, flip = None, None, None, None
+    rotate, projection = None, None
+    def find_transform(self, located_nodes):
+        #if there are no nodes, simply return the identity matrix
+        if len(located_nodes) == 0: return make_identity(3)
+        x1, x2, x3, x4, y1, y2, y3, y4 = 0, 0, 0, 0, 0, 0, 0, 0
+        tx, ty, wX, wY, a, b, c, d = 0, 0, 0, 0, 0, 0, 0, 0
+        k1, k2, k3, k4 = 0, 0, 0, 0
+        u3, u4, v3, v4 = 0, 0, 0, 0
+        
+        x1 = located_nodes[0].X
+        y1 = located_nodes[0].Y
+        if len(self.L.nodes) >= 2:
+            x2 = located_nodes[1].X
+            y2 = located_nodes[1].Y
+        if len(self.L.nodes) >= 3:
+            x3 = located_nodes[2].X
+            y3 = located_nodes[2].Y
+            temp = [self.L.nodes[2].X, self.L.nodes[2].Y, 1.0]
+            temp = multiply(self.regularization_matrix, temp)
+            u3 = temp[0] #this is going to be a whole row. is this right?
+            u4 = temp[1] #FIXME
+        if len(self.L.nodes) >= 4:
+            x4 = located_nodes[3].X
+            y4 = located_nodes[3].Y
+            temp = [self.L.nodes[3].X, self.L.nodes[3].Y, 1.0]
+            temp = multiply(self.regularization_matrix, temp)
+            u4 = temp[0]
+            v4 = temp[1]
+        #set values for tx and ty
+        tx = x1
+        ty = y1
+        #calculate projection terms
+        if len(self.L.nodes) <= 3:
+            wX, wY = 0, 0
+        elif self.same_close_zero(v3 * v4):
+            wX, wY = 0, 0
+        else:
+            #calculate intermediate values used only in this class or method
+            k1 = u4 * v3 * (y4 - y2) - u3 * v4 * (y3 - y2)
+            if same_close_zero(k1)): k1 = 0
+            else: k1 /= v3 * v4
+            
+            k2 = v4 * (y3 - y2 * u3 + ty * u3 - ty) + v3 * (-y4 - ty * u4 + y2 * u4 + ty)
+            if same_close_zero(k2): k2 = 0
+            else: k2 /= v3 * v4
 
+            k3 = u3 * v4 * (x3 - x2) - u4 * v3 * (x4 - x2)
+            if same_close_zero(k3): k3 = 0
+            else: k3 /= v3 * v4
 
+            k4 = v3 * (x4 - x2 * u4 + tx * u4 - tx) - v4 * (x3 + tx * u3 - x2 * u3 - tx)
+            if same_close_zero(k4): k4 = 0
+            else: k4 /= v3 * v4
+
+            #calculate wY and wX
+            wY = (k1 * k4) - (k2 * k3)
+            if same_close_zero(wY): wY = 0
+            else: wY /= k3 * (y3 - y4) + k1 * (x3 - x4) #equation 7
+
+            wX = wY * (y3 - y4) + k2
+            if same_close_zero(wX): wX = 0
+            else: wX /= k1 #equation 8
+
+        #region Calculate rotate, scale, skew terms
+        if len(self.L.nodes) <= 1:
+            a, d = 1, 1
+            b, c = 0, 0
+        else:
+            #calculate a
+            a = x2 * (wX + 1) - tx;
+            #calculate c
+            c = y2 * (wX + 1) - ty;
+
+            if len(self.L.nodes) <= 2:
+                """in order for the validTransform to function, b and d are set as
+                if there is a rotation as opposed to a Skew in X. It is likely that
+                isotropic transformations like rotation are more often intended than skews."""
+                theta = math.atan2(-c, a)
+                b = -c
+                d = a
+            else:
+                #calculate b
+                b = x3 * (wX * u3 + wY * v3 + 1) - a * u3 - tx
+                if same_close_zero(b): b = 0
+                else: b /= v3
+                #calculate d
+                d = y3 * (wX * u3 + wY * v3 + 1) - c * u3 - ty
+                if same_close_zero(d): d = 0
+                else: d /= v3
+        T = [
+            [a, b, tx], #row 0
+            [c, d, ty], #row 1
+            [wX, wY, 1] #row 3
+            ]
+        T = multiply(T, self.regularization_matrix)
+        T[0][0] /= T[2][2]
+        T[0][1] /= T[2][2]
+        T[0][2] /= T[2][2]
+        T[1][0] /= T[2][2]
+        T[1][1] /= T[2][2]
+        T[1][2] /= T[2][2]
+        T[2][0] /= T[2][2]
+        T[2][1] /= T[2][2]
+        T[2][2] = 1
+        return T
+    def valid_transform(self, T, theta=None):
+        '''in this function the candidate transform T "runs the gauntlet"
+        the long set of if statements each return false, and if T makes it all
+        the way through, we return true
+        it's easy to check the translation and projection constraints first
+        since there's a one-to-one match wtih variables in the matrix and the flags.'''
+        if theta is not None: return self.valid_transform_theta(T, theta)
+        if not same_close_zero(T[0][2]) and (self.translate == self.transform_type.only_x or self.translate == self.transform_type_prohibited):
+            return False
+        elif not same_close_zero(T[1][2]) and (self.translate == self.transform_type.only_x or self.translate == self.transform_type_prohibited):
+            return False
+        elif not same_close_zero(T[0][2], T[1][2]) and (self.translate == self.transform_type.only_x or self.translate == self.transform_type_prohibited):
+            return False
+        
+        #now for projection
+        if not same_close_zero(T[2][0]) and (self.projection == self.transform_type.only_x or self.projection == self.transform_type.prohibited):
+            return False
+        elif not same_close_zero(T[2][1]) and (self.projection == self.transform_type.only_x or self.projection == self.transform_type.prohibited):
+            return False
+        elif not same_close_zero(T[2][0], T[2][1]) and (self.projection == self.transform_type.only_x or self.projection == self.transform_type.prohibited):
+        
+        #Now, it's a little more complicated since the rotation occupies the same cells
+        #in T as skewX, skewY, scaleX, and scaleY. The approach taken here is to solve
+        #for theta (the amount of rotation) and then call/return what the overload produces
+        #which requires theta and solves for skewX, skewY, scaleX, and scaleY.
+        elif not self.rotate: return self.valid_transform(T, 0.0)
+        #skew restrictions are easier than scale, because they default to (as in the identity matrix) 0 whereas scale is 1
+        elif self.skew == self.transform_type.prohibited or self.skew == self.transform_type.only_y:
+            return self.valid_transform(T, math.atan2(T[0][1], T[1][1]))
+        elif self.skew == self.transform_type.only_x:
+            return self.valid_transform(T, math.atan2(-T[1][0], T[0][0]))
+        elif self.skew == self.transform_type.both_uniform:
+            return self.valid_transform(T, math.atan2((T[0][1] - T[1][0]), (T[0][0] + T[1][1]))) #FIXME
+        
+        #Lastly, and most challenging, we look at Scale Restrictions. Flip is basically
+        #the same and handled in the overload below.
+        elif self.scale == self.transform_type.prohibited or self.scale == self.transform_type.only_y:
+            #wtf are these variable names?
+            TooPlusTio2 = T[0][0] * T[0][0] + T[1][0] * T[1][0]
+            sqrtt2pt2 = math.sqrt(Too2PlusTio2)
+            Ky = math.sqrt(Too2PlusTio2 - 1)
+            return self.valid_transform(T, theta=math.acos(T[0][0] / sqrtt2pt2) + math.atan2(Ky, 1))
+        elif self.scale == self.transform_type.only_y:
+            Toi2PlusTii2 = T[0][1] * T[0][1] + T[1][1] * T[1][1]
+            sqrtt2pt2 = math.sqrt(Toi2PlusTii2)
+            Kx = math.sqrt(Toi2PlusTii2 - 1)
+            return self.valid_transform(T, theta=math.acos(T[0][1] / sqrtt2pt2) + math.atan2(1, Kx))
+        elif self.scale == self.transform_type.both_uniform: #FIXME
+            return self.valid_transform(T, theta=math.atan2((T[0][0] - T[1][1]), (T[0][1] + T[1][0])))
+    def valid_transform_theta(self, T, theta):
+        pass
 
