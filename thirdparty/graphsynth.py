@@ -604,8 +604,58 @@ class Rule: #GrammarRule
                     new_located_arcs[current_L_arc_index] = host_arc
                     self.recognize_recursion(host, new_located_nodes, new_located_arcs, next_L_node, next_host_node)
     def apply(self, L_mapping, host, position_t, parameters=[]):
-        pass
-    #more ...
+        for a in self.L.global_labels:
+            if not self.R.contains(a):
+                host.global_labels.remove(a) #removing the lables in L but not in R
+        #if there are multiple identical R.global_labels, they are not added
+        for a in self.R.global_labels:
+            if not self.R.contains(a):
+                host.global_lables.append(a) #and adding the label in R but not in L
+        #do the same now, for the variables.
+        for a in self.L.global_variables:
+            if not self.R.global_variables.contains(a):
+                host.global_variables.remove(a) #removing the variables in L but not in R
+        for a in self.R.global_variables:
+            if not self.L.global_variables.contains(a):
+                host.global_variables.append(a) #and adding the variables in R but not in L
+        
+        #First set up the Rmapping, which is a list of nodes within the host
+        #that corresponds in length and position to the nodes in R, just as
+        #Lmapping contains lists of nodes and arcs in the order they are
+        #referred to in L.
+        R_mapping = Graph()
+        #we do not know what these will point to yet, so just
+        #make it of proper length at this point.
+        #DEBUG HINT: you should check R_mapping at the end of
+        #the function - it should contain no None values.
+        for node in self.R.nodes:
+            R_mapping.nodes.append(None)
+        for arc in self.R.arcs:
+            R_mapping.arcs.append(None)
+        self.remove_L_diff_K_from_host(L_mapping, host)
+        self.add_R_diff_K_to_D(L_mapping, R_mapping, position_T) 
+        '''these two lines correspond to the two "pushouts" of the double pushout algorithm.
+             L <--- K ---> R     this is from freeArc embedding (aka edNCE)
+             |      |      |        |      this is from the parametric update
+             |      |      |        |       |
+           host <-- D ---> H1 ---> H2 ---> H3
+         The first step is to create D by removing the part of L not found in K (the commonality).
+         Second, we add the elements of R not found in K to D to create the updated host, H. Note,  
+         that in order to do this, we must know what subgraph of the host we are manipulating - this
+         is the location mapping found by the recognize function.'''
+         self.free_arc_embedding(L_mapping, host, R_mapping)
+         #however, there may still be a need to embed the graph with other arcs left dangling,
+         #as in the "edge directed Node Controlled Embedding approach", which considers the neighbor-
+         #hood of nodes and arcs of the recognized Lmapping.
+         self.update_parameters(L_mapping, host, R_mapping, parameters)
+    def remove_L_diff_K_from_host(self, L_mapping, host):
+        raise NotImplementedError, bryan_message_generator("GraphSynth.Representation/RuleClasses/grammarRule.RecognizeApply.cs")
+    def add_R_diff_K_to_D(self, L_mapping, D, R_mapping, position_T):
+        raise NotImplementedError, bryan_message_generator("GraphSynth.Representation/RuleClasses/grammarRule.RecognizeApply.cs")
+    def free_arc_embedding(self, L_mapping, host, R_mapping):
+        raise NotImplementedError, bryan_message_generator("GraphSynth.Representation/RuleClasses/grammarRule.RecognizeApply.cs")
+    def update_parameters(self, L_mapping, host, R_mapping, parameters):
+        raise NotImplementedError, bryan_message_generator("GraphSynth.Representation/RuleClasses/grammarRule.RecognizeApply.cs")
     #from grammarRule.ShapeMethods.cs
     epsilon = 0.000001
     regularization_matrix = []
