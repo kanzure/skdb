@@ -1,3 +1,7 @@
+#generate.py: produce standard thread forms using OpenCASCADE
+#copyright 2009 Ben Lipkowitz
+#you may redistribute this file under the terms of the GNU GPL version 2 or later
+
 from __future__ import division
 #for projecting onto a cylinder
 from OCC.Geom import *
@@ -28,24 +32,23 @@ class Helix:
         self.start2d, self.end2d = gp_Pnt2d(0,0+axial_offset), gp_Pnt2d(turns*2*math.pi, height+axial_offset)
         self.slope = GCE2d_MakeSegment(self.start2d, self.end2d).Operator()
 
-    def Edge(self): return BRepBuilderAPI_MakeEdge(self.slope, self.cyl).Edge()
-       
+    def _MakeEdge(self, slope, cyl): return BRepBuilderAPI_MakeEdge(slope, cyl) #needed for end_points
+
+    def Edge(self): return self._MakeEdge(self.slope, self.cyl).Edge()
+
+    def end_vertices(self):
+        '''the ends of the helix as a list of TopoDS_Vertex's'''
+        m = self._MakeEdge(self.slope, self.cyl)
+        return [m.Vertex1(), m.Vertex2()]
+
+    def end_points(self):
+        '''the ends of the helix as a list of gp_Pnt's'''
+        v1, v2 = self.end_vertices()
+        return [BRep_Tool().Pnt(v1), BRep_Tool().Pnt(v2)]
+
     def Curve(self): return BRep_Tool().Curve(self.Edge())[0].GetObject() #segfaults when you try to do anything..
 
     def Wire(self): return BRepBuilderAPI_MakeWire(self.Edge()).Wire()
-    
-    def endpoints(self):
-        vertices = []
-        points = []
-        aVertexExplorer = TopExp_Explorer(self.Wire(), TopAbs_VERTEX)
-        while aVertexExplorer.More():
-            cur = aVertexExplorer.Current()
-            vertices.append(cur)
-            p = BRep_Tool().Pnt(TopoDS().Vertex(cur))
-            points.append(p)
-            #vertices.append(TopoDS().Vertex(aVertexExplorer.Current()))
-            aVertexExplorer.Next()
-        return vertices, points
 
 major_diameter = 1/2
 height = 1
@@ -63,36 +66,32 @@ root_curve = Helix(minor_diameter/2, turns, height, axial_offset = pitch*9/16).C
 #this segfaults, why?
 #root_points = root_curve.Value(0), root_curve.Value(turns*2*math.pi) 
 
-vertices, points = crest1.endpoints()
-display.DisplayShape([make_vertex(p) for p in points])
-print [p.Coord() for p in points]
+points = crest1.end_points()
+start1, end1= crest1.end_vertices()
+start2, end2 = crest2.end_vertices()
 
-#why does this fail but endpoints() works? v is at the same address each time??
-for v in vertices:
-    print 'here'
-    print v
-    print TopoDS().Vertex(v)
-    #pnt = BRep_Tool().Pnt(TopoDS().Vertex(v))
-    #print 'hi'
-    #print pnt.Coord()
-    #print v.Location()
-    #print dir(v.Location())
-    #display.DisplayShape(v)
+startedge = BRepBuilderAPI_MakeEdge(start2, start1).Edge()
+display.DisplayShape(startedge)
+display.DisplayShape([start1, start2])
+
+endedge = BRepBuilderAPI_MakeEdge(end1, end2).Edge()
+display.DisplayShape(endedge)
+display.DisplayShape([end1, end2])
+
+
+tmp = BRepBuilderAPI_MakeWire()
+print TopoDS().Edge(endedge.Reversed())
+[tmp.Add(edge) for edge in [crest1.Edge(), endedge, TopoDS().Edge(crest2.Edge().Reversed()), startedge ]]
+assert tmp.Wire().Closed()
+land = BRepBuilderAPI_MakeFace(tmp.Wire())
+#print land.Check()
+print dir(land)
+#display.DisplayShape(land.Shape())
 
 display.DisplayShape(crest1.Edge())
 display.DisplayShape(crest2.Edge())
 #display.DisplayShape(root)
 display.DisplayShape(valley1.Edge())
 display.DisplayShape(valley2.Edge())
-#display.DisplayShape(make_vertex(root_points[0]))
-#display.DisplayShape(make_vertex(root_points[1]))
 
-radius = 1
-helix_wire = Helix(radius, 5, 1).Wire()
-helix_edge = Helix(radius, 5, 1).Edge()
-
-#display.DisplayShape(helix_wire)
-#display.DisplayShape(circle_face)
-#display.DisplayShape(line_edge)
-#display.DisplayShape(sweep)
 start_display()
