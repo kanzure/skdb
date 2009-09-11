@@ -1,4 +1,26 @@
 #!/usr/bin/python
+"""
+/**************************************************************************
+ *     GraphSynth is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *  
+ *     GraphSynth is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *  
+ *     You should have received a copy of the GNU General Public License
+ *     along with GraphSynth.  If not, see <http://www.gnu.org/licenses/>.
+ *     
+ *     Please find further details and contact information on GraphSynth
+ *     at: http://graphsynth.com/
+ *     
+ *     Original author: Matthew Ira Campbell <mc1@mail.utexas.edu>
+ *     Python translation by: Bryan Bishop <kanzure@gmail.com>
+ *************************************************************************/
+"""
 import math
 import yaml #maybe one day?
 from numpy import identity, multiply
@@ -7,11 +29,11 @@ import functools
 import unittest
 
 campbell_message = "campbell didnt implement this"
-bryan_message = "bryan hasnt got that far yet"
+bryan_message = "bryan hasnt got this far yet"
 def bryan_message_generator(path): return bryan_message + (" (%s)" % (path))
 
 #in the original graphsynth codebase, there were a lot of properties
-#these need to be reincorporated into this version
+#these need to be reincorporated into this python version
 def _set_property(self, value=None, attribute_name=None):
     assert attribute_name, "_set_property must have an attribute name to work with"
     setattr(self, attribute_name, value)
@@ -41,6 +63,7 @@ def make_identity(size):
     return identity(size)
 
 class Arc:
+    graphsynth_path = "GraphSynth.Representation/BasicGraphClasses/arc.cs"
     def __init__(self, name="", from_node=None, to_node=None, directed=False, doubly_directed=False, local_labels=[], local_variables=[], old_data={'style_key': "", 'x': "", 'y': ""}):
         self.name = name
         self._from = from_node #tail
@@ -82,13 +105,12 @@ class Arc:
 class Edge(Arc):
     '''Originally, I created a separate edge and vertex class to allow for the future expansion of GraphSynth into shape grammars. I now have decided that the division is not useful, since it simply deprived nodes of X,Y,Z positions. Many consider edge and arc, and vertex and node to be synonymous anyway but I prefer to think of edges and vertices as arcs and nodes with spatial information. At any rate there is no need to have these inherited classes, but I keep them for backwards-compatible purposes.'''
     #there isn't actually any code for an Edge
+    graphsynth_path = "GraphSynth.Representation/BasicGraphClasses/arc.cs"
     pass    
 
 class Node:
+    graphsynth_path = "GraphSynth.Representation/BasicGraphClasses/node.cs"
     #none of this has to be here, it's just for reference
-    name = ""
-    local_labels = []
-    local_variables = []
     arcs = [] #list of arcs connecting to this node
     arcs_to = [] #those arcs where arc._to points to this node. "head of the arc".
     arcs_from = [] #those arcs where arc._from points to this node. "tail of the arc".
@@ -115,9 +137,11 @@ class Node:
 
 class Vertex(Node):
     #this was blank in the graphsynth codebase for some reason?
+    graphsynth_path = "GraphSynth.Representation/BasicGraphClasses/node.cs"
     pass
 
 class Graph:
+    graphsynth_path = "GraphSynth.Representation/BasicGraphClasses/designGraph.cs"
     def __init__(self, count=None, nodes=None, arcs=None, global_labels=[], global_variables=[]):
         '''set count to some number to make this a complete graph of that many nodes.
         note: average_degree is currently not implemented (to make a graph with an average degree on each node)
@@ -241,6 +265,7 @@ class Graph:
         else: self.nodes.remove(node_ref)
 
 class Candidate:
+    graphsynth_path = "GraphSynth.Representation/BasicGraphClasses/candidate.cs"
     #just for my reference
     previous_states = [] #a list of Graph objects
     current_state = None #a Graph
@@ -293,15 +318,17 @@ class Candidate:
         self.performance_params = [] #TODO: should the size of this list be preserved?
     def save_to_xml(self, filename=None):
         '''exports this graph into the graphsynth gxml format'''
-        assert NotImplementedError, "bryan hasnt got around to this yet"
+        assert NotImplementedError, bryan_message
     def save_to_yaml(self, filename=None):
         '''not guaranteed to be pretty'''
-        assert NotImplementedError, "Candidate.save_to_yaml: bryan hasnt got around to implementing yaml dumps yet"
+        assert NotImplementedError, "Candidate.save_to_yaml: " + bryan_message
         handler = open(filename, 'w')
         handler.write(yaml.dump(self, default_flow_style=False))
         handler.close()
 
 class Rule: #GrammarRule
+    base_path = "GraphSynth.Representation/RuleClasses/"
+    graphsynth_path = [base_path + "grammarRule.Basic.cs", base_path + "grammarRule.RecognizeApply.cs", base_path + "grammarRule.ShapeMethods.cs"]
     name = ""
     spanning = False
     induced = False
@@ -643,19 +670,269 @@ class Rule: #GrammarRule
          Second, we add the elements of R not found in K to D to create the updated host, H. Note,  
          that in order to do this, we must know what subgraph of the host we are manipulating - this
          is the location mapping found by the recognize function.'''
-         self.free_arc_embedding(L_mapping, host, R_mapping)
-         #however, there may still be a need to embed the graph with other arcs left dangling,
-         #as in the "edge directed Node Controlled Embedding approach", which considers the neighbor-
-         #hood of nodes and arcs of the recognized Lmapping.
-         self.update_parameters(L_mapping, host, R_mapping, parameters)
+        self.free_arc_embedding(L_mapping, host, R_mapping)
+        #however, there may still be a need to embed the graph with other arcs left dangling,
+        #as in the "edge directed Node Controlled Embedding approach", which considers the neighbor-
+        #hood of nodes and arcs of the recognized Lmapping.
+        self.update_parameters(L_mapping, host, R_mapping, parameters)
     def remove_L_diff_K_from_host(self, L_mapping, host):
-        raise NotImplementedError, bryan_message_generator("GraphSynth.Representation/RuleClasses/grammarRule.RecognizeApply.cs")
+        '''foreach node in L - see if it "is" also in R - if it is in R than it "is" part of the
+        commonality subgraph K, and thus should not be deleted as it is part of the connectivity
+        information for applying the rule. Note that what we mean by "is" is that there is a
+        node with the same name. The name tag in a node is not superficial - it contains
+        useful connectivity information. We use it as a stand in for referencing the same object
+        this is different than the local lables which are used for recognition and the storage
+        any important design information.
+        '''
+        for some_node in self.L.nodes:
+            i = self.L.nodes.index(some_node)
+            exists = False
+            for node in self.R.nodes:
+                if node.name == self.L.node.name:
+                    exists = True
+                    break
+            #if a node with the same name does not exist in R, then it is safe to remove it.
+            #The removeNode should is invoked with the "false false" switches of this function.
+            #This causes the arcs to be unaffected by the deletion of a connecting node. Why
+            #do this? It is important in the edNCE approach that is appended to the DPO approach
+            #(see the function freeArcEmbedding) in connecting up a new R to the elements of L
+            #a node was connected to.
+            if not exists: host.remove_node(L_mapping.nodes[i], False, False)
+        for some_arc in self.L.arcs:
+            i = self.L.arcs.index(some_arc)
+            exists = False
+            for arc in self.R.arcs:
+                if some_arc.name == arc.name:
+                    exists=True
+                    break
+            if not exists: host.remove_arc(L_mapping.arcs[i])
     def add_R_diff_K_to_D(self, L_mapping, D, R_mapping, position_T):
-        raise NotImplementedError, bryan_message_generator("GraphSynth.Representation/RuleClasses/grammarRule.RecognizeApply.cs")
+        '''in this adding and gluing function, we are careful to distinguish
+        the Lmapping or recognized subgraph of L in the host - heretofore
+        known as Lmapping - from the mapping of new nodes and arcs of the
+        graph, which we call Rmapping. This is a complex function that goes
+        through 4 key steps:
+        1. add the new nodes that are in R but not in L.
+        2. update the remaining nodes common to L&R (aka K nodes) that might
+           have had some label changes.
+        3. add the new arcs that are in R but not in L. These may connect to
+           either the newly connected nodes from step 1 or from the updated nodes
+           of step 2.
+        4. update the arcs common to L&R (aka K arcs) which might now be connected
+           to new nodes created in step 1 (they are already connected to 
+           nodes in K). Also make sure to update their labels just as K nodes were
+           updated in step 2.'''
+        #here are some placeholders used in this bookeeping. Many are used multiple times
+        #so we might as well declare them just once at the start.
+        index1, index2, from_node, to_node, k_node, k_arc = None, None, None, None, None, None
+        for r_node in self.R.nodes:
+            #step 1. add new nodes to D
+            exists = False
+            for each in self.L.nodes:
+                if each.name == r_node.name:
+                    exists=True
+                    break
+            if not exists:
+                D.add_node(r_node.node_type) #create a new node #FIXME do "node_type" the python way
+                R_mapping.nodes[i] = D.last_node #make sure it's referenced in R_mapping
+                #labels cannot be set equal, since that merely sets the reference of this list
+                #to the same value. So, we need to make a complete copy.
+                r_node = copy(D.last_node) #FIXME: should this be deepcopy?
+                #give that new node a name and labels to match with the R.
+                self.update_position_of_node(D.last_node, position_T, r_node)
+            #step 2. update K nodes.
+            else:
+                #else, we may need to modify or update the node. In the pure graph
+                #grammar sense this is merely changing the local labels. In a way,
+                #this is a like a set grammar. We need to find the labels in L that
+                #are no longer in R and delete them, and we need to add the new labels
+                #that are in R but not already in L. The ones common to both are left
+                #alone.
+                index1 = None
+                for each in self.L.nodes: #find index of the common node in L
+                    if each.name == r_node.name:
+                        index1 = self.L.nodes.index(each)
+                k_node = L_mapping.nodes[index1] #... and then set k_node to the actual node in D.
+                R_mapping.nodes[i] = k_node #also, make sure that the R_mapping is the same node
+                for a in self.L.nodes[index1].local_labels:
+                    if not (a in r_node.local_labels): k_node.local_labels.remove(a) #removing the labels in L but not in R...
+                for a in r_node.local_labels:
+                    if not (a in self.L.nodes[index1].local_labels): k_node.local_labels.append(a) #...and adding the label in R but not in L.
+                for a in self.L.nodes[index1].local_variables:
+                    if not (a in r_node.local_variables): k_node.local_variables.remove(a) #removing the variables in L but not in R
+                for a in r_node.local_variables:
+                    if not (a in self.L.nodes[index1].local_variables): k_node.local_variables.append(a) #and adding the variable in R but not in L
+                k_node.display_shape = copy(r_node.display_shape)
+                self.update_position_of_node(k_node, position_T, r_node)
+        #now moving onto the arcs (a little more challenging actually)
+        for r_arc in self.R.arcs:
+            i = self.R.arcs.index(r_arc)
+            #step 3. add new arcs to D
+            exists = False
+            for test_arc in self.L.arcs:
+                if test_arc.name == r_arc.name:
+                    exists=True
+                    break
+            if not exists:
+                #setting up where the arc comes from
+                if r_arc._from == None: From = None
+                else: #this should be reworked into an elif to be honest
+                    #if the arc is coming from a node that is in K, then it must've been
+                    #part of the location (or L_mapping) that was originally recognized.
+                    exist1 = False
+                    for ea in self.L.nodes:
+                        if ea.name == r_arc._from.name:
+                            exist1 = True
+                            index1 = self.L.nodes.index(ea)
+                            From = L_mapping.nodes[index1]
+                            break
+                    if not exist1:
+                        #if not in K then the arc connects to one of the new nodes that were
+                        #created at the beginning of this function (see step 1) and is now
+                        #one of the references in R_mapping.
+                        index1 = self.R.find_index_of_node_with(name=r_arc._from.name)
+                        From = R_mapping.nodes[index1]
+                #setting up where the arc goes
+                #this code is the same of "setting up where arc comes from - except here
+                #we do the same for the to connection of the arc.
+                if r_arc._to is None: To = None
+                else:
+                    index1 = self.L.find_index_of_node_with(name=r_arc._to.name)
+                    if index1 is not None and index1 is not False:
+                        To = L_mapping.nodes[index1]
+                    else:
+                        index1 = self.R.find_index_of_node_with(name=r_arc._to.name)
+                        To = R_mapping.nodes[index1]
+                D.add_arc(r_arc.name, r_arc.arc_type, From, To)
+                R_mapping.arcs[i] = D.last_arc
+                r_arc.copy(D.last_arc)
+            #step 4. update K arcs.
+            else: #line 579 ish
+                index2 = self.L.find_index_of_arc_with(name=r_arc.name)
+                #first find the position of the same arc in L
+                current_L_arc = self.L.arcs[index2]
+                k_arc = L_mapping.arcs[index2] #then find the actual arc in D that is to be changed
+                #one very subtle thing just happened here! (07/06/06) if the direction is reversed, then
+                #you might mess-up this k_arc. We need to establish a boolean so that references
+                #incorrectly altered.
+                k_arc_is_reversed = False
+                if not (L_mapping.nodes.index(k_arc._from) == self.L.nodes.index(current_L_arc._from)) and not (L_mapping.nodes.index(k_arc._to) == self.L.nodes.index(current_L_arc._to)):
+                    k_arc_is_reversed = True
+                R_mapping.arcs[i] = k_arc
+                #similar to step 3. we first find how to update the from and to.
+                if current_L_arc._from is not None and r_arc._from is None:
+                    #this is a rare case in which you actually want to break an arc from its attached
+                    #node. If the corresponding L arc is not null only! if it is null then it may be
+                    #actually connected to something in the host, and we are in no place to remove it.
+                    if k_arc_is_reversed: k_arc._to = None
+                    else: k_arc._from = None
+                elif r_arc._from is not None:
+                    index1 = self.R.nodes.find_index_of_node_with(name=r_arc._from.name)
+                    #find the position of node that this arc is supposed to connect to in R
+                    if k_arc_is_reversed: k_arc._to = R_mapping.nodes[index1]
+                    else: k_arc._from = R_mapping.nodes[index1]
+                #now do the same for the To connection.
+                if current_L_arc._to is not None and r_arc._to is None:
+                    if k_arc_is_reversed: k_arc._from = None
+                    else: k_arc._to = None
+                elif r_arc._to is not None:
+                    index1 = self.R.find_index_of_node_with(name=r_arc.To.name)
+                    if k_arc_is_reversed: k_arc._from = R_mapping.nodes[index1]
+                    else: k_arc._to = R_mapping.nodes[index1]
+                #just like in step 2, we may need to update the labels of the arc.
+                for a in current_L_arc.local_labels:
+                    if not a in r_arc.local_labels: k_arc.local_labels.remove(a)
+                for a in r_arc.local_labels:
+                    if not a in current_L_arc.local_labels: k_arc.local_labels.append(a)
+                for a in current_L_arc.local_variables:
+                    if not a in r_arc.local_variables: k_arc.local_variables.remove(a)
+                for a in r_arc.local_variables:
+                    if not a in current_L_arc.local_variables: k_arc.local_variables.append(a)
+                if (not k_arc.directed) or (k_arc.directed and current_L_arc.direction_is_equal):
+                    k_arc.directed = r_arc.directed
+                #if the k_arc is currently undirected or if it is and direction is equal
+                #then the directed should be inherited from R.
+                if (not k_arc.doubly_directed) or (k_arc.doubly_directed and current_L_arc.direction_is_equal):
+                    k_arc.doubly_directed = r_arc.doubly_directed
+                k_arc.display_shape = copy(r_arc.display_shape)
     def free_arc_embedding(self, L_mapping, host, R_mapping):
-        raise NotImplementedError, bryan_message_generator("GraphSynth.Representation/RuleClasses/grammarRule.RecognizeApply.cs")
+        '''There are nodes in host which may have been left dangling due to the fact that their 
+        connected nodes were part of the L-R deletion. These now need to be either 1) connected
+        up to their new nodes, 2) their references to old nodes need to be changed to null if 
+        intentionally left dangling, or 3) the arcs are to be removed. In the function 
+        removeLdiffKfromHost we remove old nodes but leave their references intact on their 
+        connected arcs. This allows us to quickly find the list of freeArcs that are candidates 
+        for the embedding rules. Essentially, we are capturing the neighborhood within the host 
+        for the rule application, that is the arcs that are affected by the deletion of the L-R
+        subgraph. Should one check non-dangling non-neighborhood arcs? No, this would seem to 
+        cause a duplication of such an arc. Additionally, what node in host should the arc remain 
+        attached to?  There seems to be no rigor in applying these more global (non-neighborhood) 
+        changes within the literature as well for the general edNCE method.'''
+        free_end_identifier = None
+        new_node_to_connect, node_removed_in_L_diff_R_deletion, to_node, from_node = None, None, None, None
+        neighbor_node = None
+        num_of_arcs = len(host.arcs)
+
+        for arc in host.arcs:
+            #first, check to see if the arc is really a freeArc that needs updating.
+            if self.embedding_rule.arc_is_free(arc, host, free_end_identifier, neighbor_node): #the last two are apparently return values? wtf FIXME
+                free_arc = arc
+                #For each of the embedding rules, we see if it is applicable to the identified freeArc.
+                #The rule then modifies the arc by simply pointing it to the new node in R as indicated
+                #by the embedding Rule's RNodeName. NOTE: the order of the rules are important. If two
+                #rules are 'recognized' with the same freeArc only the first one will modify it, as it 
+                #will then remove it from the freeArc list. This is useful in that rules may have precedence
+                #to one another. There is an exception if the rule has allowArcDuplication set to true, 
+                #since this would simply create a copy of the arc.
+                for e_rule in self.embedding_rules: #FIXME where is embedding_rules defined? see line 683 in grammarRule.RecognizeApply.cs
+                    new_node_to_connect = e_rule.find_new_node_to_connect(R, R_mapping)
+                    node_removed_in_L_diff_R_deletion = e_rule.find_deleted_node(L, L_mapping)
+                    if e_rule.rule_is_recognized(free_end_identifier, free_arc, neighbor_node, node_removed_in_L_diff_R_deletion):
+                        #set up new connection points
+                        if free_end_identifier >= 0:
+                            if e_rule.new_direction >= 0:
+                                to_node = new_node_to_connect
+                                from_node = free_arc._from
+                            else:
+                                to_node = free_arc._from
+                                from_node = new_node_to_connect
+                    else:
+                        if e_rule.new_direction <= 0:
+                            from_node = new_node_to_connect
+                            to_node = free_arc._to
+                        else:
+                            from_node = free_arc._to
+                            to_node = new_node_to_connect
+                    #if making a copy of arc, duplicate it and all the characteristics
+                    if e_rule.allow_arc_duplication:
+                        #under the allowArcDuplication section, we will be making a copy of the
+                        #freeArc. This seems a little error-prone at first, since if there is only
+                        #one rule that applies to freeArc then we will have good copy and the old
+                        #bad copy. However, at the end of this function, we go through the arcs again
+                        #and remove any arcs that still appear free. This also serves the purpose to
+                        #delete any dangling nodes that were not recognized in any rules.
+                        host.add_arc(copy(free_arc), from_node, to_node)
+                    #else, just update the old free_arc
+                    else:
+                        free_arc._from = from_node
+                        free_arc._to = to_node
+                        break #skip the next arc
+                        #this is done so that no more embedding rules will be checked with this free_arc
+        #clean up (i.e. delete) any free_arcs that are still in host.arcs
+        for arc in host.arcs:
+            #this seems a little archaic to use this i-counter instead of foreach.
+            #the issue is that since we are removing nodes from the list as we go
+            #through it, we very well can't use foreach. The countdown allows us to
+            #disregard problems with the deleting.
+            #.. but this doesn't apply in python. :)
+            if (arc._from is not None and arc._from not in host.nodes) or (arc._to is not None and arc._to not in host.nodes):
+                host.remove_arc(arc)
     def update_parameters(self, L_mapping, host, R_mapping, parameters):
-        raise NotImplementedError, bryan_message_generator("GraphSynth.Representation/RuleClasses/grammarRule.RecognizeApply.cs")
+        apply_arguments = [L_mapping, host, R_mapping, parameters, self]
+        #If you get an error in this function, it is most likely due to
+        #an error in the compilted DLLofFunctions. Open your code for the
+        #rules and leave this untouched - it's simply the messenger.
+        #FIXME: omitted some DLLofFunctions stuff here
     #from grammarRule.ShapeMethods.cs
     epsilon = 0.000001
     regularization_matrix = []
@@ -874,4 +1151,258 @@ class Rule: #GrammarRule
         update.DisplayShape.transform_shape(newT)
     def update_shape_qualities_of_node(self, update, T, given):
         raise NotImplementedYet, campbell_message
+
+#here we define additional qualities used only by arcs in the grammar rules.
+#TODO: check if this is used anywhere
+class RuleArc(Arc):
+    graphsynth_path = "GraphSynth.Representation/RuleClasses/ruleArc.cs"
+    def __init__(name="", all_local_labels=False, direction_is_equal=False, null_means_null=True, negate_labels=[]):
+        self.name = name
+        #The following booleans capture the possible ways in which an arc may/may not be a subset
+        #(boolean set to false) or is equal (in this respective quality) to the host (boolean set
+        #to true). These are special subset or equal booleans used by recognize. For this
+        #fundamental arc classes, only these three possible conditions exist.
+        self.contains_all_local_labels = all_local_labels
+        #if true then all the localLabels in the lArc match with those in the host arc, if false
+        #then lArc only needs to be a subset on host arc localLabels.
+        self.direction_is_equal = direction_is_equal
+        #this boolean is to distinguish that the directionality
+        #within an arc matches perfectly. If false then all (singly)-directed arcs
+        #will match with doubly-directed arcs, and all undirected arcs will match with all
+        #directed and doubly-directed arcs. Of course, a directed arc going one way will
+        #still not match with a directed arc going the other way.
+        #If true, then undirected only matches with undirected, directed only with directed (again, the
+        #actual direction must match too), and doubly-directed only with doubly-directed.
+        self.null_means_null = null_means_null #FIXME what should the default be?
+        #for a lack of a better name - this play on "no means no" applies to dangling arcs that point
+        #to null instead of pointing to another node. If this is set to false, then we are saying a
+        #null reference on an arc can be matched with a null in the graph or any node in the graph.
+        #Like the above, a false value is like a subset in that null is a subset of any actual node.
+        #And a true value means it must match exactly or in otherwords, "null means null" - null
+        #matches only with a null in the host. If you want the rule to be recognized only when an actual
+        #node is present simply add a dummy node with no distinguishing characteristics. That would
+        #in turn nullify this boolean since this boolean only applies when a null pointer exists in
+        #the rule.
+        self.negate_labels = negate_labels #In GraphSynth 1.8, I added these to ruleNode, ruleArc, and embedding rule classes. This is
+                                           #a simple fix and useful in many domains.
+    #TODO: figure out whether or not it's import to override __deepcopy__ here
+    def match_with(self, host_arc, from_host_node=None, to_host_node=None, traverse_forward=None):
+        '''returns a True/False based on if the host arc matches with this rule_arc.
+        host_arc = the host arc
+        from_host_node = from host node
+        to_host_node = to host node
+        traverse_forward = since the host connecting nodes are provided, we need to
+        check whether direction is an issue and that the host arc is connected forward (from
+        _from to _to) or backwards.'''
+        if host_arc is not None and from_host_node is not None and to_host_node is not None and traverse_forward is not None:
+            if self.match_with(host_arc):
+                if (self.directed and (((host_arc._to == to_host_node) and (host_arc._from == from_host_node) and traverse_forward) or ((host_arc._from == to_host_node) and (host_arc._to == from_host_node) and not traverse_forward))):
+                    return True
+                elif (((host_arc._to == to_host_node) and (host_arc._from == from_host_node)) or ((host_arc._from == to_host_node) and (host_arc._to == from_host_node))):
+                    return True
+                else: return False
+            else: return False
+        #what if we lack the to_node?
+        if host_arc is not None and from_host_node is not None and traverse_forward is not None and to_node is None:
+            if match_with(host_arc):
+                if self.directed:
+                    if (((host_arc._from == from_host_node) and traverse_forward is True) or ((host_arc._to == from_host_node) and not traverse_forward)): return True
+                    else: return False
+                elif ((host_arc._from == from_host_node) or (host_arc._to == from_host_node)): return True
+                else: return False
+            else: return False
+        #what if we only have host_arc?
+        if host_arc is not None and from_host_node is None and traverse_forward is None and to_node is None:
+            #returns a true/false based on if the host arc matches with this rule_arc. This overload
+            #is mostly used in the above overloads. It calls the next two functions to complete
+            #the matching process.
+            if host_arc is not None:
+                if ((self.direction_is_equal and self.doubly_directed == host_arc.doubly_directed) and (self.directed == host_arc.directed) or (not self.direction_is_equal and (host_arc.doubly_directed or not self.directed or (self.directed and host_arc.directed and not self.doubly_directed)))):
+                    #pardon my french, but this statement is a bit of a mindf**k. What it says is if
+                    #directionIsEqual, then simply the boolean state of the doublyDirected and directed
+                    #must be identical in L and in the host. Otherwise, one of three things must be equal.
+                    #first, hostArc's doublyDirected is true so whatever LArc's qualities are, it is a subset of it.
+                    #second, LArc's not directed so it is a subset with everything else.
+                    #third, they both are singly directed and LArc is not doublyDirected.
+                    if self.labels_match(host_arc.local_labels) and self.intended_types_match(self.arc_type, host_arc.arc_type):
+                        return True
+                    else: return False
+            else: return False
+    def labels_match(self, host_labels):
+        #first an easy check to see if any negating labels exist
+        #in the host_labels. if so, immediately return false.
+        for label in self.negate_labels:
+            if label in host_labels: return False
+        #next, set up a temp_labels so that we don't change the
+        #host's actual labels. We delete an instance of the label.
+        #this is new in version 1.8. It's important since one may
+        #have multiple identical labels.
+        temp_labels = []
+        temp_labels.extend(copy(host_labels))
+        for label in self.local_labels:
+            if label in temp_labels: temp_labels.remove(label)
+            else: return False
+        #this new approach actually simplifies and speeds up the containAllLabels
+        #check. If there are no more tempLabels than the two match completely - else
+        #return false.
+        if self.contains_all_local_labels and len(temp_labels)>0: return False
+        return True
+    def intended_types_match(self, L_arc_type, host_arc_type):
+        '''not sure what to do with this. python is dynamically typed, making all this Type stuff kinda useless.'''
+        if L_arc_type is None or isinstance(L_arc_type, Arc) or isinstance(L_arc_type, RuleArc) or L_arc_type == host_arc_type:
+           return True
+        else: return False
+    @staticmethod
+    def convert_from_arc(arc):
+        rule_arc = RuleArc(name=arc.name)
+        rule_arc.arc_type = arc.arc_type #FIXME
+        rule_arc.directed = arc.directed
+        rule_arc.display_shape = arc.display_shape
+        rule_arc._from = arc._from
+        rule_arc.local_labels.extend(copy(arc.local_labels))
+        rule_arc.local_variables.extend(copy(arc.local_variables))
+        rule_arc._to = arc._to
+        rule_arc.xml_arc_type = arc.xml_arc_type
+        return rule_arc
+
+class RuleNode(Node):
+    '''here we define additional qualities used only by nodes in the grammar rules.'''
+    graphsynth_path = "GraphSynth.Representation/RuleClasses/ruleNode.cs"
+    intended_types_match = RuleArc.intended_types_match
+    def __init__(self, name="", contains_all_local_labels=False, strict_degree_match=False, negate_labels=[]):
+        #The following booleans capture the possible ways in which a node may/may not be a subset
+        #(boolean set to false) or is equal (in this respective quality) to the host (boolean set
+        #to true). These are special subset or equal booleans used by recognize. For this
+        #fundamental node classes, only these two possible conditions exist.
+        self.contains_all_local_labels = contains_all_local_labels
+        #if true then all the localLabels in the lNode match with those in the host node, if false
+        #then lNode only needs to be a subset on host node localLabels.
+        self.strict_degree_match = strict_degree_match
+        #this boolean is to distinguish that a particular node
+        #of L has all of the arcs of the host node. Again,
+        #if True then use equal
+        #if False then use subset
+        #NOTE: this is commonly misunderstood to be the same as induced. The difference is that this
+        #applies to each node in the LHS and includes arcs that reference nodes not found on the LHS
+
+        #In GraphSynth 1.8, I added these to ruleNode, ruleArc, grammarRule (as global Negabels) and
+        #embedding rule (both for freeArc and NeighborNode) classes. This is a simple fix and useful in
+        #many domains. If the host item, contains a negabel then it is not a valid match.
+        self.negate_labels = negate_labels
+    def match_with(self, host_node):
+        '''returns True/False based on if the host node matches with this RuleNode.
+        this calls the next two functions which check labels and type.'''
+        if host_node is not None:
+            if (((self.strict_degree_match and (self.degree == host_node.degree)) or
+                (not self.strict_degree_match and (self.degree <= host_node.degree))) and
+                (self.labels_match(host_node.local_labels)) and
+                (self.intended_types_match(self.node_type, host_node.node_type))):
+                return True
+            else: return False
+        else: return False
+    def labels_match(self, host_labels):
+        #first an easy check to see if any negating labels exist
+        #in the host_labels. If so, immediately return False.
+        for label in self.negate_labels:
+            if label in host_labels: return False
+        #next, set up a tempLabels so that we don't change the
+        #host's actual labels. We delete an instance of the label.
+        #this is new in version 1.8. It's important since one may
+        #have multiple identical labels.
+        temp_labels = []
+        temp_labels.extend(copy(host_labels))
+        for label in self.local_labels:
+            if label in temp_labels: temp_labels.remove(label)
+            else: return False
+        #this new approach actually simplifies and speeds up the containAllLabels
+        #check. If there are no more tempLabels than the two match completely - else
+        #return False.
+        if self.contains_all_local_labels and len(temp_labels)>0: return False
+        return True
+    @staticmethod
+    def convert_from_node(n): #can't we just copy the dictionary?
+        rule_node = RuleNode()
+        for key in n.__dict__.keys():
+            val = copy(n.__dict__[key])
+            setattr(rule_node, key, val)
+        return rule_node
+
+class Option:
+    '''these are presented in the choice for which rule to apply.
+    option contains references to the location where the rule is
+    applicable, the rule itself, along with its number in the rule_set
+    and the rule_set's number when there are multiple rule_sets.'''
+    graphsynth_path = "GraphSynth.Representation/RuleClasses/option.cs"
+    properties = ["option_number", "rule_set_index", "rule", "location", "position_transform"]
+    def __init__(self):
+        #set up the properties
+        for prop in self.properties:
+            setattr(self, prop, property(fget=functools.partial(_get_property, attribute_name=prop), fset=functools.partial(_set_property, prop, attribute_name=prop)))
+        self.option_number, self.rule_set_index, self.rule_number, self.rule, self.location, self.position_transform, self.parameters = None, None, None, None, None, None, []
+    def apply(self, host, parameters=[]):
+        self.rule.apply(self.location, host, self.position_transform, self.parameters)
+
+class RuleSet: #not done yet
+    '''As far as I can tell, this is the first time the idea of a rule set
+    has been developed to this degree. In many applications we find that
+    different sets of rules are needed. Many of these characteristics
+    are built into our current generation process.'''
+    graphsynth_path = "GraphSynth.Representation/RuleClasses/ruleSet.Basic.cs"
+    choice_method = property(fget=functools.partial(_get_property, attribute_name="choice_method"), fset=functools.partial(_set_property, attribute_name="choice_method")) #why does this have to be a property?
+    def __init__(name="", rules=[], rule_file_names=[], trigger_rule_number=-1, next_generation_steps=NextGenerationSteps(), rule_set_index=None):
+        '''
+        Please note that rule numbers are *not* zero-based. The first rule is number 1.
+
+        name: #an arbitrary name for the RuleSet - usually set to the filename
+        trigger_rule_number: A ruleSet can have one rule set to the triggerRule. If there is no
+                            triggerRule, then this should stay at negative one (or any negative
+                            number). When the trigger rule is applied, the generation process, will
+                            exit to the specified generationStep (as described below).
+        next_generation_steps: For a particular set of rules, we need to specify what generation should
+                               do if any of five conditions occur during the recognize->choose->apply
+                               cycle. The enumerator, nextGenerationSteps, listed in globalSettings.cs
+                               indicates what to do. The five correspond directly to the five elements
+                               of another enumerator called GenerationStatuses. These five possibilties are:
+                               Normal, Choice, CycleLimit, NoRules, TriggerRule. So, following normal operation
+                               of RCA (normal), we perform the first operation stated below, nextGenerationStep[0]
+                               this will likely be to LOOP and contine apply rules. Defaults for these are
+                               specified in App.config.
+        rule_set_index: For multiple ruleSets, a value to store its place within the set of ruleSets
+                        proves a useful indicator.
+        '''
+        self.name = name 
+        self.choice_method = ChoiceMethods.design
+        #Often when multiple ruleSets are used, some will produce feasible candidates,
+        #while others will only produce steps towards a feasible candidate. Here, we
+        #classify a particular ruleSet as one of these.
+        self.interim_candidates = CandidatesAre.unspecified
+        self.final_candidates = CandidatesAre.unspecified
+        #the rules are clearly part of the set, but these are not stored
+        #in the XML, only the ruleFileNames. In ruleSetXMLIO.cs the
+        #loading of rules is accomplished.
+        self.rules = rules
+        self.rule_file_names = rule_file_names
+        self._trigger_rule_number = trigger_rule_number
+        self.next_generation_steps = next_generation_steps
+        self.rule_set_index = rule_set_index
+    def next_rule_set(self, status):
+        '''A helper function to RecognizeChooseApplyCycle. This function returns what the new ruleSet
+        will be. Here the enumerator nextGenerationSteps and GenerationStatuses is used to great
+        affect. Understand that if a negative number is returned, the cycle will be stopped.'''
+        if self.next_generation_step[status] == NextGenerationSteps.loop: return self.rule_set_index
+        elif self.next_generation_step[status] == NextGenerationSteps.go_to_next: return self.rule_set_index + 1
+        elif self.next_generation_step[status] == NextGenerationSteps.go_to_previous: return self.rule_set_index - 1
+        else: return int(self.next_generation_step[status])
+    def recognize(self, host):
+        '''This is the recognize function called within the RCA generation. It is
+        fairly straightforward method that basically invokes the more complex
+        recognize function for each rule within it, and returns a list of options.'''
+        raise NotImplementedError, bryan_message
+
+class NextGenerationSteps:
+    loop = 1
+    go_to_next = 2
+    go_to_previous = 3
+class CandidatesAre:
+    unspecified = 1
 
