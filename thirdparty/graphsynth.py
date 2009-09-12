@@ -34,11 +34,16 @@ def bryan_message_generator(path): return bryan_message + (" (%s)" % (path))
 
 #in the original graphsynth codebase, there were a lot of properties
 #these need to be reincorporated into this python version
-def _set_property(self, value=None, attribute_name=None):
+def _set_property(self, value=None, attribute_name=None, attr_index=None):
     assert attribute_name, "_set_property must have an attribute name to work with"
-    setattr(self, attribute_name, value)
-def _get_property(self, attribute_name=None):
+    if attr_index is not None:
+        self.__getattribute__(attribute_name)[attr_index] = value
+    else:
+        setattr(self, attribute_name, value)
+def _get_property(self, attribute_name=None, attr_index=None):
     assert attribute_name, "_get_attribute must have an attribute name to work with"
+    if attr_index is not None:
+        return self.__getattribute__(attribute_name)[attr_index]
     return getattr(self, attribute_name)
 class PropertyExample:
     x = property(fget=functools.partial(_set_property, attribute_name='x'), fset=functools.partial(_get_property, attribute_name='x'), doc="represents the x coordinate of the PropertyExample object")
@@ -52,6 +57,13 @@ class TestPythonStuff(unittest.TestCase):
         self.assertTrue(prop_ex.x == test_message)
 if __name__ == "__main__":
     unittest.main()
+
+class NextGenerationSteps:
+    loop = 1
+    go_to_next = 2
+    go_to_previous = 3
+class CandidatesAre:
+    unspecified = 1
 
 def set_list(self, variable, index, label):
     '''called a few times in Arc, like in set_label and set_variable'''
@@ -148,6 +160,8 @@ class Graph:
         '''
         self.global_labels = global_labels
         self.global_variables = global_variables
+        self.arcs = []
+        self.nodes = []
         if count is not None:
             assert isinstance(count, int)
             for i in range(count):
@@ -1349,6 +1363,8 @@ class RuleSet: #not done yet
     are built into our current generation process.'''
     graphsynth_path = "GraphSynth.Representation/RuleClasses/ruleSet.Basic.cs"
     choice_method = property(fget=functools.partial(_get_property, attribute_name="choice_method"), fset=functools.partial(_set_property, attribute_name="choice_method")) #why does this have to be a property?
+    
+
     def __init__(name="", rules=[], rule_file_names=[], trigger_rule_number=-1, next_generation_steps=NextGenerationSteps(), rule_set_index=None):
         '''
         Please note that rule numbers are *not* zero-based. The first rule is number 1.
@@ -1370,6 +1386,10 @@ class RuleSet: #not done yet
         rule_set_index: For multiple ruleSets, a value to store its place within the set of ruleSets
                         proves a useful indicator.
         '''
+        #cheap way of not having to type a lot to make up properties with the same generational structure, syntax and function
+        _compress_props = [("generation_after_normal", 0), ("generation_after_choice", 1), ("generation_after_cycle_limit", 2), ("generation_after_no_rules", 3), ("generation_after_trigger_rule", 4)]
+        for each in _compress_props:
+            setattr(self, each[0], property(fget=functools.partial(_get_property, attribute_name=each[0], attr_index=each[1]), fset=functools.partial(_set_property, attribute_name=each[0], attr_index=each[1])))
         self.name = name 
         self.choice_method = ChoiceMethods.design
         #Often when multiple ruleSets are used, some will produce feasible candidates,
@@ -1385,6 +1405,7 @@ class RuleSet: #not done yet
         self._trigger_rule_number = trigger_rule_number
         self.next_generation_steps = next_generation_steps
         self.rule_set_index = rule_set_index
+        self.filer = None
     def next_rule_set(self, status):
         '''A helper function to RecognizeChooseApplyCycle. This function returns what the new ruleSet
         will be. Here the enumerator nextGenerationSteps and GenerationStatuses is used to great
@@ -1397,12 +1418,108 @@ class RuleSet: #not done yet
         '''This is the recognize function called within the RCA generation. It is
         fairly straightforward method that basically invokes the more complex
         recognize function for each rule within it, and returns a list of options.'''
+        options = []
+        if len(self.rules) == 0: return options
+        option_num = 0
+        i = 0
+        for rule in self.rules:
+            i = self.rules.index(rule)
+            transform_matrices = []
+            locations = [] #a list of Graphs
+            locations = self.rules[i].recognize(host, transform_matrices)
+            j = 0
+            for loc in locations:
+                j = locations.index(loc)
+                option = Option()
+                options.append(option)
+                temp=option_num+1
+                option.option_number = temp #FIXME or should option_num be set to option_num+1? see GS codebase
+                option.rule_set_index = self.rule_set_index
+                option.rule_number = i + 1
+                option.rule = rule
+                option.location = loc
+                option.position_transform = transform_matrices[j]
+                if self.choice_method == choiceMethods.Automatic: return options
+                #this is merely for efficiency - once we get one valid option for
+                #an Automatic ruleset we can exit and invoke that option.
+            return options
+
+class EmbeddingRule:
+    '''the freeArc can be identified by one of the following
+    1. label of dangling arc in D (freeArcLabel)
+    2. name of node in L-R that arc was recently attached to (note the name is from L not G) (L_node_name)
+    3. label of node in G that is currently attached to dangling arc in D (neighborNodeLabel)
+    -----
+    the RHS of the rule is simply the name of the R-node that the arc is to connect to. Since
+    this exists within the rule, there is no need to include any other defining character - of
+    course we still need to find the corresponding node in H1 to connect it to. Note, this is
+    also the main quality that distinguishes the approach as NCE or NLC, as the control is given
+    to the each individual of R-L (or the daughter graph in the NCE lingo) as opposed to simply
+    a label based method.'''
+    def __init__(self, free_arc_labels=[], free_arc_negabels=[], neighbor_node_labels=[], neighbor_node_negabels=[], L_node_name=None, original_direction=None, new_direction=None, allow_arc_duplication=False):
+        '''
+        allow_arc_duplication: if True, then for each rule that matches with the arc the arc will be duplicated.
+        '''
+        self.free_arc_labels = free_arc_labels
+        self.free_arc_negabels = free_arc_negabels
+        self.neighbor_node_labels = neighbor_node_labels
+        self.neighbor_node_negabels = neighbor_node_negabels
+        self.L_node_name = L_node_name
+        self.original_direction = original_direction
+        self.new_direction = new_direction
+        #in order to give the edNCE approach the "ed" quality, we must allow for the possibility of
+        #recognizing arcs having a particular direction. The original direction can be either +1 meaning
+        #"to", or -1 meaning "from", or 0 meaning no imposed direction - this indicates what side of the
+        #arc is dangling. Furthermore, the newDirection, can specify a new direction of the arc ("to",
+        #or "from" being the new connection) or "" (unspecified) for updating the arc. This allows us
+        #to change the direction of the arc, or keep it as is.
+        self.allow_arc_duplication = allow_arc_duplication
+    def arc_is_free(self, arc, host):
+        if arc._from is not None and arc._to is not None and (arc._from not in host.nodes) and (arc._to not in host.nodes):
+            self.free_end_identifier=0
+            #if the nodes on either end of the freeArc are pointing to previous nodes
+            #that were deleted in the first pushout then neighborNode is null (and as
+            #a result any rules using the neighborNodeLabel will not apply) and the
+            #freeEndIdentifier is zero.
+            self.neighbor_node = None
+            return True
+        elif arc._from is not None and arc._from not in host.nodes:
+            self.free_end_identifier = -1
+            #freeEndIdentifier set to -1 means that the From end of the arc must be the free end.
+            self.neighbor_node = arc._to
+            return True
+        elif arc._to is not None and arc._to not in host.nodes:
+            self.free_end_identifier = +1
+            #freeEndIdentifier set to +1 means that the To end of the arc must be the free end.
+            self.neighbor_node = arc._from
+            return True
+        else:
+            #else, the arc is not a free arc after all and we simply break out
+            #of this loop and try the next arc.
+            self.free_end_identifier = 0
+            self.neighbor_node = None
+            return False
+    def find_new_node_to_connect(self, R, R_mapping):
+        #find R-L node that is to be connected with freeArc as well as old L-R node name
+        if self.R_node_name is not None and self.R_node_name is not "":
+            #take the RNodeName from within the rule and get the proper reference to the new node.
+            #If there is no RNodeName, then the embedding rule will set the reference to null.
+            index = R.find_index_of_node_with(name=self.R_node_name)
+            return R_mapping.nodes[index]
+        else: return None
+    def find_deleted_node(self, L, L_mapping):
+        #similarly, we can find the LNodeName (if one exists in this particular rule). Setting this
+        #up now saves time and space in the below recognition if-then's.
+        if self.L_node_name is not None and self.L_node_name is not "":
+            index = L.find_index_of_node_with(name=self.L_node_name)
+            return L_mapping.nodes[index]
+        else: return None
+    def rule_is_recognized(free_end_identifier, free_arc, neighbor_node, node_removed):
+        #this one is a little bit of enigmatic but clever coding if I do say so myself. Both
+        #of these variables can be either +1, 0, -1. If in multiplying the two together you
+        #get -1 then this is the only incompability. Combinations of +1&+1, or +1&0, or
+        #-1&-1 all mean that the arc has a free end on the requested side (From or To).
         raise NotImplementedError, bryan_message
 
-class NextGenerationSteps:
-    loop = 1
-    go_to_next = 2
-    go_to_previous = 3
-class CandidatesAre:
-    unspecified = 1
+
 
