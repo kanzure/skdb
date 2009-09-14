@@ -12,7 +12,7 @@ from OCC.BRepBndLib import *
 #for exploring shapes
 from OCC.BRep import BRep_Tool
 from OCC.BRepTools import BRepTools_WireExplorer
-from OCC.Utils.Topology import WireExplorer #what about BRepTools_WireExplorer?
+from OCC.Utils.Topology import WireExplorer #wraps BRepTools_WireExplorer
 from OCC.TopExp import TopExp_Explorer
 from OCC.TopAbs import TopAbs_VERTEX, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE
 
@@ -99,10 +99,15 @@ class OCC_triple(FennObject):
         self.post_init_hook()
     def post_init_hook(self): #for instantiating from yaml
         try: self.__class__.occ_class.__init__(self,self.x,self.y,self.z)
-        except ValueError: self.__class__.occ_class.__init__(self) #return a null point
+        except AttributeError: self.__class__.occ_class.__init__(self) #return a null point
     def __eq__(self, other): 
         if not isinstance(other, self.__class__.occ_class): return False
-        else: return self.IsEqual(other, Precision().Confusion()) == 1
+        else: return (self.IsEqual(other, Precision().Confusion()) == 1)
+    def __cmp__(self, other):
+        if other.x==self.x and other.y==self.y and other.z==self.z: return 0
+        elif other.x>self.x and other.y>self.y and other.z>self.z: return -1
+        elif self.x>other.x and self.y>other.y and self.z>other.z: return 1
+        else: return None #not really meaningful
     def __repr__(self):
         return "%s(%s, %s, %s)" % (self.__class__.__name__, prettyfloat(self.X()), prettyfloat(self.Y()), prettyfloat(self.Z()))
     def yaml_repr(self):
@@ -307,46 +312,196 @@ Part.load_CAD = load_CAD
 def make_face(shape):
     face = BRepBuilderAPI_MakeFace(shape)
     face.Build()
-    return face.Face()
+    return Face(face.Face())
 
 def make_edge2d(shape):
     spline = BRepBuilderAPI_MakeEdge2d(shape)
     spline.Build()
-    return spline.Edge()
+    return Edge(spline.Edge())
 
 def make_edge(shape):
     spline = BRepBuilderAPI_MakeEdge(shape)
     spline.Build()
-    return spline.Edge()
+    return Edge(spline.Edge())
 
-class Wire(TopoDS_Wire):
-    def __init__(self, wire=None):
-        if isinstance(wire, self.__class__): #Wire(Wire(blah))
-            raise NotImplementedError
-        elif isinstance(wire, TopoDS_Wire): #Wire(TopoDS_Wire())
-            TopoDS_Wire.__init__(self)
-            self.__dict__ = extend(self.__dict__, wire.__dict__, overwrite=False)
-    def points(wire):
+class OCC_shape(TopoDS_Shape):
+    occ_class = TopoDS_Shape #just a default
+    def __init__(self, incoming=None):
+        if isinstance(incoming, self.__class__): #Face(Face()), Shape(Shape()), etc.
+            #if self.occ_class is not TopoDS_Shape:
+            TopoDS_Shape.__init__(self)
+            self.occ_class.__init__(self) #yes, no? dunno
+            self.__dict__ = extend(self.__dict__, incoming.__dict__, overwrite=False)
+            self.TShape(incoming.TShape())
+        elif isinstance(incoming, self.occ_class):
+            #if self.occ_class is not TopoDS_Shape:
+            TopoDS_Shape.__init__(self)
+            self.occ_class.__init__(self)
+            self.__dict__ = extend(self.__dict__, incoming.__dict__, overwrite=False)
+            other_shape = incoming.TShape()
+            self.TShape(other_shape)
+        elif isinstance(incoming, TopoDS_Shape):
+            TopoDS_Shape.__init__(self)
+            self.occ_class.__init__(self)
+            self.__dict__ = extend(self.__dict__, incoming.__dict__, overwrite=False)
+            other_shape = incoming.TShape()
+            self.TShape(other_shape)
+    def __copy__(self):
+        '''copies only the shape and returns a Shape with the shape'''
+        #note that occ uses TopoDS_Shape().TShape() for some reason.
+        current_shape = copy(self.TShape())
+        new_shape = Shape()
+        new_shape.TShape(current_shape)
+        return new_shape
+    def get_wires(self):
+        '''traverses a face (or a shape) for wires
+        you might want get_edges instead?
+        returns a list of wires'''
+        wires = []
+        #if isinstance(self, Shape): to_explore = self
+        #else: to_explore = Shape(self)
+        to_explore = self
+        explorer = TopExp_Explorer(to_explore, TopAbs_WIRE, TopAbs_EDGE)
+        explorer.ReInit()
+        while explorer.More():
+            #edge = TopoDS().Edge(explorer.Current())
+            #wire = BRepBuilderAPI_MakeWire(edge).Wire()
+            wire = TopoDS().Wire(explorer.Current())
+            wire1 = Wire(wire)
+            wires.append(wire1)
+            explorer.Next()
+        return wires
+    def get_edges(self):
+        '''sometimes what you really want is get_edges instead of get_wires. (a wire will not have points, but an edge will)
+        can someone make sense of this please?'''
+        edges = []
+        explorer = TopExp_Explorer(self, TopAbs_EDGE)
+        explorer.ReInit()
+        while explorer.More():
+            edge = TopoDS().Edge(explorer.Current())
+            edge1 = Edge(edge)
+            edges.append(edge1)
+            explorer.Next()
+        return edges
+    def get_faces(self):
+        '''returns a list of faces for the given shape
+        note that it could be that the entire shape is really just a face, so don't be upset if this returns []'''
+        faces = []
+        explorer = TopExp_Explorer(self, TopAbs_FACE)
+        while explorer.More():
+            face = Face(TopoDS().Face(explorer.Current()))
+            faces.append(face)
+            explorer.Next()
+        return faces
+    def get_points(self, edges=True, wires=True):
+        '''returns a list of points defining the shape
+        based off of wires and faces'''
+        points = []
+        #wires = self.wires
+        faces = self.faces
+        #for wire in wires:
+        #    print "get_points: processing a wire"
+        #    points.extend(wire.points)
+        for face in faces:
+            points.extend(face.get_points(edges=edges,wires=wires))
+        points = list(set(points)) #filter out the repeats
+        return points
+    def get_shape(self):
+        '''returns the TShape object
+        occ only, this probably isn't useful anywhere else'''
+        return self.TShape()
+    def set_shape(self, value):
+        '''sets the TShape'''
+        if isinstance(value, Handle_TopoDS_TShape):
+            self.TShape(value)
+        elif isinstance(value, self.__class__):
+            self.TShape(value.TShape())
+        elif isinstance(value, self.occ_class):
+            self.TShape(value.TShape())
+        elif isinstance(value, self.occ_class_handler):
+            #set_shape(Handle_TopoDS_TFace)
+            self.TShape(value.GetObject().TShape())
+        else: raise ValueError, "OCC_shape.set_shape: not sure what to do, possibilities exhausted for %s" % (value)
+    wires = property(fset=None, fget=get_wires, doc="a list of wires (partially) defining the shape")
+    edges = property(fset=None, fget=get_edges, doc="a list of edges (partially) defining the shape")
+    faces = property(fset=None, fget=get_faces, doc="a list of faces (partially) defining the shape")
+    points = property(fset=None, fget=get_points, doc="a list of points (partially) defining the shape")
+    shape = property(fset=set_shape, fget=get_shape, doc="wraps occ TopoDS_Shape TShape")
+
+class Wire(OCC_shape, TopoDS_Wire):
+    occ_class = TopoDS_Wire
+    occ_class_handler = Handle_TopoDS_TWire
+    def get_points(self):
         '''takes a wire and extracts points
         returns a list of points'''
         vertices = []
-        explorer = BRepTools_WireExplorer(wire)
+        #the short version:
+        #vertices.extend(WireExplorer(self).ordered_vertices())
+        #return vertices
+        my_wire = self
+        #my_wire = TopoDS().Wire(self)
+        #my_wire = TopoDS().Wire(Shape(self.shape))
+        #my_wire = Wire(self)
+        #explorer = BRepTools_WireExplorer(self)
+        explorer = TopExp_Explorer(self, TopAbs_VERTEX)
         while explorer.More():
-            vertex = TopoDS().Vertex(explorer.CurrentVertex())
+            vertex = TopoDS().Vertex(explorer.Current())
             xyz = Point(BRep_Tool().Pnt(vertex))
+            #if not xyz == Point():
             vertices.append(xyz)
             explorer.Next()
         return vertices    
+    points = property(fget=get_points, fset=None, doc="a list of points defining this wire")
+    faces = None
+    wires = None
+
+class Edge(OCC_shape, TopoDS_Edge):
+    occ_class = TopoDS_Edge
+    occ_class_handler = Handle_TopoDS_TEdge
+    def get_points(self):
+        '''returns a list of points making up this edge'''
+        points = []
+        explorer = TopExp_Explorer(self, TopAbs_VERTEX)
+        while explorer.More():
+            vertex = TopoDS().Vertex(explorer.Current())
+            point = Point(BRep_Tool().Pnt(vertex))
+            #one day: point = Point(vertex) where vertex is of type TopoDS_Vertex
+            #if not point == Point():
+            points.append(point)
+            explorer.Next()
+        return points
+    points = property(fget=get_points, fset=None, doc="a list of points defining this edge")
+    faces = None
+    wires = None
+
+class Face(OCC_shape, TopoDS_Face):
+    occ_class = TopoDS_Face
+    occ_class_handler = Handle_TopoDS_TFace
+    def get_points(self, edges=True, wires=True):
+        points = []
+        wirelist = self.wires #get_wires()
+        edgelist = self.edges #get_edges()
+        wire_pts = []
+        edge_pts = []
+        if wires == True:
+            for wire in wirelist:
+                wire_pts.extend(wire.points)
+        if edges == True:
+            for edge in edgelist:
+                edge_pts.extend(edge.points)
+        #if len(wire_pts) == 0: points.extend(edge_pts)
+        #elif len(edge_pts) == 0: points.extend(wire_pts)
+        #else: points.extend(wire_pts) #just choose one
+        points.extend(edge_pts)
+        points.extend(wire_pts)
+        return points
+    points = property(fget=get_points, fset=None, doc="a list of points defining this wire")
+    faces = None
 
 #can we call this something else please?
-#are we sure that the actual shape data is copied? tests please? 
-class Shape(TopoDS_Shape, FennObject):
-    def __init__(self, shape=None):
-        if isinstance(shape, self.__class__): #Shape(Shape(blah))
-            raise NotImplementedError
-        elif isinstance(shape, TopoDS_Shape):
-           TopoDS_Shape.__init__(self)
-           self.__dict__ = extend(self.__dict__, shape.__dict__, overwrite=False)
+class Shape(OCC_shape):
+    occ_class = TopoDS_Shape
+    occ_class_handler = Handle_TopoDS_TShape
     def __repr__(self):
         return "some shape"
     def yaml_repr(self):
@@ -355,31 +510,6 @@ class Shape(TopoDS_Shape, FennObject):
         return True
         if not isinstance(other, TopoDS_Shape): return False
         else: return True #self.IsEqual(other)
-    def wires(self): #if this was a property, what would the fset be?
-        '''traverses a face (or a shape) for wires
-        returns a list of wires'''
-        wires = []
-        explorer = TopExp_Explorer(self, TopAbs_EDGE)
-        while explorer.More():
-            edge = TopoDS().Edge(explorer.Current())
-            wire = Wire(BRepBuilderAPI_MakeWire(edge).Wire())
-            wires.append(wire)
-            explorer.Next()
-        return wires
-    def faces(self): #this too. should it be a property?
-        '''returns a list of faces for the given shape
-        note that it could be that the entire shape is really just a face, so don't be upset if this returns []'''
-        faces = []
-        explorer = TopExp_Explorer(self, TopAbs_FACE)
-        while explorer.More():
-            face = TopoDS().Face(explorer.Current())
-            faces.append(face)
-            explorer.Next()
-        return faces
-
-class Face(TopoDS_Face):
-    pass
-Face.wires = Shape.wires
 
 class BoundingBox:
     '''finds the extents of an object along each axis. useful for checking against sorted coordinates.
@@ -409,7 +539,7 @@ class BoundingBox:
         return [point1, point2]
         
     def make_box(self):
-        '''returns a Shape (which inherits from TopoDS_Shape) representing this bounding box. maybe useful for visualization?'''
+        '''returns a Shape representing this bounding box. maybe useful for visualization?'''
         self._determine_points()
         return Shape(BRepPrimAPI_MakeBox(self.point1, self.point2).Shape())
         

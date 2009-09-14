@@ -1,4 +1,4 @@
-documentation:
+documentation
     everybody loves documentation!
 bug tracker:
 skdb core:
@@ -18,7 +18,7 @@ skdb core:
             and other OCC spam:
         real wrapper code: 
             instead of subclassing from OCC:
-                openGL example:
+                opengl example:
             use tags/names for geometries:
         connection graph:
             apply transforms at each arc while traversing: is this done?
@@ -27,10 +27,11 @@ skdb core:
         part mating:
             collision detection:
                 fix BoundingBox:
-                    rewrite it: ask fenn why
+                    rewrite it: get fenn to fix until the unit tests pass again
                     extract minima and maxima from surfaces: kinda important
                 explore OpenCASCADE collision detection methods:
-                    Constructive Solid Geometry: any volume leftover?
+                    Constructive Solid Geometry:
+                        fix or rewrite internal OCC BRepAlgoAPI boolean methods: 
                     OCC bounding box classes:
                         - http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/ModelingAlgorithms/html/classBRepBndLib.html
                         - http://www.opencascade.org/org/forum/thread_13902/
@@ -42,6 +43,7 @@ skdb core:
                     positive: a little bit of slop
                     negative: interference fit
                     signed distance function:
+                multi part multi interface mating unit tests:
         cam algorithm selection: some parts are more 2.5d than others...
     generating instructions:
         assembly planner: #aka assembly sequence planner, assembly operation planner, etc.
@@ -108,6 +110,9 @@ servers:
             paypal button: this ought to be easy
             bounty:
 import:
+    repo_to_yaml.py:
+        todo: recognize when there is a list of artifacts or any other node element
+        investigate perl xml2yaml.pl: http://search.cpan.org/~markov/XML-Compile-1.07/bin/xml2yaml
     pov-to-X conversion:
     parser for peeron and lugnet:
     parse matweb scrape: (samrose)

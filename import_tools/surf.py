@@ -23,6 +23,7 @@ from OCC.GeomFill import GeomFill_SimpleBound
 from OCC.Geom import Handle_Geom_BSplineSurface, Geom_BSplineSurface
 from OCC.GeomPlate import GeomPlate_BuildPlateSurface, GeomPlate_PointConstraint, GeomPlate_MakeApprox
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeWire
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
 from OCC.BRepAdaptor import BRepAdaptor_HCurve
 from OCC.BRepFill import BRepFill_CurveConstraint
 from OCC.Utils.Topology import WireExplorer #what about BRepTools_WireExplorer?
@@ -168,7 +169,7 @@ class Surface:
     def __init__(self):
         self.bottom_left, self.bottom_right, self.top_left, self.top_right = Point(0,0,0), Point(0,0,0), Point(0,0,0), Point(0,0,0)
         self.points = [] #points that we want to approximate
-        self.shape = TopoDS_Shape()
+        self.shape = Shape()
         self.polygons = [BRepBuilderAPI_MakePolygon()]
     def make_bounding_box(self):
         '''figures out a bounding box from a set of points.
@@ -180,7 +181,6 @@ class Surface:
             if hasattr(point, "__iter__"):
                 #it's a list
                 for pnt in point:
-                    print "type of pnt is: ", type(pnt)
                     pnt = make_point(pnt)
                     x,y,z = pnt.Coord() #Point(BRep_Tool().Pnt(pnt)).Coord()
                     x_list.append(x); y_list.append(y); z_list.append(z)
@@ -240,13 +240,23 @@ def load_stl(filename):
     return shape
 
 def extract_shape_vertices(shape):
-    '''dumps a list of points that define the shape'''
+    '''dumps a list of points that define the shape, not including edges'''
     wires = []
     points = []
     wires.extend(process_face(shape))
     for wire in wires:
         points.extend(process_wire(wire))
     return points
+
+def shape_vertices(shape):
+    '''OO way of figuring out shape vertices'''
+    shape = Shape(shape)
+    return shape.points
+    #wires, points = [], []
+    #wires.extend(shape.wires)
+    #for wire in wires:
+    #    points.extend(wire.points)
+    #return points
 
 def process_shape(shape):
     '''extracts faces from a shape
@@ -329,32 +339,42 @@ class TestApproximation(unittest.TestCase):
         my_surf = build_plate([poly], [Point(-1,-1,-1)])
         sh = my_surf.Shape()
         display.DisplayShape(sh)
-    @staticmethod
-    def test_stl(event=None):
-        #shape = load_stl("/home/kanzure/local/pythonocc-0.3/pythonOCC/src/samples/Level2/DataExchange/sample.stl")
-        #shape = load_stl("/home/kanzure/code/skdb/import_tools/blah.stl")
-        #shape = load_stl("/home/kanzure/local/legos/diver.stl")
-        shape = load_stl(os.path.join(os.path.curdir, "models/cube.stl"))
-        display.DisplayShape(shape)
-        temp_points = extract_shape_vertices(shape)
-        #points is a list of TopoDS_Vertex objects
-        points = []
-        for point in temp_points:
-            points.append(make_point(point))
-            print point
+    def test_stl(self):
+        #you probably dont have these
+        #occ_shape = load_stl("~/local/pythonocc-0.3/pythonOCC/src/samples/Level2/DataExchange/sample.stl")
+        #occ_shape = load_stl("~/local/legos/diver.stl") #http://adl.serveftp.org/lab/legos/diver.stl
+        #occ_shape = load_stl(os.path.join(os.path.curdir, "models/cube.stl"))
+        
+        #make a box
+        occ_shape = BRepPrimAPI_MakeBox(Point(0,0,0), Point(1,1,1)).Shape()
+        display.DisplayShape(occ_shape)
+        
+        shape = Face(occ_shape)
+        temp_points = set(shape.points)
+        self.assertTrue(len(temp_points)>0)
+
         #TODO: cluster points and make surfaces. but how do you compute the first parameter to build_plate?
         surf = Surface()
-        surf.shape = shape
-        surf.points = points
+        surf.shape = occ_shape
+        surf.points = temp_points
+        surf.approximate() #should be more like test_extract_shape_vertices
+    def test_extract_shape_vertices(self):
+        clear()
+        occ_shape = BRepPrimAPI_MakeBox(Point(0,0,0), Point(1,1,1)).Shape()
+        display.DisplayShape(occ_shape)
+        temp_points = extract_shape_vertices(occ_shape)
+        self.assertTrue(len(temp_points)>0)
+        surf = Surface()
+        surf.shape = occ_shape
+        surf.points = temp_points
         surf.approximate()
 
-
 if __name__ == "__main__":
-    #unittest.main()
-    #exit()
+    unittest.main()
+    exit()
     from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display
     add_menu("demo")
-    add_function_to_menu("demo", TestApproximation.test_stl)
+    #add_function_to_menu("demo", TestApproximation.test_stl)
     add_function_to_menu("demo", demo)
     add_function_to_menu("demo", clear)
     add_function_to_menu("demo", ask_user)

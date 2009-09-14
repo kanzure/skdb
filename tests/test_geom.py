@@ -175,6 +175,11 @@ class TestGeom(unittest.TestCase):
         box_shape3 = BRepPrimAPI_MakeBox(Point(5,5,5), Point(len_x, len_y, len_z)).Shape()
         box3 = BoundingBox(shape=box_shape3)
         self.assertTrue(box.interferes(box3))
+    def test_face(self):
+        occ_shape = BRepPrimAPI_MakeBox(Point(0,0,0), Point(1,1,1)).Shape()
+        #assume the shape is just a single face
+        face = Face(occ_shape)
+        self.assertTrue(len(face.points)>0)
 
 if __name__ == "__main__":
     unittest.main()
