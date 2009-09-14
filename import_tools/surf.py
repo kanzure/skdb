@@ -4,13 +4,14 @@
 #############################
 from copy import copy, deepcopy
 import unittest
+import os
 
 #in case i do something stupid and it hangs..
 from os import getpid
 print "*** pid = ", getpid()
 
 #let's not reinvent the wheel
-from skdb import Point
+from skdb import Point, Shape, Face, Wire
 
 #stuff that actually matters
 import OCC.TopoDS as TopoDS
@@ -21,14 +22,17 @@ from OCC.GeomAdaptor import GeomAdaptor_HCurve
 from OCC.GeomFill import GeomFill_SimpleBound
 from OCC.Geom import Handle_Geom_BSplineSurface, Geom_BSplineSurface
 from OCC.GeomPlate import GeomPlate_BuildPlateSurface, GeomPlate_PointConstraint, GeomPlate_MakeApprox
-from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakePolygon
+from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakePolygon, BRepBuilderAPI_MakeWire
 from OCC.BRepAdaptor import BRepAdaptor_HCurve
 from OCC.BRepFill import BRepFill_CurveConstraint
-from OCC.Utils.Topology import WireExplorer
+from OCC.Utils.Topology import WireExplorer #what about BRepTools_WireExplorer?
 from OCC.TopExp import TopExp_Explorer
-from OCC.TopAbs import TopAbs_VERTEX, TopAbs_FACE
+from OCC.TopAbs import TopAbs_VERTEX, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE
 from OCC.Utils.DataExchange.STL import STLImporter
 from OCC.BRep import BRep_Tool
+
+#for wire exploring
+from OCC.BRepTools import BRepTools_WireExplorer
 
 #gui stuff
 from skdb.gui import *
@@ -173,10 +177,20 @@ class Surface:
         x_list, y_list, z_list = [], [], []
         #really we just need to figure out two points
         for point in self.points:
-            x, y, z = point.Coord()
-            x_list.append(x)
-            y_list.append(y)
-            z_list.append(z)
+            if hasattr(point, "__iter__"):
+                #it's a list
+                for pnt in point:
+                    print "type of pnt is: ", type(pnt)
+                    pnt = make_point(pnt)
+                    x,y,z = pnt.Coord() #Point(BRep_Tool().Pnt(pnt)).Coord()
+                    x_list.append(x); y_list.append(y); z_list.append(z)
+                break
+            point = make_point(point)
+            if hasattr(point, "Coord"):
+                x, y, z = point.Coord()
+                x_list.append(x)
+                y_list.append(y)
+                z_list.append(z)
         x_min, y_min, z_min = min(x_list), min(y_list), min(z_list)
         x_max, y_max, z_max = max(x_list), max(y_list), max(z_list)
         #we're assuming z=0 for this plane that we're working on.
@@ -202,7 +216,20 @@ app = Surface()
 def make_point(vertex):
     #print "make_point: vertex=", vertex
     if isinstance(vertex, TopoDS_Vertex):
-        return Point(BRep_Tool().Pnt(vertex))
+        #first check to see if it points anywhere
+        location = vertex.Location()
+        if location.IsDifferent(location.__class__()) == 1:
+            print "making a gp_Pnt"
+            pnt = BRep_Tool().Pnt(vertex)
+            print "making a point"
+            return Point(pnt)
+        else:
+            print "vertex wasn't anything special"
+            return Point(0,0,0) #but it might not actually be 0,0,0
+    elif isinstance(vertex, Point):
+        return vertex
+    elif isinstance(vertex, gp_Pnt):
+        return Point(vertex)
     else: return vertex
 
 def load_stl(filename):
@@ -214,24 +241,51 @@ def load_stl(filename):
 
 def extract_shape_vertices(shape):
     '''dumps a list of points that define the shape'''
+    wires = []
+    points = []
+    wires.extend(process_face(shape))
+    for wire in wires:
+        points.extend(process_wire(wire))
+    return points
+
+def process_shape(shape):
+    '''extracts faces from a shape
+    note: if this doesnt work you should try process_face(shape)
+    returns a list of faces'''
     faces = []
-    all_vertices = []
     explorer = TopExp_Explorer(shape, TopAbs_FACE)
     while explorer.More():
         face = TopoDS().Face(explorer.Current())
         faces.append(face)
-        vertices = process_face(face)
-        all_vertices.append(vertices)
         explorer.Next()
-    return all_vertices
+    return faces
 
 def process_face(face):
-    '''dumps a list of points that define the face'''
-    vertices = []
-    explorer = TopExp_Explorer(face, TopAbs_VERTEX)
+    '''traverses a face for wires
+    returns a list of wires'''
+    wires = []
+    explorer = TopExp_Explorer(face, TopAbs_EDGE)
     while explorer.More():
-        vertex = TopoDS().Vertex(explorer.Current())
-        vertices.append(vertex)
+        edge = TopoDS().Edge(explorer.Current())
+        wire = BRepBuilderAPI_MakeWire(edge).Wire()
+        wires.append(wire)
+        explorer.Next()
+    return wires
+
+def process_edge(edge):
+    '''returns a list of points on the edge'''
+    wire = BRepBuilderAPI_MakeWire(edge).Wire()
+    return process_wire(wire)
+
+def process_wire(wire):
+    '''takes a wire and extracts points
+    returns a list of points'''
+    vertices = []
+    explorer = BRepTools_WireExplorer(wire)
+    while explorer.More():
+        vertex = TopoDS().Vertex(explorer.CurrentVertex())
+        xyz = Point(BRep_Tool().Pnt(vertex))
+        vertices.append(xyz)
         explorer.Next()
     return vertices
 
@@ -275,10 +329,12 @@ class TestApproximation(unittest.TestCase):
         my_surf = build_plate([poly], [Point(-1,-1,-1)])
         sh = my_surf.Shape()
         display.DisplayShape(sh)
-    def test_stl(self):
+    @staticmethod
+    def test_stl(event=None):
         #shape = load_stl("/home/kanzure/local/pythonocc-0.3/pythonOCC/src/samples/Level2/DataExchange/sample.stl")
-        shape = load_stl("/home/kanzure/code/skdb/import_tools/blah.stl")
+        #shape = load_stl("/home/kanzure/code/skdb/import_tools/blah.stl")
         #shape = load_stl("/home/kanzure/local/legos/diver.stl")
+        shape = load_stl(os.path.join(os.path.curdir, "models/cube.stl"))
         display.DisplayShape(shape)
         temp_points = extract_shape_vertices(shape)
         #points is a list of TopoDS_Vertex objects
@@ -287,12 +343,18 @@ class TestApproximation(unittest.TestCase):
             points.append(make_point(point))
             print point
         #TODO: cluster points and make surfaces. but how do you compute the first parameter to build_plate?
+        surf = Surface()
+        surf.shape = shape
+        surf.points = points
+        surf.approximate()
+
 
 if __name__ == "__main__":
-    unittest.main()
-    exit()
+    #unittest.main()
+    #exit()
     from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display
     add_menu("demo")
+    add_function_to_menu("demo", TestApproximation.test_stl)
     add_function_to_menu("demo", demo)
     add_function_to_menu("demo", clear)
     add_function_to_menu("demo", ask_user)
