@@ -9,10 +9,29 @@ from OCC.TopoDS import *
 from OCC.Bnd import *
 from OCC.BRepBndLib import *
 
+#for exploring shapes
+from OCC.BRep import BRep_Tool
+from OCC.BRepTools import BRepTools_WireExplorer
+from OCC.Utils.Topology import WireExplorer #what about BRepTools_WireExplorer?
+from OCC.TopExp import TopExp_Explorer
+from OCC.TopAbs import TopAbs_VERTEX, TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE
+
 from skdb import Connection, Part, Interface, Unit, FennObject, prettyfloat
 import os, math
 from copy import copy, deepcopy
 from string import Template
+
+#where should this go?
+def extend(first, second, overwrite=False):
+    '''adds items in the second dictionary to the first
+    overwrite=True means that the second dictionary is going to win in the case of conflicts'''
+    third = first.copy()
+    for second_key in second.keys():
+        if first.get(second_key) is not None and overwrite:
+            third[second_key] = copy(second[second_key])
+        elif first.get(second_key) is None:
+            third[second_key] = copy(second[second_key])
+    return third
 
 def move_shape(shape, from_pnt, to_pnt):
     trsf = gp_Trsf()
@@ -94,6 +113,8 @@ class OCC_triple(FennObject):
     def reversed(self):
         return self.__class__(self.occ_class.Reversed(self))
 
+#TODO: Point from a TopoDS_Vertex please
+#Point(TopoDS_Vertex()) -> Point(BRep_Tool().Pnt(TopoDS_Vertex())) but only if the vertex.Location().IsDifferent(TopLoc_Location())==1
 class Point(OCC_triple, gp_Pnt):
     yaml_tag='!point'
     occ_class = gp_Pnt
@@ -298,27 +319,67 @@ def make_edge(shape):
     spline.Build()
     return spline.Edge()
 
+class Wire(TopoDS_Wire):
+    def __init__(self, wire=None):
+        if isinstance(wire, self.__class__): #Wire(Wire(blah))
+            raise NotImplementedError
+        elif isinstance(wire, TopoDS_Wire): #Wire(TopoDS_Wire())
+            TopoDS_Wire.__init__(self)
+            self.__dict__ = extend(self.__dict__, wire.__dict__, overwrite=False)
+    def points(wire):
+        '''takes a wire and extracts points
+        returns a list of points'''
+        vertices = []
+        explorer = BRepTools_WireExplorer(wire)
+        while explorer.More():
+            vertex = TopoDS().Vertex(explorer.CurrentVertex())
+            xyz = Point(BRep_Tool().Pnt(vertex))
+            vertices.append(xyz)
+            explorer.Next()
+        return vertices    
 
-#wrap OCC.TopoDS.TopoDS_Shape
 #can we call this something else please?
+#are we sure that the actual shape data is copied? tests please? 
 class Shape(TopoDS_Shape, FennObject):
     def __init__(self, shape=None):
         if isinstance(shape, self.__class__): #Shape(Shape(blah))
             raise NotImplementedError
         elif isinstance(shape, TopoDS_Shape):
            TopoDS_Shape.__init__(self)
-           self.__dict__ = copy(shape.__dict__)
-           self.__repr__ = Shape.__repr__
-           self.__eq__ = Shape.__eq__
-           self.__dict__["__eq__"] = Shape.__eq__
+           self.__dict__ = extend(self.__dict__, shape.__dict__, overwrite=False)
     def __repr__(self):
         return "some shape"
     def yaml_repr(self):
         return "unyamlifiable"
-    def __eq__(self, other):
+    def __eq__(self, other): #woah wtf
         return True
         if not isinstance(other, TopoDS_Shape): return False
         else: return True #self.IsEqual(other)
+    def wires(self): #if this was a property, what would the fset be?
+        '''traverses a face (or a shape) for wires
+        returns a list of wires'''
+        wires = []
+        explorer = TopExp_Explorer(self, TopAbs_EDGE)
+        while explorer.More():
+            edge = TopoDS().Edge(explorer.Current())
+            wire = Wire(BRepBuilderAPI_MakeWire(edge).Wire())
+            wires.append(wire)
+            explorer.Next()
+        return wires
+    def faces(self): #this too. should it be a property?
+        '''returns a list of faces for the given shape
+        note that it could be that the entire shape is really just a face, so don't be upset if this returns []'''
+        faces = []
+        explorer = TopExp_Explorer(self, TopAbs_FACE)
+        while explorer.More():
+            face = TopoDS().Face(explorer.Current())
+            faces.append(face)
+            explorer.Next()
+        return faces
+
+class Face(TopoDS_Face):
+    pass
+Face.wires = Shape.wires
 
 class BoundingBox:
     '''finds the extents of an object along each axis. useful for checking against sorted coordinates.
