@@ -58,6 +58,33 @@ class TestPythonStuff(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 
+def find_delegate(some_list, example):
+    '''returns a sublist of some_list where the attributes of the elements match those of the example
+    for example:
+        >>>class Foo:
+        >>>    def __init__(self, name=""):
+        >>>        self.name = name
+        >>>class Bar:
+        >>>    name = "hello"
+        >>>find_delegate([Foo(name="hello"), Foo(name="hello1")], Bar())
+        <Foo>
+    '''
+    assert hasattr(example, "__dict__"), "find_delegate: matching object must have a __dict__"
+    #get a list of extra attributes
+    relevant_keys = []
+    for key in example.__dict__.keys():
+        if key.count("_") == 0:
+            relevent_keys.append(key)
+    if len(relevant_keys)==0: return some_list
+    results = []
+    for option in some_list:
+        assert hasattr(option, "__dict__"), "find_delegate: objects to search must have a __dict__"
+        for key in relevant_keys:
+            if option.__dict__.has_key(key):
+                if option.__dict__[key] == example.__dict__[key]:
+                    results.append(option)
+    return results
+
 class NextGenerationSteps:
     loop = 1
     go_to_next = 2
@@ -192,7 +219,7 @@ class Graph:
         return (self._check_for_repeat_names(self.nodes) and self._check_for_repeat_names(self.arcs))
     @staticmethod
     def _make_unique_name(some_list):
-        latest = None
+        latest = 0
         for each in some_list:
             if some_list.name.isdigit():
                 latest = some_list.name
@@ -1365,7 +1392,7 @@ class RuleSet: #not done yet
     choice_method = property(fget=functools.partial(_get_property, attribute_name="choice_method"), fset=functools.partial(_set_property, attribute_name="choice_method")) #why does this have to be a property?
     
 
-    def __init__(name="", rules=[], rule_file_names=[], trigger_rule_number=-1, next_generation_steps=NextGenerationSteps(), rule_set_index=None):
+    def __init__(self, name="", rules=[], rule_file_names=[], trigger_rule_number=-1, next_generation_steps=NextGenerationSteps(), rule_set_index=None):
         '''
         Please note that rule numbers are *not* zero-based. The first rule is number 1.
 
@@ -1520,6 +1547,27 @@ class EmbeddingRule:
         #get -1 then this is the only incompability. Combinations of +1&+1, or +1&0, or
         #-1&-1 all mean that the arc has a free end on the requested side (From or To).
         raise NotImplementedError, bryan_message
+
+#########
+#land of no implementations
+#########
+
+class SearchProcess:
+    def __init__(self):
+        pass
+    def run(self):
+        '''implements a random search'''
+        pass
+    def is_current_the_goal(self, m):
+        if m.f2 == 0.0: return True
+        return False
+    def transfer_L_mapping_to_child(self, child, current, L_mapping):
+        '''this is a subtle issue with recognize-choose-apply in a Tree Search.
+        The locations within each option are pointing to nodes and arcs within the current.graph,
+        but we would like to retain the current so we make a deep copy of it. This is fine but now
+        the locations need to be transfered to the child. That is why this function was created.'''
+        raise NotImplementedError, bryan_message_generator("GraphSynthSourceFiles/GraphSynth.Search/searchProcess.cs")
+
 
 
 
