@@ -17,6 +17,9 @@ occ_pyldraw.py
     pyldraw module that also uses pythonOCC for displaying triangles etc.
     (also uses numpy)
 
+surf.py
+    a lame attempt at converting from point clouds to boundary representations
+
 SMILES_graphviz.py
     convert from smiles to dot dot
 
