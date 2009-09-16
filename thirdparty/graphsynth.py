@@ -1567,7 +1567,51 @@ class SearchProcess:
         but we would like to retain the current so we make a deep copy of it. This is fine but now
         the locations need to be transfered to the child. That is why this function was created.'''
         raise NotImplementedError, bryan_message_generator("GraphSynthSourceFiles/GraphSynth.Search/searchProcess.cs")
-
-
-
+        #delegate
+        for arc in L_mapping.arcs:
+            i = L_mapping.arcs.index(arc)
+            the_arc = find_delegate(current.arcs, arc)[0] #[0] because we want the first
+            position = current.arcs.index(the_arc)
+            L_mapping.arcs[i] = child.arcs[position]
+        for node in L_mapping.nodes:
+            i = L_mapping.nodes.index(node)
+            the_node = find_delegate(current.nodes, node)
+            position = current.nodes.index(the_node)[0]
+            L_mapping.nodes[i] = child.nodes[position]
+    def next_rule_set(self, rule_set_index, status):
+        '''A helper function to RecognizeChooseApplyCycle. This function returns what the new ruleSet
+        will be. Here the enumerator nextGenerationSteps and GenerationStatuses is used to great
+        affect. Understand that if a negative number is returned, the cycle will be stopped.'''
+        if self.rulesets[rule_set_index].nextGenerationStep[int(status)] == nextGenerationSteps.Loop:
+            return rule_set_index
+        elif self.rulesets[rule_set_index].nextGenerationStep[int(status)] == nextGenerationSteps.GoToNext:
+            return rule_set_index+1
+        elif self.rulesets[rule_set_index].nextGenerationStep[int(status)] == nextGenerationSteps.GoToPrevious:
+            return rule_set_index-1
+        else:
+            return int(self.rulesets[rule_set_index].nextGenerationStep[int(status)])
+    @staticmethod
+    def calculate_f0(f1, f2, average_time):
+        return ((20.0 * f1 / average_time) + f2)
+    def add_new_cand_to_pareto(self, candidate, pareto_cands):
+        for pc in pareto_cands:
+            if self.dominates(candidate, pc):
+                pareto_cands.remove(pc)
+                print "g: ", c.f1, ", h: ", c.f2
+            elif self.dominates(pc, c): return
+        pareto_cands.append(candidate)
+        return pareto_cands
+    @staticmethod
+    def add_child_to_sorted_cand_list(candidates, child):
+        if len(canddiates)==0: candidates.append(child)
+        else:
+            i = 0
+            f_child = child.f0
+            while i<len(candidates) and f_child>= candidates[i].f0:
+                i=i+1
+            canddiates.insert(i, child)
+    @staticmethod
+    def kill_off_clones(new_children):
+        last_rule_position = len(new_children[0].recipe)-1
+        raise NotImplementedError, bryan_message #line 104 in searchProcess.cs
 
