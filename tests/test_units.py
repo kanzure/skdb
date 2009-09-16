@@ -110,5 +110,12 @@ class TestScrew(unittest.TestCase):
             self.assertEqual(screw1.max_force(), '2704.758*lbf')
             self.assertEqual(screw1.breaking_force(), '3500.275*lbf')
 
+class TestRange(unittest.TestCase):
+    def test_incompatibilities(self):
+        self.assertRaises(skdb.UnitError, skdb.Range("1m", "1kg"))
+        self.assertRaises(skdb.UnitError, skdb.Range("m", "kg"))
+        self.assertRaises(skdb.UnitError, skdb.Range("kg", "m"))
+        skdb.Range("1 mg", "g")
+
 if __name__ == '__main__':
     unittest.main()
