@@ -173,7 +173,6 @@ except ImportError, error:
 if have_sympycore:
     class TestSympyCore(unittest.TestCase):
         def test_compatibility(self):
-            print "TestSympyCore.test_compatibility: "
             m1 = skdb.Unit("m")
             m2 = sympycore.physics.units.Unit("m")
             self.assertTrue(m1.compatible(m2))
