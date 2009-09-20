@@ -1,6 +1,7 @@
 from yamlcrap import FennObject
 import re, os
 from string import Template
+from copy import copy
 
 combined_dat_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'combined.dat')
 
@@ -50,6 +51,21 @@ class Unit(FennObject):
         if string is None or str(string) == 'None' or str(string) == '()': string = 0
         #so we can play nice with the 'quantities' package:
         if hasattr(string, "units"): string = string.units.dimensionality.string
+        #so we can play nice with sympycore
+        #could be more robust if you import sympycore first
+        if string.__class__.__module__ == "sympycore.physics.units":
+            if string.__class__.__name__ == "Unit":
+                #first strip out the variables by assuming they have a value of 1
+                symbols = list(string.symbols)
+                remove_these = []
+                for sym in symbols:
+                    if sym.__class__.__name__ == "Calculus": remove_these.append(sym)
+                temp = copy(string)
+                for sym in remove_these:
+                    temp = temp.subs(sym, 1) #substitute the variable/symbol with a "1"
+                string = str(temp)
+                print "symbols were: ", symbols
+                print "the new string is: ", string
         for i in ['..', '--']:
             if str(string).__contains__(i):
                 raise UnitError, "Typo? units expression '"+ string + "' contains '" + i + "'"

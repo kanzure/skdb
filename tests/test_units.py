@@ -123,7 +123,7 @@ have_sympy = False
 try:
     import sympy.physics.units
     have_sympy = True
-except ImportError, err:
+except ImportError, error:
     print "sympy.physics.units not tested (ImportError)"
 
 if have_sympy:
@@ -142,7 +142,7 @@ have_quantities = False
 try:
     import quantities
     have_quantities = True
-except ImportError, err:
+except ImportError, error:
     print "quantities not tested (ImportError)"
 
 if have_quantities:
@@ -162,6 +162,21 @@ if have_quantities:
         def test_uncertain_quantities(self):
             #doesn't look like uncertainties are mature in quantities
             pass
+
+have_sympycore = False
+try:
+    import sympycore
+    have_sympycore = True
+except ImportError, error:
+    print "sympycore not tested (ImportError)"
+
+if have_sympycore:
+    class TestSympyCore(unittest.TestCase):
+        def test_compatibility(self):
+            print "TestSympyCore.test_compatibility: "
+            m1 = skdb.Unit("m")
+            m2 = sympycore.physics.units.Unit("m")
+            self.assertTrue(m1.compatible(m2))
 
 if __name__ == '__main__':
     unittest.main()
