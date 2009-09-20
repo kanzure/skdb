@@ -47,7 +47,9 @@ class Unit(FennObject):
     def sanitize(string):
         '''intercept things that will cause GNU units to screw up'''
         if hasattr(string, 'string'): string = string.string #egads. in case i accidentally pass a Unit or something
-        if string is None or str(string) == 'None' or str(string) == '()': string = 0  
+        if string is None or str(string) == 'None' or str(string) == '()': string = 0
+        #so we can play nice with the 'quantities' package:
+        if hasattr(string, "units"): string = string.units.dimensionality.string
         for i in ['..', '--']:
             if str(string).__contains__(i):
                 raise UnitError, "Typo? units expression '"+ string + "' contains '" + i + "'"

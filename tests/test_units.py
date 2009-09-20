@@ -136,5 +136,32 @@ if have_sympy:
             self.assertTrue(m1.compatible(m3))
             self.assertTrue(m3.compatible(m1))
 
+#test quantities integration
+#http://packages.python.org/quantities/user/tutorial.html
+have_quantities = False
+try:
+    import quantities
+    have_quantities = True
+except ImportError, err:
+    print "quantities not tested (ImportError)"
+
+if have_quantities:
+    class TestQuantities(unittest.TestCase):
+        def test_compatibility(self):
+            m1 = skdb.Unit("m")
+            m2 = quantities.meter
+            m3 = quantities.Quantity([0], 'm')
+            m4 = quantities.Quantity([0], 'meter')
+            self.assertTrue(m1.compatible(m2))
+            self.assertTrue(m1.compatible(m3))
+            self.assertTrue(m1.compatible(m4))
+        def test_compound_quantities(self):
+            m1 = skdb.Unit("m**2/m**3")
+            m2 = quantities.CompoundUnit("m**2/m**3")
+            self.assertTrue(m1.compatible(m2))
+        def test_uncertain_quantities(self):
+            #doesn't look like uncertainties are mature in quantities
+            pass
+
 if __name__ == '__main__':
     unittest.main()
