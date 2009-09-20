@@ -100,8 +100,9 @@ class TestScrew(unittest.TestCase):
     import skdb.packages.screw.screw as screw
     import skdb.packages.threads.threads as threads
     def test_conversions(self):
-            screw1 = skdb.load(skdb.package_file('screw', 'data.yaml'))['parts'][0]
-            #print yaml.dump(screw)
+            screw_package = skdb.Package("screw")
+            screw1 = screw_package.parts[0]
+            #screw1 = skdb.load(skdb.package_file('screw', 'data.yaml'))['parts'][0]
             self.assertEqual(screw1.thread.clamping_force('20N*m/rev'), '354.02982*lbf')
             self.assertEqual(screw1.thread.clamping_force('100ft*lbf/rev'), '2400.0*lbf')
             self.assertEqual(screw1.thread.tensile_area(), '0.031820683*in^2')
@@ -116,6 +117,24 @@ class TestRange(unittest.TestCase):
         self.assertRaises(skdb.UnitError, skdb.Range("m", "kg"))
         self.assertRaises(skdb.UnitError, skdb.Range("kg", "m"))
         skdb.Range("1 mg", "g")
+
+#test sympy integration
+have_sympy = False
+try:
+    import sympy.physics.units
+    have_sympy = True
+except ImportError, err:
+    print "sympy.physics.units not tested (ImportError)"
+
+if have_sympy:
+    class TestSympyUnits(unittest.TestCase):
+        def test_conversion(self):
+            m1 = skdb.Unit("m")
+            m2 = sympy.physics.units.m
+            self.assertTrue(m1.compatible(m2))
+            m3 = skdb.Unit(sympy.physics.units.m)
+            self.assertTrue(m1.compatible(m3))
+            self.assertTrue(m3.compatible(m1))
 
 if __name__ == '__main__':
     unittest.main()
