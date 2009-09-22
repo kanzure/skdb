@@ -1,11 +1,11 @@
-architecture of skdb
+title: architecture of skdb
 
 main concepts:
 - packages:
 - dependencies:
     types: *dependencies
     dependency sets:
-        each package has at least one dependency set that must be satisfied
+        each package has at least one dependency set that must be satisfied (in special cases that one set can be null)
         without satisfaction of a dependency set, the package is probably useless (a broken install)
         a package with multiple dependency sets allows there to be unique buildtime, runtime and software dependencies for different situations
         for instance, certain buildtime dependencies might demand certain runtime dependencies
@@ -17,7 +17,27 @@ main concepts:
         - zoomable text detail: see engelbart
         - 3D animation: see 'parameterized action representation' papers for neat diagrams
         - 2D: see lego instructions
-        - sentence planners
+        - sentence planner: #spud
+            - generate different sentences that say the same thing given the same input
+            - English grammar
+            - tree-adjoining grammars: xtag
+    concepts:
+        - ActionPrimitive
+        - Action
+            - precondition for an action to begin (applicability conditions)
+            - postcondition for an action to end (culmination conditions)
+            - agent or actor (formal cause)
+            - object or actee (that which is acted upon) #aka "subject"?
+            - manner:
+              - qualitative adjectives (descriptions) of an action
+              - quantitative adjectives (descriptions) of an action
+        - Step (same as Action?)
+        - virtual human actors to verify instructions
+    open questions:
+        - where are steps (in instructions) written down in skdb?
+        - how do you translate from an action to machine code or natural language?
+        - how do instructions from other packages contribute to instructions for dependent packages?
+        - a grammar for the language of human instructions? #see f16 maintenance manuals (internal fuel tank vent)
 
 types of dependencies: &dependencies
     build time:
