@@ -3,7 +3,31 @@ title: architecture of skdb
 main concepts:
 - packages:
 - dependencies:
-    types: *dependencies
+    types:
+        build:
+            description:
+                if Y must be used to make the part X
+                then X has a build dependency on Y
+                #note not all dependencies are parts
+            examples:
+                - a screw has a build dependency on a lathe
+        assembly: comes after the build process; integrates component parts into an assembly part
+        disassembly: undoes the steps in assembly process; decomposes assembly part into components           
+        use: &use
+            description:
+                if part X is unusuable when without Y
+                then X has a use dependency on Y
+            examples:
+                - a screw requires a nut in order to fasten something else
+        run: *use
+        software:
+            description:
+                if the skdb representation of X is unusuable without the skdb representation of Y
+                then X has a software dependency on Y
+            examples:
+                - library header files required for compiling support into another program
+                - precompiled object or shared library for link time (i.e., package X requires a shared library from Y if you compile package X)
+                - precompiled object or shared library for software run time (i.e., package X loads up the lib.so file (not compiled in))
     dependency sets:
         each package has at least one dependency set that must be satisfied (in special cases that one set can be null)
         without satisfaction of a dependency set, the package is probably useless (a broken install)
@@ -49,32 +73,6 @@ main concepts:
         - how do instructions from other packages contribute to instructions for dependent packages?
         - a grammar for the language of human instructions? #what??
         - external references: see f16 maintenance manuals (internal fuel tank vent)
-
-types of dependencies: &dependencies
-    build:
-        description:
-            if Y must be used to make the part X
-            then X has a build dependency on Y
-            #note not all dependencies are parts
-        examples:
-            - a screw has a build dependency on a lathe
-    assembly: comes after the build process; integrates component parts into an assembly part
-    disassembly: undoes the steps in assembly process; decomposes assembly part into components           
-    use: &use
-        description:
-            if part X is unusuable when without Y
-            then X has a use dependency on Y
-        examples:
-            - a screw requires a nut in order to fasten something else
-    run: *use
-    software:
-        description:
-            if the skdb representation of X is unusuable without the skdb representation of Y
-            then X has a software dependency on Y
-        examples:
-            - library header files required for compiling support into another program
-            - precompiled object or shared library for link time (i.e., package X requires a shared library from Y if you compile package X)
-            - precompiled object or shared library for software run time (i.e., package X loads up the lib.so file (not compiled in))
 
 commands:
 - skdb soft get #download skdb representations and software dependencies
