@@ -27,8 +27,9 @@ template: !template
     - !interface
         name: other-face
         units: N*m*m
-classes: 
-- bearing.Bearing
+classes:
+ bearing:
+ - Bearing
 source data:
 - data.yaml
 generated data:

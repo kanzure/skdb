@@ -60,6 +60,7 @@ dependencies:
     software:
         - threads #screw.py needs classes from threads.py
     build:
+    - and:
         - or:
             -  threading
             -  thread rolling

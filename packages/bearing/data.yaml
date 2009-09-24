@@ -3,6 +3,22 @@ license: 'GPL2+'
 urls: 
 - 'http://adl.serveftp.org/skdb.git'
 
+parts:
+    part1: !bearing &part1
+        color: red
+        name: part1
+        creation date: 2009-09-09
+        description: its a thingy that does stuff
+        image: file1.png
+        manufacturer: Haas
+        interfaces:
+            - interface1: !interface
+    part2: !bearing
+        parent: *part1
+        name: part2
+        interfaces:
+        - interface1: !interface
+
 bearing1: !bearing
  inner_diameter: 4mm
  outer_diameter: 8mm

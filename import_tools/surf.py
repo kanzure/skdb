@@ -89,8 +89,8 @@ def get_simple_bound(rndPts0):
 def build_plate(polygon, points):
     ''' 
     build a surface from a constraining polygon(s) and point(s)
-    @param polygon:     list of polygons ( TopoDS_Shape)
-    @param points:      list of points ( gp_Pnt ) 
+    @param polygon:     list of polygons (TopoDS_Shape)
+    @param points:      list of points (gp_Pnt) 
     '''
     # plate surface
     bpSrf = GeomPlate_BuildPlateSurface(3,15,2)
@@ -339,7 +339,8 @@ class TestApproximation(unittest.TestCase):
         my_surf = build_plate([poly], [Point(-1,-1,-1)])
         sh = my_surf.Shape()
         display.DisplayShape(sh)
-    def test_stl(self):
+    @staticmethod
+    def test_stl(self, event=None):
         #you probably dont have these
         #occ_shape = load_stl("~/local/pythonocc-0.3/pythonOCC/src/samples/Level2/DataExchange/sample.stl")
         #occ_shape = load_stl("~/local/legos/diver.stl") #http://adl.serveftp.org/lab/legos/diver.stl
@@ -350,14 +351,20 @@ class TestApproximation(unittest.TestCase):
         display.DisplayShape(occ_shape)
         
         shape = Face(occ_shape)
-        temp_points = set(shape.points)
-        self.assertTrue(len(temp_points)>0)
+        temp_points = list(set(shape.points))
+        #self.assertTrue(len(temp_points)>0)
 
         #TODO: cluster points and make surfaces. but how do you compute the first parameter to build_plate?
         surf = Surface()
         surf.shape = occ_shape
         surf.points = temp_points
-        surf.approximate() #should be more like test_extract_shape_vertices
+        #surf.approximate() #should be more like test_extract_shape_vertices
+        curve1 = GeomAPI_PointsToBSpline(point_list_1(surf.points)).Curve()
+        curve1.GetObject()
+        e1 = Edge(curve1.GetHandle())
+        display.DisplayShape(e1)
+        #face1 = make_face(surf1.GetHandle())
+        #display.DisplayShape(face1)
     def test_extract_shape_vertices(self):
         clear()
         occ_shape = BRepPrimAPI_MakeBox(Point(0,0,0), Point(1,1,1)).Shape()
@@ -370,11 +377,11 @@ class TestApproximation(unittest.TestCase):
         surf.approximate()
 
 if __name__ == "__main__":
-    unittest.main()
-    exit()
+    #unittest.main()
+    #exit()
     from OCC.Display.wxSamplesGui import add_function_to_menu, add_menu, start_display
     add_menu("demo")
-    #add_function_to_menu("demo", TestApproximation.test_stl)
+    add_function_to_menu("demo", TestApproximation.test_stl)
     add_function_to_menu("demo", demo)
     add_function_to_menu("demo", clear)
     add_function_to_menu("demo", ask_user)

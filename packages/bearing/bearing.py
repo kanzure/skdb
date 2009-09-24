@@ -16,17 +16,21 @@ class Bearing(Part):
     this is a bearing that could be used with a screw
     this bearing is a dummy bearing- do not expect anything from it (yet)'''
     def __init__(self, inner_diameter=Unit("1mm"), outer_diameter=Unit("1mm")):
-        self.inner_diameter, self.outer_diameter = inner_diameter, outer_diameter
-        assert self.inner_diameter.compatible('m')
-        assert self.outer_diameter.compatible('m')
-        compression_face = Interface("compression-face", part=self)
-        other_face = Interface("other-face", part=self)
-        self.interfaces = [compression_face, other_face]
-        
+        #self.inner_diameter, self.outer_diameter = inner_diameter, outer_diameter
+        #assert self.inner_diameter.compatible('m')
+        #assert self.outer_diameter.compatible('m')
+        #compression_face = Interface("compression-face", part=self)
+        #other_face = Interface("other-face", part=self)
+        #self.interfaces = [compression_face, other_face]
+        self.interfacecs = []
+        pass
+    def post_init_hook(self):
+        pass
     def max_force(self):
         '''load bearing can withstand without permanent set, in lbf'''
         return skdb.Unit("400lbf")
   
     def breaking_force(self):
         '''load bearing can withstand without breaking, in lbf'''
-        return skdb.Unit("800lbf")
+        #return skdb.Unit("800lbf")
+        pass
