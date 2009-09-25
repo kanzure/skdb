@@ -71,26 +71,28 @@ class Pie(Part, Plan): #or maybe Part should inherit from Plan?
         #allocate a pan
         pan = CookingPan()
         pan.build()
-
-        #TODO: a new pan is not necessary if you have the crust in one already
-        def check_for_pan(crust):
-            if crust.is_in(CookingPan): #er, how would this be done?
-                return False
-            else: return True
-        pan_the_crust = ConditionalOperation("insert", object=crust, into=affixed_pan, conditional=check_for_pan)
-        panned_crust = Plan(objects=[sterilized, crust], connector=insert)
-
+        
         #sterilize the pan?
 
         #affix pan to the surface
         affix_pan_op = Operation("affix", object=pan, _to=sterilized)
         affixed_pan = Plan(objects=[pan, sterilized], connector=affix_pan_op)
 
+        #a new pan is not necessary if you have the crust in one already
+        def check_for_pan(crust):
+            if crust.is_in(CookingPan): #er, how would this be done?
+                return False
+            else: return True
+        the_conditional = functools.partial(check_for_pan, crust=crust)
+        pan_the_crust = ConditionalOperation("insert", object=crust, into=affixed_pan, conditional=the_conditional)
+        panned_crust = Plan(objects=[affixed_pan, crust], connector=pan_the_crust)
+        #if the conditional is not met, the action will not be executed, however tree traversal can still occur
+
         #affix crust to the pan
         affix = Operation("affix", object=crust, _to=affixed_pan)
         affixed_crust = Plan(objects=[crust, affixed_pan], connector=affix)
 
-        #TODO: apples may be in a container. what then?
+        #TODO: apples may be in a container. make another ConditionalOperation
         
         #insert sliced apples into crust
         insert = Operation("insert", object=apples, into=crust)
