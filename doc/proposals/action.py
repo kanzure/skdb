@@ -80,8 +80,8 @@ class Pie(Part, Plan): #or maybe Part should inherit from Plan?
         #if get_a_pan's conditional == False, some_plan will just secretly point to sterilized_pan
 
         #affix pan to the surface
-        affix_pan_op = Operation(action="affix", object=sterilized_pan, _to=sterilized_surface)
-        affixed_pan = Plan(objects=[sterilized_pan, sterilized_surface], connector=affix_pan_op)
+        affix_pan_op = Operation(action="affix", object=some_pan, _to=sterilized_surface)
+        affixed_pan = Plan(objects=[some_pan, sterilized_surface], connector=affix_pan_op)
 
         #a new pan is not necessary if you have the crust in one already
         def check_for_pan(crust):
