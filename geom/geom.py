@@ -566,3 +566,21 @@ class BoundingBox:
     def __repr__(self):
         return "BoundingBox(x=[%s, %s], y=[%s, %s], z=[%s, %s])" % (self.x_min, self.x_max, self.y_min, self.y_max, self.z_min, self.z_max)
 
+def shape_extractor(part):
+    '''breaks up a shape into a number of separate shapes
+    ultimately the plan is to let users click on individual interfaces in the gui
+    returns a list of shapes'''
+    raise NotImplementedError, "bryan hasnt got to this yet"
+    shape = part.shape #or part.shapes[0]
+    faces = shape.get_faces()
+    for face in faces:
+        #points = face.get_points()
+        #turn this face into a shape
+        new_shape = Shape(face)
+    #draw all the faces, wires, and points to make the same overall OCC_shape ?
+
+def shape_nearest(point, shapes):
+    '''returns which shape out of the list is closest to the specified point
+    ideally this can help figure out which surface is closest to an Interface point on a part'''
+    pass
+
