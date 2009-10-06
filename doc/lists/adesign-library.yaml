@@ -1,7 +1,50 @@
+adesign architecture:
+    mg change attributes:
+        why are there four variables for each port:
 adesign library components:
 - bearing rotational:
+    inner diameter: mm
+    outer diameter: mm
+    inner shaft torque: Nm
+    outer shaft torque: Nm
+    inner shaft speed: m/radians
+    outer shaft speed: m/radians
 - bearing translational:
+    inner diameter: m
+    outer diameter: m
+    b: #not sure what variable this is
+    interfaces:
+        - !interface
+            name: shaft hole
+            domain: translation
+        - !interface
+            name: bolt
+            domain: translation
+    inner shaft force:
+        units: N
+        equation: !template "$b * ($inner_shaft_speed - $outer_shaft_speed)"
+    outer shaft force:
+        units: N
+        equation: !template "$b * ($outer_shaft_speed - $inner_shaft_speed)"
+    inner shaft speed:
+        units: m/radians
+        equation: !template "$outer_shaft_speed + ($inner_shaft_force / $b)"
+    outer shaft speed:
+        units: m/radians
+        equation: !template "$inner_shaft_speed + ($outer_shaft_force / $b)"
 - belt:
+    length: m
+    diameter: m
+    interfaces:
+        - !interface
+            name: belt start
+            domain: translation
+            equations:
+                - equation: !template "$force "
+        - !interface
+            name: belt end
+            domain: translation
+
 - cable:
 - capacitor:
 - chain:
@@ -12,6 +55,10 @@ adesign library components:
 - dial:
 - footpad:
 - gear:
+    diameter: 
+    shaft diameter:
+    teeth:
+    pitch:
 - generator:
 - inductor:
 - lever 1st class:
