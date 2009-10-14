@@ -54,4 +54,5 @@ ren.GetActiveCamera().Zoom(1.5)
 # This starts the event loop.
 iren.Initialize()
 renWin.Render()
+renWin.save_png("output.png")
 iren.Start()
