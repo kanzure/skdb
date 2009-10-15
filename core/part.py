@@ -35,7 +35,9 @@ try:
         def connections(self):
             '''returns a list of the edges in the assembly graph'''
             return self.edges()
-except ImportError: print "why are we using something that's not even in debian (python-graph)?"
+except ImportError:
+    #print "why are we using something that's not even in debian (python-graph)?"
+    pass
 
 
 class Part(FennObject):
