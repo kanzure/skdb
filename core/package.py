@@ -77,11 +77,12 @@ def import_package_classes(loaded_package, package_path):
             setattr(loaded_package, class_name, cls )
             setattr(cls, "package", loaded_package)
 
-class Packages:
-    '''so you can call Packages.screw and get something useful
+class PackageSet:
+    '''so you can call PackageSet.screw and get something useful
 
-    Packages.screw.data
-    Packages.lego.source_data'''
+    PackageSet.screw.data
+    PackageSet.lego.source_data'''
+    def __init__(self): pass
     def __getattr__(self, package_name):
         new_package = skdb.Package(package_name, create=False)
         setattr(self, package_name, new_package)

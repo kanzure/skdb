@@ -165,15 +165,15 @@ class Uploader(CherryBase):
         return "ok thanks, file has been uploaded"
     upload.exposed=True
 
-class Packages(CherryBase, PackageIndex, skdb.Packages):
+class PackageSet(CherryBase, PackageIndex, skdb.PackageSet):
     def __init__(self):
-        skdb.Packages.__init__(self)
+        skdb.PackageSet.__init__(self)
         CherryBase.__init__(self)
         PackageIndex.__init__(self)
 
     def __getattr__(self, name):
         '''so you can GET /package/screw/'''
-        return Packages.__getattr__(name)
+        return PackageSet.__getattr__(name)
 
 class Root(CherryBase, IndexTemplate):
     _cp_config = {'request.error_response': handle_error}
@@ -182,7 +182,7 @@ class Root(CherryBase, IndexTemplate):
     #further apps
     units = UnitApp() #simple example: /units/?one=m&two=km
     uploader = Uploader()
-    package = Packages()
+    package = PackageSet()
 
     def __init__(self):
         IndexTemplate.__init__(self)
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     from cherrypy.test import helper, webtest
     webtest.WebCase.interactive = False
     def setup_server():
-        cherrypy.tree.mount(App(), '/')
+        cherrypy.tree.mount(Root(), '/')
         cherrypy.config.update({
                 'server.log_to_screen': False,
                 'autoreload.on': False,
