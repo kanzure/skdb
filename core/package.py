@@ -77,6 +77,16 @@ def import_package_classes(loaded_package, package_path):
             setattr(loaded_package, class_name, cls )
             setattr(cls, "package", loaded_package)
 
+class Packages:
+    '''so you can call Packages.screw and get something useful
+
+    Packages.screw.data
+    Packages.lego.source_data'''
+    def __getattr__(self, package_name):
+        new_package = skdb.Package(package_name, create=False)
+        setattr(self, package_name, new_package)
+        return new_package
+
 class Package(FennObject): #should this be a FennObject? ideally it should spit out metadata.yaml, data.yaml, etc.
     yaml_tag='!package'
     def __init__(self, name=None, data=True):

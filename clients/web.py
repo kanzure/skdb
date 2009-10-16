@@ -49,20 +49,20 @@ def handle_error():
     cherrypy.response.body = add_newlines(_cperror.format_exc())
 
 class CherryBase(object):
-    def default(self, *extra, **keywords): #TODO
-        if not extra:
+    def default(self, *virtual_path, **keywords): #TODO
+        if not virtual_path:
             return self.index(**keywords)
-        url = Url(extra)
+        url = ManagedPath(virtual_path)
         return_value = """
-        CherryBase.default(extra=%s, keywords=%s)
+        CherryBase.default(virtual_path=%s, keywords=%s)
         cmd is: %s
-        path is: %s
-        """ % (str(extra), str(keywords), url.cmd, url.path)
+        virtual path is: %s
+        """ % (str(virtual_path), str(keywords), url.cmd, url.path)
         return add_newlines(return_value)
     default.exposed=True
 
-class Url:
-    '''a url is parsed into a Url. the format is as follows:
+class ManagedPath:
+    '''a url is parsed into a ManagedPath. the format is as follows:
 
     /home/some/page/new/ -->
                              parts = ["home", "some", "page", "new"]
@@ -82,10 +82,8 @@ class Url:
         self._parts = []
         self._cmd = ""
         self._path = []
-        if isinstance(url, Url):
-            self._url = copy(url._url)
-            self._cmd = copy(url._cmd)
-            self._path = copy(url._path)
+        if isinstance(url, ManagedPath):
+            for (k,v) in url.__dict__: setattr(self, k, copy(v))
         elif isinstance(url, str):
             self._url = url
             self.parse(url)
@@ -167,32 +165,24 @@ class Uploader(CherryBase):
         return "ok thanks, file has been uploaded"
     upload.exposed=True
 
-class PackageFront(CherryBase, PackageIndex):
+class Packages(CherryBase, PackageIndex, skdb.Packages):
     def __init__(self):
+        skdb.Packages.__init__(self)
+        CherryBase.__init__(self)
         PackageIndex.__init__(self)
-    @cherrypy.expose
-    def default(self, *vpath, **keywords):
-        if not vpath:
-            self.index(keywords)
-        #check if vpath refers to a valid package
-        url = Url(vpath)
-        package_name = str(url.path[0])
-        package = skdb.Package(package_name)
-        return str(skdb.yaml.dump(package))
 
-        pass
-    @cherrypy.expose
-    def index(self, **keywords):
-        pass
+    def __getattr__(self, name):
+        '''so you can GET /package/screw/'''
+        return Packages.__getattr__(name)
 
-class App(CherryBase, IndexTemplate):
+class Root(CherryBase, IndexTemplate):
     _cp_config = {'request.error_response': handle_error}
     packages = [] #for keeping skdb packages loaded in memory
 
     #further apps
     units = UnitApp() #simple example: /units/?one=m&two=km
     uploader = Uploader()
-    package = PackageFront()
+    package = Packages()
 
     def __init__(self):
         IndexTemplate.__init__(self)
@@ -201,8 +191,7 @@ class App(CherryBase, IndexTemplate):
     def index(self, *extra, **keywords):
         return self.respond()
 
-
-application = cherrypy.Application(App(), script_name=None, config=None)
+application = cherrypy.Application(Root(), script_name=None, config=None)
 if __name__ == "__main__":
     ##for unittest
     #tests = [SiteTest]
@@ -229,26 +218,26 @@ if __name__ == "__main__":
             result = add_newlines(message)
             self.assertTrue(result.count("<br />") == 1)
         def test_url(self):
-            url1 = Url("/home/index/edit")
+            url1 = ManagedPath("/home/index/edit")
             self.assertTrue(url1.cmd == "edit")
-            url2 = Url("/home/index/edit/")
+            url2 = ManagedPath("/home/index/edit/")
             self.assertTrue(url2.cmd == "edit")
             
-            url3 = Url("/home/index/edit/stuff/goes/here")
+            url3 = ManagedPath("/home/index/edit/stuff/goes/here")
             self.assertTrue(url3.cmd == "edit")
-            url4 = Url("/home/index/edit/stuff/goes/")
+            url4 = ManagedPath("/home/index/edit/stuff/goes/")
             self.assertTrue(url4.cmd == "edit")
 
-            url5 = Url("/home/index/stuff/edit")
+            url5 = ManagedPath("/home/index/stuff/edit")
             self.assertTrue(url5.path == ["home", "index", "stuff"])
-            url6 = Url("/path/to/the/file/new/extra/stuff/123")
+            url6 = ManagedPath("/path/to/the/file/new/extra/stuff/123")
             self.assertTrue(url6.path == ["path", "to", "the", "file"])
         def test_url_eq(self):
-            url1 = Url("/home/index/edit/")
-            url2 = Url("/home/index/edit/blah")
+            url1 = ManagedPath("/home/index/edit/")
+            url2 = ManagedPath("/home/index/edit/blah")
             self.assertTrue(url1 == url2)
 
-            url3 = Url("/home/index/edit")
+            url3 = ManagedPath("/home/index/edit")
             self.assertTrue(url3 == url2)
         def test_list_items(self):
             self.getPage('/widgets/')
