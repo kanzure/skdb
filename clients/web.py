@@ -3,7 +3,7 @@ import os
 import sys
 sys.stdout = sys.stderr
 
-#generate templates if they are not there
+#compile the templates if necessary
 if not os.path.exists("templates/IndexTemplate.py"):
     os.system("cd templates; cheetah compile *.tmpl")
 
@@ -144,28 +144,44 @@ class Uploader:
         return "ok thanks, file has been uploaded"
     upload.exposed=True
 
+class Package(PackageView):
+    def __init__(self, package):
+        PackageView.__init__(self)
+        self.package = package
+    @cherrypy.expose
+    def index(self, **keywords):
+        return ("individual package view for Package(" + str(self.package.name) + ")")
+    #def __getattr__(self, name):
+    #    #find an attribute of this package
+    #    #could be a file object, attribute, or method of the package
+    #    pass
+
 class PackageSet(skdb.PackageSet, PackageIndex):
     def __init__(self):
         skdb.PackageSet.__init__(self)
-
+        PackageIndex.__init__(self)
+    @cherrypy.expose
+    def index(self):
+        return "PackageSet.index"
+    @cherrypy.expose
+    def default(self, *vpath, **keywords):
+        #default view for a package
+        return "PackageSet.default"
     def __getattr__(self, name):
         '''so you can GET /package/screw/'''
-        try:
-            return_value = skdb.PackageSet.__getattr__(self, name)
+        try: return_value = skdb.PackageSet.__getattr__(self, name)
         except ValueError: return cherrypy.Http404()
-        return return_value
+        return Package(return_value)
 
 class Root(IndexTemplate):
     _cp_config = {'request.error_response': handle_error}
 
-    #further apps
     units = UnitApp() #simple example: /units/?one=m&two=km
     uploader = Uploader()
     package = PackageSet()
 
     def __init__(self):
         IndexTemplate.__init__(self)
-    
     @cherrypy.expose
     def index(self, *extra, **keywords):
         return self.respond()
