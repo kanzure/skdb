@@ -27,7 +27,7 @@ cherrypy.config.update({'environment': 'embedded'})
 #             \__________/
 #
 from Cheetah.Template import Template
-from templates import PackageIndex, IndexTemplate
+from templates import PackageIndex, IndexTemplate, PackageView
 
 import skdb
 import unittest
