@@ -2,19 +2,10 @@
 import os
 import sys
 sys.stdout = sys.stderr
-extra_paths = ["/var/www/", #for skdb on adl.serveftp.org
-               "/usr/lib/python2.5/site-packages/",
-               "/usr/lib/python2.5/site-packages/Buffet-1.0-py2.5.egg/",
-               "/usr/lib/python2.5/site-packages/Cheetah-2.0.1-py2.5-linux-i686.egg/",
-               "/usr/lib/python2.5/site-packages/TurboCheetah-1.0-py2.5.egg/",
-               "/home/bryan/code/wsgi/",
-               os.path.realpath(os.path.curdir), #for templates
-              ]
-def fix_path():
-    '''fixes sys.path only when necessary'''
-    for path in extra_paths:
-        if path not in sys.path: sys.path.append(path)
-fix_path()
+
+#generate templates if they are not there
+if not os.path.exists("templates/IndexTemplate.py"):
+    os.system("cd templates; cheetah compile *.tmpl")
 
 from copy import copy
 from string import join
@@ -23,6 +14,7 @@ from string import join
 import atexit
 import threading
 import cherrypy
+from cherrypy.test import helper, webtest
 _cperror = cherrypy._cperror
 cherrypy.config.update({'environment': 'embedded'})
 
@@ -35,10 +27,10 @@ cherrypy.config.update({'environment': 'embedded'})
 #             \__________/
 #
 from Cheetah.Template import Template
-from templates import *
+from templates import PackageIndex, IndexTemplate
 
-import unittest
 import skdb
+import unittest
 
 def add_newlines(output):
     return output.replace("\n", "\n<br />")
@@ -47,19 +39,6 @@ def handle_error():
     '''makes '500 internal server error' not suck'''
     cherrypy.response.status = 500
     cherrypy.response.body = add_newlines(_cperror.format_exc())
-
-class CherryBase(object):
-    def default(self, *virtual_path, **keywords): #TODO
-        if not virtual_path:
-            return self.index(**keywords)
-        url = ManagedPath(virtual_path)
-        return_value = """
-        CherryBase.default(virtual_path=%s, keywords=%s)
-        cmd is: %s
-        virtual path is: %s
-        """ % (str(virtual_path), str(keywords), url.cmd, url.path)
-        return add_newlines(return_value)
-    default.exposed=True
 
 class ManagedPath:
     '''a url is parsed into a ManagedPath. the format is as follows:
@@ -125,7 +104,7 @@ class ManagedPath:
     cmd=property(fget=get_cmd, doc="returns which command this url corresponds to")
     path=property(fget=get_path, doc="figures out the path on which the command should operate")
 
-class UnitApp(CherryBase):
+class UnitApp:
     # def __init__(self):
     #     self._tmpl = IndexTemplate()
     def index(self, *extra, **keywords):
@@ -136,7 +115,7 @@ class UnitApp(CherryBase):
         else: raise cherrypy.HTTPError(404, "try units/?one=50+m&two=km")
     index.exposed=True
 
-class Uploader(CherryBase):
+class Uploader:
     '''simple file upload demo- doesn't really do much right now.'''
     def index(self):
         return """
@@ -165,19 +144,19 @@ class Uploader(CherryBase):
         return "ok thanks, file has been uploaded"
     upload.exposed=True
 
-class PackageSet(CherryBase, PackageIndex, skdb.PackageSet):
+class PackageSet(skdb.PackageSet, PackageIndex):
     def __init__(self):
         skdb.PackageSet.__init__(self)
-        CherryBase.__init__(self)
-        PackageIndex.__init__(self)
 
     def __getattr__(self, name):
         '''so you can GET /package/screw/'''
-        return PackageSet.__getattr__(name)
+        try:
+            return_value = skdb.PackageSet.__getattr__(self, name)
+        except ValueError: return cherrypy.Http404()
+        return return_value
 
-class Root(CherryBase, IndexTemplate):
+class Root(IndexTemplate):
     _cp_config = {'request.error_response': handle_error}
-    packages = [] #for keeping skdb packages loaded in memory
 
     #further apps
     units = UnitApp() #simple example: /units/?one=m&two=km
@@ -190,113 +169,63 @@ class Root(CherryBase, IndexTemplate):
     @cherrypy.expose
     def index(self, *extra, **keywords):
         return self.respond()
+    @cherrypy.expose
+    def default(self, *virtual_path, **keywords):
+        if not virtual_path:
+            return self.index(**keywords)
+        url = ManagedPath(virtual_path)
+        return_value = """
+        Root.default(virtual_path=%s, keywords=%s)
+        cmd is: %s
+        virtual path is: %s
+        """ % (str(virtual_path), str(keywords), url.cmd, url.path)
+        return add_newlines(return_value)
 
 application = cherrypy.Application(Root(), script_name=None, config=None)
+
+class SiteTest(helper.CPWebCase):
+    def test_newliner(self):
+        message="""put text here
+        on to the next line"""
+        result = add_newlines(message)
+        self.assertTrue(result.count("<br />") == 1)
+    def test_url(self):
+        url1 = ManagedPath("/home/index/edit")
+        self.assertTrue(url1.cmd == "edit")
+        url2 = ManagedPath("/home/index/edit/")
+        self.assertTrue(url2.cmd == "edit")
+        
+        url3 = ManagedPath("/home/index/edit/stuff/goes/here")
+        self.assertTrue(url3.cmd == "edit")
+        url4 = ManagedPath("/home/index/edit/stuff/goes/")
+        self.assertTrue(url4.cmd == "edit")
+
+        url5 = ManagedPath("/home/index/stuff/edit")
+        self.assertTrue(url5.path == ["home", "index", "stuff"])
+        url6 = ManagedPath("/path/to/the/file/new/extra/stuff/123")
+        self.assertTrue(url6.path == ["path", "to", "the", "file"])
+    def test_url_eq(self):
+        url1 = ManagedPath("/home/index/edit/")
+        url2 = ManagedPath("/home/index/edit/blah")
+        self.assertTrue(url1 == url2)
+
+        url3 = ManagedPath("/home/index/edit")
+        self.assertTrue(url3 == url2)
+    def test_package(self):
+        self.getPage("/package/lego/", method="GET")
+        self.assertStatus(200) #see also assertBody
+
+#http://projects.dowski.com/files/cp22collection/cp22collection.py?version=colorized
+def setup_server():
+    cherrypy.tree.mount(Root(), '/')
+    cherrypy.config.update({
+            'server.log_to_screen': False,
+            'autoreload.on': False,
+            'log_debug_info_filter.on': False,
+            'environment': 'test_suite',
+    })
+
 if __name__ == "__main__":
-    ##for unittest
-    #tests = [SiteTest]
-    #for test in tests:
-    #    #http://stackoverflow.com/questions/79754/unittest-causing-sys-exit/79833#79833
-    #    unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(test))
-
-    #http://projects.dowski.com/files/cp22collection/cp22collection.py?version=colorized
-    from cherrypy.test import helper, webtest
     webtest.WebCase.interactive = False
-    def setup_server():
-        cherrypy.tree.mount(Root(), '/')
-        cherrypy.config.update({
-                'server.log_to_screen': False,
-                'autoreload.on': False,
-                'log_debug_info_filter.on': False,
-                'environment': 'test_suite',
-        })
-
-    class SiteTest(helper.CPWebCase):
-        def test_newliner(self):
-            message="""put text here
-            on to the next line"""
-            result = add_newlines(message)
-            self.assertTrue(result.count("<br />") == 1)
-        def test_url(self):
-            url1 = ManagedPath("/home/index/edit")
-            self.assertTrue(url1.cmd == "edit")
-            url2 = ManagedPath("/home/index/edit/")
-            self.assertTrue(url2.cmd == "edit")
-            
-            url3 = ManagedPath("/home/index/edit/stuff/goes/here")
-            self.assertTrue(url3.cmd == "edit")
-            url4 = ManagedPath("/home/index/edit/stuff/goes/")
-            self.assertTrue(url4.cmd == "edit")
-
-            url5 = ManagedPath("/home/index/stuff/edit")
-            self.assertTrue(url5.path == ["home", "index", "stuff"])
-            url6 = ManagedPath("/path/to/the/file/new/extra/stuff/123")
-            self.assertTrue(url6.path == ["path", "to", "the", "file"])
-        def test_url_eq(self):
-            url1 = ManagedPath("/home/index/edit/")
-            url2 = ManagedPath("/home/index/edit/blah")
-            self.assertTrue(url1 == url2)
-
-            url3 = ManagedPath("/home/index/edit")
-            self.assertTrue(url3 == url2)
-        def test_list_items(self):
-            self.getPage('/widgets/')
-            self.assertBody("All the items")
-
-        def test_creator_page(self):
-            self.getPage('/widgets/creator')
-            self.assertBody("An item creator form")
-
-        def test_create_item(self):
-            self.getPage('/widgets/', method="POST")
-            self.assertBody('Created a new item')
-
-        def test_item_methods(self):
-            expected = {'GET': 'Viewing item 1',
-                        'PUT': 'Updated item 1 with {}',
-                        'DELETE': 'Deleted item 1',
-                        }
-            for meth, response in expected.iteritems():
-                self.getPage('/widgets/1', method=meth)
-                self.assertBody(response)
-
-        def test_item_editor(self):
-            self.getPage('/widgets/22;editor')
-            self.assertBody('An editor form for item 22')
-
-        def test_405s(self):
-            self.getPage('/widgets/10', method='POST')
-            self.assertStatus(405)
-            self.getPage('/widgets/', method='DELETE')
-            self.assertStatus(405)
-
-        def test_404s(self):
-            for path in ['/widgets/view', '/widgets/32;foobar',
-                            '/widgets/33/editor', '/widgets/fluffy',
-                            '/widgets/some/where/out/there']:
-                self.getPage(path)
-                self.assertStatus(404)
-
-        def test_non_mapped(self):
-            """Non-mapped methods should not be available over the web."""
-            self.getPage('/widgets/private')
-            self.assertStatus(404)
-            self.getPage('/widgets/1;private')
-            self.assertStatus(404)
-
-        def test_limited(self):
-            self.getPage('/readonly/')
-            self.assertBody('The list of limited items.')
-
-            #try an unimplemented method
-            self.getPage('/readonly/', method="POST")
-            self.assertStatus(405)
-
-            self.getPage('/readonly/33')
-            self.assertBody('Viewing item 33')
-
-            #try an unimplemented method
-            self.getPage('/readonly/33', method='DELETE')
-            self.assertStatus(405)
     setup_server()
     helper.testmain()

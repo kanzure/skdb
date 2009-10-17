@@ -84,13 +84,13 @@ class PackageSet:
     PackageSet.lego.source_data'''
     def __init__(self): pass
     def __getattr__(self, package_name):
-        new_package = skdb.Package(package_name, create=False)
+        new_package = Package(package_name, create=False)
         setattr(self, package_name, new_package)
         return new_package
 
 class Package(FennObject): #should this be a FennObject? ideally it should spit out metadata.yaml, data.yaml, etc.
     yaml_tag='!package'
-    def __init__(self, name=None, data=True):
+    def __init__(self, name=None, data=True, create=True):
         '''name is name of the package
         data is True or False for whether or not to load the source data'''
         if not hasattr(self, "name") and name is None: return #not like we can do much of anything
@@ -107,6 +107,7 @@ class Package(FennObject): #should this be a FennObject? ideally it should spit 
                 value = pkg.__dict__[key]
                 self.__dict__[key] = deepcopy(value)
             self.post_init_hook(data=data) #this isn't yaml so we have to call the hook on our own
+        elif create==False: raise ValueError, "no package by that name"
     def post_init_hook(self, data=True):
         '''FennObject.from_yaml calls this 'after' loading a package'''
         check_unix_name(self.name)
