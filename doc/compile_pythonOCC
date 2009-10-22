@@ -1,67 +1,88 @@
-#Some notes for setting up pythonOCC on debian or ubuntu. this actually doesn't work, but it will get you most of the way there.
+#some notes for setting up pythonOCC on debian or ubuntu
+#it will get you most of the way there
+#you need 1.5GB available to compile pythonOCC
 
-#you may have to do something like this (why?)
-#export CASROOT=/home/kanzure/local/opencascade/OpenCASCADE6.3.0/ros/
+#first some environment variables
+export CASROOT=~/local/opencascade/OpenCASCADE6.3.0/ros/
+export OCC_INC=~/local/opencascade/OpenCASCADE6.3.0/ros/inc
 
-#you may have to edit environment.py re: /usr/local/include/ and other weird ubuntu-only paths
-
+#if you're on ubuntu jaunty, you need packages from opennovation
 wget http://www.opennovation.org/ubuntu/opennovation.key
 sudo apt-key add opennovation.key
 echo "deb http://www.opennovation.org/ubuntu jaunty main contrib non-free" | sudo tee -a /etc/apt/sources.list
 sudo apt-get update
-sudo apt-get install libopencascade-dev scons python-psyco swig checkinstall
+sudo apt-get install libopencascade-visualization-dev libopencascade-dev libopencascade-ocaf-dev opencascade-draw opencascade-wok scons swig python-psyco python-gccxml gccxml x11proto-core-dev libx11-dev checkinstall
 
-#you might not need all of these
-sudo apt-get install libopencascade-visualization-dev libopencascade-ocaf-dev \
-  opencascade-wok opencascade-draw scons python-gccxml gccxml 
-svn co svn://svn.gna.org/svn/pythonocc/trunk pythonOCC
-cd pythonOCC/src/
+#svn co svn://svn.gna.org/svn/pythonocc/trunk pythonOCC
+#cd pythonOCC/src/
+
+wget http://download.gna.org/pythonocc/source_release/pythonOCC-0.3.tar.gz
+tar -zxvf pythonOCC-0.3.tar.gz
+cd pythonOCC-0.3/src/
 #point swig to the right include dirs
+sed -i 's|/usr/local/inc|/usr/include/opencascade|' wrapper/environment.py
+sed -i 's|/usr/local/lib|/usr/lib|' wrapper/environment.py
+sed -i "s/'mscmd',//" setup.py
 sed -i 's|/usr/local/inc|/usr/include/opencascade|' SConstruct
 sed -i 's|/usr/local/lib|/usr/lib|' SConstruct
-sed -i 's|/usr/local/inc|/usr/include/opencascade|' environment.py
-sed -i 's|/usr/local/lib|/usr/lib|' environment.py
-#these aren't in the svn for some reason
-mkdir ../build
-mkdir ../build/OCC
-#these files aren't included in debian packages
-sed -i 's/#include<BRepTest.hxx>//' SWIG_src_modular_linux_darwin/BRep_headers.i
-sed -i 's/#include<GeometryTest.hxx>//' SWIG_src_modular_linux_darwin/BRep*
-sed -i 's/#include<GeometryTest.hxx>//' SWIG_src_modular_linux_darwin/Shape*
-sed -i 's/#include<GeomliteTest.hxx>//' SWIG_src_modular_linux_darwin/BRep*
-sed -i 's/#include<GeomliteTest.hxx>//' SWIG_src_modular_linux_darwin/Shape*
-sed -i 's/#include<Viewer2dTest.*.hxx>//' SWIG_src_modular_linux_darwin/Viewer*
-sed -i 's/#include<ViewerTest.*.hxx>//' SWIG_src_modular_linux_darwin/Viewer*
-sed -i 's/#include<TopOpeBRepDS_tools.hxx>//' SWIG_src_modular_linux_darwin/LocOpe*
-sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>//' SWIG_src_modular_linux_darwin/TopOpe*
 
-cp SWIG_src_modular_win32/TopOpeBRep* SWIG_src_modular_linux_darwin/ 
-cp SWIG_src_modular_win32/LocOpe* SWIG_src_modular_linux_darwin/
-cp SWIG_src_modular_win32/LocOpe* SWIG_src_modular_linux_darwin/
-cp SWIG_src_modular_win32/BRepFeat.i SWIG_src_modular_linux_darwin/BRepFeat.i
-
-sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>/#include\"TopOpeBRepDS_tools.hxx\"/' SWIG_src_modular_linux_darwin/TopOpe*
-sed -i 's/#include.?"TopOpeBRepDS_tools.hxx"/\\#include<TopOpeBRepDS_tools.hxx>/ SWIG_src_modular_linux_darwin/TopOpe*
-sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>/#include\"TopOpeBRepDS_tools.hxx\"/' SWIG_src_modular_linux_darwin/LocOpe*
-sed -i 's/#include.?"TopOpeBRepDS_tools.hxx"/\\#include<TopOpeBRepDS_tools.hxx>/ SWIG_src_modular_linux_darwin/LocOpe*
-
+#debian OCC libraries arent all linked properly
+#these might not all be necessary but meh
+sudo ln -s /usr/lib/libTKCDLFront-6.3.0.so /usr/lib/libTKCDLFront.so
+sudo ln -s /usr/lib/libTKCPPClient-6.3.0.so /usr/lib/libTKCPPClient.so
+sudo ln -s /usr/lib/libTKCPPExt-6.3.0.so /usr/lib/libTKCPPExt.so
+sudo ln -s /usr/lib/libTKCPPIntExt-6.3.0.so /usr/lib/libTKCPPIntExt.so
+sudo ln -s /usr/lib/libTKCPPJini-6.3.0.so /usr/lib/libTKCPPJini.so
+sudo ln -s /usr/lib/libTKCSFDBSchema-6.3.0.so /usr/lib/libTKCSFDBSchema.so
+sudo ln -s /usr/lib/libTKIDLFront-6.3.0.so /usr/lib/libTKIDLFront.so 
+sudo ln -s /usr/lib/libTKTCPPExt-6.3.0.so /usr/lib/libTKTCPPExt.so
+sudo ln -s /usr/lib/libTKWOK-6.3.0.so /usr/lib/libTKWOK.so
+sudo ln -s /usr/lib/libTKWOKTcl-6.3.0.so /usr/lib/libTKWOKTcl.so
+sudo ln -s /usr/lib/libmscmd-6.2.so /usr/lib/libmscmd.so
+ 
+##these aren't in the svn for some reason
+#mkdir ../build
+#mkdir ../build/OCC
+##these files aren't included in debian packages
+#sed -i 's/#include<BRepTest.hxx>//' SWIG_src_modular_linux_darwin/BRep_headers.i
+#sed -i 's/#include<GeometryTest.hxx>//' SWIG_src_modular_linux_darwin/BRep*
+#sed -i 's/#include<GeometryTest.hxx>//' SWIG_src_modular_linux_darwin/Shape*
+#sed -i 's/#include<GeomliteTest.hxx>//' SWIG_src_modular_linux_darwin/BRep*
+#sed -i 's/#include<GeomliteTest.hxx>//' SWIG_src_modular_linux_darwin/Shape*
+#sed -i 's/#include<Viewer2dTest.*.hxx>//' SWIG_src_modular_linux_darwin/Viewer*
+#sed -i 's/#include<ViewerTest.*.hxx>//' SWIG_src_modular_linux_darwin/Viewer*
+#sed -i 's/#include<TopOpeBRepDS_tools.hxx>//' SWIG_src_modular_linux_darwin/LocOpe*
+#sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>//' SWIG_src_modular_linux_darwin/TopOpe*
+#cp SWIG_src_modular_win32/TopOpeBRep* SWIG_src_modular_linux_darwin/ 
+#cp SWIG_src_modular_win32/LocOpe* SWIG_src_modular_linux_darwin/
+#cp SWIG_src_modular_win32/LocOpe* SWIG_src_modular_linux_darwin/
+#cp SWIG_src_modular_win32/BRepFeat.i SWIG_src_modular_linux_darwin/BRepFeat.i
+#sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>/#include\"TopOpeBRepDS_tools.hxx\"/' SWIG_src_modular_linux_darwin/TopOpe*
+#sed -i 's/#include.?"TopOpeBRepDS_tools.hxx"/\\#include<TopOpeBRepDS_tools.hxx>/ SWIG_src_modular_linux_darwin/TopOpe*
+#sed -i 's/#include.?<TopOpeBRepDS_tools.hxx>/#include\"TopOpeBRepDS_tools.hxx\"/' SWIG_src_modular_linux_darwin/LocOpe*
+#sed -i 's/#include.?"TopOpeBRepDS_tools.hxx"/\\#include<TopOpeBRepDS_tools.hxx>/ SWIG_src_modular_linux_darwin/LocOpe*
 #also for SWIG_src_modular_linux_darwin/TopOpeBRep_dependencies.i 
 
 #should take twenty minutes or so
-time scons mode=build OCC_INCLUDE_PATH=/usr/include OCC_CONFIG_H_PATH=/usr/include/opencascade OCC_LIBRARY_PATH=/usr/lib
-
+#time scons mode=build OCC_INCLUDE_PATH=/usr/include OCC_CONFIG_H_PATH=/usr/include/opencascade OCC_LIBRARY_PATH=/usr/lib
 #time sudo checkinstall scons mode=install #this ought to work eh?
 
-cp ../build/OCC/* OCC/
-cp -r Display/ OCC/
-cp -r ../Utils/ OCC/
-sudo mv OCC/ /usr/share/pyshared/
-sudo ln -s /usr/share/pyshared/OCC /usr/lib/python2.6/dist-packages/OCC
+time python setup.py build -NO_GEOM
+time sudo python setup.py install -NO_GEOM
+export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python2.6/dist-packages/OCC
 
 #if you get "wx.aui" not found:
 sudo rm -f /usr/lib/python2.5/site-packages/wx.pth
 sudo echo "wx-2.8-gtk2-unicode" >> /usr/lib/python2.5/site-packages/wx.pth
 
-#make some of the samples/Level1/ stuff run.
-export CSF_GraphicShr=/usr/lib/libTKOpenGl.so
+#cp ../build/OCC/* OCC/
+#cp -r Display/ OCC/
+#cp -r ../Utils/ OCC/
+#sudo mv OCC/ /usr/share/pyshared/
+#sudo ln -s /usr/share/pyshared/OCC /usr/lib/python2.6/dist-packages/OCC
 
+echo "export CSF_GraphicShr=/usr/lib/libTKOpenGl.so" >> ~/.bashrc
+echo "export CASROOT=~/local/opencascade/OpenCASCADE6.3.0/ros/" >> ~/.bashrc
+source ~/.bashrc
+
+#please read "hacking" now.

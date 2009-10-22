@@ -2,3 +2,4 @@ let's say your skdb source code is in ~/code/skdb/
 append this to your ~/.bashrc so that skdb is available as a module without installing:
 
 export PYTHONPATH=$PYTHONPATH:~/code/
+export SKDB_PACKAGE_DIR=$PYTHONPATH:~/code/skdb/packages/
