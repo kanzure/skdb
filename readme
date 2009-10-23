@@ -11,8 +11,10 @@ Completed features:
 - run paths.py to demonstrate making a lego assembly
 - generate an assembly graph via igraph
 
-
 here is a break down of the current directory structure:
+
+config.yaml
+    you need to edit this
 
 clients/
     front-ends for ordering parts. later there will be tools here for doing pretend scenarios, generating instructions, or assembling armies of giant robots

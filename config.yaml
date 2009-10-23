@@ -1,0 +1,8 @@
+
+#where are skdb packages stored?
+package dir: packages/
+
+#where are packages available from the web?
+repositories:
+    - http://adl.serveftp.org/skdb-packages/
+
