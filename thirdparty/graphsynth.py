@@ -28,6 +28,9 @@ from copy import copy
 import functools
 import unittest
 
+#for xml
+from xml.dom import minidom
+
 campbell_message = "campbell didnt implement this"
 bryan_message = "bryan hasnt got this far yet"
 def bryan_message_generator(path): return bryan_message + (" (%s)" % (path))
@@ -57,6 +60,22 @@ class TestPythonStuff(unittest.TestCase):
         self.assertTrue(prop_ex.x == test_message)
 if __name__ == "__main__":
     unittest.main()
+
+class TestGraphSynth(unittest.TestCase):
+    def test_graph(self):
+        g1 = Graph()
+    def test_node(self):
+        n1 = Node()
+    def test_arc(self):
+        a1 = Arc()
+    def test_rule(self):
+        r1 = Rule()
+    def test_rule_set(self):
+        r1 = Rule()
+        r2 = Rule()
+        s1 = RuleSet()
+    def test_recognize_choose_apply(self):
+        pass
 
 def find_delegate(some_list, example):
     '''returns a sublist of some_list where the attributes of the elements match those of the example
@@ -304,6 +323,55 @@ class Graph:
                 else: connected_arc._to = None
             self.nodes.remove(node_ref)
         else: self.nodes.remove(node_ref)
+    @staticmethod
+    def load_gxml(file_path, version=2.0):
+        '''input: gxml file path
+        output: new Graph object'''
+        #check that the path exists
+        assert os.path.exists(file_path), "Graph.load_gxml: file path (%s) must exist." % (file_path)
+        #open it up
+        doc = minidom.parse(open(file_path, "r"))
+
+        if version==2.0:
+            result = Graph()
+
+            page = doc.getElementsByTagName("Page")[0]
+            page_name = page.getElementsByTagName("name")[0].wholeText #name of the entire file (sort of)
+            graph = page.getElementsByTagName("GraphSynth:designGraph")[0] #assume there is only one graph present
+
+            #TODO
+            graphics = page.getElementsByTagName("GraphSynth:CanvasProperty")[0]
+
+            #set up the variables for the for loop
+            graph_name, global_labels, global_variables, arcs, nodes = None, [], [], [], []
+            for child in graph.childNodes:
+                if child.nodeName == "name":
+                    graph_name = child.childNodes[0].wholeText
+                elif child.nodeName == "globalLabels":
+                    global_labels = child
+                elif child.nodeName == "globalVariables":
+                    global_variables = child
+                elif child.nodeName == "arcs":
+                    arcs = child
+                elif child.nodeName == "nodes":
+                    nodes = child
+            #now process the results
+            for global_label in global_labels.childNodes:
+                #process each label
+                pass
+            for global_variable in global_variables.childNodes:
+                #process each variable
+                pass
+            for arc in arcs.childNodes:
+                pass
+            for node in nodes.childNodes:
+                pass
+            
+            result.name = graph_name
+            result.page_name = page_name
+            
+            #TODO: append nodes, arcs, global variables, global labels into the graph
+        return result
 
 class Candidate:
     graphsynth_path = "GraphSynth.Representation/BasicGraphClasses/candidate.cs"
