@@ -1,0 +1,105 @@
+
+/******** basic stuff ********/
+a:link, a:visited, a:active {
+    color: #0ccfff;
+    text-decoration: none;
+    }
+ul, ol, li { /* maybe a little hastey */
+    list-style:none;
+    }
+
+#banner {
+    background-image: url("../omnifab_banner.png");
+    background-repeat: repeat;
+    border: none;
+    width: 263px;
+    height: 50px;
+    float: left;
+    display: block;
+    }
+#title {
+    /*visibility: hidden;*/
+    display: none;
+    }
+#slogan {
+    /*visibility: hidden;*/
+    display: none;
+    }
+
+/******* navigation bar ********/
+#navigation_bar {
+    font-family: Helvetica, Arial, sans-serif;
+    display: block;
+    margin-top: 0;
+    padding-top: 0;
+    height: 5em;
+    }
+#navigation_bar a:link, #navigation_bar a:visited, #navigation_bar a:active {
+    color: #0ccfff;
+    font-weight: bold;
+    text-decoration: none;
+    padding-left: 5em;
+    padding-right: 5em;
+    }
+#navigation_bar ul {
+    float: right;
+    display: inline;
+    }
+#navigation_bar li {
+    float: left;
+    display: inline;
+    }
+
+#notification {
+    background-color: white;
+    width: 50%;
+    font-family: Times New Roman;
+    font-weight: bold;
+    text-align: center;
+    margin-left: 25%;
+    margin-right: 25%;
+    }
+
+/******* container ********/
+#container {
+    xborder-style: solid;
+    xborder-color: black;
+    }
+
+/******** legalese ********/
+#footer {
+    xbackground-color: gray;
+    font-family: Helvetica, Sans-Serif, Arial;
+    padding: 5px;
+    font-weight: bold;
+    margin-top: 5em;
+    border-top: 1px solid #CCCCCC;
+    clear: both;
+    color: #afb4b4;
+    font-size: 12px;
+    line-height: 1.2em;
+    }
+
+/******** for the slideshow/gallery ********/
+#slide-images {
+    position:relative;
+    display:block;
+    margin:0px;
+    padding:0px;
+    width:280px; /* adjust to width and height of images in gallery */
+    height:159px;
+    overflow:hidden;
+    }
+#slide-images li {
+    position:absolute;
+    display:block;
+    list-style-type:none;
+    margin:0px;
+    padding:0px;
+    background-color:#FFFFFF;
+    }
+#slide-images li img {
+    display:block;
+    background-color:#FFFFFF;
+    }
+
