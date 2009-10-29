@@ -39,15 +39,13 @@ class Screw(Part):
         self.thread, self.length, self.grade, self.name = thread, length, grade, name
         if self.thread and self.length:
             if self.thread.length is None: self.thread.length = self.length
-            assert self.length.compatible('m')
-
+            assert self.length.compatible('m')  #this sort of thing should go in a generic unit-checker function
+        #is it right to define these interfaces here, instead of in the thread object?
         thread_loosen = Interface("thread-loosen", part=self)
         thread_tighten = Interface("thread-tighten", part=self)
         compression_face = Interface("compression-face", part=self)
         torque_spline = Interface("torque-spline", part=self)
-        if thread == None:
-            thread = Thread(diameter='1mm',pitch='1rev/in')
-            self.thread = thread
+        if thread == None: raise ValueError
         #the following if should be commented out when skdb/core/threads.py Thread interfaces is fixed
         #if thread.interfaces == None or len(thread.interfaces) == 0:
         thread.interfaces = [thread_loosen, thread_tighten]
