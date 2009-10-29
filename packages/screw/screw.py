@@ -54,16 +54,19 @@ class Screw(Part):
             thread_loosen = thread.interfaces[0] #FIXME: this is very, very wrong
             thread_tigthen = thread.interfaces[1] #FIXME too.
         self.interfaces = [thread_loosen, thread_tighten, compression_face, torque_spline]
+        self.check_compatibility()
 
+    def check_compatibility(self):
+        #shouldnt this function be in thread.py?
         for (k,v) in {'pitch': 'rev/in', 'diameter': 'in', 'tensile_area': 'in^2'}.items():
-            unit = getattr(self.thread, k)
+            parameter = getattr(self.thread, k)
             try:
-                Unit(unit)
+                Unit(parameter)
                 assert (getattr(self.thread, k)).compatible(v)
             except UnitError, e:
                 #ok it's not a Unit object
                 #and instead a method in the Thread class
-                res = unit()
+                res = parameter()
                 assert res.compatible(v)
         #note these tables vary from source to source; might want to check if it really matters to you
         
