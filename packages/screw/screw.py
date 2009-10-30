@@ -39,15 +39,13 @@ class Screw(Part):
         self.thread, self.length, self.grade, self.name = thread, length, grade, name
         if self.thread and self.length:
             if self.thread.length is None: self.thread.length = self.length
-            assert self.length.compatible('m')
-
+            assert self.length.compatible('m')  #this sort of thing should go in a generic unit-checker function
+        #is it right to define these interfaces here, instead of in the thread object?
         thread_loosen = Interface("thread-loosen", part=self)
         thread_tighten = Interface("thread-tighten", part=self)
         compression_face = Interface("compression-face", part=self)
         torque_spline = Interface("torque-spline", part=self)
-        if thread == None:
-            thread = Thread(diameter='1mm',pitch='1rev/in')
-            self.thread = thread
+        if thread == None: raise ValueError
         #the following if should be commented out when skdb/core/threads.py Thread interfaces is fixed
         #if thread.interfaces == None or len(thread.interfaces) == 0:
         thread.interfaces = [thread_loosen, thread_tighten]
@@ -56,16 +54,19 @@ class Screw(Part):
             thread_loosen = thread.interfaces[0] #FIXME: this is very, very wrong
             thread_tigthen = thread.interfaces[1] #FIXME too.
         self.interfaces = [thread_loosen, thread_tighten, compression_face, torque_spline]
+        self.check_compatibility()
 
+    def check_compatibility(self):
+        #shouldnt this function be in thread.py?
         for (k,v) in {'pitch': 'rev/in', 'diameter': 'in', 'tensile_area': 'in^2'}.items():
-            unit = getattr(self.thread, k)
+            parameter = getattr(self.thread, k)
             try:
-                Unit(unit)
+                Unit(parameter)
                 assert (getattr(self.thread, k)).compatible(v)
             except UnitError, e:
                 #ok it's not a Unit object
                 #and instead a method in the Thread class
-                res = unit()
+                res = parameter()
                 assert res.compatible(v)
         #note these tables vary from source to source; might want to check if it really matters to you
         
