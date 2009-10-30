@@ -45,6 +45,32 @@ class Foo(yaml.YAMLObject):
         else:
             return  Foo(loader.construct_scalar(node))
 
+class FirstResolver(yaml.YAMLObject):
+    yaml_tag="!first"
+    some_attr="foobars"
+    def __init__(self, extra):
+        if extra: some_attr=extra
+    @classmethod
+    def from_yaml(cls, loader, node):
+        data = loader.construct_scalar(node)
+        return cls(data)
+
+class SecondResolver(yaml.YAMLObject):
+    yaml_tag="!second"
+    some_attr="barfoo"
+    def __init__(self, extra):
+        if extra: some_attr=extra
+    @classmethod
+    def from_yaml(cls, loader, node):
+        data = loader.construct_scalar(node)
+        return cls(data)
+
+#teach PyYAML that any untagged scalar with the path [a] has an implict tag !first
+yaml.add_path_resolver("!first", ["a"], str)
+
+#teach PyYAML that any untagged scalar with the path [a,b,c] has an implicit tag !second.
+yaml.add_path_resolver("!second", ["a", "b", "c"], str)
+
 #teach PyYAML that any untagged plain scalar that looks like XdY has the implicit tag !dice.
 for cls in [Dice, Foo]:
     yaml.add_implicit_resolver(cls.yaml_tag, cls.yaml_pattern)
@@ -60,3 +86,7 @@ print "dumping Dice(2,6) looks like:  ",  dump(Dice(2,6))
 print "loading foomoo: ", load('foomoo')
 print "loading !foo bar: ", load('!foo bar')
 print "dumping Foo(moo): ", dump(Foo("moo"))
+print "loading a: moo ", load("a: moo")
+print "loading a: b: c: input goes here", load("a:\n b:\n  c: input goes here")
+
+
