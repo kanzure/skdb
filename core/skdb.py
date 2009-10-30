@@ -7,7 +7,7 @@ import os
 import sys
 from string import Template as string_template
 from template import Template
-from package import Package, package_file, load_package, check_unix_name, PackageSet
+from package import Package, package_file, load_package, check_unix_name
 from units import Unit, Range, Uncertainty, UnitError, NaNError
 from interface import Interface, Connection
 from part import Part
