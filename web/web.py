@@ -144,34 +144,78 @@ class Uploader:
         return "ok thanks, file has been uploaded"
     upload.exposed=True
 
-class Package(PackageView):
+class Package(PackageView, skdb.Package):
+    _cp_config = {'request.error_response': handle_error}
+    exposed=True
+    package = None
     def __init__(self, package):
         PackageView.__init__(self)
         self.package = package
     @cherrypy.expose
     def index(self, **keywords):
         return ("individual package view for Package(" + str(self.package.name) + ")")
-    #def __getattr__(self, name):
-    #    #find an attribute of this package
-    #    #could be a file object, attribute, or method of the package
-    #    pass
+    @cherrypy.expose
+    def default(self, *virtual_path, **keywords):
+        if not virtual_path:
+            return self.index(**keywords)
+        url = ManagedPath(virtual_path)
+        return_value = """Package.default(virtual_path=%s, keywords=%s)
+        cmd is: %s
+        virtual path is: %s
+        """ % (str(virtual_path), str(keywords), url.cmd, url.path)
+        return add_newlines(return_value)
+    def __eq__(self, other):
+        if isinstance(other, Package): #web package object
+            if other.package == self.package: return True
+            else: return False
+        elif isinstance(other, skdb.Package): #skdb.Package object
+            if self.package.name == other.name: return True
+            else: return False
+        elif isinstance(other, str): #package name
+            if self.package.name == other: return True
+            else: return False
+        else: return False #dunno what to do
+    def __getattr__(self, name):
+        #could be a file object, attribute, or method of the package
+        if name == "__methods__" or name == "__members__": return
+        #if attr == "name": return str(self.__getattribute__("package").__getattr__("name"))
+    
+        if self.package is not None:
+            print "Package.__getattr__(\"%s\")" % str(name)
+            return_value = str( Package.__getattribute__(self, "package")[ Package.__getattribute__(self, "package").index(name) ] )
+            print "returning: ", return_value
+            return return_value
+        return []
 
-class PackageSet(skdb.PackageSet, PackageIndex):
+class PackageSet(PackageIndex):
+    _cp_config = {'request.error_response': handle_error}
+    _packages = []
     def __init__(self):
-        skdb.PackageSet.__init__(self)
         PackageIndex.__init__(self)
     @cherrypy.expose
-    def index(self):
-        return "PackageSet.index"
+    def index(self, **keywords):
+        return "PackageSet.index with keywords: " + str(list(keywords))
     @cherrypy.expose
     def default(self, *vpath, **keywords):
         #default view for a package
-        return "PackageSet.default"
+        return "PackageSet.default: vpath is: " + str(vpath)
+    @classmethod
+    def load_package(cls, name):
+        print "PackageSet.load_package -- name is: ", name
+        if not (name in cls._packages):
+            if skdb.check_unix_name(name):
+                new_package = skdb.Package(name=name, create=False)
+                new_package_page = Package(new_package)
+                cls._packages.append(new_package_page)
+                return new_package_page
+        else: #already in there
+            return cls._packages[cls._packages.index(name)] #return the corresponding entry
     def __getattr__(self, name):
-        '''so you can GET /package/screw/'''
-        try: return_value = skdb.PackageSet.__getattr__(self, name)
-        except ValueError: return cherrypy.Http404()
-        return Package(return_value)
+        if name == "__methods__" or name == "__members__": return
+        if (not (name=="")) and not (name==None):
+            print "name is: ", name
+            print "***********************************"
+            if skdb.check_unix_name(name): return self.load_package(name)
 
 class Root(IndexTemplate):
     _cp_config = {'request.error_response': handle_error}
@@ -229,7 +273,16 @@ class SiteTest(helper.CPWebCase):
         self.assertTrue(url3 == url2)
     def test_package(self):
         self.getPage("/package/lego/", method="GET")
+        print self.body
         self.assertStatus(200) #see also assertBody
+
+        self.getPage("/package/lego/data/", method="GET")
+        print self.body
+        self.assertStatus(200)
+
+        self.getPage("/package/lego/data/yaml", method="GET")
+        print self.body
+        self.assertStatus(200)
 
 #http://projects.dowski.com/files/cp22collection/cp22collection.py?version=colorized
 def setup_server():

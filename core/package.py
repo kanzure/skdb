@@ -5,7 +5,7 @@ from copy import copy, deepcopy
 
 def check_unix_name(name):
     '''returns True if name (string) is a valid unix_name'''
-    assert name, "name is empty"
+    assert name, "check_unix_name: name is empty (name=\"%s\")" % (name)
     check = re.match('^[a-zA-Z0-9_\-.]*$', name)
     assert check, 'allowed characters in a name are: a-z, 0-9, "-", ".", and "_". Instead, got: "'+str(name)+'"'
     if check: return True
@@ -81,21 +81,29 @@ class PackageSet:
     '''so you can call PackageSet.screw and get something useful
 
     PackageSet.screw.data
+    PackageSet.screw.Screw()
     PackageSet.lego.source_data'''
-    def __init__(self): pass
+    def __init__(self):
+        self._packages = []
     def __getattr__(self, package_name):
-        new_package = Package(package_name, create=False)
-        setattr(self, package_name, new_package)
-        return new_package
+        if not hasattr(self, package_name):
+            new_package = Package(package_name, create=False)
+            setattr(self, package_name, new_package)
+            self._packages.append(new_package)
+            return new_package
+        else:
+            return self.__getattribute__(package_name)
 
 class Package(FennObject): #should this be a FennObject? ideally it should spit out metadata.yaml, data.yaml, etc.
     yaml_tag='!package'
     def __init__(self, name=None, data=True, create=True):
         '''name is name of the package
         data is True or False for whether or not to load the source data'''
+        print "skdb.Package.__init__ -- name is: %s" % (name)
         if not hasattr(self, "name") and name is None: return #not like we can do much of anything
         if hasattr(self, "name") and name is None: self.name = name
         if not hasattr(self, "name") and name is not None: self.name = name
+        if self.name is None: return #not like we can do much of anything
         #check if the package already exists
         filepath = self.path()
         pkg_exists = os.access(filepath, os.F_OK)
