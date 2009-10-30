@@ -55,15 +55,9 @@ class FirstResolver(yaml.YAMLObject):
         data = loader.construct_scalar(node)
         return cls(data)
 
-class SecondResolver(yaml.YAMLObject):
+class SecondResolver(FirstResolver):
     yaml_tag="!second"
     some_attr="barfoo"
-    def __init__(self, extra):
-        if extra: some_attr=extra
-    @classmethod
-    def from_yaml(cls, loader, node):
-        data = loader.construct_scalar(node)
-        return cls(data)
 
 #teach PyYAML that any untagged scalar with the path [a] has an implict tag !first
 yaml.add_path_resolver("!first", ["a"], str)
