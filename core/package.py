@@ -2,6 +2,7 @@ import settings
 from yamlcrap import FennObject, load, yaml
 import re, os, sys
 from copy import copy, deepcopy
+from string import join
 
 def check_unix_name(name):
     '''returns True if name (string) is a valid unix_name'''
@@ -79,10 +80,10 @@ def import_package_classes(loaded_package, package_path):
 
 class Package(FennObject): #should this be a FennObject? ideally it should spit out metadata.yaml, data.yaml, etc.
     yaml_tag='!package'
+    data_loaded=False
     def __init__(self, name=None, data=True, create=True):
         '''name is name of the package
         data is True or False for whether or not to load the source data'''
-        print "skdb.Package.__init__ -- name is: %s" % (name)
         if not hasattr(self, "name") and name is None: return #not like we can do much of anything
         if hasattr(self, "name") and name is None: self.name = name
         if not hasattr(self, "name") and name is not None: self.name = name
@@ -92,18 +93,28 @@ class Package(FennObject): #should this be a FennObject? ideally it should spit 
         pkg_exists = os.access(filepath, os.F_OK)
         if pkg_exists:
             #load it from a file
-            pkg = deepcopy(Package.__load_package__(name, data=data))
+            pkg = Package.__load_package__(name, data=data)
             #put the values in the local dictionary
             for key in pkg.__dict__.keys():
                 value = pkg.__dict__[key]
                 self.__dict__[key] = deepcopy(value)
-            self.post_init_hook(data=data) #this isn't yaml so we have to call the hook on our own
+            #call post_init_hook with data=(not data) because __load_package__ was called with data=data
+            self.post_init_hook(data=(not data), first_time=False) #this isn't yaml so we have to call the hook on our own
         elif create==False: raise ValueError, "no package by that name"
-    def post_init_hook(self, data=True):
+    def post_init_hook(self, data=True, first_time=True):
         '''FennObject.from_yaml calls this 'after' loading a package'''
-        check_unix_name(self.name)
-        if data and hasattr(self, "source data"):
-            self.load_data()
+        if first_time:
+            check_unix_name(self.name)
+            if hasattr(self, "source data"):
+                self.source_data = self.__getattribute__("source data")
+                delattr(self, "source data") #bah who needs data anyway
+                new_source_data = []
+                #load up the files
+                for each in self.source_data:
+                    new_source_data.append(File(self.file_path(each)))
+                self.source_data = new_source_data
+                self.import_package_classes() #otherwise self.parts will be made up of skdb.core.yamlcrap.Dummy objects
+                if data: self.load_data()
     @staticmethod
     def __load_package__(package_name, data=True):
         '''loads a package. call the constructor instead.'''
@@ -125,6 +136,8 @@ class Package(FennObject): #should this be a FennObject? ideally it should spit 
         package = Package("lego")
         mybrick = package.Lego()'''
         package_path = self.path()
+        if not hasattr(self, "classes"): return
+        if not hasattr(self.classes, "keys"): return
         for module_name in self.classes.keys():
             try: 
                 module = __import__(module_name)
@@ -138,18 +151,24 @@ class Package(FennObject): #should this be a FennObject? ideally it should spit 
     def path(self,package_name=None):
         '''returns the absolute path on the file system to the package folder'''
         if not hasattr(self, "name"): self.name = package_name
-        elif self.name is None and package_name is not None: self.name = package_name
         check_unix_name(self.name)
         return settings.package_path(self.name)
+    def file_path(self, filename):
+        '''returns the absolute path of a file in the package'''
+        return os.path.join(self.path(), filename)
     #def load_metdata(self, file=None):
     #'''loads metadata based off of the package name from the skdb package directory on localhost'''
     def load_data(self, file=None):
-        '''loads all the files listed in "source data:" from metadata.yaml'''
+        '''loads all the files listed in "source_data:" from metadata.yaml'''
+        if self.data_loaded == True: return #don't do it again
         if not file:
-            catalog = getattr(self, 'source data')
+            catalog = getattr(self, 'source_data')
         else: catalog = [file]
         for x in catalog:
-            self.overlay(load(open(os.path.join(self.path(), x)))) #merge data from entire catalog into package
+            if isinstance(x, File):
+                self.overlay(x.load())
+            else: self.overlay(load(open(os.path.join(self.path(), x)))) #merge data from entire catalog into package
+        self.data_loaded = True
     def dump(self):
         '''returns this object in yaml'''
         return yaml.dump(self)
@@ -170,7 +189,77 @@ class Package(FennObject): #should this be a FennObject? ideally it should spit 
         assert self.version is not None, "version"
         assert self.description is not None, "description"
         assert self.classes is not None, "classes"
-        assert getattr(self, 'source data') is not None, "source data"
+        assert getattr(self, 'source_data') is not None, "source data"
         assert self.dependencies is not None, "dependencies" #unless you really know what you're doing?
         return True
+    def has_file(self, filename, extensions=True):
+        if filename in self.all_files(extensions=extensions): return True
+        return False
+    def get_file(self, filename, extensions=True):
+        all_the_files = self.all_files()
+
+        #first check to see if it's in there
+        if filename in all_the_files:
+            full_path = os.path.join(self.path(), all_the_files[all_the_files.index(filename)])
+            return File(full_path)
+
+        with_no_extensions = self.all_files(extensions=False)
+        #now check to see if it's in there without extensions
+        if filename in with_no_extensions:
+            full_path = os.path.join(self.path(), (all_the_files[with_no_extensions.index(filename)]))
+            return File(full_path)
+
+        raise IOError, "Package.get_file: unable to find file"
+    def all_files(self, extensions=True):
+        '''returns a list of all files that this package provides
+        set extensions to False if you don't want extensions in the filenames'''
+        pkg_path = self.path()
+        the_list = os.listdir(pkg_path)
+        for filename in self.source_data:
+            filename = os.path.basename(filename._name)
+            if not (filename in the_list): the_list.append(filename)
+        if not extensions:
+            new_filenames = []
+            for filename in the_list:
+                a_list = os.path.basename(filename).split(".")
+                a_list.pop()
+                new_filenames.append(join(a_list, "."))
+            the_list = new_filenames
+        return the_list
+
+class File(FennObject, file):
+    yaml_tag = "!file"
+    def __init__(self, name, abspath_portion=None):
+        '''name = the file name,
+        abspath_portion = the absolute path to where the filename is talking about'''
+        if abspath_portion is None:
+            file.__init__(self, name)
+        else: file.__init__(self, os.path.join(abspath_portion, name))
+        self._name = name
+        self.abspath = abspath_portion
+    def yaml_repr(self):
+        return self._name
+    def __repr__(self):
+        return self._name
+    def status(self):
+        if not self.name == self._name: return self.name
+    def read(self, size=None):
+        try:
+            if type(size)==int: return file.read(self, size)
+            else:
+                self.reopen()
+                return_contents = file.read(self)
+                file.close(self)
+        except ValueError:
+            self.reopen()
+            return_contents = file.read(self)
+            file.close(self)
+        return return_contents
+    def load(self):
+        if self.closed: self.reopen()
+        results = yaml.load(self)
+        self.close()
+        return results
+    def reopen(self):
+        file.__init__(self, self._name)
 

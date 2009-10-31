@@ -144,6 +144,33 @@ class Uploader:
         return "ok thanks, file has been uploaded"
     upload.exposed=True
 
+class FileViewer: #(FileView): #eventually a template
+    _cp_config = {'request.error_response': handle_error}
+    acceptable_views = ["yaml", "html", "xml", "rss", "atom"]
+    exposed=True
+    def __init__(self, package, filename, extensions=True):
+        self.package = package
+        self.filename = filename
+        self.extensions = extensions
+        self.file_handler = package.get_file(filename, extensions=extensions)
+    @cherrypy.expose
+    def default(self, *virtual_path, **keywords):
+        return str("FileViewer.default(virtual_path=%s, keywords=%s)" % (str(virtual_path), str(keywords)))
+    @cherrypy.expose
+    def view_file(self, *virtual_path, **keywords):
+        if "desired_view" in keywords: desired_view = keywords["desired_view"]
+        else: raise cherrypy.NotFound() #should never happen
+        if self.package is None: raise cherrypy.NotFound()
+        if not (desired_view in self.acceptable_views): cherrypy.NotFound()
+
+        return str(self.file_handler.read())
+    def __getattr__(self, name):
+        if name == "__methods__" or name == "__members__": return
+        if name in self.acceptable_views:
+            cherrypy.request.params["desired_view"] = name
+            return self.view_file
+        raise AttributeError("%r object has no attribute %r" % (self.__class__.__name__, name))
+        
 class Package(PackageView, skdb.Package):
     _cp_config = {'request.error_response': handle_error}
     exposed=True
@@ -178,14 +205,9 @@ class Package(PackageView, skdb.Package):
     def __getattr__(self, name):
         #could be a file object, attribute, or method of the package
         if name == "__methods__" or name == "__members__": return
-        #if attr == "name": return str(self.__getattribute__("package").__getattr__("name"))
-    
         if self.package is not None:
-            print "Package.__getattr__(\"%s\")" % str(name)
-            return_value = str( Package.__getattribute__(self, "package")[ Package.__getattribute__(self, "package").index(name) ] )
-            print "returning: ", return_value
-            return return_value
-        return []
+            if self.package.has_file(name,extensions=False): return FileViewer(package=self.package, filename=name, extensions=False)
+        raise AttributeError("%r object has no attribute %r" % (self.__class__.__name__, name))
 
 class PackageSet(PackageIndex):
     _cp_config = {'request.error_response': handle_error}
@@ -201,7 +223,6 @@ class PackageSet(PackageIndex):
         return "PackageSet.default: vpath is: " + str(vpath)
     @classmethod
     def load_package(cls, name):
-        print "PackageSet.load_package -- name is: ", name
         if not (name in cls._packages):
             if skdb.check_unix_name(name):
                 new_package = skdb.Package(name=name, create=False)
@@ -213,9 +234,8 @@ class PackageSet(PackageIndex):
     def __getattr__(self, name):
         if name == "__methods__" or name == "__members__": return
         if (not (name=="")) and not (name==None):
-            print "name is: ", name
-            print "***********************************"
             if skdb.check_unix_name(name): return self.load_package(name)
+        raise AttributeError("%r object has no attribute %r" % (self.__class__.__name__, name))
 
 class Root(IndexTemplate):
     _cp_config = {'request.error_response': handle_error}
@@ -273,11 +293,11 @@ class SiteTest(helper.CPWebCase):
         self.assertTrue(url3 == url2)
     def test_package(self):
         self.getPage("/package/lego/", method="GET")
-        print self.body
+        #print self.body
         self.assertStatus(200) #see also assertBody
 
         self.getPage("/package/lego/data/", method="GET")
-        print self.body
+        #print self.body
         self.assertStatus(200)
 
         self.getPage("/package/lego/data/yaml", method="GET")
