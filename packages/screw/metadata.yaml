@@ -49,9 +49,9 @@ classes:
     - Screw
     threads:
     - Thread
-source data: !files
+source data:
 - data.yaml
-generated data: !files
+generated data:
 - screw.step
 see also:
 - screwdriver #another package might depend on both screw and screwdriver

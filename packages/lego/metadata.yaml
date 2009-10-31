@@ -42,9 +42,9 @@ tags:
     lego: 
     - Lego
     - Feature
- source data: !files
+ source data:
  - data.yaml
- generated data: !files
+ generated data:
  - models/ #step files generated and placed in there?
  dependencies:
     #options of different dependencies to choose from:
