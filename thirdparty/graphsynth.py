@@ -22,6 +22,7 @@
  *************************************************************************/
 """
 import math
+import os
 import yaml #maybe one day?
 from numpy import identity, multiply
 from copy import copy
@@ -334,13 +335,16 @@ class Graph:
 
         if version==2.0:
             result = Graph()
+            result.filename = file_path
 
             page = doc.getElementsByTagName("Page")[0]
-            page_name = page.getElementsByTagName("name")[0].wholeText #name of the entire file (sort of)
+            #print (page.getElementsByTagName("name")[0].childNodes[0].data)
+            #page_name = page.getElementsByTagName("name")[0].wholeText #name of the entire file (sort of)
+            #page_name = page.getElementsByTagName("name")[0].childNodes[0].data
+            page_name = os.path.basename(file_path)
             graph = page.getElementsByTagName("GraphSynth:designGraph")[0] #assume there is only one graph present
 
-            #TODO
-            graphics = page.getElementsByTagName("GraphSynth:CanvasProperty")[0]
+            graphics = page.getElementsByTagName("GraphSynth:Canvas")[0]
 
             #set up the variables for the for loop
             graph_name, global_labels, global_variables, arcs, nodes = None, [], [], [], []
@@ -356,21 +360,103 @@ class Graph:
                 elif child.nodeName == "nodes":
                     nodes = child
             #now process the results
+            if len(global_labels.childNodes) > 0: print "TODO: implement global_labels for graphs" #TODO
+            if len(global_variables.childNodes) > 0: print "TODO: implement global_variables for graphs" #TODO
             for global_label in global_labels.childNodes:
                 #process each label
-                pass
+                result.global_labels.append(global_label)
             for global_variable in global_variables.childNodes:
                 #process each variable
-                pass
-            for arc in arcs.childNodes:
-                pass
+                result.global_variables.append(global_variable)
+            
+            #read in the nodes first
             for node in nodes.childNodes:
-                pass
+                name, local_labels, local_variables, x, y, z = "", [], [], 0, 0, 0
+                for child in node.childNodes:
+                    if child.nodeName == "name": name = child.childNodes[0].data
+                    elif child.nodeName == "localLabels":
+                        ll_xml = child
+                        for label_xml in ll_xml.childNodes:
+                            if len(label_xml.childNodes) > 0:
+                                local_labels.append(label_xml.childNodes[0].data)
+                    elif child.nodeName == "localVariables":
+                        lv_xml = child
+                        for variable_xml in lv_xml.childNodes:
+                            if len(variable_xml.childNodes) > 0:
+                                local_variables.append(variable_xml.childNodes[0].data)
+                    elif child.nodeName == "X": x = child.childNodes[0].data
+                    elif child.nodeName == "Y": y = child.childNodes[0].data
+                    elif child.nodeName == "Z": z = child.childNodes[0].data
+
+                #for some reason there's a lot of crap in the xml file?
+                #nodes with blank names?? but i don't see any when i look
+                if name == "\n    " or name == "": continue
+
+                new_node = Node(name)
+                new_node.local_labels = local_labels
+                new_node.local_variables = local_variables
+                new_node.x, new_node.y, new_node.z = x, y, z
+                result.nodes.append(new_node)
+            
+            #arcs are done after the nodes so the references can be used
+            for arc in arcs.childNodes:
+                name, local_labels, local_variables, directed, doubly_directed, _from, _to = "", [], [], False, False, None, None
+                for child in arc.childNodes:
+                    if child.nodeName == "name":
+                        name = child.childNodes[0].data
+                    elif child.nodeName == "localLabels":
+                        ll_xml = child
+                        for label_xml in ll_xml.childNodes:
+                            if len(label_xml.childNodes) > 0:
+                                local_labels.append(label_xml.childNodes[0].data)
+                    elif child.nodeName == "localVariables":
+                        lv_xml = child
+                        for variable_xml in lv_xml.childNodes:
+                            if len(variable_xml.childNodes) > 0:
+                                local_variables.append(variable_xml.childNodes[0].data)
+                    elif child.nodeName == "directed":
+                        if len(child.childNodes) > 0:
+                            val = child.childNodes[0].data
+                            if val == "true": directed = True
+                            elif val == "false": directed = False
+                            else: print "GraphSynth.load_gxml: unknown value for 'directed' on an arc: ", val
+                    elif child.nodeName == "doublyDirected":
+                        if len(child.childNodes) > 0:
+                            val = child.childNodes[0].data
+                            if val == "true": doubly_directed = True
+                            elif val == "false": doubly_directed = False
+                            else: print "GraphSynth.load_gxml: unknown value for 'doublyDirected' on an arc: ", val
+                    elif child.nodeName == "From" or child.nodeName == "To":
+                        if len(child.childNodes) > 0:
+                            node_name = child.childNodes[0].data
+                            if node_name == "": continue #ok we're fine with a dangling arc
+                            the_node = None
+                            
+                            #now find the node in the current list
+                            for node in result.nodes:
+                                if node.name == node_name:
+                                    the_node = node
+                                    break
+                            if the_node == None: raise ValueError, "GraphSynth.load_gxml: arc points to an imaginary node (it's not just dangling)"
+
+                            if child.nodeName.lower() == "from": _from = [the_node]
+                            elif child.nodeName.lower() == "to": _to = [the_node]
+
+                if name == "": continue #this arc doesn't have a node name. this probably an xml data artifact
+
+                new_arc = Arc(name)
+                new_arc.directed = directed
+                new_arc.doubly_directed = doubly_directed
+                new_arc.local_labels = local_labels
+                new_arc.local_variables = local_variables
+                new_arc._from = _from
+                new_arc._to = _to
+                result.arcs.append(new_arc)
             
             result.name = graph_name
             result.page_name = page_name
             
-            #TODO: append nodes, arcs, global variables, global labels into the graph
+            #TODO: append global variables, global labels into the graph
         return result
 
 class Candidate:
