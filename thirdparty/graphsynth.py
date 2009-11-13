@@ -160,6 +160,9 @@ class Arc:
         set_list(self.local_labels, index, label)
     def set_variable(self, index, variable):
         set_list(self.local_variables, index, variable)
+    def to_gxml(self):
+        '''returns gxml including <arc> and </arc>'''
+        raise NotImplementedError, bryan_message
 
 class Edge(Arc):
     '''Originally, I created a separate edge and vertex class to allow for the future expansion of GraphSynth into shape grammars. I now have decided that the division is not useful, since it simply deprived nodes of X,Y,Z positions. Many consider edge and arc, and vertex and node to be synonymous anyway but I prefer to think of edges and vertices as arcs and nodes with spatial information. At any rate there is no need to have these inherited classes, but I keep them for backwards-compatible purposes.'''
@@ -191,6 +194,9 @@ class Node:
         '''the degree or valence of a node is the number of arcs attached to it.
         currently this is used in recognition of rule when the strictDegreeMatch is True.'''
         return len(self.arcs)
+    def to_gxml(self):
+        '''returns gxml including <node> and </node>'''
+        raise NotImplementedError, bryan_message
     set_label = Arc.set_label
     set_variable = Arc.set_variable
 
@@ -324,12 +330,65 @@ class Graph:
                 else: connected_arc._to = None
             self.nodes.remove(node_ref)
         else: self.nodes.remove(node_ref)
+    def save_gxml(file_path, version=2.0, mode="w"):
+        assert not (mode=="w" and os.path.exists(file_path)), "Graph.save_gxml: file path (%s) already exists. try write mode (mode=w)?" % (file_path)
+        assert version==2.0, "Graph.save_gxml: only able to save GraphSynth 2.0 gxml files (version=2.0)"
+        
+        #this is a terrible xml output method. don't try this at home kids :(
+        output = ""
+        output = output + '<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:GraphSynth="ignorableUri" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="GraphSynth" Tag="Graph">' + '\n'
+        output = output + '<GraphSynth:designGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' + '\n'
+        
+        #global labels
+        if len(self.global_labels) == 0: output = output + '<globalLabels />\n'
+        else:
+            output = output + '<globalLabels>' + '\n'
+            for label in self.global_labels:
+                output = output + '<globalLabel>' + label + '</globalLabel>' + '\n'
+            output = output + '</globalLabels>' + '\n'
+
+        #global variables
+        if len(self.global_variables) == 0: output = output + '<globalVariables />\n'
+        else:
+            output = output + '<globalVariables>' + '\n'
+            for var in self.global_variables:
+                output = output + '<globalVariable>' + var + '</globalVariable>' + '\n'
+            output = output + '</globalVariables>' + '\n'
+
+        #arcs
+        if len(self.arcs) == 0: output = output + '<arcs />\n'
+        else:
+            output = output + '<arcs>' + '\n'
+            for arc in self.arcs:
+                output = output + arc.to_gxml()
+            output = output + '</arcs>' + '\n'
+
+        #nodes
+        if len(self.nodes) == 0: output = output + '<nodes />\n'
+        else:
+            output = output + '<nodes>' + '\n'
+            for node in self.nodes:
+                output = output + node.to_gxml()
+            output = output + '</nodes>' + '\n'
+
+        output = output + '</GraphSynth:designGraph>' + '\n'
+        output = output + '</Page>'
+
+        #save output
+        fh = open(file_path, mode)
+        fh.write(output)
+        fh.close()
+
+        return output #just because we're friendly
+
     @staticmethod
-    def load_gxml(file_path, version=2.0):
+    def load_gxml(file_path, version=2.0, debug=False):
         '''input: gxml file path
         output: new Graph object'''
         #check that the path exists
         assert os.path.exists(file_path), "Graph.load_gxml: file path (%s) must exist." % (file_path)
+        if debug: print "warning: canvas graphics will not be loaded"
+
         #open it up
         doc = minidom.parse(open(file_path, "r"))
 
