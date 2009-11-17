@@ -36,6 +36,8 @@ import optfunc
 #make sure graphsynth.py is findable via the PYTHONPATH environment variable
 import graphsynth
 
+from copy import copy, deepcopy
+
 #for .repo file parsing
 from xml.dom import minidom
 
