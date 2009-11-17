@@ -162,7 +162,37 @@ class Arc:
         set_list(self.local_variables, index, variable)
     def to_gxml(self):
         '''returns gxml including <arc> and </arc>'''
-        raise NotImplementedError, bryan_message
+
+        output = "<arc>\n"
+        #name
+        output = output + "<name>" + str(self.name) + "</name>\n"
+        #localVariables
+        if len(self.local_variables) == 0: output = output + "<localVariables />\n"
+        else:
+            output = output + "<localVariables>\n"
+            for local_var in self.local_variables:
+                output = output + "<localVariable>" + str(local_var) + "</localVariable>\n"
+            output = output + "</localVariables>\n"
+        #localLabels
+        if len(self.local_labels) == 0: output = output + "<localLabels />\n"
+        else:
+            output = output + "<localLabels>\n"
+            for local_label in self.local_labels:
+                output = output + "<localLabel>" + str(local_label) + "</localLabel>\n"
+            output = output + "</localLabels>\n"
+        #From
+        if self._from == None: output = output + "<From></From>\n"
+        else: output = output + "<From>" + str(self._from.name) + "</From>\n"
+        #To
+        if self._to == None: output = output + "<To></To>\n"
+        else: output = output + "<To>" + str(self._to) + "</To>\n"
+        #directed
+        output = output + "<directed>" + str(self.directed).lower() + "</directed>\n"
+        #doublyDirected
+        output = output + "<doublyDirected>" + str(self.doublyDirected).lower() + "</doublyDirected>\n"
+
+        output = output + "</arc>\n"
+        return output
 
 class Edge(Arc):
     '''Originally, I created a separate edge and vertex class to allow for the future expansion of GraphSynth into shape grammars. I now have decided that the division is not useful, since it simply deprived nodes of X,Y,Z positions. Many consider edge and arc, and vertex and node to be synonymous anyway but I prefer to think of edges and vertices as arcs and nodes with spatial information. At any rate there is no need to have these inherited classes, but I keep them for backwards-compatible purposes.'''
@@ -196,7 +226,33 @@ class Node:
         return len(self.arcs)
     def to_gxml(self):
         '''returns gxml including <node> and </node>'''
-        raise NotImplementedError, bryan_message
+
+        output = "<node>\n"
+        #name
+        output = output + "<name>" + str(self.name) + "</name>\n"
+        #localVariables
+        if len(self.local_variables) == 0: output = output + "<localVariables />\n"
+        else:
+            output = output + "<localVariables>\n"
+            for local_var in self.local_variables:
+                output = output + "<localVariable>" + str(local_var) + "</localVariable>\n"
+            output = output + "</localVariables>\n"
+        #localLabels
+        if len(self.local_labels) == 0: output = output + "<localLabels />\n"
+        else:
+            output = output + "<localLabels>\n"
+            for local_label in self.local_labels:
+                output = output + "<localLabel>" + str(local_label) + "</localLabel>\n"
+            output = output + "</localLabels>\n"
+
+        #do X, Y, Z if it has that information
+        if hasattr(self, "X"): output = output + "<X>" + str(self.X) + "</X>\n"
+        if hasattr(self, "Y"): output = output + "<Y>" + str(self.Y) + "</Y>\n"
+        if hasattr(self, "Z"): output = output + "<Z>" + str(self.Z) + "</Z>\n"
+
+        output = output + "</node>\n"
+        return output
+
     set_label = Arc.set_label
     set_variable = Arc.set_variable
 
