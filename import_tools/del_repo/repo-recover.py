@@ -21,7 +21,7 @@ how to test this script:
     ???
 
     #run the command
-    python repo-recover.py --cfg=hydraulic.car.jack.cfg.gxml --fs=hydraulic.car.jack.fs.gxml --delrepo=hydraulic.car.jack.repo --components=components/ --instances=instances/
+    python repo-recover.py --cfg=hydraulic.car.jack.cfg.gxml --fs=hydraulic.car.jack.fs.gxml --delrepo=hydraulic.car.jack.repo --components=componentbasis/ --instances=instances/
 """
 
 #mostly for manipulating file paths
@@ -75,8 +75,8 @@ def find_function(function_name, function_structures):
             return function_structure
     return False #error: not found
 
-def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", components="components/", debug=True):
-    '''extracts component basis names from a {.gxml CFG, .gxml FS, .repo} and makes new .gxml files and an skdb-ish folder structure (instances/ and components/).
+def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", components="componentsbasis/", debug=True):
+    '''extracts component basis names from a {.gxml CFG, .gxml FS, .repo} and makes new .gxml files and an skdb-ish folder structure (instances/ and componentbasis/).
 
     ======== inputs ========
     repo-recover inputs are as follows:
@@ -92,9 +92,9 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
         ./repo-recover.py --cfg=/path/to/swirl-seed.gxml --fs=/path/to/ss-fs.gxml
                            --delrepo=/path/to/del_repo/
         ./repo-recover.py --cfg=squirt-gun-cfg.gxml --fs=squirt-gun-fs.gxml
-                           --delrepo=squirt-gun.repo --components=components/ --instances=instances/
+                           --delrepo=squirt-gun.repo --components=componentbasis/ --instances=instances/
     
-    --components=components/    specify where component basis models are located
+    --components=componentbasis/    specify where component basis models are located
     --instances=instances/      specify where instance models are (like the squirt-gun folder)
 
     ======== output ========
@@ -133,7 +133,7 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
     #elif not os.path.isfile(parts): raise ValueError, "repo_recover: YAML file doesn't exist?"
     #else: parts = [parts]
     
-    #by default let's say the output should go in ./components/ and ./del_artifacts/ (or ./instances/)
+    #by default let's say the output should go in ./componentbasis/ and ./del_artifacts/ (or ./instances/)
     if components is None: raise ValueError, "repo_recover: don't know where to put or find components."
     elif os.path.isfile(components): raise ValueError, "repo_recover: components path must not be a file."
     elif not os.path.exists(components): os.mkdir(components)
@@ -220,7 +220,7 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
             if node.name in loaded_repo:
                 #loaded_repo lets you find the CB name by giving an indexer (artifact name or CFG node name)
                 node.component_basis = loaded_repo[node.name] #wait, that's loaded_repo[] .. so what about the CB name?
-                node.uri = "http://adl.serveftp.org/lab/repo-recover/components/" + node.component_basis + ".yaml"
+                node.uri = "http://adl.serveftp.org/lab/repo-recover/componentbasis/" + node.component_basis + ".yaml"
             else:
                 if debug: print "unable to find a component_basis name for the node (name is \"%s\") in the original CFG." % (node.name)
 
