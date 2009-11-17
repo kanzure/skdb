@@ -24,7 +24,6 @@ how to test this script:
     python repo-recover.py --cfg=hydraulic.car.jack.cfg.gxml --fs=hydraulic.car.jack.fs.gxml --delrepo=hydraulic.car.jack.repo --components=components/ --instances=instances/
 """
 
-
 #mostly for manipulating file paths
 import os
 
@@ -67,10 +66,6 @@ def load_repo(path):
             results[artifact_name] = comp_basis_name
         else: pass #wasn't an artifact
     return results
-
-def find_component_basis(repo):
-    '''find the component basis in the repo'''
-    raise NotImplementedError, bryan_message
 
 def find_function(function_name, function_structures):
     '''given a function name, return the function (so you can get the function labels later) from within a list of function structures
