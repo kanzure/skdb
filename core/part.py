@@ -95,5 +95,5 @@ class Part(FennObject):
         return "%s(name=%s, interfaces=%s)" % (self.__class__.__name__, self.name, self.interfaces)
     def load_CAD(self):
         '''this doesn't do anything, please do: from skdb.geom import *'''
-        raise ImportWarning, "skdb.geom not loaded. load_CAD not available."
+        print >>sys.stderr, ImportWarning, "skdb.geom not loaded. load_CAD not available."
 
