@@ -4,7 +4,7 @@ import yaml
 import time
 from yamlcrap import FennObject
 from interface import Connection
-import os
+import os, sys
 
 try:
     from graph import Digraph
