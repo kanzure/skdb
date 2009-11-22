@@ -81,6 +81,7 @@ from templates import PackageIndex, IndexTemplate, PackageView
 import urllib
 import yaml
 import unittest
+from md5 import md5
 
 import getpass
 if getpass.getuser() == "www-data":
@@ -150,12 +151,10 @@ def is_valid_email(email_address):
     '''see invalid_email please'''
     return not invalid_email(email_address)
 
-def is_valid_user(email, password):
+def is_valid_user(username, password):
     '''verifies credentials
     returns True or False'''
-    assert is_valid_email(email), "is_valid_user: email address must be valid."
-
-    filepath = os.path.join(user_dir, email + ".yaml")
+    filepath = os.path.join(user_dir, username + ".yaml")
 
     #check that the right file exists (for the user)
     if not os.path.exists(filepath): return False
@@ -165,9 +164,8 @@ def is_valid_user(email, password):
     return False
 check_credentials = is_valid_user
 
-def check_user_exists(email):
-    assert is_valid_email(email), "check_user_exists: email address must be valid."
-    filepath = os.path.join("users", email + ".yaml")
+def check_user_exists(username):
+    filepath = os.path.join(user_dir, username + ".yaml")
     return os.path.exists(filepath)
 
 def check_auth(*args, **kwargs):
@@ -180,7 +178,7 @@ def check_auth(*args, **kwargs):
     if conditions is not None:
         user = cherrypy.session.get(SESSION_KEY)
         if user:
-            cherrypy.request.login = user.email
+            cherrypy.request.login = user.username
             for condition in conditions:
                 #a condition is just a callable that returns true or false
                 if not condition():
@@ -201,9 +199,9 @@ def require(*conditions):
         return f
     return decorate
 
-def load_user(email_address):
-    '''returns a previously saved User object given an email address'''
-    userpath = os.path.join(user_dir, email_address + ".yaml")
+def load_user(username):
+    '''returns a previously saved User object given a username'''
+    userpath = os.path.join(user_dir, username + ".yaml")
 
     #first make sure the user exists
     if not os.path.exists(userpath): return False
@@ -215,30 +213,32 @@ def get_user():
     '''gets the User object for the current session-- from a saved file'''
     #note: cherrypy.session[SESSION_KEY] already has the User object,
     #but it could have changed since this session was last used,
-    #so only use it to get the email address of the user and get fresh data while you're at it.
+    #so only use it to get the username of the user and get fresh data while you're at it.
     
     #assume that the user already exists
-    email_address = cherrypy.session[SESSION_KEY].email
-    assert is_valid_email(email_address), "get_user: email address must be valid."
+    username = cherrypy.session[SESSION_KEY].username
 
     #open up the user from the users/ directory
-    user = load_user(email_address)
+    user = load_user(username)
     return user
+
+def is_username_available(username):
+    file_path = os.path.join(user_dir, username + ".yaml")
+    return not os.path.exists(file_path)
 
 class User(yaml.YAMLObject):
     yaml_tag="!user"
-    def __init__(self, email, username=None, password=None, create=False):
-        if email is not None and not (username or password):
-            #you only have an email address
-            assert is_valid_email(email), "User.__init__: invalid form of email address"
-
-            #figure out what user ID number to assign to this user
-            self.id = get_new_user_id()
-            self.email = email
-
-            file_path = os.path.join(user_dir, email + ".yaml")
-            if create and os.path.exists(file_path): raise ValueError, "User.__init__: a user with that email address already exists"
-            elif create and not os.path.exists: self.save()
+    def __init__(self, username, password, email):
+        if username:
+            if is_username_available(username): raise ValueError, "User.__init__: a user with that name already exists"
+            if password:
+                if email:
+                    assert is_valid_email(email), "User.__init__: email address must be valid"
+                    self.username, self.password, self.email = username, md5(password).hexdigest(), email
+                else: raise ValueError, "User.__init__: must be given an email address"
+            else: raise ValueError, "User.__init__: must be given a password"
+        else: raise ValueError, "User.__init__: must be given a username"
+        self.save()
     def __eq__(self, other):
         if isinstance(other, User):
             if other.username == self.username: return True
@@ -248,11 +248,8 @@ class User(yaml.YAMLObject):
             else: return False
         return False
     def save(self):
-        '''saves self as yaml in a file somewhere based off of the email address'''
-        assert (self.email is not None), "User.save: email address must not be None"
-
-        #write to the file
-        fh = open(os.path.join(user_dir, self.email + ".yaml"), "w")
+        '''saves self as yaml in a file somewhere based off of the username'''
+        fh = open(os.path.join(user_dir, self.username + ".yaml"), "w")
         fh.write(yaml.dump(self))
         fh.close()
 
@@ -295,21 +292,21 @@ class AuthController(object):
         return """<form method="post" action="/auth/login">
             <input type="hidden" name="from_page" value="%(from_page)s" />
             %(msg)s<br />
-            email: <input type="text" name="email" value="%(username)s" /><br />
+            username: <input type="text" name="username" value="%(username)s" /><br />
             password: <input type="password" name="password" /><br />
             <input type="submit" value="Log in" />
             </form>""" % locals()
     @cherrypy.expose
-    def login(self, email=None, password=None, from_page="/", **keywords):
-        if email is None or password is None:
+    def login(self, username=None, password=None, from_page="/", **keywords):
+        if username is None or password is None:
             return self.get_loginform("", from_page=from_page)
 
-        success = check_credentials(email, password)
+        success = check_credentials(username, password)
         if not success:
-            return self.get_loginform(email, "username or password incorrect.", from_page)
+            return self.get_loginform(username, "username or password incorrect.", from_page)
         else:
-            cherrypy.session[SESSION_KEY] = cherrypy.request.login = load_user(email)
-            self.on_login(email)
+            cherrypy.session[SESSION_KEY] = cherrypy.request.login = load_user(username)
+            self.on_login(username)
             raise cherrypy.HTTPRedirect(from_page or "/")
     @cherrypy.expose
     def logout(self, from_page="/"):
