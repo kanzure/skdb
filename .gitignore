@@ -3,3 +3,5 @@
 *~
 combined.dat
 clients/templates/*.py
+web/users/*
+web/images/*.ico

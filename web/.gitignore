@@ -1,0 +1,6 @@
+*.png
+test.html
+valid_top_level_domains
+templates/*.py
+templates/*.pyc
+templates/*.bak
