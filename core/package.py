@@ -7,8 +7,8 @@ from string import join
 def check_unix_name(name):
     '''returns True if name (string) is a valid unix_name'''
     assert name, "check_unix_name: name is empty (name=\"%s\")" % (name)
-    check = re.match('^[a-zA-Z0-9_\-.]*$', name)
-    assert check, 'allowed characters in a name are: a-z, 0-9, "-", ".", and "_". Instead, got: "'+str(name)+'"'
+    check = re.match('^[a-zA-Z0-9_\-]*$', name)
+    assert check, 'allowed characters in a name are: a-z, 0-9, "-", and "_". Instead, got: "'+str(name)+'"'
     if check: return True
     else: return False
 

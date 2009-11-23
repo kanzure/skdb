@@ -1,91 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<!--
-TODO:
-    generate gradients
-        http://www.allcrunchy.com/Web_Stuff/Gradient_Generator/?color1=567&color2=89a&gradientHeight=70&gradType=sinusoidal
-    generate rounded corners
-    make more web-two-point-ohier
-        http://mentalized.net/files/journal/so_you_wanna_look_web2.0/step5.html
--->
-    <head>
-        <title>omnifab!</title>
-        <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="http://omnifab.org/feeds/rss" />
-        <link rel="start" href="/" title="omnifab index" />
-        <!--<base href="http://omnifab.org/" />-->
-
-        <!-- meta elements -->
-            <meta name="title" content="omnifab!">
-            <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-            <meta http-equiv="content-language" content="en" />
-            <meta name="author" content="bryan bishop, ben lipkowitz, heath matlock" />
-            <meta name="description" content="omnifab puts free hardware designs in one spot and an easy way to make and plan stuff out" />
-            <meta name="keywords" content="omnifab, fablab, faboratory, fabratory, skdb, open source hardware, free software, open source software, FOSS, open manufacturing, DIY, instructions, howto, creative commons, labs, laboratories, laboratory" />
-            <meta name="revisit-after" content="2 days" />
-            <meta name="googlebot" content="index, follow" />
-            <meta name="robots" content="all" />
-        <!-- end meta elements -->
-        <!-- cascading style sheets -->
-            <!-- see: http://www.w3.org/TR/CSS2/media.html -->
-
-            <!-- in general -->
-            <link rel="stylesheet" type="text/css" href="styles/general.css" /> 
-
-            <!-- standard computer screen -->
-            <link type="text/css" rel="stylesheet" media="screen" href="styles/screen.css">
-
-            <!-- print -->
-            <link type="text/css" rel="stylesheet" media="print" href="styles/print.css">
-
-            <!-- handheld (sometimes same as print) -->
-            <link type="text/css" rel="stylesheet" media="handheld" href="styles/handheld.css">
-
-            <!-- braille, etc. -->
-            <link type="text/css" rel="stylesheet" media="braille, embossed" href="styles/braille.css">
-
-            <!-- projection (presentations, etc.) -->
-            <link type="text/css" rel="stylesheet" media="presentation" href="styles/projection.css">
-
-            <!-- speech, aural -->
-            <link type="text/css" rel="stylesheet" media="speech, aural" href="styles/speech.css">
-
-            <!-- terminals -->
-            <link type="text/css" rel="stylesheet" media="tty" href="styles/tty.css">
-
-            <!-- television -->
-            <link type="text/css" rel="stylesheet" media="tv" href="styles/tv.css">
-        <!-- end cascading style sheets -->
-        <!-- begin javascript library crap -->
-            <!-- see: http://script.aculo.us/ -->
-            <!-- see: http://wiki.github.com/madrobby/scriptaculous -->
-            <script src="javascripts/prototype.js" type="text/javascript"></script>
-            <script src="javascripts/scriptaculous.js" type="text/javascript"></script>
-            <!-- see: http://www.andrewsellick.com/examples/simple-slide-show/ -->
-            <script src="javascripts/simple-slide-show.js" type="text/javascript"></script>
-        <!-- end javascript library crap -->
-    </head>
-    <body id="omnifab" class="page">
-        <!-- the header can show a big, giant banner, or just a catchy title (feel free to hide it) -->
-        <div id="header">
-            <div id="banner"></div>
-            <div id="title">omnifab.org</div>
-            <div id="slogan">apt-get for real stuff!</div>
-            <!-- the navigation bar helps show the user major thematic options for perusing the site -->
-            <div id="navigation_bar">
-                <ul>
-                    <li><span class="selected"><b><a href="/">FAQ</a></b></span></li>
-                    <li><span><a href="/details">details</a></span></li>
-                    <li><span><a href="/install">install</a></span></li>
-                    <li><span><a href="/share">share</a></span></li>
-                </ul>
-            </div> <!-- end navigation_bar -->
-        </div> <!-- end header -->
-
-
-        <!-- container is where page-specific magic happens -->
-        <div id="container">
-
+#include "header.tmpl"
             <!-- use this for spontaneous messages that the user should be aware of (errors, complaints, new stuff, ..) -->
             <div id="notification">Hello! Do you have any <a href="/upload">CAD models</a>?</div>
 
@@ -107,34 +20,22 @@ TODO:
             <!-- let's get more specific -->
             <!-- display actual content of the page -->
             <div id="page_content">
+                <h2>SO, I HEAR YOU WANT TO TAKE OVER THE WORLD.</h2>
                 <ol id="faq">
                     <li>
-                        <h3><span>what is open source hardware?</span></h3>
-                        <p class="p1"><span>open source hardware is the "osh" in GOSH!</span></p>
+                        <h3><span>step 1: reinvent the wheel.. or not</span></h3>
+                        <p class="p1"><span>civilization is built on the shoulders of giants, not your pocket book</span></p>
                     </li>
                     <li>
-                        <h3><span>how does it work?</span></h3>
-                        <p class="p1"><span>spontaneous explanatory action goes here</span></p>
+                        <h3><span>step 2: share your wheel</span></h3>
+                        <p class="p1"><span>not just designs for circuit boards, but biological constructs, scientific instruments, machine tools, nuts and bolts, raw materials, and how to make them.</span></p>
+                    </li>
+                    <li>
+                        <h3><span>step 3: reconnect the wheel</span></h3>
+                        <h2><span>the lego brick of open source hardware</span></h2>
+                        <p class="p1"><span>none, sorry, please come back later</span></p>
                         <p class="p2"><span>other explanation is allowed</span><p>
-                    </li>
-                    <li>
-                        <h3><span>i have another question</span></h3>
-                        <p class="p1"><span>another answer goes here</span></p>
                     </li>
                 </ol> <!-- end faq -->
             </div> <!-- end page_content -->
-        </div> <!-- end container -->
-
-        <!-- these extra divs/spans are catch-alls to add extra imagery if you're into that -->
-        <div id="extra_div1"><span></span></div><div id="extra_div2"><span></span></div><div id="extra_div3"><span></span></div>
-        <div id="extra_div4"><span></span></div><div id="extra_div5"><span></span></div><div id="extra_div6"><span></span></div>
-
-        <!-- quasi legal speak -->
-        <div id="footer">
-            <small>copyright &copy; 2009. omnifab.org-specific text is licensed under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike</a> license. skdb is licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>. we are proud to serve up 100% free, open source hardware!</small>
-        </div> <!-- end footer -->
-
-        <script type="text/javascript" src="http://twitter.com/javascripts/blogger.js"></script>
-        <script type="text/javascript" src="http://twitter.com/statuses/user_timeline/kanzure.json?callback=twitterCallback2&amp;count=1"></script>
-    </body>
-</html>
+#include "footer.tmpl"
