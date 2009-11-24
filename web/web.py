@@ -22,11 +22,12 @@ if __name__ == "__main__":
 
 import os
 import sys
-sys.stdout = sys.stderr
+#sys.stdout = sys.stderr
 
 from copy import copy
 from string import join
 
+bryan_message = "bryan hasn't got this far yet"
 user_dir = "users/"
 templates_dir = "templates/"
 #this doesn't work like i want it to yet
@@ -331,6 +332,77 @@ class DemoRestrictedArea:
         return "your username must be xyz to see this."
 
 #######################################################################
+#                   basic git/dulwich functionality
+#######################################################################
+import dulwich
+from dulwich.objects import parse_timezone, Blob, Commit, Tree
+
+def update_refspec(repo, commit, refspec):
+    '''side effect on repo; updates a certain refspec to point to this commit'''
+    if isinstance(commit, Commit):
+        commit = commit.id
+    repo.refs['refs/head/' + refspec] = commit
+
+def update_master(repo, commit):
+    #repo.refs['refs/head/master'] = commit.id
+    update_refspec(repo, commit, "master")
+
+def get_all_commits(repo_path="/home/kanzure/code/skdb/", commit= "a" * 40):
+    repo = dulwich.repo.Repo(repo_path)
+    store = repo.object_store.generate_pack_contents([], [commit])
+    generator = store.iterobjects()
+    commits = []
+    for each in generator:
+        commits.append(each)
+    return commits
+
+def extract_trees(repo, commit="a9b19e9453e516d7528aebb05a1efd66a0cd9347"):
+    '''get a list of all known trees from a repo based on a commit SHA'''
+    store = repo.object_store.generate_pack_contents([], [commit])
+    generator = store.iterobjects()
+    trees = []
+    for each in generator:
+        if isinstance(each, dulwich.objects.Tree):
+            trees.append(each)
+    return trees
+
+def get_latest_tree(repo, refspec="HEAD"):
+    """return the last known tree"""
+    commit_id = repo.get_refs()[refspec]
+    commit = repo.commit(commit_id)
+    tree_id = commit.tree
+    return repo.tree(tree_id)
+
+def make_commit(repo, tree, message, author, timezone, encoding="UTF-8"):
+    """build a Commit object"""
+    commit = Commit()
+    try:
+        commit.parents = [repo.head()]
+    except KeyError:
+        #the initial commit has no parent
+        pass
+    if isinstance(tree, dulwich.objects.Tree): tree_id = tree.id
+    elif isinstance(tree, str): tree_id = tree
+    commit.tree = tree_id
+    commit.message = message
+    commit.author = commit.committer = author
+    commit.commit_time = commit.author_time = int(time())
+    commit.commit_timezone = commit.author_timezone = parse_timezone(timezone)
+    commit.encoding = encoding
+    return commit
+
+#trees = extract_trees(repo)
+#print trees[0].as_pretty_string()
+
+def reconstruct_tree(repo_path="/home/kanzure/code/skdb/", commit="a9b19e9453e516d7528aebb05a1efd66a0cd9347"):
+    '''returns a dictionary describing the tree of the repository from a given commit, or the head'''
+    raise NotImplementedError, bryan_message
+    repo = dulwich.repo.Repo(repo_path)
+    stoo = repo.object_store.generate_pack_contents([], [commit])
+    gen = stoo.iterobjects()
+    gen.next().entries()
+
+#######################################################################
 #                   core site functionality
 #######################################################################
 
@@ -439,7 +511,11 @@ class Uploader:
     upload.exposed=True
 
 class FileViewer: #(FileView): #eventually a template
-    _cp_config = {'request.error_response': handle_error}
+    _cp_config = {
+                    'request.error_response': handle_error,
+                    'tools.sessions.on': True,
+                    'tools.auth.on': True,
+                 }
     acceptable_views = ["yaml", "html", "xml", "rss", "atom"]
     exposed=True
     def __init__(self, package, filename, extensions=True):
@@ -449,6 +525,8 @@ class FileViewer: #(FileView): #eventually a template
         self.file_handler = package.get_file(filename, extensions=extensions)
     @cherrypy.expose
     def default(self, *virtual_path, **keywords):
+        url = ManagedPath(virtual_path)
+        if url.cmd == "edit": return self.edit
         return str("FileViewer.default(virtual_path=%s, keywords=%s)" % (str(virtual_path), str(keywords)))
     @cherrypy.expose
     def view_file(self, *virtual_path, **keywords):
@@ -458,6 +536,24 @@ class FileViewer: #(FileView): #eventually a template
         if not (desired_view in self.acceptable_views): cherrypy.NotFound()
 
         return str(self.file_handler.read())
+    @cherrypy.expose
+    def edit(self, content=None, username=None, *virtual_path, **keywords):
+        if content==None:
+            contents = self.file_handler.read()
+            return_contents = "<form action=\"" + cherrypy.url() + "\" method=\"POST\">"
+            return_contents = return_contents + "<textarea name=content rows='20' cols='120'>" + contents + "</textarea><br />"
+            #if the user isn't logged in ...
+            if not hasattr(cherrypy.session, "login"): return_contents = return_contents + "username: <input type=text name=username value=\"Anonymous\"><br />"
+            return_contents = return_contents + "<input type=submit name=submit value=edit></form>"
+            return return_contents
+        else: #it's been edited
+            if username==None and cherrypy.session.login==None: raise ValueError, "FileViewer.edit: no username supplied"
+            elif username==None:
+                username = cherrypy.session.login.username
+
+                #TODO: implement
+            
+            return "edited (name=%s)" % username
     def __getattr__(self, name):
         if name == "__methods__" or name == "__members__": return
         if name in self.acceptable_views:
@@ -516,7 +612,10 @@ class PackageSet(PackageIndex):
         #default view for a package
         return "PackageSet.default: vpath is: " + str(vpath)
     @classmethod
-    def load_package(cls, name):
+    def load_package(cls, name, branch="master"):
+        #keep track of which branch we want
+        cherrypy.request.params["branch"] = branch
+
         if not (name in cls._packages):
             if skdb.check_unix_name(name):
                 new_package = skdb.Package(name=name, create=False)
@@ -528,7 +627,12 @@ class PackageSet(PackageIndex):
     def __getattr__(self, name):
         if name == "__methods__" or name == "__members__": return
         if (not (name=="")) and not (name==None):
-            if skdb.check_unix_name(name): return self.load_package(name)
+            branch = "master" #default branch is branch "master"
+            if name.count(":") > 0:
+                full_name = copy(name)
+                name = full_name.split(":",1)[0]
+                branch = full_name.split(":",1)[1]
+            if skdb.check_unix_name(name): return self.load_package(name, branch=branch)
         raise AttributeError("%r object has no attribute %r" % (self.__class__.__name__, name))
 
 class Root(IndexTemplate):
@@ -562,7 +666,7 @@ class Root(IndexTemplate):
     @cherrypy.expose
     @require(name_is("xyz"))
     def silly_protected_page_demo(self):
-        return "your usernamem ust be 'xyz' in order to see this page."
+        return "your username must be 'xyz' in order to see this page."
 
 #######################################################################
 #              configuration and unit tests
@@ -608,9 +712,19 @@ class SiteTest(helper.CPWebCase):
         self.getPage("/package/lego/data/yaml", method="GET")
         #print self.body
         self.assertStatus(200)
+
+        #what about /package/lego/data/yaml/edit ?
     def test_email_addresses(self):
         self.assertTrue(is_valid_email("hello@me.com"))
         self.assertFalse(is_valid_email("user@user.1.2.3."))
+    def test_branch_page_view(self):
+        '''note: branches can only be one word with no slashes'''
+
+        urls = [
+                "/package/lego/data/yaml",
+                "/package/lego.master/data/yaml",
+                "/package/lego.another/data/yaml",
+               ]
 
 #url: http://projects.dowski.com/files/cp22collection/cp22collection.py?version=colorized
 def setup_server():
@@ -622,34 +736,26 @@ def setup_server():
             'environment': 'test_suite',
     })
 
+def conf_maker(static_dir): #so i don't have to type static file config stuff a billion times
+    return {
+        "tools.staticdir.on": True,
+        "tools.staticdir.index": "index.html",
+        "tools.staticdir.dir": os.path.join(current_dir, static_dir),
+    }
+
 #url: http://www.cherrypy.org/wiki/StaticContent
 current_dir = os.path.dirname(os.path.abspath(__file__))
 conf = {
-    "/styles": {
-        "tools.staticdir.on": True,
-        "tools.staticdir.index": "index.html",
-        "tools.staticdir.dir": os.path.join(current_dir, "styles"),
-        },
-    "/templates": {
-        "tools.staticdir.on": True,
-        "tools.staticdir.index": "index.html",
-        "tools.staticdir.dir": os.path.join(current_dir, "templates"),
-        },
-    "/javascripts": {
-        "tools.staticdir.on": True,
-        "tools.staticdir.index": "index.html",
-        "tools.staticdir.dir": os.path.join(current_dir, "javascripts"),
-        },
-    "/images": {
-        "tools.staticdir.on": True,
-        "tools.staticdir.index": "index.html",
-        "tools.staticdir.dir": os.path.join(current_dir, "images"),
-        },
     "/favicon.ico": {
         "tools.staticfile.on": True,
         "tools.staticfile.filename": os.path.join(current_dir, os.path.join("images", "favicon.ico")),
         },
     }
+conf["/styles"] = conf_maker("styles")
+conf["/templates"] = conf_maker("templates")
+conf["/javascripts"] = conf_maker("javascripts")
+conf["/images"] = conf_maker("images")
+
 cherrypy.tools.auth = cherrypy.Tool('before_handler', check_auth)
 application = cherrypy.Application(Root(), script_name=None, config=conf)
 
