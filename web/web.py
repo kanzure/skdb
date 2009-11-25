@@ -66,6 +66,10 @@ cherrypy.config.update({
     'server.socket_host': "0.0.0.0",
     'server.log_to_screen': True,
     'environment': "embedded",
+    #url: http://www.ibm.com/developerworks/xml/library/os-cherrypy/
+    #the following lines may be deprecated (from cp2)
+    #'server.sessionStorageType': "ram",
+    #'server.sessionCookieName': "skdb_session_cookie",
     })
 
 #cheetah templates
@@ -91,6 +95,10 @@ if getpass.getuser() == "www-data":
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
     sys.path.insert(0, os.path.dirname(__file__))
     sys.stdout = sys.stderr
+
+import dulwich
+from dulwich.repo import Repo
+from dulwich.objects import parse_timezone, Blob, Commit, Tree
 
 import skdb
 
@@ -334,8 +342,6 @@ class DemoRestrictedArea:
 #######################################################################
 #                   basic git/dulwich functionality
 #######################################################################
-import dulwich
-from dulwich.objects import parse_timezone, Blob, Commit, Tree
 
 def update_refspec(repo, commit, refspec):
     '''side effect on repo; updates a certain refspec to point to this commit'''
@@ -346,6 +352,10 @@ def update_refspec(repo, commit, refspec):
 def update_master(repo, commit):
     #repo.refs['refs/head/master'] = commit.id
     update_refspec(repo, commit, "master")
+
+def set_head(repo, refspec="master"):
+    '''sets the head to a given refspec'''
+    repo.refs["HEAD"] = "ref: refs/heads/" + refspec
 
 def get_all_commits(repo_path="/home/kanzure/code/skdb/", commit= "a" * 40):
     repo = dulwich.repo.Repo(repo_path)
@@ -391,16 +401,39 @@ def make_commit(repo, tree, message, author, timezone, encoding="UTF-8"):
     commit.encoding = encoding
     return commit
 
-#trees = extract_trees(repo)
-#print trees[0].as_pretty_string()
+def dictionary_updater(original, additions):
+    '''suppose original = {"first": {"second": 1, "another": 3}}
+    and additions = {"first": {"yet another": 59421}}
+    .. the result should be:
+    {"first": {"second": 1, "another": 3, "yet another": 59421}}'''
+    return_value = copy(original)
+    for key in additions.keys():
+        if key not in original.keys():
+            return_value[key] = additions[key]
+        elif key in original.keys():
+            if not isinstance(original[key], dict): return_value[key] = additions[key]
+            else: #recursion time :)
+                return_value[key] = dictionary_updater(original[key], additions[key])
+    return return_value
 
-def reconstruct_tree(repo_path="/home/kanzure/code/skdb/", commit="a9b19e9453e516d7528aebb05a1efd66a0cd9347"):
-    '''returns a dictionary describing the tree of the repository from a given commit, or the head'''
-    raise NotImplementedError, bryan_message
-    repo = dulwich.repo.Repo(repo_path)
-    stoo = repo.object_store.generate_pack_contents([], [commit])
-    gen = stoo.iterobjects()
-    gen.next().entries()
+def reassemble_index_into_dictionary(files):
+    return_value = {}
+    for file in files:
+        path = file[0]
+        sha = file[1][8]
+
+        #split the path up
+        path_parts = path.split("/")
+        if len(path_parts)>0:
+            #some/path/goes/here -- return_value["some"]["part"]["goes"]["here"]
+            temp = sha 
+            for bit in reversed(path_parts): temp = {bit: copy(temp)}
+            return_value = dictionary_updater(return_value, temp)
+    return return_value
+
+def get_blob_contents(obj, repo=None):
+    if isinstance(obj, str) and repo: obj = repo.get_object(sha)
+    return obj.as_pretty_string()
 
 #######################################################################
 #                   core site functionality
@@ -427,6 +460,7 @@ class ManagedPath:
         self._parts = []
         self._cmd = ""
         self._path = []
+        self._sha = None
         if isinstance(url, ManagedPath):
             for (k,v) in url.__dict__: setattr(self, k, copy(v))
         elif isinstance(url, str):
@@ -438,19 +472,28 @@ class ManagedPath:
             self.parse(self._url)
     def parse(self, url):
         self._url = url
+        self._sha = ""
         if url.count("/") == 0: self._parts = []
         else:
             parts = url.split("/")
             if parts[0] in self.reserved_roots:
                 self._cmd = parts[0]
+                #now grab the sha
+                if len(parts)>0:
+                    if len(parts[1])==40 and parts[1].isalnum():
+                        self._sha = parts[1]
             else:
                 path = []
+                i = 0
                 for part in parts:
                     if part in self.reserved_words:
                         self._cmd = part
                         self._path = path
                         break
                     elif part is not "": path.append(part)
+                    i = i+1
+                if len(parts[-1])==40 and parts[-1].isalnum():
+                    self._sha = parts[-1]
             self._parts = parts
     def __str__(self): return self._url
     def __repr__(self): return str(self)
@@ -467,8 +510,12 @@ class ManagedPath:
         if self._cmd is not "": return self._cmd
         self.parse(self._url)
         return self._cmd
+    def get_sha(self):
+        if self._sha is None: self.parse(self._url)
+        return self._sha
     cmd=property(fget=get_cmd, doc="returns which command this url corresponds to")
     path=property(fget=get_path, doc="figures out the path on which the command should operate")
+    sha=property(fget=get_sha, doc="returns the sha from the url")
 
 class UnitApp:
     # def __init__(self):
@@ -522,38 +569,61 @@ class FileViewer: #(FileView): #eventually a template
         self.package = package
         self.filename = filename
         self.extensions = extensions
-        self.file_handler = package.get_file(filename, extensions=extensions)
     @cherrypy.expose
     def default(self, *virtual_path, **keywords):
         url = ManagedPath(virtual_path)
         if url.cmd == "edit": return self.edit
         return str("FileViewer.default(virtual_path=%s, keywords=%s)" % (str(virtual_path), str(keywords)))
     @cherrypy.expose
-    def view_file(self, *virtual_path, **keywords):
+    def view_file(self, branch="master", sha=None, *virtual_path, **keywords):
         if "desired_view" in keywords: desired_view = keywords["desired_view"]
         else: raise cherrypy.NotFound() #should never happen
         if self.package is None: raise cherrypy.NotFound()
-        if not (desired_view in self.acceptable_views): cherrypy.NotFound()
+        if not (desired_view in self.acceptable_views): raise cherrypy.NotFound()
 
-        return str(self.file_handler.read())
+        #create the dulwich.repo.Repo object
+        repo = Repo(self.package.path())
+
+        #switch to the right refspec
+        set_head(repo, branch)
+        
+        #reconstruct the filename
+        filename = self.filename + "." + desired_view #FIXME: this is a BAD hack
+
+        #get the sha if it wasn't passed to us
+        try:
+            if not sha: sha = dulwich.object_store.tree_lookup_path(repo.get_object, repo.get_object(repo.head()).tree, filename)[1]
+            print "sha is: ", sha
+            obj = repo.get_object(sha)
+        except IndexError: raise cherrypy.NotFound()
+
+        return str(obj.as_pretty_string())
     @cherrypy.expose
-    def edit(self, content=None, username=None, *virtual_path, **keywords):
-        if content==None:
+    def edit(self, content=None, username=None, branch="master", id=None, *virtual_path, **keywords):
+        '''id: the git id of the blob before it was edited'''
+        url = ManagedPath(virtual_path)
+        commit = virtual_path.sha
+        if content==None and (id or branch):
             contents = self.file_handler.read()
             return_contents = "<form action=\"" + cherrypy.url() + "\" method=\"POST\">"
             return_contents = return_contents + "<textarea name=content rows='20' cols='120'>" + contents + "</textarea><br />"
             #if the user isn't logged in ...
-            if not hasattr(cherrypy.session, "login"): return_contents = return_contents + "username: <input type=text name=username value=\"Anonymous\"><br />"
+            if not hasattr(cherrypy.session, "login"): return_contents = return_contents + "username: <input type=text name=username value=\"anonymous\"><br />"
+            if id: return_contents = return_contents + "<input type=hidden name=id value=\"" + id + "\">"
+            return_contents = return_contents + "<input type=hidden name=\"branch\" value=\"" + branch + "\">"
             return_contents = return_contents + "<input type=submit name=submit value=edit></form>"
             return return_contents
-        else: #it's been edited
-            if username==None and cherrypy.session.login==None: raise ValueError, "FileViewer.edit: no username supplied"
+        elif (id or branch): #it's been edited
+            if username==None and hasattr(cherrypy.session, "login"): 
+                if cherrypy.session.login==None: raise ValueError, "FileViewer.edit: no username supplied"
             elif username==None:
-                username = cherrypy.session.login.username
+                if SESSION_KEY in cherrypy.session.keys():
+                    username = cherrypy.session[SESSION_KEY].username
+                else: username = "anonymous"
 
                 #TODO: implement
             
-            return "edited (name=%s)" % username
+            return "edited (name=%s, branch=%s, id=%s)" % (username, branch, id)
     def __getattr__(self, name):
         if name == "__methods__" or name == "__members__": return
         if name in self.acceptable_views:
@@ -596,6 +666,7 @@ class Package(PackageView, skdb.Package):
         #could be a file object, attribute, or method of the package
         if name == "__methods__" or name == "__members__": return
         if self.package is not None:
+            #FIXME: branches, SHAs, etc.
             if self.package.has_file(name,extensions=False): return FileViewer(package=self.package, filename=name, extensions=False)
         raise AttributeError("%r object has no attribute %r" % (self.__class__.__name__, name))
 
@@ -700,6 +771,12 @@ class SiteTest(helper.CPWebCase):
 
         url3 = ManagedPath("/home/index/edit")
         self.assertTrue(url3 == url2)
+    def test_sha_paths(self):
+        url1 = ManagedPath("/path/to/the/file/edit/e19a9220403c381b1c86c23fc3532f1a7b7a18e1")
+        self.assertTrue(url1.sha == "e19a9220403c381b1c86c23fc3532f1a7b7a18e1")
+         
+        url2 = ManagedPath("/path/to/the/file/e19a9220403c381b1c86c23fc3532f1a7b7a18e1")
+        self.assertTrue(url2.sha == "e19a9220403c381b1c86c23fc3532f1a7b7a18e1")
     def test_package(self):
         self.getPage("/package/lego/", method="GET")
         #print self.body
@@ -710,7 +787,7 @@ class SiteTest(helper.CPWebCase):
         self.assertStatus(200)
 
         self.getPage("/package/lego/data/yaml", method="GET")
-        #print self.body
+        print self.body
         self.assertStatus(200)
 
         #what about /package/lego/data/yaml/edit ?
@@ -722,8 +799,8 @@ class SiteTest(helper.CPWebCase):
 
         urls = [
                 "/package/lego/data/yaml",
-                "/package/lego.master/data/yaml",
-                "/package/lego.another/data/yaml",
+                "/package/lego;master/data/yaml",
+                "/package/lego;another/data/yaml",
                ]
 
 #url: http://projects.dowski.com/files/cp22collection/cp22collection.py?version=colorized
