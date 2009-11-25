@@ -1,6 +1,7 @@
 
 #where are skdb packages stored?
-package dir: packages/
+#package dir: packages/
+package dir: /home/kanzure/local/packages-skdb/
 
 #where are packages available from the web?
 repositories:

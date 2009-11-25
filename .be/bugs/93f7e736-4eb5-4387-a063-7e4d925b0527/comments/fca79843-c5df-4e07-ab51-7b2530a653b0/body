@@ -1,0 +1,12 @@
+
+http://localhost:8081/package/lego/data/edit
+
+Traceback (most recent call last):
+File "/usr/lib/python2.5/site-packages/cherrypy/_cprequest.py", line 606, in respond
+cherrypy.response.body = self.handler()
+File "/usr/lib/python2.5/site-packages/cherrypy/_cpdispatch.py", line 25, in __call__
+return self.callable(*self.args, **self.kwargs)
+File "/home/kanzure/code/skdb/web/web.py", line 616, in edit
+set_head(repo, branch)
+AttributeError: 'tuple' object has no attribute 'sha' 
+

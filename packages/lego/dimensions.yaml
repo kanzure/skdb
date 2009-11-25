@@ -32,13 +32,13 @@ equations:
     block length: $spacing_of_stud_centers * $peg_count_lengthwise + 2*$stud_spacing
     block width: $spacing_of_stud_centers * $peg_count_widthwise + 2*$stud_spacing
     assertions:
-    - !assertEquals
+    - #!assertEquals
         #three plates stacked on top of each other == 1 brick height (9.582mm)
         1: $height_of_brick
         2: 3*$plate_height
 tests:
     #this next test is according to: http://sparxmind.com/lego-woes/
-    - !lego #but what about a lego that isn't a block? should this be "!legoblock"?
+    - #but what about a lego that isn't a block? should this be "!legoblock"?
         #TODO: when a legos.Lego object loads itself up, it should check if its data makes sense.
         #for a 2x2 brick, the height is ~9.58mm, length and width are both ~16mm
         #"size" gives a dimension for the lego block generator to work with, so you don't need to write down all peg/hole interfaces

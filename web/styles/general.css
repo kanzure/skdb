@@ -1,45 +1,83 @@
 
+/******** meh ********/
+body
+{
+  background-color: #1c1c1c;
+  color: #d5d5d5; /* d5d5d5 */
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold; /* yes, always */
+  min-width: 1200px;
+}
+
+h1, h3
+{
+  font-size: 34px;
+  font-weight: bold;
+  font-family: Helvetica, Arial, sans-serif;
+  color: yellow;
+}
+
+a
+{
+  color: #00c0ff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
 /******** basic stuff ********/
 a:link, a:visited, a:active {
     color: #0ccfff;
     text-decoration: none;
+    }
+a:hover {
+    text-decoration: underline;
     }
 ul, ol, li { /* maybe a little hastey */
     list-style:none;
     }
 
 #banner {
-    background-image: url("../omnifab_banner.png");
+    xbackground-image: url("../omnifab_banner.png");
     background-repeat: repeat;
     border: none;
-    width: 263px;
-    height: 50px;
+    margin-left: 5%;
+    margin-top: 1%;
+    xwidth: 295px;
+    xheight: 50px;
     float: left;
     display: block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 5em;
+    color: white; /* ok an exception */
     }
 #title {
-    /*visibility: hidden;*/
+    xvisibility: hidden;
     display: none;
     }
 #slogan {
-    /*visibility: hidden;*/
+    xvisibility: hidden;
     display: none;
     }
 
 /******* navigation bar ********/
 #navigation_bar {
     font-family: Helvetica, Arial, sans-serif;
+    font-size: 40px;
     display: block;
-    margin-top: 0;
-    padding-top: 0;
-    height: 5em;
+    xmargin-top: 1%;
+    xpadding-top: 1%;
+    height: 3em;
     }
 #navigation_bar a:link, #navigation_bar a:visited, #navigation_bar a:active {
     color: #0ccfff;
     font-weight: bold;
     text-decoration: none;
-    padding-left: 5em;
-    padding-right: 5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    }
+#navigation_bar a:hover {
+    text-decoration: underline;
     }
 #navigation_bar ul {
     float: right;
@@ -50,45 +88,75 @@ ul, ol, li { /* maybe a little hastey */
     display: inline;
     }
 
+#twitter_div {
+    display: none;
+    }
 #notification {
-    background-color: white;
+    display: none;
+    xbackground-color: white;
     width: 50%;
-    font-family: Times New Roman;
     font-weight: bold;
     text-align: center;
     margin-left: 25%;
     margin-right: 25%;
     }
+#notification a:link, #notification a:visited, #notification a:active {
+    font-weight: bold;
+    text-decoration: none;
+    }
+#notification a:hover {
+    text-decoration: underline;
+}
 
 /******* container ********/
 #container {
+    display: block;
     xborder-style: solid;
     xborder-color: black;
+    margin-left: 10%;
+    }
+
+#page_content {
+    text-align: top;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+    display: block;
+    xborder-style: solid;
+    xborder-color: black;
+    xbackground-color: white;
+    width: 68%; /* meh */
     }
 
 /******** legalese ********/
 #footer {
     xbackground-color: gray;
-    font-family: Helvetica, Sans-Serif, Arial;
+    xfont-family: Helvetica, Sans-Serif, Arial;
     padding: 5px;
     font-weight: bold;
+    text-align: right;
     margin-top: 5em;
     border-top: 1px solid #CCCCCC;
     clear: both;
     color: #afb4b4;
-    font-size: 12px;
+    xfont-size: 12px;
     line-height: 1.2em;
     }
 
 /******** for the slideshow/gallery ********/
 #slide-images {
-    position:relative;
-    display:block;
-    margin:0px;
-    padding:0px;
+    display: inline;
     width:280px; /* adjust to width and height of images in gallery */
     height:159px;
+    float: right;
+    position: relative;
     overflow:hidden;
+    xmargin-left: 60%;
+    margin-right: 5%;
+    padding-right: 1%;
+    padding-left: 1%;
+    xborder-style: solid;
+    xborder-color: black;
     }
 #slide-images li {
     position:absolute;

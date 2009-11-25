@@ -219,6 +219,7 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
     
     for cfg in loaded_cfg:
         for node in cfg.nodes:
+            print "loaded_repo is: ", loaded_repo
             if node.name in loaded_repo:
                 #loaded_repo lets you find the CB name by giving an indexer (artifact name or CFG node name)
                 node.component_basis = loaded_repo[node.name] #wait, that's loaded_repo[] .. so what about the CB name?
