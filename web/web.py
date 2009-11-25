@@ -1,4 +1,21 @@
 #!/usr/bin/python
+#######################################################################
+#    Copyright (C) 2009 Bryan Bishop <kanzure@gmail.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#######################################################################
+
 """
 web.py - a tiny web server front end to skdb :)
 
@@ -573,11 +590,22 @@ class FileViewer: #(FileView): #eventually a template
     def default(self, *virtual_path, **keywords):
         url = ManagedPath(virtual_path)
         if url.cmd == "edit": return self.edit
+        if url.cmd == "" or not url.cmd:
+            if len(virtual_path)>0:
+                if len(virtual_path[0]) == 40:
+                    cherrypy.request.params["branch"] = "master"
+                    cherrypy.request.params["sha"] = virtual_path[0]
+                    print "sha is: ", virtual_path[0]
+                    return self.view_file(virtual_path, keywords)
         return str("FileViewer.default(virtual_path=%s, keywords=%s)" % (str(virtual_path), str(keywords)))
     @cherrypy.expose
-    def view_file(self, branch="master", sha=None, *virtual_path, **keywords):
+    def view_file(self, *virtual_path, **keywords):
+        branch = "master"
+        desired_view = "default"
+        sha = None
+        if "sha" in keywords: sha = keywords["sha"]
+        if "branch" in keywords: branch = keywords["branch"]
         if "desired_view" in keywords: desired_view = keywords["desired_view"]
-        else: raise cherrypy.NotFound() #should never happen
         if self.package is None: raise cherrypy.NotFound()
         if not (desired_view in self.acceptable_views): raise cherrypy.NotFound()
 
