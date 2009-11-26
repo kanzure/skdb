@@ -7,7 +7,7 @@ reporter: kanzure <kanzure@gmail.com>
 severity: minor
 
 
-status: open
+status: closed
 
 
 summary: dulwich.object_store.tree_lookup_path requires a full filename when the url

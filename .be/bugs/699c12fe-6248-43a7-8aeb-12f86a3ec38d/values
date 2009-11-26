@@ -7,7 +7,7 @@ reporter: kanzure <kanzure@gmail.com>
 severity: minor
 
 
-status: open
+status: fixed
 
 
 summary: 'web.py: IOError: [Errno 2] No such file or directory: ''valid_top_level_domains'''

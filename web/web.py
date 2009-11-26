@@ -135,6 +135,8 @@ SESSION_KEY = "_cp_user"
 
 def load_top_level_domain_names():
     '''run ./update_valid_tlds.sh to get the latest list from IANA'''
+    if not os.path.exists("valid_top_level_domains"):
+        os.system("./update_valid_tlds.sh") #because some people are too lazy
     tld_fh = open("valid_top_level_domains", "r")
     temp_tlds = tld_fh.read()
     tld_fh.close()
@@ -478,13 +480,17 @@ class ManagedPath:
         self._cmd = ""
         self._path = []
         self._sha = None
+
+        if isinstance(url, list):
+            url = tuple(url)
+
         if isinstance(url, ManagedPath):
             for (k,v) in url.__dict__: setattr(self, k, copy(v))
         elif isinstance(url, str):
-            self._url = url
+            self._url = list(url)
             self.parse(url)
         elif isinstance(url, tuple):
-            self._path = url
+            self._path = list(url)
             self._url = join(url, "/")
             self.parse(self._url)
     def parse(self, url):
@@ -511,7 +517,14 @@ class ManagedPath:
                     i = i+1
                 if len(parts[-1])==40 and parts[-1].isalnum():
                     self._sha = parts[-1]
+            #possibly better way to find the SHA (if given)
+            possible_shas = []
+            for each in parts:
+                if len(each)==40 and each.isalnum(): possible_shas.append(each)
+            if len(possible_shas)>0: self._sha = possible_shas[-1]
             self._parts = parts
+        if self._sha and self._sha is not "":
+            if self._sha in self._path: self._path.remove(self._sha)
     def __str__(self): return self._url
     def __repr__(self): return str(self)
     def __eq__(self, other):
@@ -574,36 +587,36 @@ class Uploader:
         return "ok thanks, file has been uploaded"
     upload.exposed=True
 
-class FileViewer: #(FileView): #eventually a template
+class FileViewer:
     _cp_config = {
                     'request.error_response': handle_error,
                     'tools.sessions.on': True,
                     'tools.auth.on': True,
                  }
-    acceptable_views = ["yaml", "html", "xml", "rss", "atom"]
+    acceptable_views = ["yaml", "html", "xml", "rss", "atom", "default", "raw"] #TODO: make any of this work again
     exposed=True
-    def __init__(self, package, filename, extensions=True):
+    def __init__(self, package=None, filename=None, sha=None, command=None, extensions=True):
         self.package = package
         self.filename = filename
+        self.sha = sha
+        self.command = command.strip()
         self.extensions = extensions
     @cherrypy.expose
+    def index(self, **keywords):
+        return str("FileViewer.index(keywords=%s)" % (keywords))
+    @cherrypy.expose
     def default(self, *virtual_path, **keywords):
-        url = ManagedPath(virtual_path)
-        if url.cmd == "edit": return self.edit
-        if url.cmd == "" or not url.cmd:
-            if len(virtual_path)>0:
-                if len(virtual_path[0]) == 40:
-                    cherrypy.request.params["branch"] = "master"
-                    cherrypy.request.params["sha"] = virtual_path[0]
-                    print "sha is: ", virtual_path[0]
-                    return self.view_file(virtual_path, keywords)
-        return str("FileViewer.default(virtual_path=%s, keywords=%s)" % (str(virtual_path), str(keywords)))
+        if hasattr(self, self.command):
+            func = getattr(self, self.command)
+            return func(**keywords)
+        return str("FileViewer.default(virtual_path=%s, keywords=%s)" % (virtual_path, keywords))
     @cherrypy.expose
     def view_file(self, *virtual_path, **keywords):
         branch = "master"
         desired_view = "default"
         sha = None
         if "sha" in keywords: sha = keywords["sha"]
+        elif hasattr(self, "sha"): sha = self.sha
         if "branch" in keywords: branch = keywords["branch"]
         if "desired_view" in keywords: desired_view = keywords["desired_view"]
         if self.package is None: raise cherrypy.NotFound()
@@ -616,32 +629,46 @@ class FileViewer: #(FileView): #eventually a template
         set_head(repo, branch)
         
         #reconstruct the filename
-        filename = self.filename + "." + desired_view #FIXME: this is a BAD hack
+        filename = self.filename
 
         #get the sha if it wasn't passed to us
         try:
             if not sha: sha = dulwich.object_store.tree_lookup_path(repo.get_object, repo.get_object(repo.head()).tree, filename)[1]
-            print "sha is: ", sha
             obj = repo.get_object(sha)
         except IndexError: raise cherrypy.NotFound()
 
         return str(obj.as_pretty_string())
     @cherrypy.expose
-    def edit(self, content=None, username=None, branch="master", id=None, *virtual_path, **keywords):
-        '''id: the git id of the blob before it was edited'''
+    def edit(self, content=None, username=None, *virtual_path, **keywords):
+        '''id: the git id of the blob before it was edited
+        branch: master (default)'''
+        #setup the defaults
+        branch = "master"
         url = ManagedPath(virtual_path)
-        commit = virtual_path.sha
-        if content==None and (id or branch):
-            contents = self.file_handler.read()
+        if "branch" in keywords: branch = keywords["branch"]
+        sha = self.sha
+        print "sha is: ", sha
+        print "keywords: ", keywords
+
+        commit = sha
+        print "content is: ", content
+        print "self.filename is: ", self.filename
+        if content is None:
+            repo = Repo(self.package.path())
+            set_head(repo, branch)
+            if not sha: sha = dulwich.object_store.tree_lookup_path(repo.get_object, repo.get_object(repo.head()).tree, self.filename)[1]
+            obj = repo.get_object(sha)
+            
+            contents = obj.as_pretty_string()
             return_contents = "<form action=\"" + cherrypy.url() + "\" method=\"POST\">"
             return_contents = return_contents + "<textarea name=content rows='20' cols='120'>" + contents + "</textarea><br />"
             #if the user isn't logged in ...
             if not hasattr(cherrypy.session, "login"): return_contents = return_contents + "username: <input type=text name=username value=\"anonymous\"><br />"
-            if id: return_contents = return_contents + "<input type=hidden name=id value=\"" + id + "\">"
+            if sha: return_contents = return_contents + "<input type=hidden name=id value=\"" + sha + "\">"
             return_contents = return_contents + "<input type=hidden name=\"branch\" value=\"" + branch + "\">"
             return_contents = return_contents + "<input type=submit name=submit value=edit></form>"
             return return_contents
-        elif (id or branch): #it's been edited
+        elif (sha or branch): #it's been edited
             if username==None and hasattr(cherrypy.session, "login"): 
                 if cherrypy.session.login==None: raise ValueError, "FileViewer.edit: no username supplied"
             elif username==None:
@@ -651,20 +678,14 @@ class FileViewer: #(FileView): #eventually a template
 
                 #TODO: implement
             
-            return "edited (name=%s, branch=%s, id=%s)" % (username, branch, id)
-    def __getattr__(self, name):
-        if name == "__methods__" or name == "__members__": return
-        if name in self.acceptable_views:
-            cherrypy.request.params["desired_view"] = name
-            return self.view_file
-        raise AttributeError("%r object has no attribute %r" % (self.__class__.__name__, name))
-        
+            return "edited (name=%s, branch=%s, sha=%s)" % (username, branch, sha)
+
 class Package(PackageView, skdb.Package):
     _cp_config = {'request.error_response': handle_error}
     exposed=True
     package = None
     def __init__(self, package):
-        PackageView.__init__(self)
+        PackageView.__init__(self) #template
         self.package = package
     @cherrypy.expose
     def index(self, **keywords):
@@ -674,10 +695,18 @@ class Package(PackageView, skdb.Package):
         if not virtual_path:
             return self.index(**keywords)
         url = ManagedPath(virtual_path)
+        file_handler = FileViewer(package=self.package, filename=join(url.path,"/"), sha=url.sha, command=url.cmd)
+
+        if url.cmd:
+            if hasattr(NewFileViewer, url.cmd):
+                return file_handler.default(join(url.path,"/"), **keywords)
+        return file_handler.view_file(**keywords)
+
         return_value = """Package.default(virtual_path=%s, keywords=%s)
         cmd is: %s
         virtual path is: %s
-        """ % (str(virtual_path), str(keywords), url.cmd, url.path)
+        sha is: %s
+        """ % (str(virtual_path), str(keywords), url.cmd, url.path, url.sha)
         return add_newlines(return_value)
     def __eq__(self, other):
         if isinstance(other, Package): #web package object
@@ -693,9 +722,6 @@ class Package(PackageView, skdb.Package):
     def __getattr__(self, name):
         #could be a file object, attribute, or method of the package
         if name == "__methods__" or name == "__members__": return
-        if self.package is not None:
-            #FIXME: branches, SHAs, etc.
-            if self.package.has_file(name,extensions=False): return FileViewer(package=self.package, filename=name, extensions=False)
         raise AttributeError("%r object has no attribute %r" % (self.__class__.__name__, name))
 
 class PackageSet(PackageIndex):
@@ -805,6 +831,22 @@ class SiteTest(helper.CPWebCase):
          
         url2 = ManagedPath("/path/to/the/file/e19a9220403c381b1c86c23fc3532f1a7b7a18e1")
         self.assertTrue(url2.sha == "e19a9220403c381b1c86c23fc3532f1a7b7a18e1")
+
+        test_sha = "2e8070856018dc79777ad070036f854f77bf9ba6"
+        url3 = ManagedPath("/data.yaml/" + test_sha)
+        self.assertTrue(url3.sha == test_sha)
+
+        url4 = ManagedPath("data.yaml/" + test_sha)
+        self.assertTrue(url4.sha == test_sha)
+
+        url5 = ManagedPath(("data.yaml", test_sha))
+        self.assertTrue(url5.sha == test_sha)
+
+        url6 = ManagedPath(("data.yaml", test_sha, "edit"))
+        self.assertTrue(url6.sha == test_sha)
+
+        url7 = ManagedPath(["data.yaml", test_sha, "edit"])
+        self.assertTrue(url7.sha == test_sha)
     def test_package(self):
         self.getPage("/package/lego/", method="GET")
         #print self.body
@@ -815,7 +857,7 @@ class SiteTest(helper.CPWebCase):
         self.assertStatus(200)
 
         self.getPage("/package/lego/data/yaml", method="GET")
-        print self.body
+        #print self.body
         self.assertStatus(200)
 
         #what about /package/lego/data/yaml/edit ?

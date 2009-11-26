@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: cherrypy doesn't spit out the correct MIME type for raw file views
+
+
+time: Thu, 26 Nov 2009 02:08:16 +0000
+
