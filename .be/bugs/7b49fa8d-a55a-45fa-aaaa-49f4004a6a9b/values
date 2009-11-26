@@ -1,0 +1,21 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+extra_strings:
+- BLOCKED-BY:13cf1389-771d-4f20-94ba-823cbde3ce14
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: doc/hacking doesn't list all dependencies
+
+
+time: Thu, 26 Nov 2009 04:51:23 +0000
+

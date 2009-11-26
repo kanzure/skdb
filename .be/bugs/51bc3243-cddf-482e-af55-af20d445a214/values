@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: make tests/test_units.py pass (22 tests in 4.412s; FAILED (failures=4, errors=2))
+
+
+time: Thu, 26 Nov 2009 05:01:42 +0000
+

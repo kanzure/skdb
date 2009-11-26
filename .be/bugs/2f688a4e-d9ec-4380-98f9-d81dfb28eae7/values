@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: web/web.py unit tests are not included in tests/
+
+
+time: Thu, 26 Nov 2009 04:58:56 +0000
+

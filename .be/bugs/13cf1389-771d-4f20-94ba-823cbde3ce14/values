@@ -1,0 +1,21 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+extra_strings:
+- BLOCKS:7b49fa8d-a55a-45fa-aaaa-49f4004a6a9b
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: igraph dependency isn't documented
+
+
+time: Thu, 26 Nov 2009 04:55:56 +0000
+
