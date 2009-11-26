@@ -1,0 +1,18 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: 'FileViewer doesn''t look at virtual_path; other classes/methods do: choose
+  one style or the other please'
+
+
+time: Thu, 26 Nov 2009 02:14:32 +0000
+
