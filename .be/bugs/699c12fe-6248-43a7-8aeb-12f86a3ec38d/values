@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: 'web.py: IOError: [Errno 2] No such file or directory: ''valid_top_level_domains'''
+
+
+time: Thu, 26 Nov 2009 00:20:02 +0000
+

@@ -7,7 +7,7 @@ reporter: kanzure <kanzure@gmail.com>
 severity: minor
 
 
-status: open
+status: closed
 
 
 summary: set_head in web.py is broken
