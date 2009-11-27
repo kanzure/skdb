@@ -474,7 +474,7 @@ class ManagedPath:
     useful for a wiki.
     '''
     reserved_roots = ["account", "admin"] #for /account stuff.
-    reserved_words = ["new", "delete", "edit", "history", "source", "archive"]
+    reserved_words = [":new", ":delete", ":edit", ":history", ":source", ":archive"]
     def __init__(self, url=str()):
         self._parts = []
         self._cmd = ""
@@ -507,14 +507,12 @@ class ManagedPath:
                         self._sha = parts[1]
             else:
                 path = []
-                i = 0
                 for part in parts:
                     if part in self.reserved_words:
-                        self._cmd = part
+                        self._cmd = part.replace(":", "")
                         self._path = path
                         break
                     elif part is not "": path.append(part)
-                    i = i+1
                 if len(parts[-1])==40 and parts[-1].isalnum():
                     self._sha = parts[-1]
             #possibly better way to find the SHA (if given)
@@ -804,29 +802,29 @@ class SiteTest(helper.CPWebCase):
         result = add_newlines(message)
         self.assertTrue(result.count("<br />") == 1)
     def test_url(self):
-        url1 = ManagedPath("/home/index/edit")
+        url1 = ManagedPath("/home/index/:edit")
         self.assertTrue(url1.cmd == "edit")
-        url2 = ManagedPath("/home/index/edit/")
+        url2 = ManagedPath("/home/index/:edit/")
         self.assertTrue(url2.cmd == "edit")
         
-        url3 = ManagedPath("/home/index/edit/stuff/goes/here")
+        url3 = ManagedPath("/home/index/:edit/stuff/goes/here")
         self.assertTrue(url3.cmd == "edit")
-        url4 = ManagedPath("/home/index/edit/stuff/goes/")
+        url4 = ManagedPath("/home/index/:edit/stuff/goes/")
         self.assertTrue(url4.cmd == "edit")
 
-        url5 = ManagedPath("/home/index/stuff/edit")
+        url5 = ManagedPath("/home/index/stuff/:edit")
         self.assertTrue(url5.path == ["home", "index", "stuff"])
-        url6 = ManagedPath("/path/to/the/file/new/extra/stuff/123")
+        url6 = ManagedPath("/path/to/the/file/:new/extra/stuff/123")
         self.assertTrue(url6.path == ["path", "to", "the", "file"])
     def test_url_eq(self):
-        url1 = ManagedPath("/home/index/edit/")
-        url2 = ManagedPath("/home/index/edit/blah")
+        url1 = ManagedPath("/home/index/:edit/")
+        url2 = ManagedPath("/home/index/:edit/blah")
         self.assertTrue(url1 == url2)
 
-        url3 = ManagedPath("/home/index/edit")
+        url3 = ManagedPath("/home/index/:edit")
         self.assertTrue(url3 == url2)
     def test_sha_paths(self):
-        url1 = ManagedPath("/path/to/the/file/edit/e19a9220403c381b1c86c23fc3532f1a7b7a18e1")
+        url1 = ManagedPath("/path/to/the/file/:edit/e19a9220403c381b1c86c23fc3532f1a7b7a18e1")
         self.assertTrue(url1.sha == "e19a9220403c381b1c86c23fc3532f1a7b7a18e1")
          
         url2 = ManagedPath("/path/to/the/file/e19a9220403c381b1c86c23fc3532f1a7b7a18e1")
@@ -852,11 +850,11 @@ class SiteTest(helper.CPWebCase):
         #print self.body
         self.assertStatus(200) #see also assertBody
 
-        self.getPage("/package/lego/data/", method="GET")
+        self.getPage("/package/lego/data.yaml/", method="GET")
         #print self.body
         self.assertStatus(200)
 
-        self.getPage("/package/lego/data/yaml", method="GET")
+        self.getPage("/package/lego/data.yaml", method="GET")
         #print self.body
         self.assertStatus(200)
 
@@ -864,14 +862,6 @@ class SiteTest(helper.CPWebCase):
     def test_email_addresses(self):
         self.assertTrue(is_valid_email("hello@me.com"))
         self.assertFalse(is_valid_email("user@user.1.2.3."))
-    def test_branch_page_view(self):
-        '''note: branches can only be one word with no slashes'''
-
-        urls = [
-                "/package/lego/data/yaml",
-                "/package/lego;master/data/yaml",
-                "/package/lego;another/data/yaml",
-               ]
 
 #url: http://projects.dowski.com/files/cp22collection/cp22collection.py?version=colorized
 def setup_server():
