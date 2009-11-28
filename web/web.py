@@ -40,6 +40,7 @@ if __name__ == "__main__":
 import os
 import sys
 #sys.stdout = sys.stderr
+import time
 
 from copy import copy
 from string import join
@@ -395,7 +396,7 @@ def extract_trees(repo, commit="a9b19e9453e516d7528aebb05a1efd66a0cd9347"):
             trees.append(each)
     return trees
 
-def get_latest_tree(repo, refspec="HEAD"):
+def get_latest_tree(repo, refspec="ref: refs/heads/master"):
     """return the last known tree"""
     commit_id = repo.get_refs()[refspec]
     commit = repo.commit(commit_id)
@@ -669,14 +670,61 @@ class FileViewer:
         elif (sha or branch): #it's been edited
             if username==None and hasattr(cherrypy.session, "login"): 
                 if cherrypy.session.login==None: raise ValueError, "FileViewer.edit: no username supplied"
-            elif username==None:
+            elif username==None or username=="anonymous":
+                anon = True #whether or not the user is anonymous
                 if SESSION_KEY in cherrypy.session.keys():
                     username = cherrypy.session[SESSION_KEY].username
+                    anon = False
                 else: username = "anonymous"
 
-                #TODO: implement
-            
-            return "edited (name=%s, branch=%s, sha=%s)" % (username, branch, sha)
+                #at least until we get access control lists working
+                if anon:
+                    if branch=="master": #don't let anonymous users modify branch "master"
+                        branch = "anonymous"
+                    branch = "anonymous"
+                
+                #make the blob
+                blob = Blob.from_string(content)
+                
+                repo = Repo(self.package.path())
+                #change to the right branch
+                print "branch is: ", branch
+                print "debug0"
+                last_head = repo.head()
+                print "debug1"
+                set_head(repo, "master")
+                print "debug2"
+                commit = repo.get_object(repo.head())
+                print "debug3"
+                tree = repo.tree(repo.get_object(repo.head()).tree)
+                print "debug4"
+
+
+                #make the commit
+                commit = Commit()
+                commit.tree = tree
+                commit.parents = [last_head]
+                commit.author = commit.committer = username
+                commit.commit_time = commit.author_time = int(time.time())
+                commit.commit_timezone = commit.author_timezone = parse_timezone("-0600")
+                commit.encoding = "UTF-8"
+                commit.message = "not implemented yet"
+
+                repo.refs["HEAD"] = "ref: refs/heads/" + branch
+                #set the file
+                tree = repo.tree(repo.get_object(repo.head()).tree)
+                tree[self.filename] = (0100644, blob.id)
+                
+                repo.object_store.add_object(blob)
+                repo.object_store.add_object(tree)
+                repo.object_store.add_object(commit)
+                print "debug5"
+                print "debug6"
+                repo.refs["refs/heads/" + branch] = commit.id
+
+                print "edited"
+
+            return add_newlines("edited (name=%s, branch=%s, sha=%s)\n\n\n%s" % (username, branch, sha, content))
 
 class Package(PackageView, skdb.Package):
     _cp_config = {'request.error_response': handle_error}
@@ -696,7 +744,7 @@ class Package(PackageView, skdb.Package):
         file_handler = FileViewer(package=self.package, filename=join(url.path,"/"), sha=url.sha, command=url.cmd)
 
         if url.cmd:
-            if hasattr(NewFileViewer, url.cmd):
+            if hasattr(FileViewer, url.cmd):
                 return file_handler.default(join(url.path,"/"), **keywords)
         return file_handler.view_file(**keywords)
 
