@@ -655,7 +655,9 @@ class FileViewer:
         if content is None:
             repo = Repo(self.package.path())
             set_head(repo, branch)
-            if not sha: sha = dulwich.object_store.tree_lookup_path(repo.get_object, repo.get_object(repo.head()).tree, self.filename)[1]
+            if not sha:
+                print "repo.head() = ", repo.head()
+                sha = dulwich.object_store.tree_lookup_path(repo.get_object, repo.get_object(repo.head()).tree, self.filename)[1]
             obj = repo.get_object(sha)
             
             contents = obj.as_pretty_string()
@@ -694,15 +696,19 @@ class FileViewer:
                 print "debug1"
                 set_head(repo, "master")
                 print "debug2"
-                commit = repo.get_object(repo.head())
+                last_commit = repo.get_object(repo.head())
+                print "last_commit is: ", last_commit.id
+                print "last_head is: ", last_head
                 print "debug3"
                 tree = repo.tree(repo.get_object(repo.head()).tree)
                 print "debug4"
 
-
+                #set the file
+                tree[self.filename] = (0100644, blob.id)
+                
                 #make the commit
                 commit = Commit()
-                commit.tree = tree
+                commit.tree = tree.id
                 commit.parents = [last_head]
                 commit.author = commit.committer = username
                 commit.commit_time = commit.author_time = int(time.time())
@@ -710,17 +716,13 @@ class FileViewer:
                 commit.encoding = "UTF-8"
                 commit.message = "not implemented yet"
 
-                repo.refs["HEAD"] = "ref: refs/heads/" + branch
-                #set the file
-                tree = repo.tree(repo.get_object(repo.head()).tree)
-                tree[self.filename] = (0100644, blob.id)
-                
                 repo.object_store.add_object(blob)
                 repo.object_store.add_object(tree)
                 repo.object_store.add_object(commit)
                 print "debug5"
                 print "debug6"
                 repo.refs["refs/heads/" + branch] = commit.id
+                repo.refs["HEAD"] = "ref: refs/heads/" + branch
 
                 print "edited"
 
