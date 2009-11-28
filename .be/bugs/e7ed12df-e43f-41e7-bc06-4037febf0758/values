@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: FileViewer spits out commit messages if you ask it to- see http://heybryan.org:8081/package/lego:anonymous/interfaces.py/71b8d9f37868bababa9c01578e65c46673f6dffc
+
+
+time: Sat, 28 Nov 2009 22:00:59 +0000
+

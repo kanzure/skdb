@@ -41,7 +41,7 @@ import os
 import sys
 #sys.stdout = sys.stderr
 import time
-
+import mimetypes
 from copy import copy
 from string import join
 
@@ -632,11 +632,25 @@ class FileViewer:
 
         #get the sha if it wasn't passed to us
         try:
-            if not sha: sha = dulwich.object_store.tree_lookup_path(repo.get_object, repo.get_object(repo.head()).tree, filename)[1]
+            if not sha: sha = dulwich.object_store.tree_lookup_path(repo.get_object, repo.get_object(repo.ref("refs/heads/" + branch)).tree, filename)[1]
             obj = repo.get_object(sha)
         except IndexError: raise cherrypy.NotFound()
+        
+        output = str(obj.as_pretty_string())
+        
+        #determine the MIME type
+        mime_type = "text/plain"
+        #try:
+        #    if filename.count(".") > 0:
+        #        extension = filename.split(".")[-1]
+        #        mime_type = mimetypes.types_map["." + extension]
+        #except KeyError:
+        #    mime_type = "text/plain"
 
-        return str(obj.as_pretty_string())
+        #set the MIME type
+        cherrypy.response.headers["Content-Type"] = mime_type
+
+        return output
     @cherrypy.expose
     def edit(self, content=None, username=None, *virtual_path, **keywords):
         '''id: the git id of the blob before it was edited
@@ -690,18 +704,10 @@ class FileViewer:
                 
                 repo = Repo(self.package.path())
                 #change to the right branch
-                print "branch is: ", branch
-                print "debug0"
                 last_head = repo.head()
-                print "debug1"
                 set_head(repo, "master")
-                print "debug2"
                 last_commit = repo.get_object(repo.head())
-                print "last_commit is: ", last_commit.id
-                print "last_head is: ", last_head
-                print "debug3"
                 tree = repo.tree(repo.get_object(repo.head()).tree)
-                print "debug4"
 
                 #set the file
                 tree[self.filename] = (0100644, blob.id)
@@ -719,14 +725,11 @@ class FileViewer:
                 repo.object_store.add_object(blob)
                 repo.object_store.add_object(tree)
                 repo.object_store.add_object(commit)
-                print "debug5"
-                print "debug6"
                 repo.refs["refs/heads/" + branch] = commit.id
                 repo.refs["HEAD"] = "ref: refs/heads/" + branch
+                new_link = "<a href=\"/package/" + self.package.name + ":" + branch + "/" + self.filename + "/" + blob.id + "\">go to the new version</a>"
 
-                print "edited"
-
-            return add_newlines("edited (name=%s, branch=%s, sha=%s)\n\n\n%s" % (username, branch, sha, content))
+            return add_newlines("edited (name=%s, branch=%s, sha=%s) new link: %s\n\n\n%s" % (username, branch, sha, new_link, content))
 
 class Package(PackageView, skdb.Package):
     _cp_config = {'request.error_response': handle_error}
@@ -737,7 +740,19 @@ class Package(PackageView, skdb.Package):
         self.package = package
     @cherrypy.expose
     def index(self, **keywords):
-        return ("individual package view for Package(" + str(self.package.name) + ")")
+        if "branch" in keywords: branch = keywords["branch"]
+        else: branch = "master"
+
+        content = ""
+        #display a list of files
+        repo = Repo(self.package.path())
+        tree = repo.tree(repo.get_object(repo.ref("refs/heads/" + branch)).tree)
+        for entry in tree.entries():
+            filename = entry[1]
+            file_sha = entry[2]
+            content = content + "<a href=\"/package/" + self.package.name + ":" + branch + "/" + filename + "/" + file_sha + "\">" + filename + "</a><br />"
+        return content
+        #return ("individual package view for Package(" + str(self.package.name) + ")")
     @cherrypy.expose
     def default(self, *virtual_path, **keywords):
         if not virtual_path:
