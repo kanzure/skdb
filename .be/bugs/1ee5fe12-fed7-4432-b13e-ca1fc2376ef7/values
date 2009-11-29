@@ -1,0 +1,18 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: web/web.py doesn't work out of the box (requires separate .git repositories
+  for packages)
+
+
+time: Sun, 29 Nov 2009 17:09:35 +0000
+

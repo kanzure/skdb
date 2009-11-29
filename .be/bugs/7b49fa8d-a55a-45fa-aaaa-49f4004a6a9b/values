@@ -11,7 +11,7 @@ reporter: kanzure <kanzure@gmail.com>
 severity: minor
 
 
-status: open
+status: fixed
 
 
 summary: doc/hacking doesn't list all dependencies
