@@ -1,33 +1,124 @@
-let's say your skdb source code is in ~/code/skdb/
-append this to your ~/.bashrc so that skdb is available as a module without installing:
+#!/usr/bin/bash
+#notes on optional dependencies
+#
+#python-numpy - not necessary but used in some of the unit tests
+#
+#for bugseverywhere:
+#    bzr docbook-to-man
+#
+#for experimental material/package dependency unit tests (tests/test_dep.py):
+#    python-pyparsing
+#
+#for generating graphs (like from paths.py):
+#    graphviz
+#    somehow a module called "igraph" for python? (not in apt)
+#============================
 
-export PYTHONPATH=$PYTHONPATH:~/code/
+sudo apt-get install git-core python-yaml units python-numpy bzr docbook-to-man python-pyparsing graphviz
 
-======== dependencies ========
-these are in debian/apt:
-    python2.5
-    python-yaml (3.05-2)
-    units (1.87)
+cd ~; mkdir local; cd local;
 
-pythonocc 0.3
-    svn co -r uhh? svn://svn.gna.org/svn/pythonocc/trunk pythonOCC
-    http://adl.serveftp.org/dokuwiki/pythonocc
-    eventually ybit will make a .deb :)
-    
-bugs-everywhere r330
-    bzr get -r330 http://bzr.bugseverywhere.org/be
+################################
+#bugseverywhere
+################################
+bzr get -r330 http://bzr.bugseverywhere.org/be
+cd be/
+make
+sudo python setup.py install
 
-for web.py:
-    cherrypy 3.1.2
-        wget http://download.cherrypy.org/cherrypy/3.1.2/CherryPy-3.1.2.tar.gz
-    dulwich 0.4.0
-        wget http://samba.org/~jelmer/dulwich/dulwich-0.4.0.tar.gz
+################################
+#for web/web.py
+################################
+#cherrypy 3.1.2
+cd ~/local/; mkdir cherrpy; cd cherrpy;
+wget http://download.cherrypy.org/cherrypy/3.1.2/CherryPy-3.1.2.tar.gz
+tar -zxvf CherryPy-3.1.2.tar.gz
+cd CherryPy-3.1.2/
+sudo python setup.py install
 
-for inventory/ web stuff:
-    django 1.1.1
-        wget http://www.djangoproject.com/download/1.1.1/tarball/
+#dulwich 0.4.0
+cd ~/local/; mkdir dulwich; cd dulwich;
+wget http://samba.org/~jelmer/dulwich/dulwich-0.4.0.tar.gz
+tar -zxf dulwich-0.4.0.tar.gz
+cd dulwich-0.4.0/
+sudo python setup.py install
 
-recommended:
-    igraph
-    graphviz
+################################
+#for inventory/ web stuff (not necessary)
+################################
+#django 1.1.1
+wget http://www.djangoproject.com/download/1.1.1/tarball/
+tar -zxvf Django-1.1.1.tar.gz
+cd Django-1.1.1/
+sudo python setup.py install
+
+################################
+#pythonOCC and opencascade
+#notes: http://adl.serveftp.org/dokuwiki/pythonocc
+################################
+
+wget http://www.opennovation.org/ubuntu/opennovation.key
+sudo apt-key add opennovation.key
+echo "deb http://www.opennovation.org/ubuntu jaunty main contrib non-free" | sudo tee -a /etc/apt/sources.list
+sudo apt-get update
+
+sudo apt-get install libopencascade-visualization-dev libopencascade-dev scons python-psyco swig checkinstall x11proto-core-dev libx11-dev libopencascade-ocaf-dev opencascade-wok opencascade-draw gccxml python-setuptools build-essential libstdc++6-4.3-dev python-dev
+
+#get pygccxml if you use -generate_swig on setup.py for pythonocc later
+#cd ~/local/; mkdir pygccxml; cd pygccxml/;
+#wget http://downloads.sourceforge.net/project/pygccxml/pygccxml/pygccxml-1.0/pygccxml-1.0.0.zip
+#unzip pygccxml-1.0.0.zip
+#cd pygccxml-1.0.0/
+#sudo python setup.py install
+
+cd ~/local/; mkdir pythonocc/; cd pythonocc/;
+wget http://download.gna.org/pythonocc/source_release/pythonOCC-0.3.tar.gz
+tar -zxvf pythonOCC-0.3.tar.gz
+cd pythonOCC-0.3/
+
+#if you're on debian
+cd src/
+sed -i 's|/usr/local/inc|/usr/include/opencascade|' wrapper/environment.py
+sed -i 's|/usr/local/lib|/usr/lib|' wrapper/environment.py
+sed -i "s/'mscmd',//" setup.py
+
+vim wrapper/environment.py
+search for "linux2"
+add these to swig_opts:
+    -classic -nomodern -nomodernargs
+
+sudo ln -s /usr/lib/libTKCDLFront-6.3.0.so /usr/lib/libTKCDLFront.so
+sudo ln -s /usr/lib/libTKCPPClient-6.3.0.so /usr/lib/libTKCPPClient.so
+sudo ln -s /usr/lib/libTKCPPExt-6.3.0.so /usr/lib/libTKCPPExt.so
+sudo ln -s /usr/lib/libTKCPPIntExt-6.3.0.so /usr/lib/libTKCPPIntExt.so
+sudo ln -s /usr/lib/libTKCPPJini-6.3.0.so /usr/lib/libTKCPPJini.so
+sudo ln -s /usr/lib/libTKCSFDBSchema-6.3.0.so /usr/lib/libTKCSFDBSchema.so
+sudo ln -s /usr/lib/libTKIDLFront-6.3.0.so /usr/lib/libTKIDLFront.so 
+sudo ln -s /usr/lib/libTKTCPPExt-6.3.0.so /usr/lib/libTKTCPPExt.so
+sudo ln -s /usr/lib/libTKWOK-6.3.0.so /usr/lib/libTKWOK.so
+sudo ln -s /usr/lib/libTKWOKTcl-6.3.0.so /usr/lib/libTKWOKTcl.so
+sudo ln -s /usr/lib/libmscmd-6.2.so /usr/lib/libmscmd.so
+
+sudo python setup.py build -NO_GEOM
+time sudo python setup.py install -NO_GEOM
+export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python2.6/dist-packages/OCC
+
+sudo cp -p /usr/lib/opencas/lib* /usr/lib/ 
+echo "export CSF_GraphicShr=/usr/lib/libTKOpenGl.so" >> ~/.bashrc
+source ~/.bashrc
+
+################################
+#skdb
+################################
+cd ~; mkdir code; cd code/;
+git clone http://adl.serveftp.org/skdb.git
+
+################################
+#environment configuration
+################################
+echo "export PYTHONPATH=\$PYTHONPATH:~/code/" >> ~/.bashrc
+source ~/.bashrc
+
+vim ~/code/skdb/config.yaml
+#edit the path to packages, i.e. to: /home/username/code/skdb/packages/
 
