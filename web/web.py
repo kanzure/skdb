@@ -99,7 +99,7 @@ cherrypy.config.update({
 #             \__________/
 #
 from Cheetah.Template import Template
-from templates import PackageIndex, IndexTemplate, PackageView
+from templates import PackageIndex, IndexTemplate, PackageView, FileViewerTemplate
 
 import urllib
 import yaml
@@ -475,7 +475,7 @@ class ManagedPath:
     useful for a wiki.
     '''
     reserved_roots = ["account", "admin"] #for /account stuff.
-    reserved_words = [":new", ":delete", ":edit", ":history", ":source", ":archive"]
+    reserved_words = [":new", ":delete", ":edit", ":history", ":source", ":archive", ":raw"]
     def __init__(self, url=str()):
         self._parts = []
         self._cmd = ""
@@ -586,7 +586,7 @@ class Uploader:
         return "ok thanks, file has been uploaded"
     upload.exposed=True
 
-class FileViewer:
+class FileViewer(FileViewerTemplate):
     _cp_config = {
                     'request.error_response': handle_error,
                     'tools.sessions.on': True,
@@ -595,6 +595,7 @@ class FileViewer:
     acceptable_views = ["yaml", "html", "xml", "rss", "atom", "default", "raw"] #TODO: make any of this work again
     exposed=True
     def __init__(self, package=None, filename=None, sha=None, command=None, extensions=True):
+        FileViewerTemplate.__init__(self)
         self.package = package
         self.filename = filename
         self.sha = sha
@@ -609,6 +610,46 @@ class FileViewer:
             func = getattr(self, self.command)
             return func(**keywords)
         return str("FileViewer.default(virtual_path=%s, keywords=%s)" % (virtual_path, keywords))
+    @cherrypy.expose
+    def raw(self, *virtual_path, **keywords):
+        branch = "master"
+        desired_view = "default"
+        sha = None
+        if "sha" in keywords: sha = keywords["sha"]
+        elif hasattr(self, "sha"): sha = self.sha
+        if "branch" in keywords: branch = keywords["branch"]
+        if self.package is None: raise cherrypy.NotFound()
+        if not (desired_view in self.acceptable_views): raise cherrypy.NotFound()
+
+        #create the dulwich.repo.Repo object
+        repo = Repo(self.package.path())
+
+        #switch to the right refspec
+        set_head(repo, branch)
+        
+        #reconstruct the filename
+        filename = self.filename
+
+        #get the sha if it wasn't passed to us
+        try:
+            if not sha: sha = dulwich.object_store.tree_lookup_path(repo.get_object, repo.get_object(repo.ref("refs/heads/" + branch)).tree, filename)[1]
+            obj = repo.get_object(sha)
+        except IndexError: raise cherrypy.NotFound()
+        
+        output = str(obj.as_pretty_string())
+        
+        #determine the MIME type
+        mime_type = "text/plain"
+        #try:
+        #    if filename.count(".") > 0:
+        #        extension = filename.split(".")[-1]
+        #        mime_type = mimetypes.types_map["." + extension]
+        #except KeyError:
+        #    mime_type = "text/plain"
+
+        #set the MIME type
+        cherrypy.response.headers["Content-Type"] = mime_type
+        return output
     @cherrypy.expose
     def view_file(self, *virtual_path, **keywords):
         branch = "master"
@@ -648,9 +689,10 @@ class FileViewer:
         #    mime_type = "text/plain"
 
         #set the MIME type
-        cherrypy.response.headers["Content-Type"] = mime_type
-
-        return output
+        #cherrypy.response.headers["Content-Type"] = mime_type
+        self.content = "<pre>" + output + "</pre>"
+        self.branch = branch
+        return self.respond()
     @cherrypy.expose
     def edit(self, content=None, username=None, *virtual_path, **keywords):
         '''id: the git id of the blob before it was edited
@@ -682,7 +724,9 @@ class FileViewer:
             if sha: return_contents = return_contents + "<input type=hidden name=id value=\"" + sha + "\">"
             return_contents = return_contents + "<input type=hidden name=\"branch\" value=\"" + branch + "\">"
             return_contents = return_contents + "<input type=submit name=submit value=edit></form>"
-            return return_contents
+            self.content = return_contents
+            self.branch = branch
+            return self.respond()
         elif (sha or branch): #it's been edited
             if username==None and hasattr(cherrypy.session, "login"): 
                 if cherrypy.session.login==None: raise ValueError, "FileViewer.edit: no username supplied"
@@ -728,8 +772,13 @@ class FileViewer:
                 repo.refs["refs/heads/" + branch] = commit.id
                 repo.refs["HEAD"] = "ref: refs/heads/" + branch
                 new_link = "<a href=\"/package/" + self.package.name + ":" + branch + "/" + self.filename + "/" + blob.id + "\">go to the new version</a>"
+                self.new_link = new_link
 
-            return add_newlines("edited (name=%s, branch=%s, sha=%s) new link: %s\n\n\n%s" % (username, branch, sha, new_link, content))
+            self.content = add_newlines("edited (name=%s, branch=%s, sha=%s) new link: %s\n\n\n" % (username, branch, sha, new_link))
+            self.content = self.content + "<pre>" + content + "</pre>"
+            self.branch = branch
+
+            return self.respond()
 
 class Package(PackageView, skdb.Package):
     _cp_config = {'request.error_response': handle_error}
@@ -751,7 +800,9 @@ class Package(PackageView, skdb.Package):
             filename = entry[1]
             file_sha = entry[2]
             content = content + "<a href=\"/package/" + self.package.name + ":" + branch + "/" + filename + "/" + file_sha + "\">" + filename + "</a><br />"
-        return content
+        self.content = content
+        self.branch = branch
+        return self.respond()
         #return ("individual package view for Package(" + str(self.package.name) + ")")
     @cherrypy.expose
     def default(self, *virtual_path, **keywords):
@@ -770,7 +821,8 @@ class Package(PackageView, skdb.Package):
         virtual path is: %s
         sha is: %s
         """ % (str(virtual_path), str(keywords), url.cmd, url.path, url.sha)
-        return add_newlines(return_value)
+        self.content = add_newlines(return_value)
+        return self.respond()
     def __eq__(self, other):
         if isinstance(other, Package): #web package object
             if other.package == self.package: return True
