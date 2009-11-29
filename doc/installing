@@ -38,16 +38,19 @@ sudo python setup.py install
 #for web/web.py
 ################################
 #cherrypy 3.1.2
-cd ~/local/; mkdir cherrpy; cd cherrpy;
-wget http://download.cherrypy.org/cherrypy/3.1.2/CherryPy-3.1.2.tar.gz
-tar -zxvf CherryPy-3.1.2.tar.gz
-cd CherryPy-3.1.2/
-sudo python setup.py install
+#cd ~/local/; mkdir cherrpy; cd cherrpy;
+#wget http://download.cherrypy.org/cherrypy/3.1.2/CherryPy-3.1.2.tar.gz
+#tar -zxvf CherryPy-3.1.2.tar.gz
+#cd CherryPy-3.1.2/
+#sudo python setup.py install
+sudo apt-get install python-cherrypy3=3.1.2-1
 
 #Cheetah-2.2.2-py2.5-linux-i686.egg
+#debian has 2.0.1-2 (python-cheetah=2.0.1-2)
 sudo easy_install Cheetah
 
-#dulwich 0.4.0
+#dulwich 0.4.0 (ubuntu users have 0.4.0 on 'lucid')
+#url: http://packages.ubuntu.com/lucid/python-dulwich
 cd ~/local/; mkdir dulwich; cd dulwich;
 wget http://samba.org/~jelmer/dulwich/dulwich-0.4.0.tar.gz
 tar -zxf dulwich-0.4.0.tar.gz
@@ -58,19 +61,22 @@ sudo python setup.py install
 #for inventory/ web stuff (not necessary)
 ################################
 #django 1.1.1
-wget http://www.djangoproject.com/download/1.1.1/tarball/
-tar -zxvf Django-1.1.1.tar.gz
-cd Django-1.1.1/
-sudo python setup.py install
+#wget http://www.djangoproject.com/download/1.1.1/tarball/
+#tar -zxvf Django-1.1.1.tar.gz
+#cd Django-1.1.1/
+#sudo python setup.py install
+
+sudo apt-get install python-django
 
 ################################
 #pythonOCC and opencascade
 #notes: http://adl.serveftp.org/dokuwiki/pythonocc
 ################################
-wget http://www.opennovation.org/ubuntu/opennovation.key
-sudo apt-key add opennovation.key
-echo "deb http://www.opennovation.org/ubuntu jaunty main contrib non-free" | sudo tee -a /etc/apt/sources.list
-sudo apt-get update
+#there's a .deb for opencascade 6.3.0 stuff, so you don't need this:
+#wget http://www.opennovation.org/ubuntu/opennovation.key
+#sudo apt-key add opennovation.key
+#echo "deb http://www.opennovation.org/ubuntu jaunty main contrib non-free" | sudo tee -a /etc/apt/sources.list
+#sudo apt-get update
 
 sudo apt-get install libopencascade-visualization-dev libopencascade-dev scons python-psyco swig checkinstall x11proto-core-dev libx11-dev libopencascade-ocaf-dev opencascade-wok opencascade-draw python-setuptools build-essential libstdc++6-4.3-dev python-dev python-wxgtk2.8
 
