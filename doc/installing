@@ -93,10 +93,13 @@ sed -i 's|/usr/local/inc|/usr/include/opencascade|' wrapper/environment.py
 sed -i 's|/usr/local/lib|/usr/lib|' wrapper/environment.py
 sed -i "s/'mscmd',//" setup.py
 
-vim wrapper/environment.py
-search for "linux2"
-add these to swig_opts:
-    -classic -nomodern -nomodernargs
+#in wrapper/environment.py
+#search for "linux2"
+#add these to swig_opts:
+#    -classic -nomodern -nomodernargs
+#.. or use these sed lines:
+sed -i -e '144s/modern/nomodern/' wrapper/environment.py
+sed -i -e '144s/ = [/ = [\'-classic\', \'-nomodernargs\', /' wrapper/environment.py
 
 sudo ln -s /usr/lib/libTKCDLFront-6.3.0.so /usr/lib/libTKCDLFront.so
 sudo ln -s /usr/lib/libTKCPPClient-6.3.0.so /usr/lib/libTKCPPClient.so

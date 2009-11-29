@@ -1,0 +1,18 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: fixed
+
+
+summary: doc/installing requires human intervention for editing pythonOCC's src/wrapper/environment.py
+  file (swig_opts)
+
+
+time: Sun, 29 Nov 2009 21:05:32 +0000
+
