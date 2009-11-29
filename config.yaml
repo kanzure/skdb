@@ -1,7 +1,7 @@
 
 #where are skdb packages stored?
-#package dir: packages/
-package dir: /home/kanzure/local/packages-skdb/
+#url: http://www.debian.org/doc/packaging-manuals/fhs/fhs-2.3.html
+package dir: /usr/local/share/skdb/
 
 #where are packages available from the web?
 repositories:
