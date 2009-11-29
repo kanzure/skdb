@@ -1,7 +1,10 @@
 #import cherrypy
 #include "templates/header.tmpl"
-package name: $package.name<br />
-branch: $branch<br />
+clone command: git clone http://heybryan.org:8081/git/lego/<br />
+package name: <a href="/package/$package.name:master/">$package.name</a><br />
+branch: <a href="/package/$package.name:$branch/">$branch</a><br />
+<a href="/package/$package.name/:branches">see a list of existing branches</a><br />
+<a href="/package/$package.name/:log">commit history</a><br />
 <hr>
 <br /><br />
 $content

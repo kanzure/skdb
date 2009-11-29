@@ -1,28 +1,28 @@
 
 /******** meh ********/
-body
-{
-  background-color: #1c1c1c;
-  color: #d5d5d5; /* d5d5d5 */
-  font-family: Helvetica, Arial, sans-serif;
-  font-weight: bold; /* yes, always */
-  min-width: 1200px;
-}
+body {
+    background-color: #1c1c1c;
+    color: #d5d5d5; /* d5d5d5 */
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold; /* yes, always */
+    min-width: 1024px;
+    }
+#omnifab {
+    margin-left: 0px;
+    padding-left: 0px;
+    }
+h1, h3 {
+    font-size: 34px;
+    font-weight: bold;
+    font-family: Helvetica, Arial, sans-serif;
+    color: yellow;
+    }
 
-h1, h3
-{
-  font-size: 34px;
-  font-weight: bold;
-  font-family: Helvetica, Arial, sans-serif;
-  color: yellow;
-}
-
-a
-{
-  color: #00c0ff;
-  text-decoration: none;
-  white-space: nowrap;
-}
+a {
+    color: #00c0ff;
+    text-decoration: none;
+    white-space: nowrap;
+    }
 
 /******** basic stuff ********/
 a:link, a:visited, a:active {
@@ -35,17 +35,15 @@ a:hover {
 ul, ol, li { /* maybe a little hastey */
     list-style:none;
     }
-
 #banner {
     xbackground-image: url("../omnifab_banner.png");
-    background-repeat: repeat;
+    xbackground-repeat: repeat;
     border: none;
-    margin-left: 5%;
-    margin-top: 1%;
+    margin-left: 1%;
+    margin-top: 0px;
     xwidth: 295px;
     xheight: 50px;
     float: left;
-    display: block;
     font-family: Helvetica, Arial, sans-serif;
     font-weight: bold;
     font-size: 5em;
