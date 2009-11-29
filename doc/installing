@@ -105,7 +105,7 @@ sed -i "s/'mscmd',//" setup.py
 #    -classic -nomodern -nomodernargs
 #.. or use these sed lines:
 sed -i -e '144s/modern/nomodern/' wrapper/environment.py
-sed -i -e '144s/ = [/ = [\'-classic\', \'-nomodernargs\', /' wrapper/environment.py'
+sed -i -e '144s/ = [/ = [\'-classic\', \'-nomodernargs\', /' wrapper/environment.py
 
 sudo ln -s /usr/lib/libTKCDLFront-6.3.0.so /usr/lib/libTKCDLFront.so
 sudo ln -s /usr/lib/libTKCPPClient-6.3.0.so /usr/lib/libTKCPPClient.so
