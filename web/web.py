@@ -77,6 +77,7 @@ template_check()
 #cherrypy
 import cherrypy
 from cherrypy.test import helper, webtest
+from cherrypy.lib.static import serve_file
 _cperror = cherrypy._cperror
 
 cherrypy.config.update({
@@ -459,6 +460,21 @@ def get_blob_contents(obj, repo=None):
 #                   core site functionality
 #######################################################################
 
+def format_commit(commit):
+    '''formats a dulwich Commit object into a string'''
+    return "<hr>" + add_newlines(str(commit)) + "<br /><br />"
+
+def serve_index(path, base_url="/"):
+    '''serves up an index'''
+    assert os.path.isdir(path), "serve_index: path must be to a directory"
+    return_content = ""
+
+    files = os.listdir(path)
+    for filename in files:
+        return_content = return_content + "<a href=\"" + base_url + "/" + filename + "\">" + filename + "</a><br />"
+
+    return return_content
+
 class ManagedPath:
     '''a url is parsed into a ManagedPath. the format is as follows:
 
@@ -475,7 +491,7 @@ class ManagedPath:
     useful for a wiki.
     '''
     reserved_roots = ["account", "admin"] #for /account stuff.
-    reserved_words = [":new", ":delete", ":edit", ":history", ":source", ":archive", ":raw"]
+    reserved_words = [":new", ":delete", ":edit", ":log", ":source", ":archive", ":raw"]
     def __init__(self, url=str()):
         self._parts = []
         self._cmd = ""
@@ -651,6 +667,20 @@ class FileViewer(FileViewerTemplate):
         cherrypy.response.headers["Content-Type"] = mime_type
         return output
     @cherrypy.expose
+    def log(self, *virtual_path, **keywords):
+        branch = "master"
+        if "branch" in keywords: branch = keywords["branch"]
+        sha = None
+        if "sha" in keywords: sha = keywords["sha"]
+
+        #get a list of commits
+        content = "imagine you're seeing a list of commits here (thanks to dulwich)"
+        
+        self.branch = branch
+        self.sha = sha
+        self.content = content
+        return self.respond()
+    @cherrypy.expose
     def view_file(self, *virtual_path, **keywords):
         branch = "master"
         desired_view = "default"
@@ -676,6 +706,7 @@ class FileViewer(FileViewerTemplate):
             if not sha: sha = dulwich.object_store.tree_lookup_path(repo.get_object, repo.get_object(repo.ref("refs/heads/" + branch)).tree, filename)[1]
             obj = repo.get_object(sha)
         except IndexError: raise cherrypy.NotFound()
+        except KeyError: raise cherrypy.NotFound()
         
         output = str(obj.as_pretty_string())
         
@@ -811,17 +842,59 @@ class Package(PackageView, skdb.Package):
         url = ManagedPath(virtual_path)
         file_handler = FileViewer(package=self.package, filename=join(url.path,"/"), sha=url.sha, command=url.cmd)
 
-        if url.cmd:
+        if url.cmd and len(url.path)>0:
             if hasattr(FileViewer, url.cmd):
                 return file_handler.default(join(url.path,"/"), **keywords)
+            else:
+                raise cherrypy.HTTPError(404, "command not found")
+        #this processes commands for the package
+        if len(url.path)==1 and (not url.cmd or url.cmd is None):
+            if url.path[0][0] == ":":
+                new_cmd = url.path[0][1:]
+                if hasattr(self, new_cmd):
+                    keywords["sha"] = url.sha
+                    keywords["cmd"] = url.cmd
+                    keywords["filename"] = join(url.path, "/")
+                    func = getattr(self, new_cmd)
+                    return func(**keywords)
+        
         return file_handler.view_file(**keywords)
+    #not exposed so that repos can have files with the name "log"
+    def log(self, **keywords):
+        branch = keywords["branch"]
 
-        return_value = """Package.default(virtual_path=%s, keywords=%s)
-        cmd is: %s
-        virtual path is: %s
-        sha is: %s
-        """ % (str(virtual_path), str(keywords), url.cmd, url.path, url.sha)
-        self.content = add_newlines(return_value)
+        repo = Repo(self.package.path())
+        set_head(repo, branch)
+
+        commits = repo.revision_history(repo.head())
+
+        content = ""
+        for commit in commits:
+            content = content + format_commit(commit)
+
+        self.content = content
+        self.branch = branch
+        self.sha = ""
+        return self.respond()
+    #not exposed so that repos can have files with the name "branches"
+    def branches(self, **keywords):
+        sha, branch, filename = keywords["sha"], keywords["branch"], keywords["filename"]
+
+        repo = Repo(self.package.path())
+        data = repo.get_refs()
+
+        valid_keys = []
+        for key in data.keys():
+            if key[0:11] == "refs/heads/":
+                valid_keys.append((key[11:], data[key]))
+        
+        content = ""
+        for key in valid_keys:
+            content = content + "<a href=\"/package/" + self.package.name + ":" + key[0] + "/\">" + key[0] + "</a><br />"
+
+        self.content = content
+        self.branch = branch
+        self.sha = sha
         return self.respond()
     def __eq__(self, other):
         if isinstance(other, Package): #web package object
@@ -907,6 +980,24 @@ class Root(IndexTemplate):
     @require(name_is("xyz"))
     def silly_protected_page_demo(self):
         return "your username must be 'xyz' in order to see this page."
+    @cherrypy.expose
+    def git(self, *virtual_path, **keywords):
+        '''lets users clone a .git repo over http'''
+        for part in virtual_path: #just a precaution
+            if part == "..": raise cherrypy.HTTPError(404)
+            if part.count("\"") > 0: raise cherrypy.HTTPError(404)
+        
+        #call "git update-server-info" on the repository
+        if len(virtual_path)>0:
+            repo_name = virtual_path[0]
+            repo_path = os.path.join(skdb.settings.path, virtual_path[0])
+            os.system("cd \"" + repo_path + "\"; git update-server-info;")
+
+        filepath = os.path.join(skdb.settings.path, join(list(virtual_path), "/"))
+        if os.path.isdir(filepath): #serve an index
+            return serve_index(filepath, base_url=str("/git/"+join(virtual_path, "/")))
+        else: #it's a file
+            return serve_file(filepath, content_type="text/plain")
 
 #######################################################################
 #              configuration and unit tests
@@ -1009,6 +1100,7 @@ conf["/styles"] = conf_maker("styles")
 conf["/templates"] = conf_maker("templates")
 conf["/javascripts"] = conf_maker("javascripts")
 conf["/images"] = conf_maker("images")
+#conf["/git"] = {"tools.staticdir.on": True, "tools.staticdir.dir": skdb.settings.path, }
 
 cherrypy.tools.auth = cherrypy.Tool('before_handler', check_auth)
 application = cherrypy.Application(Root(), script_name=None, config=conf)

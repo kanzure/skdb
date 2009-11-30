@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: web.py calls git update-server-info on each page view in git/ urls
+
+
+time: Mon, 30 Nov 2009 04:48:32 +0000
+

@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: web.py doesn't allow '..' or '"' in paths in git/ urls
+
+
+time: Mon, 30 Nov 2009 04:48:11 +0000
+
