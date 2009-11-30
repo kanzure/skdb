@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: closed
+
+
+summary: FileViewer shows commit objects if you give it a commit object's SHA-1 digest
+
+
+time: Mon, 30 Nov 2009 04:51:30 +0000
+
