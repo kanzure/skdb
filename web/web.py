@@ -26,6 +26,8 @@ to execute unit tests and diagnostics:
     python web.py
 """
 
+#when you get KeyError: 'refs/heads/master' try replacing repo.head() with repo.ref("refs/heads/" + branch)
+
 #######################################################################
 #                           header
 #                   module importing, setup, etc.
@@ -378,15 +380,6 @@ def set_head(repo, refspec="master"):
     '''sets the head to a given refspec'''
     repo.refs["HEAD"] = "ref: refs/heads/" + refspec
 
-def get_all_commits(repo_path="/home/kanzure/code/skdb/", commit= "a" * 40):
-    repo = dulwich.repo.Repo(repo_path)
-    store = repo.object_store.generate_pack_contents([], [commit])
-    generator = store.iterobjects()
-    commits = []
-    for each in generator:
-        commits.append(each)
-    return commits
-
 def extract_trees(repo, commit="a9b19e9453e516d7528aebb05a1efd66a0cd9347"):
     '''get a list of all known trees from a repo based on a commit SHA'''
     store = repo.object_store.generate_pack_contents([], [commit])
@@ -459,6 +452,23 @@ def get_blob_contents(obj, repo=None):
 #######################################################################
 #                   core site functionality
 #######################################################################
+
+def get_all_commits(repo, branch="master", commits_to_avoid=set(), start=None):
+    '''returns a list of all commits in a repository'''
+    all_parents = []
+    if not start:
+        #set_head(repo, branch)
+        #get a starting commit
+        start = repo.ref("refs/heads/" + branch)
+        all_parents.append(start)
+
+    parents = repo.get_parents(start)
+    all_parents.extend(parents)
+    for parent in parents:
+        if parent not in commits_to_avoid:
+            commits_to_avoid.add(parent)
+            all_parents.extend(get_all_commits(repo, branch=branch, commits_to_avoid=commits_to_avoid, start=parent))
+    return all_parents
 
 def format_commit(commit):
     '''formats a dulwich Commit object into a string'''
@@ -672,9 +682,39 @@ class FileViewer(FileViewerTemplate):
         if "branch" in keywords: branch = keywords["branch"]
         sha = None
         if "sha" in keywords: sha = keywords["sha"]
+        path_to_lookup = self.filename
+        content = ""
 
-        #get a list of commits
-        content = "imagine you're seeing a list of commits here (thanks to dulwich)"
+        repo = Repo(self.package.path())
+        
+        #get a list of all commits
+        all_commits = get_all_commits(repo, branch, commits_to_avoid=set([]), start=None)
+
+        relevant_commits = list()
+        last_blob_id = None
+        for commit in all_commits:
+            #get the actual commit
+            commit = repo.get_object(commit)
+
+            #get the tree
+            tree_id = commit.tree
+            #tree = repo.get_object(tree)
+            
+            #check the blob
+            #note it may not be in the tree
+            try:
+                blob_id = dulwich.object_store.tree_lookup_path(repo.get_object, tree_id, path_to_lookup)[1]
+
+                if not (blob_id == last_blob_id):
+                    last_blob_id = blob_id
+                    relevant_commits.append((commit, blob_id))
+            except KeyError: pass #the file wasn't in the tree at that time
+        
+        #now you have a list of relevant commits
+        #make up some output
+        for commit in relevant_commits:
+            actual_commit = commit[0]
+            content = content + "<hr><br /><br />view this version: <a href=\"/package/" + self.package.name + ":" + branch + "/" + path_to_lookup + "/" + commit[1] + "\">" + commit[1] + "</a><br />" + format_commit(actual_commit.as_pretty_string())
         
         self.branch = branch
         self.sha = sha
@@ -866,7 +906,8 @@ class Package(PackageView, skdb.Package):
         repo = Repo(self.package.path())
         set_head(repo, branch)
 
-        commits = repo.revision_history(repo.head())
+        #commits = repo.revision_history(repo.head())
+        commits = repo.revision_history(repo.ref("refs/heads/" + branch))
 
         content = ""
         for commit in commits:
@@ -919,7 +960,19 @@ class PackageSet(PackageIndex):
         PackageIndex.__init__(self)
     @cherrypy.expose
     def index(self, **keywords):
-        return "PackageSet.index with keywords: " + str(list(keywords))
+        branch = "master" #default
+        if "branch" in keywords: branch = keywords["branch"]
+        content = ""
+
+        #spit out a list of packages
+        dirlist = os.listdir(skdb.settings.path)
+        for obj in dirlist:
+            if os.path.isdir(os.path.join(skdb.settings.path, obj)):
+                content = content + "<a href=\"/package/" + obj + "/\">" + obj + "</a><br />"
+
+        self.content = content
+        self.branch = branch
+        return self.respond()
     @cherrypy.expose
     def default(self, *vpath, **keywords):
         #default view for a package

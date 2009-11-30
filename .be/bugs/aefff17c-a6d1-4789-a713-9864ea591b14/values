@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: web.py FileViewer.log only shows the latest commit for branch master http://heybryan.org:8081/package/lego:master/data.yaml/2e8070856018dc79777ad070036f854f77bf9ba6/:log
+
+
+time: Mon, 30 Nov 2009 22:33:15 +0000
+

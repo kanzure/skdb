@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: web.py PackageView throws a 404 for viewing a specific tree, like /package/lego:anonymous/b4b3ff0b3940d95754ff8ffe68ee846b9d80919b
+
+
+time: Mon, 30 Nov 2009 22:32:51 +0000
+

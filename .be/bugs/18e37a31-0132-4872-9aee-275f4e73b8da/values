@@ -1,0 +1,18 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: data.yaml must have 'parts' and it must have at least one item, otherwise
+  yaml freaks
+
+
+time: Mon, 30 Nov 2009 23:11:02 +0000
+

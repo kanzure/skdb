@@ -1,0 +1,18 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: fixed
+
+
+summary: 'web.py FileViewer.log displays the parent commit but not the latest commit?
+  see: http://heybryan.org:8081/package/lego:anonymous/data.yaml/:log'
+
+
+time: Mon, 30 Nov 2009 22:19:23 +0000
+
