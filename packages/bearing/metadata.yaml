@@ -8,6 +8,7 @@ license: 'GPL2+'
 urls:
 - 'http://www.me.utexas.edu/~adl/'
 - 'http://adl.serveftp.org/skdb.git/'
+icon: icon.png #from http://commons.wikimedia.org/wiki/File:Plain-bearing_DIN-ISO4379_Type-F.png
 status: unfinished
 name: bearing
 functionality: fastening #a process name here
