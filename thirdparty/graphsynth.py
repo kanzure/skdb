@@ -182,14 +182,14 @@ class Arc:
             output = output + "</localLabels>\n"
         #From
         if self._from == None: output = output + "<From></From>\n"
-        else: output = output + "<From>" + str(self._from.name) + "</From>\n"
+        else: output = output + "<From>" + str(self._from[0].name) + "</From>\n" #FIXME: how do you do multiple _from nodes?
         #To
         if self._to == None: output = output + "<To></To>\n"
         else: output = output + "<To>" + str(self._to) + "</To>\n"
         #directed
         output = output + "<directed>" + str(self.directed).lower() + "</directed>\n"
         #doublyDirected
-        output = output + "<doublyDirected>" + str(self.doublyDirected).lower() + "</doublyDirected>\n"
+        output = output + "<doublyDirected>" + str(self.doubly_directed).lower() + "</doublyDirected>\n"
 
         output = output + "</arc>\n"
         return output
@@ -386,9 +386,9 @@ class Graph:
                 else: connected_arc._to = None
             self.nodes.remove(node_ref)
         else: self.nodes.remove(node_ref)
-    def save_gxml(file_path, version=2.0, mode="w"):
-        assert not (mode=="w" and os.path.exists(file_path)), "Graph.save_gxml: file path (%s) already exists. try write mode (mode=w)?" % (file_path)
-        assert version==2.0, "Graph.save_gxml: only able to save GraphSynth 2.0 gxml files (version=2.0)"
+    def save_gxml(self, file_path, version=2.0, mode="w"):
+        #assert not (mode=="w" and os.path.exists(file_path)), "Graph.save_gxml: file path (%s) already exists. try write mode (mode=w)?" % (file_path)
+        #assert version==2.0, "Graph.save_gxml: only able to save GraphSynth 2.0 gxml files (version=2.0)"
         
         #this is a terrible xml output method. don't try this at home kids :(
         output = ""

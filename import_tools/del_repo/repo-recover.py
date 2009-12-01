@@ -52,29 +52,46 @@ def get_file_list(path):
     assert os.path.isdir(path), "get_file_list: path must be a directory"
     return os.listdir(path)
 
+def fix_node_name(name, debug=True):
+    '''strips off numbers at the end, replace '_' with ' ', etc.'''
+    original_name = copy(name)
+    name = name.replace("_", " ")
+    while name[-1].isdigit():
+        name = name[:-1]
+    name = name.strip()
+    if debug: print "fix_node_name: original_name = ", original_name
+    if debug: print "fix_node_name: \t\t", name
+    return name
+
 def load_cfg(path): return graphsynth.Graph.load_gxml(path)
 def load_fs(path): return load_cfg(path)
 def load_part(path): return yaml.load(open(path, "r"))
-def load_repo(path):
+def load_repo(path, debug=False):
     '''takes a path to a .repo file and returns a dictionary of artifact names (keys) and their component basis names (values).'''
     doc = minidom.parse(open(path, "r"))
-    system = doc.childNodes[0]
+    #if debug: print "load_repo: doc = ", doc
+    system = doc.childNodes[0].nextSibling.childNodes[1]
+    #if debug: print "load_repo: system = ", system
+    #if debug: print "system.childNodes = ", system.childNodes
 
     results = {}
     for artifact in system.childNodes:
         if artifact.nodeName == "Artifact":
+            #if debug: print "load_repo: found an Artifact"
             artifact_name = artifact.attributes["ArtifactName"].nodeValue
             comp_basis_name = artifact.attributes["ArtifactCBName"].nodeValue
             results[artifact_name] = comp_basis_name
         else: pass #wasn't an artifact
+        #if debug: print "artifact.nodeName = ", artifact.nodeName
     return results
 
 def find_function(function_name, function_structures):
     '''given a function name, return the function (so you can get the function labels later) from within a list of function structures
     returns False when a matching function node (within any of the given FS graphs) cannot be found. '''
     for function_structure in function_structures:
-        if function_structure.name == function_name:
-            return function_structure
+        for node in function_structure.nodes:
+            if node.name == function_name:
+                return node
     return False #error: not found
 
 def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", components="componentsbasis/", debug=True):
@@ -160,7 +177,10 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
     for a_fs in fs:
         loaded_fs.append(load_fs(os.path.abspath(a_fs)))
     for a_repo in delrepo:
-        loaded_repo.append(load_repo(os.path.abspath(a_repo)))
+        #if debug: print "***************** a_repo is: ", a_repo
+        content123 = load_repo(os.path.abspath(a_repo), debug=debug)
+        #if debug: print "***************** content123 is: ", content123
+        loaded_repo.append(content123)
 
     assert ( len(loaded_cfg) == len(loaded_fs) ), "repo-recover: there must be as many CFG files as FS files" #i think
     #it's possible that you have 1 FS for 1000 CFGs
@@ -205,6 +225,7 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
                     the_function = find_function(label, [which_fs])
 
                     if the_function:
+                        if debug: print "function found for node \"%s\" label \"%s\" is: %s" % (node.name, label, the_function)
                         node.functions.append(the_function)
                     elif the_function == False: #no function was found
                         if debug: print "no function was found for node \"%s\" label \"%s\"" % (node.name, label)
@@ -216,16 +237,18 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
     #get component basis name from loaded_repo and append to loaded_cfg data
     ###################################
     if debug: print "getting component basis names, attaching URIs"
-    
+    loaded_repo = loaded_repo[0]
+    if debug: print "loaded_repo is: ", loaded_repo
+
     for cfg in loaded_cfg:
         for node in cfg.nodes:
-            print "loaded_repo is: ", loaded_repo
-            if node.name in loaded_repo:
+            fixed_node_name = fix_node_name(node.name, debug=debug)
+            if fixed_node_name in loaded_repo:
                 #loaded_repo lets you find the CB name by giving an indexer (artifact name or CFG node name)
-                node.component_basis = loaded_repo[node.name] #wait, that's loaded_repo[] .. so what about the CB name?
+                node.component_basis = loaded_repo[fixed_node_name] #wait, that's loaded_repo[] .. so what about the CB name?
                 node.uri = "http://adl.serveftp.org/lab/repo-recover/componentbasis/" + node.component_basis + ".yaml"
             else:
-                if debug: print "unable to find a component_basis name for the node (name is \"%s\") in the original CFG." % (node.name)
+                if debug: print "unable to find a component_basis name for the node \"%s\" in the original CFG." % (fixed_node_name)
 
     if debug: print "done getting component basis names"
     ###################################
@@ -248,6 +271,7 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
         #modify the cfg so that save_gxml works (there's more info in the CFG in this script than usual)
         temp_cfg = deepcopy(cfg)
         for node in temp_cfg.nodes:
+            if not hasattr(node, "component_basis"): continue
             component_basis = node.component_basis
             functions = node.functions
 
@@ -269,7 +293,7 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
             node.local_labels = new_local_labels
 
         #save the new gxml of the CFG
-        temp_cfg.save_gxml(os.path.join(pkg_path, cfg.name) + ".gxml", version=2)
+        temp_cfg.save_gxml(os.path.join(pkg_path, cfg.name) + ".gxml", version=2.0)
 
         #make a copy of the old cfg
         os.system("cp -p \"%s\" \"%s\"" % (cfg.filename, os.path.join(pkg_path, cfg.name) + ".bak"))
@@ -284,7 +308,7 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
         
         #figure the file name and make up a target path
         base_name = os.path.basename(fs.filename)
-        target_path = os.path.join(pkg_pack, base_name[:-5])
+        target_path = os.path.join(pkg_path, base_name[:-5])
 
         #copy the fs file to the new location in
         os.system("cp -p \"%s\" \"%s\"" % (fs.filename, target_path))
@@ -298,18 +322,21 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
     all_components_needed = set()
     for cfg in loaded_cfg:
         for node in cfg.nodes:
-            instances_and_cb[node.name] = node.component_basis
-            all_components_needed.add(node.component_basis)
+            if hasattr(node, "component_basis"):
+                instances_and_cb[node.name] = node.component_basis
+                all_components_needed.add(node.component_basis)
 
     #there is already an instance file for each part in loaded_cfg, located in the instances/ directory
     #now we need to make the file for the components/ directory
     pre_existing_component_bases = os.listdir(components)
+    if debug: print "all_components_needed: ", all_components_needed
+    if debug: print "pre_existing_component_bases: ", pre_existing_component_bases
     for cb in all_components_needed:
         #check if it already exists (could also use os.path.exists)
         if (sanitize(cb)+".yaml") not in pre_existing_component_bases:
             #make the file
             #FIXME: what goes in the file?
-            fh = open(os.path.join(components, sanitize(cb)+".yaml"))
+            fh = open(os.path.join(components, sanitize(cb)+".yaml"), "w")
             fh.write(yaml.dump(None))
             fh.close()
     
