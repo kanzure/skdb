@@ -47,7 +47,7 @@ def get_package(package_name, verbose=False, repo=settings.paths["SKDB_PACKAGE_R
     os.system("mkdir -p \"%s\"" % (package_dir))
 
     #this is kinda custom for the moment
-    command = "cd \"%s\"; git clone \"%s\";" % (package_dir, package_url)
+    command = "cd \"%s\"; git clone \"%s\"; chmod -R a+rw *" % (package_dir, package_url)
     print "command is: ", command
     os.system(command)
     return
