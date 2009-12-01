@@ -968,7 +968,7 @@ class PackageSet(PackageIndex):
         dirlist = os.listdir(skdb.settings.path)
         for obj in dirlist:
             if os.path.isdir(os.path.join(skdb.settings.path, obj)):
-                content = content + "<a href=\"/package/" + obj + "/\">" + obj + "</a><br />"
+                content = content + "<img src=\"/git/" + obj + "/icon.png\"><br /><a href=\"/package/" + obj + "/\">" + obj + "</a><br />"
 
         self.content = content
         self.branch = branch
