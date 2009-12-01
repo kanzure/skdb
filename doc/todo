@@ -1,6 +1,8 @@
 documentation
     everybody loves documentation!
-bug tracker:
+    installing skdb
+    how to use a package
+    how to make a package
 skdb core:
     units:
         peak and continuous ratings: what are default time constants?
@@ -27,14 +29,10 @@ skdb core:
         part mating:
             collision detection:
                 fix BoundingBox:
-                    rewrite it: get fenn to fix until the unit tests pass again
                     extract minima and maxima from surfaces: kinda important
                 explore OpenCASCADE collision detection methods:
                     Constructive Solid Geometry:
                         fix or rewrite internal OCC BRepAlgoAPI boolean methods: 
-                    OCC bounding box classes:
-                        - http://adl.serveftp.org/lab/opencascade/doc/ReferenceDocumentation/ModelingAlgorithms/html/classBRepBndLib.html
-                        - http://www.opencascade.org/org/forum/thread_13902/
                 interference fit:
                     list of compliant/rigid faces: is this right? shouldnt we be doing FEA instead?
                 play:
@@ -65,10 +63,6 @@ package code:
     metadata resolution description: [stub, incomplete, usable, finished, obsessive]
 clients: #desktop, unless you really like writing javascript?
     pyjamas: ?
-    skdb-get:
-        description: "it's like apt-get/dpkg except for hardware and real stuff"
-        see: skdb/clients/tb-get/
-        note: write unit tests first to verify dependencies are satisfied
     visualization:
         dependency tree browser:
         CAD file visualization:
@@ -76,9 +70,7 @@ clients: #desktop, unless you really like writing javascript?
             partially working: imgcad.py (ask kanzure)
             better version:
 servers:
-    djangit:
-        remove all mysql dependencies:
-        debugging:
+    web/web.py:
         views:
             generic yaml tree: 
                 js code folding: pyjamas
@@ -159,7 +151,6 @@ stuff to package:
         bricklink cost evaluator: scraper
         cad generator:
         interface generator:
-        do inventory:
         fix existing cad models: scale is wrong. re-measure?
     trans-tech: at least at low resolution
     construction materials: #these are categories, not individual materials. low-tech and inexpensive to start with
