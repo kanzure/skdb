@@ -40,6 +40,7 @@ from copy import copy, deepcopy
 
 #for .repo file parsing
 from xml.dom import minidom
+from repo_to_yaml import repo_to_yaml
 
 bryan_message = "bryan hasn't got that far yet"
 
@@ -342,24 +343,33 @@ def repo_recover(cfg=None, fs=None, delrepo=None, instances="instances/", compon
     
     #######################################
 
+    i = 0
     #i think this is broken
     #step 3) yaml skdb package output -- convert to skdb-ish representations
-    for a_repo in delrepo:
+    for cfg in loaded_cfg:
+        #find the corresponding .repo file
+        corresponding_repo_file = delrepo[i]
+        a_repo = corresponding_repo_file
+        
         if debug: print "converting .repo into a yaml representation"
         resulting_yaml = repo_to_yaml(repo=a_repo)
+        if debug: print "done converting .repo into a yaml representation"
 
         base_name = os.path.basename(a_repo)
-        base_name_scrubbed = basename[:-5] #get rid of the .repo at the end of the filename
+        if debug: print "base_name is: ", base_name
+        base_name_scrubbed = base_name[:-5] #get rid of the .repo at the end of the filename
+        if debug: print "base_name_scrubbed is: ", base_name_scrubbed
         
-        pkg_path = os.path.join(instances, base_name_scrubbed)
+        #pkg_path = os.path.join(instances, base_name_scrubbed)
+        pkg_path = os.path.join(instances, sanitize(cfg.name))
         yaml_file_path = os.path.join(pkg_path, base_name_scrubbed + ".repo.yaml")
 
         file_handler = open(yaml_file_path, "w")
         file_handler.write(resulting_yaml)
         file_handler.close()
+        i = i + 1
 
     if debug: "repo_recover: ending"
-    return
 
 if __name__ == "__main__":
     optfunc.run(repo_recover)

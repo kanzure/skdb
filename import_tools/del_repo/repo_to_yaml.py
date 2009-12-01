@@ -1,7 +1,8 @@
 #!/usr/bin/python
 #python repo-to-yaml.py roomba.repo.xml > roomba.yaml
-import sys
+import sys, os
 import yaml
+import optfunc
 from xml.dom import minidom
 
 def determine_key_name(results, node_name):
@@ -50,6 +51,11 @@ def parse_file(file):
     #        artifact = process_artifact(node)
     #        artifacts.append(artifact)
 
+def parse_repo(repo):
+    system = repo.childNodes[0].nextSibling.childNodes[1]
+    huge_thing = process_node(system)
+    return huge_thing
+
 def main():
     rval = {}
     if len(sys.argv)>1 and sys.argv[1] == '-':
@@ -60,6 +66,9 @@ def main():
     print yaml.dump(rval, default_flow_style=False)
     return rval
 
-if __name__ == "__main__":
-    main()
+def repo_to_yaml(repo):
+    repo_path = os.path.abspath(repo)
+    return yaml.dump(parse_file(repo_path))
 
+if __name__ == "__main__":
+    optfunc.run(repo_to_yaml)
