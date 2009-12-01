@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: skdb-get.py only works in skdb/clients/ because of some path magic
+
+
+time: Tue, 01 Dec 2009 01:02:24 +0000
+
