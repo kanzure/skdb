@@ -185,7 +185,7 @@ class Arc:
         else: output = output + "<From>" + str(self._from[0].name) + "</From>\n" #FIXME: how do you do multiple _from nodes?
         #To
         if self._to == None: output = output + "<To></To>\n"
-        else: output = output + "<To>" + str(self._to) + "</To>\n"
+        else: output = output + "<To>" + str(self._to[0].name) + "</To>\n"
         #directed
         output = output + "<directed>" + str(self.directed).lower() + "</directed>\n"
         #doublyDirected
