@@ -459,7 +459,10 @@ class Graph:
             page_name = os.path.basename(file_path)
             graph = page.getElementsByTagName("GraphSynth:designGraph")[0] #assume there is only one graph present
 
-            graphics = page.getElementsByTagName("GraphSynth:Canvas")[0]
+            try:
+                graphics = page.getElementsByTagName("GraphSynth:Canvas")[0]
+            except:
+                graphics = None
 
             #set up the variables for the for loop
             graph_name, global_labels, global_variables, arcs, nodes = None, [], [], [], []
