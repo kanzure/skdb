@@ -1,0 +1,39 @@
+how to make a civilization seed (20min)
+
+what is a "civilization seed"
+    broad overview
+    why it is useful, what is possible, what isn't possible
+        can't copy all of civilization as it is right now, so that one's out
+    rest of talk is where we've been and how to get to where we want to go
+open source
+    what is open source software and open source hardware?
+    GNU, FSF
+    ideal: redundancy, growth, longtails, distributed development, FSF software freedoms
+    oh look, debian has done this
+debian
+    big fancy numbers about estimated value of debian
+    growth of number of packages - why did "dpkg" happen, etc.
+    debian is like "self-replication"
+    dpkg / apt-get
+    package maintainers
+    number of maintainers
+similiar to the growing pains of the debian community before dpkg we have:
+    hackerspaces, fablabs, men sheds, tech shops
+    diybio
+    instructables
+    thingiverse
+    make magazine
+    diy h+
+    open source medicine
+    pink army
+    synthetic biology
+    harkopen
+    many many amateur hardware communities, thousands of modders
+    ..
+skdb "apt-get hardware"
+    downloading hardware over the web
+skdb demos: legos, screws, threads
+package maintainers
+    who should you bug? ben, bryan, heath
+open source hardware / transhuman co-operative (of package maintainers)
+theme goal of the co-op: self-replication, freitas, kinematic self-replicating machines, AASM
