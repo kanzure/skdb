@@ -293,7 +293,8 @@ Interface.get_z_vec = get_z_vec
 #skdb.Part
 def load_CAD(self):
     '''load this object's CAD file. assumes STEP.'''
-    assert hasattr(self,"package"), "Part.load_CAD doesn't have its package loaded (load_package)."
+    if not hasattr(self, "package"): return
+    #assert hasattr(self,"package"), "Part.load_CAD doesn't have its package loaded (load_package)."
     #FIXME: assuming step
     for file in self.files:
         full_path = os.path.join(self.package.path(), str(file))
