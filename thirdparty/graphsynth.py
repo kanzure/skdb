@@ -171,7 +171,7 @@ class Arc:
         else:
             output = output + "<localVariables>\n"
             for local_var in self.local_variables:
-                output = output + "<localVariable>" + str(local_var) + "</localVariable>\n"
+                output = output + "<double>" + str(local_var) + "</double>\n"
             output = output + "</localVariables>\n"
         #localLabels
         if len(self.local_labels) == 0: output = output + "<localLabels />\n"
@@ -235,7 +235,7 @@ class Node:
         else:
             output = output + "<localVariables>\n"
             for local_var in self.local_variables:
-                output = output + "<localVariable>" + str(local_var) + "</localVariable>\n"
+                output = output + "<double>" + str(local_var) + "</double>\n"
             output = output + "</localVariables>\n"
         #localLabels
         if len(self.local_labels) == 0: output = output + "<localLabels />\n"
