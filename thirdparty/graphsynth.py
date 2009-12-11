@@ -185,7 +185,7 @@ class Arc:
         else: output = output + "<From>" + str(self._from[0].name) + "</From>\n" #FIXME: how do you do multiple _from nodes?
         #To
         if self._to == None: output = output + "<To></To>\n"
-        else: output = output + "<To>" + str(self._to) + "</To>\n"
+        else: output = output + "<To>" + str(self._to[0].name) + "</To>\n"
         #directed
         output = output + "<directed>" + str(self.directed).lower() + "</directed>\n"
         #doublyDirected
@@ -459,7 +459,10 @@ class Graph:
             page_name = os.path.basename(file_path)
             graph = page.getElementsByTagName("GraphSynth:designGraph")[0] #assume there is only one graph present
 
-            graphics = page.getElementsByTagName("GraphSynth:Canvas")[0]
+            try:
+                graphics = page.getElementsByTagName("GraphSynth:Canvas")[0]
+            except:
+                graphics = None
 
             #set up the variables for the for loop
             graph_name, global_labels, global_variables, arcs, nodes = None, [], [], [], []
@@ -510,7 +513,7 @@ class Graph:
                 new_node = Node(name)
                 new_node.local_labels = local_labels
                 new_node.local_variables = local_variables
-                new_node.x, new_node.y, new_node.z = x, y, z
+                new_node.X, new_node.Y, new_node.Z = x, y, z
                 result.nodes.append(new_node)
             
             #arcs are done after the nodes so the references can be used
