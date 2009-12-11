@@ -178,7 +178,7 @@ class Arc:
         else:
             output = output + "<localLabels>\n"
             for local_label in self.local_labels:
-                output = output + "<localLabel>" + str(local_label) + "</localLabel>\n"
+                output = output + "<string>" + str(local_label) + "</string>\n"
             output = output + "</localLabels>\n"
         #From
         if self._from == None: output = output + "<From></From>\n"
@@ -242,7 +242,7 @@ class Node:
         else:
             output = output + "<localLabels>\n"
             for local_label in self.local_labels:
-                output = output + "<localLabel>" + str(local_label) + "</localLabel>\n"
+                output = output + "<string>" + str(local_label) + "</string>\n"
             output = output + "</localLabels>\n"
 
         #do X, Y, Z if it has that information
