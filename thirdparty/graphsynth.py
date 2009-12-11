@@ -271,6 +271,7 @@ class Graph:
         self.global_variables = global_variables
         self.arcs = []
         self.nodes = []
+        self.border = "<Border></Border>" #just in case, it needs to at least be a string
         if count is not None:
             assert isinstance(count, int)
             for i in range(count):
@@ -393,6 +394,9 @@ class Graph:
         #this is a terrible xml output method. don't try this at home kids :(
         output = ""
         output = output + '<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:GraphSynth="ignorableUri" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="GraphSynth" Tag="Graph">' + '\n'
+
+        output = output + self.border
+
         output = output + '<GraphSynth:designGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' + '\n'
         
         #global labels
@@ -451,6 +455,10 @@ class Graph:
         if version==2.0:
             result = Graph()
             result.filename = file_path
+
+            #load up Border information
+            border = doc.getElementsByTagName("Border")[0]
+            result.border = border.toxml()
 
             page = doc.getElementsByTagName("Page")[0]
             #print (page.getElementsByTagName("name")[0].childNodes[0].data)
