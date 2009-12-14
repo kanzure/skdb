@@ -17,8 +17,9 @@ git clone http://adl.serveftp.org/skdb.git
 echo "export PYTHONPATH=\$PYTHONPATH:~/code/" >> ~/.bashrc
 source ~/.bashrc
 
-vim ~/code/skdb/config.yaml
-#edit the path to packages, i.e. to: /home/username/code/skdb/packages/
+#edit the path to packages if necessary, i.e. to: /home/username/code/skdb/packages/
+#note to kanzure: isnt /usr/local/share/skdb/packages fine as-is?
+#nano ~/code/skdb/config.yaml
 
 
 #***DONE***
