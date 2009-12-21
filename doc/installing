@@ -1,26 +1,41 @@
 #!/usr/bin/bash
+#copy and paste this into a shell to watch the magic happen
+
 #notes on optional dependencies
 #
-#python-numpy - not necessary but used in some of the unit tests
-#
-#for bugseverywhere:
-#    bzr docbook-to-man
-#
-#for experimental material/package dependency unit tests (tests/test_dep.py):
-#    python-pyparsing
-#
-#for generating graphs (like from paths.py):
-#    graphviz
-#    igraph
-################################
+#not necessary but used in some of the unit tests: python-numpy
+#for experimental material/package dependency unit tests (tests/test_dep.py): python-pyparsing
+#for generating graphs (like from paths.py): graphviz, igraph
 
-sudo apt-get install git-core python-yaml units python-numpy bzr docbook-to-man python-pyparsing graphviz python-setuptools
+sudo apt-get install git-core python-yaml units python-numpy python-pyparsing graphviz python-setuptools
 
-cd ~; mkdir local; cd local;
+mkdir ~/code
+cd ~/code/
+git clone http://adl.serveftp.org/skdb.git
+
+#so python knows where to find skdb in order to import it
+echo "export PYTHONPATH=\$PYTHONPATH:~/code/" >> ~/.bashrc
+source ~/.bashrc
+
+#edit the path to packages if necessary, i.e. to: /home/username/code/skdb/packages/
+#note to kanzure: isnt /usr/local/share/skdb/packages fine as-is?
+#nano ~/code/skdb/config.yaml
+
+
+#***DONE***
+#if you're just interested in poking around a little bit, this is probably all you need, and can stop here.
+#everything else will probably just piss you off.
+#now run some unit tests in the tests/ directory to see what works!
+
+
+
+
+
+mkdir ~/local  #this is just a folder i put downloaded code into
 
 ################################
 #igraph (10.3 MB)
-################################
+
 echo "deb http://cneurocvs.rmki.kfki.hu /packages/binary/" | sudo tee -a /etc/apt/sources.list
 echo "deb-src http://cneurocvs.rmki.kfki.hu /packages/source/" | sudo tee -a /etc/apt/sources.list
 sudo apt-get update
@@ -28,7 +43,9 @@ sudo apt-get install libigraph libigraph-dev python-igraph
 
 ################################
 #bugseverywhere
-################################
+sudo apt-get install bzr docbook-to-man
+
+#for some stupid reason bugseverywhere is not backwards compatible and we can't just use the .deb version
 bzr get -r330 http://bzr.bugseverywhere.org/be
 cd be/
 make
@@ -36,7 +53,7 @@ sudo python setup.py install
 
 ################################
 #for web/web.py
-################################
+
 #cherrypy 3.1.2
 #cd ~/local/; mkdir cherrpy; cd cherrpy;
 #wget http://download.cherrypy.org/cherrypy/3.1.2/CherryPy-3.1.2.tar.gz
@@ -59,28 +76,17 @@ sudo python setup.py install
 
 ################################
 #for inventory/ web stuff (not necessary)
-################################
-#django 1.1.1
-#wget http://www.djangoproject.com/download/1.1.1/tarball/
-#tar -zxvf Django-1.1.1.tar.gz
-#cd Django-1.1.1/
-#sudo python setup.py install
 
 sudo apt-get install python-django
 
 ################################
 #pythonOCC and opencascade
-#notes: http://adl.serveftp.org/dokuwiki/pythonocc
-################################
-#there's a .deb for opencascade 6.3.0 stuff, so you don't need this:
-#wget http://www.opennovation.org/ubuntu/opennovation.key
-#sudo apt-key add opennovation.key
-#echo "deb http://www.opennovation.org/ubuntu jaunty main contrib non-free" | sudo tee -a /etc/apt/sources.list
-#sudo apt-get update
+#see also: http://adl.serveftp.org/dokuwiki/pythonocc
 
 sudo apt-get install libopencascade-visualization-dev libopencascade-dev scons python-psyco swig checkinstall x11proto-core-dev libx11-dev libopencascade-ocaf-dev opencascade-wok opencascade-draw python-setuptools build-essential libstdc++6-4.3-dev python-dev python-wxgtk2.8
 
-#get pygccxml if you use -generate_swig on setup.py for pythonocc later
+#swig wrappers come pre-generated so you don't need gccxml if just compiling, however
+#to get pygccxml if you use -generate_swig on setup.py for pythonocc later, do:
 #sudo apt-get install gccxml
 #cd ~/local/; mkdir pygccxml; cd pygccxml/;
 #wget http://downloads.sourceforge.net/project/pygccxml/pygccxml/pygccxml-1.0/pygccxml-1.0.0.zip
@@ -127,18 +133,4 @@ sudo cp -p /usr/lib/opencas/lib* /usr/lib/
 echo "export CSF_GraphicShr=/usr/lib/libTKOpenGl.so" >> ~/.bashrc
 source ~/.bashrc
 
-################################
-#skdb
-################################
-cd ~; mkdir code; cd code/;
-git clone http://adl.serveftp.org/skdb.git
-
-################################
-#environment configuration
-################################
-echo "export PYTHONPATH=\$PYTHONPATH:~/code/" >> ~/.bashrc
-source ~/.bashrc
-
-vim ~/code/skdb/config.yaml
-#edit the path to packages, i.e. to: /home/username/code/skdb/packages/
 

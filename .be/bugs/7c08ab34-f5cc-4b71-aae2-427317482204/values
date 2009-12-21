@@ -1,0 +1,18 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: python core/skdb.py finds some errors in screw/screw.py because of 'thread'
+  being None
+
+
+time: Thu, 03 Dec 2009 21:55:41 +0000
+
