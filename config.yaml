@@ -5,5 +5,5 @@ package dir: /usr/local/share/skdb/
 
 #where are packages available from the web?
 repositories:
-    - http://adl.serveftp.org/skdb-packages/
+    - http://designfiles.org/packages/
 
