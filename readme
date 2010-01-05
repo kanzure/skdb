@@ -2,12 +2,16 @@ Hello! You must be new to all this so here's a rough breakdown of what is going 
 
 overview: http://adl.serveftp.org/dokuwiki/skdb
 
+to download packages:
+    sudo python clients/skdb-get.py lego
+    sudo python clients/skdb-get.py screw
+
 Completed features:
 - a simple example package describing a typical screw from the hardware store
   - the screw has a set of requirements for being manufactured
   - the package has a set of packages it needs to work right (threads package)
   - the package contains metadata such as homepage URL, author, copyright license
-- run packages/lego/demo.py to demonstrate interface compatibility
+- run /usr/local/share/skdb/lego/demo.py to demonstrate interface compatibility
 - run paths.py to demonstrate making a lego assembly
 - generate an assembly graph via igraph
 
