@@ -104,7 +104,7 @@ class Octopart:
         #    * hits - The total number of matched objects
         #    * time - The amount of time it took to process the entire request (in seconds)
         return simplejson.loads(response_json)
-    def search_parts(self, query="", start=0, limit=10, filter=None, ranged_filters=None, sort_by=None):
+    def search_parts(self, query="", start=0, limit=10, filters=None, ranged_filters=None, sort_by=None):
         '''query: query string (optional)
         start: ordinal position of the first result (default is 0, max is 1000)
         limit: number of results to return (default is 10, maximum is 100)
@@ -122,14 +122,19 @@ class Octopart:
         if limit <= 0: limit = 100 #set it to the maximum
         if limit > 100: raise ValueError, "Octopart.search_parts: limit must be between 0 and 100 (inclusive)"
         if not query: query = ""
-        if not filter: filter = ""
+        if not filters: filters = ""
         if not ranged_filters: ranged_filters = ""
         if not sort_by: sort_by = ""
 
         start = str(start)
-        limit = str(limit) 
+        limit = str(limit)
+
+        url = self.base_url + specific_url + "?" + "q=" + query + "&start=" + start + "&apikey=" + self.api_key
+        #do not include filters and rangedfilters if they aren't available
+        if ranged_filters != "": url = url + "&rangedfilters=" + ranged_filters
+        if filters != "": url = url + "&filters=" + filters
+        if sort_by != "": url = url + "&sortby=" + sort_by
         
-        url = self.base_url + specific_url + "?" + "q=" + query + "&start=" + start + "&filter=" + filter + "&ranged_filters=" + ranged_filters + "&sort_by=" + sort_by + "&apikey=" + self.api_key
         response_json = self.web_fetch(url)
 
         #results

@@ -1,0 +1,17 @@
+creator: kanzure <kanzure@gmail.com>
+
+
+reporter: kanzure <kanzure@gmail.com>
+
+
+severity: minor
+
+
+status: open
+
+
+summary: octopart.py does not convert from JSON into python objects
+
+
+time: Thu, 07 Jan 2010 22:10:14 +0000
+
