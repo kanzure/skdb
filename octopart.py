@@ -136,7 +136,8 @@ class Octopart:
         if sort_by != "": url = url + "&sortby=" + sort_by
         
         response_json = self.web_fetch(url)
-
+        response = simplejson.loads(response_json)
+        
         #results
         #    *  results[]{} - The sorted list of matched items
         #          o item{} - A matched part object
@@ -150,7 +151,20 @@ class Octopart:
         #          o sortby
         #    * hits - The total number of matched objects
         #    * time - The amount of time it took to process the entire request (in seconds)
-        return simplejson.loads(response_json)
+        hits = response["hits"]
+        time = response["time"] #in seconds
+
+        for part in response["results"]:
+            part = part["item"]
+            specs = {}
+            for attribute in part["specs"]:
+                specs[attribute["attribute"]["fieldname"]] = attribute["values"]
+            print "part id: ", part["id"]
+            
+            for spec in specs:
+                print "\t" + spec + "\t" + str(specs[spec])
+
+        return response
     def search_whitepapers(self, query="", start=0, limit=10):
         '''execute a search over all whitepapers
         query: query string (optional)
@@ -207,8 +221,9 @@ def octopart_search(query):
     octopart = Octopart(octopart_api_key)
     #categories = octopart.get_categories(id=4179)
     #print "categories: %s" % (categories)
-    parts = octopart.search_parts(query=query)
-    print "parts: %s" % (parts)
+    parts = octopart.search_parts(query=query, limit=1)
+    #print "parts: %s" % (parts)
+    print parts.keys()
 
 class OctopartTests(unittest.TestCase):
     def test_octopart_get_category(self):
