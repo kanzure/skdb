@@ -79,7 +79,8 @@ template_check()
 #cherrypy
 import cherrypy
 from cherrypy.test import helper, webtest
-from cherrypy.lib.static import serve_file
+try: from cherrypy.lib.static import serve_file
+except ImportError: raise ImportError, "you need to apt-get install python-cherrypy3"
 _cperror = cherrypy._cperror
 
 cherrypy.config.update({
