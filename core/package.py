@@ -15,7 +15,7 @@ def check_unix_name(name):
 def package_file(package_name, filename, mode='r'):
     '''construct a dummy package and return a filehandler for filename.
     needed for packages to find their own files (can't be used as a method of Package)'''
-    package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"], package_name)
+    package_path = os.path.join(settings.paths["package_dir"], package_name)
     filepath = os.path.join(package_path, filename)
     try: #fail early
         assert os.access(filepath, os.F_OK)
@@ -29,7 +29,7 @@ def open_package(path):
 
 def __lame_asserts__():
     assert hasattr(settings,"paths")
-    assert settings.paths.has_key("SKDB_PACKAGE_DIR")
+    assert settings.paths.has_key("package_dir")
 
 def load_metadata(name):
     '''returns a package loaded from the filesystem
@@ -38,7 +38,7 @@ def load_metadata(name):
     if not check_unix_name(name):
         return None
     __lame_asserts__()
-    assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
+    assert os.access(settings.paths['package_dir'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
     #must have the required files
     assert package_file(name, "metadata.yaml")
     loaded_package = load(package_file(name, "metadata.yaml"))
@@ -47,12 +47,12 @@ def load_metadata(name):
 def load_package(name):
     '''returns a package loaded from the filesystem
     input should be something like "f-16" or "human-exoskeleton-1.0"
-    see settings.paths['SKDB_PACKAGES_DIR']'''
+    see settings.paths['package_dir']'''
     if not check_unix_name(name): #fail even if asserts are turned off
         return None
     __lame_asserts__()
-    package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],name)
-    assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
+    package_path = os.path.join(settings.paths["package_dir"],name)
+    assert os.access(settings.paths['package_dir'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
     #must have the required files
     required_files = ["metadata.yaml", "data.yaml"]
     for file in required_files:
@@ -119,8 +119,8 @@ class Package(FennObject): #should this be a FennObject? ideally it should spit 
     def __load_package__(package_name, data=True):
         '''loads a package. call the constructor instead.'''
         __lame_asserts__()
-        package_path = os.path.join(settings.paths["SKDB_PACKAGE_DIR"],package_name)
-        assert os.access(settings.paths['SKDB_PACKAGE_DIR'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
+        package_path = os.path.join(settings.paths["package_dir"],package_name)
+        assert os.access(settings.paths['package_dir'], os.F_OK), str(package_path)+": skdb package not found or unreadable"
         #must have the required files
         required_files = ["metadata.yaml"]
         if data: required_files.append("data.yaml")
