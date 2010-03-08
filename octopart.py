@@ -1,5 +1,8 @@
 #!/usr/bin/python
-#an attempt at implementing the octopart api v2
+#author: Bryan Bishop <kanzure@gmail.com>
+#date: 2010-01-13
+#license: GPL2+
+#purpose: an attempt at implementing the octopart api v2
 #url: http://octopart.com/api/documentation
 #skdb api key: 476188c7
 import optfunc
