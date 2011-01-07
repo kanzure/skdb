@@ -1,0 +1,169 @@
+title: skdb open source hardware specification
+version: 0.0.0
+maintainer: ben lipkowitz, <fenn@users.sourceforge.net>
+
+copyright:
+    copyright 2011 ben lipkowitz. this document may be freely copied provided
+    it is not modified. if you wish to change the spec, please submit your
+    changes to the maintainer for inclusion.
+
+introduction: 
+    this specification describes how to create a valid skdb package.
+    skdb is a packaging system for hardware projects, based upon the idea of
+    automatically downloading all of the source information needed to produce a
+    particular artifact in the physical world. 
+
+
+definitions:
+    
+    source file: 
+        the preferred data format for modification. for example the python
+        script that generated an SVG file, or simply the SVG file if it was
+        created manually in a drawing program.  
+    
+    package: 
+        a collection of source files sufficient to reproduce a particular
+        artifact or collection of artifacts in the real world
+    
+    artifact: 
+        a physical device or substance created for a particular purpose, for
+        example a bolt, a laptop
+
+    project:
+        people, institutions, and existing body of work created to further some
+        specific set of goals. in this context, the project is typically
+        upstream developers who created the data in the package.
+    
+    maintainer: 
+        a software developer who ensures data and metadata completeness and
+        fidelity to original design intent, and compatibility between packages
+    
+    unit: 
+        an invariant representation of a particular objective measurement of an
+        artifact or naturally occurring phenomenon, for example a meter or a
+        radian
+    
+    uncertainty: 
+        the range of possible actual values for any given measurement, limited
+        by the precision and accuracy of the measuring equipment or
+        experimental setup
+
+    ontology:
+        a particular way of describing things, their characteristics, and their
+        relationships. a good ontology is consistent and unambiguous, and are
+        often hierarchical with no circular definitions. there may exist many
+        possible ontologies for describing the same thing, for example a cat
+        may be considered as either a mammal, a domestic parasite, or a
+        portable hand warmer.
+
+data format:
+    package:
+        a package consists of a git repository containing at minimum a metadata
+        file. other source files such as cad files, generator scripts, and
+        source data are recommended.  generated files such as renderings,
+        stereolithography meshes, and toolpaths (g-code) may also be included,
+        but not without the source files and instructions to re-generate them.
+        a package name must contain only upper and lower case letters, numbers,
+        and the underscore ("_") character.
+
+    yaml files:
+        - yaml files shall be written in valid yaml 1.2 format (see
+          http://www.yaml.org/spec ). yaml data should generally be in fully
+          expanded (indentation-based) flow style unless the folded (explicit
+          delimeter json-style) flow style significantly improves readability. 
+
+        - use a consistent style and ordering when making changes to yaml files
+          so that diffs show only the relevant change. do not overwrite
+          existing hand-written yaml files with computer generated yaml unless
+          making significant changes to the structure of the data. if you have
+          an overwhelming urge to reformat the file, do so in a separate commit
+          without making any other changes to the data.
+
+        - do not use tab characters. i will cut you. 
+
+        - use unix style line endings.
+
+        - try to stick to a maximum of 80 columns text width.
+
+        - when in doubt, use the same formatting style as the rest of the file.
+        - data in yaml files is intended to be loaded directly into objects in one
+          step, with data descriptor tags causing the resulting object to be
+          cast as one type or another. ideally there will be no post-processing
+          required after loading the yaml file, given that all of the data
+          types are defined in the context used to load the yaml file,
+          which is normally python. data types may (and should) be defined in
+          external source code files. however, one goal is to be able to
+          process metadata files without downloading the complete contents of
+          each package, so tags which are defined by code in that package
+          should include a tab description section at the beginning of the
+          metadata file which looks like '
+            !!python/object:skdb.tag_hack
+            tags:
+            - "!your_data_type"
+            - "!your_other_data_type"
+            ---
+            '
+          this is likely to change when we find a better way to do it.
+
+metadata:
+    required:
+        - metadata files shall be named "metadata.yaml" 
+        - package data begins with the "!package" tag and has the following
+          fields
+        - maintainer: package maintainer name and contact info.
+        - license: package license. this license applies to all files in the package not
+          otherwise labeled. if particular files in the package have a
+          different license, it should be noted in the files section.
+        - licenses shall be a string consisting of one of the following:  
+            - a creative commons short license name ("CC-BY-SA-3.0") from the
+              list of choices at http://creativecommons.org/licenses/ i
+              strongly encourage you not to use any of the "non-commercial"
+              flavored licenses because of their ambiguity
+            - a gnu short license name ("GPLv3") from
+              http://www.gnu.org/licenses/
+            - "other" and include the text of the license in the file named
+              "LICENSE"
+            - if the package is dual (or more?) licensed, use a list of
+              strings, one for each license
+            - if a license string ends with the "+" (plus) character, it will
+              be taken to mean "or any later version of the same license".
+        - urls: a list of urls pointing to more information about the artifact
+        - name: package name, which should be the same as the name of the git
+          repository and containing directory. 
+        - created: date created in ISO 8601 "yyyy-mm-dd" date format
+          ("hh:mm:ssZ" UTC time optional)
+        - version: version number of the package, in major.minor.bugfix
+          notation. after backwards-incompatible changes the major version
+          number must be incremented.        
+        - description: a short (one or two paragraph) description of the
+          project.
+        - classes: lists of data types the package makes use of, as a mapping with
+          the key corresponding to the name of the package which defines those data types.
+          '    threads:
+               - Thread'
+          in this case we need the package 'threads' to define the 'Thread' data type.
+        - dependencies:
+            - software: a list of other packages this package needs in order to function
+        - files: a list of files in the package
+        
+
+    optional:
+        - updated: date last modified in ISO 8601 date format, UTC time
+          note that if this field exists, it is mandatory to set it to the
+          current time after modifying any of the package contents. this is
+          best accomplished with post-commit hooks.
+        - dependencies:
+            - build: a tree of possible sets of processes and packages used in the
+              manufacturing of the artifact, not including the manufacture of
+              any components which are included from other packages. for a
+              complex end product made from off the sheft components, this will
+              be mostly assembly processes like press fit or fastening. the
+              format of this will likely change.
+            - use: a tree of possible sets of processes and packages required
+              for using the artifact. more on this later.
+
+    external:
+        - size: the size of the package (including the metadata file)
+        - md5sum: the md5 sum of the package tarball
+        - latest: the sha1 hash of the latest commit
+
