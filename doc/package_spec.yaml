@@ -1,6 +1,10 @@
 title: skdb open source hardware specification
 version: 0.0.0
-maintainer: ben lipkowitz, <fenn@users.sourceforge.net>
+maintainers:
+    - ben lipkowitz <fenn@users.sourceforge.net>
+    - bryan bishop <kanzure@gmail.com>
+urls:
+    - http://gnusha.org/skdb/ #oops this doesn't work yet
 
 copyright:
     copyright 2011 ben lipkowitz. this document may be freely copied provided
@@ -8,14 +12,16 @@ copyright:
     changes to the maintainer for inclusion.
 
 introduction: 
-    this specification describes how to create a valid skdb package.
+    this specification describes a valid skdb package.
+    
     skdb is a packaging system for hardware projects, based upon the idea of
     automatically downloading all of the source information needed to produce a
-    particular artifact in the physical world. 
+    particular artifact in the physical world.
 
+    open source hardware is the concept of applying software development
+    methodologies to the physical world.
 
-definitions:
-    
+definitions:    
     source file: 
         the preferred data format for modification. for example the python
         script that generated an SVG file, or simply the SVG file if it was
@@ -70,7 +76,7 @@ data format:
         - yaml files shall be written in valid yaml 1.2 format (see
           http://www.yaml.org/spec ). yaml data should generally be in fully
           expanded (indentation-based) flow style unless the folded (explicit
-          delimeter json-style) flow style significantly improves readability. 
+          delimeter json-style) flow style significantly improves readability.
 
         - use a consistent style and ordering when making changes to yaml files
           so that diffs show only the relevant change. do not overwrite
@@ -79,13 +85,14 @@ data format:
           an overwhelming urge to reformat the file, do so in a separate commit
           without making any other changes to the data.
 
-        - do not use tab characters. i will cut you. 
+        - do not use tab characters.
 
         - use unix style line endings.
 
         - try to stick to a maximum of 80 columns text width.
 
         - when in doubt, use the same formatting style as the rest of the file.
+
         - data in yaml files is intended to be loaded directly into objects in one
           step, with data descriptor tags causing the resulting object to be
           cast as one type or another. ideally there will be no post-processing
@@ -129,7 +136,7 @@ metadata:
               be taken to mean "or any later version of the same license".
         - urls: a list of urls pointing to more information about the artifact
         - name: package name, which should be the same as the name of the git
-          repository and containing directory. 
+          repository (sans ".git") and containing working directory.
         - created: date created in ISO 8601 "yyyy-mm-dd" date format
           ("hh:mm:ssZ" UTC time optional)
         - version: version number of the package, in major.minor.bugfix
@@ -146,7 +153,6 @@ metadata:
             - software: a list of other packages this package needs in order to function
         - files: a list of files in the package
         
-
     optional:
         - updated: date last modified in ISO 8601 date format, UTC time
           note that if this field exists, it is mandatory to set it to the
@@ -166,4 +172,3 @@ metadata:
         - size: the size of the package (including the metadata file)
         - md5sum: the md5 sum of the package tarball
         - latest: the sha1 hash of the latest commit
-
