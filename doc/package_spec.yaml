@@ -76,7 +76,7 @@ data format:
         - yaml files shall be written in valid yaml 1.2 format (see
           http://www.yaml.org/spec ). yaml data should generally be in fully
           expanded (indentation-based) flow style unless the folded (explicit
-          delimeter json-style) flow style significantly improves readability.
+          delimiter json-style) flow style significantly improves readability.
 
         - use a consistent style and ordering when making changes to yaml files
           so that diffs show only the relevant change. do not overwrite
@@ -118,9 +118,9 @@ metadata:
         - package data begins with the "!package" tag and has the following
           fields
         - maintainer: package maintainer name and contact info.
-        - license: package license. this license applies to all files in the package not
-          otherwise labeled. if particular files in the package have a
-          different license, it should be noted in the files section.
+        - license: package license. this license applies to all files in the
+          package not otherwise labeled. if particular files in the package
+          have a different license, it should be noted in the files section.
         - licenses shall be a string consisting of one of the following:  
             - a creative commons short license name ("CC-BY-SA-3.0") from the
               list of choices at http://creativecommons.org/licenses/ i
@@ -167,6 +167,14 @@ metadata:
               format of this will likely change.
             - use: a tree of possible sets of processes and packages required
               for using the artifact. more on this later.
+        - template:
+            if a package contains data for a family of parts, it is helpful to
+            describe the general form of the interfaces for a given part. is it
+            a mechanical part? an electrical connector? if the units match up
+            properly, there is a chance that the part does what you want and it
+            worth downloading for a look. to support this functionality, a
+            template part with the same set of interfaces as any given part in
+            the family is provided in the metadata file.  
 
     external:
         - size: the size of the package (including the metadata file)
