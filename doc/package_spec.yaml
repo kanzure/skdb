@@ -11,6 +11,11 @@ copyright:
     it is not modified. if you wish to change the spec, please submit your
     changes to the maintainer for inclusion.
 
+todo:
+    - bills of materials (BOMs)
+    - CAD file formats and files
+    - QR codes
+
 introduction: 
     this specification describes a valid skdb package.
     
@@ -19,13 +24,13 @@ introduction:
     particular artifact in the physical world.
 
     open source hardware is the concept of applying software development
-    methodologies to the physical world.
+    methodologies to the physical world. 
 
 definitions:    
     source file: 
         the preferred data format for modification. for example the python
         script that generated an SVG file, or simply the SVG file if it was
-        created manually in a drawing program.  
+        created manually in a drawing program. most commonly, CAD. 
     
     package: 
         a collection of source files sufficient to reproduce a particular
@@ -181,4 +186,4 @@ metadata:
     external:
         - size: the size of the package (including the metadata file)
         - md5sum: the md5 sum of the package tarball
-        - latest: the sha1 hash of the latest commit
+        - latest: the sha1 latest commit hash
