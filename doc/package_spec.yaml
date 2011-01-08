@@ -153,9 +153,11 @@ metadata:
           ("hh:mm:ssZ" UTC time optional)
         - version: version number of the package, in major.minor.bugfix
           notation. after backwards-incompatible changes the major version
-          number must be incremented.        
+          number must be incremented.
+        - short description: a concise single-line description of the project
+          up to 140 characters in length.
         - description: a short (one or two paragraph) description of the
-          project.
+          project. the first line can be the value of 'short description'.
         - classes: lists of data types the package makes use of, as a mapping
           with the key corresponding to the name of the package which defines
           those data types.
