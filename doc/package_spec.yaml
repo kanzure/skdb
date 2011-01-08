@@ -130,8 +130,6 @@ metadata:
               http://www.gnu.org/licenses/
             - "other" and include the text of the license in the file named
               "LICENSE"
-            - if the package is dual (or more?) licensed, use a list of
-              strings, one for each license
             - if a license string ends with the "+" (plus) character, it will
               be taken to mean "or any later version of the same license".
         - urls: a list of urls pointing to more information about the artifact
