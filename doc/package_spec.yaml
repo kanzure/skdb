@@ -4,7 +4,7 @@ maintainers:
     - ben lipkowitz <fenn@users.sourceforge.net>
     - bryan bishop <kanzure@gmail.com>
 urls:
-    - http://gnusha.org/skdb/ #oops this doesn't work yet
+    - http://gnusha.org/skdb/
 
 copyright:
     copyright 2011 ben lipkowitz. this document may be freely copied provided
@@ -13,7 +13,7 @@ copyright:
 
 todo:
     - bills of materials (BOMs)
-    - CAD file formats and files
+    - CAD file formats
     - QR codes
 
 introduction: 
@@ -23,22 +23,20 @@ introduction:
     automatically downloading all of the source information needed to produce a
     particular artifact in the physical world.
 
-    open source hardware is the concept of applying software development
-    methodologies to the physical world.
+    "apt-get for hardware" refers to an analogy commonly employed to describe
+    skdb or the utility of packages.
 
-    "apt-get for hardware"
-
-definitions:    
-    source file: 
+definitions:
+    source file:
         the preferred data format for modification. for example the python
         script that generated an SVG file, or simply the SVG file if it was
         created manually in a drawing program. most commonly, CAD. 
     
-    package: 
+    package:
         a collection of source files sufficient to reproduce a particular
         artifact or collection of artifacts in the real world
     
-    artifact: 
+    artifact:
         a physical device or substance created for a particular purpose, for
         example a bolt, a laptop
 
@@ -47,16 +45,16 @@ definitions:
         specific set of goals. in this context, the project is typically
         upstream developers who created the data in the package.
     
-    maintainer: 
+    maintainer:
         a software developer who ensures data and metadata completeness and
         fidelity to original design intent, and compatibility between packages
     
-    unit: 
+    unit:
         an invariant representation of a particular objective measurement of an
         artifact or naturally occurring phenomenon, for example a meter or a
         radian
     
-    uncertainty: 
+    uncertainty:
         the range of possible actual values for any given measurement, limited
         by the precision and accuracy of the measuring equipment or
         experimental setup
@@ -68,6 +66,10 @@ definitions:
         possible ontologies for describing the same thing, for example a cat
         may be considered as either a mammal, a domestic parasite, or a
         portable hand warmer.
+    
+    dependency:
+        a reference to a required package necessary for the dependent package
+        to work
 
 data format:
     package:
@@ -76,8 +78,12 @@ data format:
         source data are recommended.  generated files such as renderings,
         stereolithography meshes, and toolpaths (g-code) may also be included,
         but not without the source files and instructions to re-generate them.
-        a package name must contain only upper and lower case letters, numbers,
-        and the underscore ("_") character.
+
+    package names:
+        - a package name must contain only upper and lower case letters, numbers,
+          and the underscore ("_") character.
+        
+        - a package name must be unique by not being in use by another package
 
     yaml files:
         - yaml files shall be written in valid yaml 1.2 format (see
