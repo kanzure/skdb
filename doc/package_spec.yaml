@@ -117,7 +117,8 @@ metadata:
         - metadata files shall be named "metadata.yaml" 
         - package data begins with the "!package" tag and has the following
           fields
-        - maintainer: package maintainer name and contact info.
+        - maintainer: package maintainer name and contact info, in IETF RFC 2822
+          name-addr format, like 'Bryan Bishop <kanzure@gmail.com>'
         - license: package license. this license applies to all files in the
           package not otherwise labeled. if particular files in the package
           have a different license, it should be noted in the files section.
