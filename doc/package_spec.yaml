@@ -93,17 +93,17 @@ data format:
 
         - when in doubt, use the same formatting style as the rest of the file.
 
-        - data in yaml files is intended to be loaded directly into objects in one
-          step, with data descriptor tags causing the resulting object to be
+        - data in yaml files is intended to be loaded directly into objects in
+          one step, with data descriptor tags causing the resulting object to be
           cast as one type or another. ideally there will be no post-processing
-          required after loading the yaml file, given that all of the data
-          types are defined in the context used to load the yaml file,
-          which is normally python. data types may (and should) be defined in
-          external source code files. however, one goal is to be able to
-          process metadata files without downloading the complete contents of
-          each package, so tags which are defined by code in that package
-          should include a tab description section at the beginning of the
-          metadata file which looks like '
+          required after loading the yaml file, given that all of the data types
+          are defined in the context used to load the yaml file,which is
+          normally python. data types may (and should) be defined in external
+          source code files. however, one goal is to be able to process metadata
+          files without downloading the complete contents of each package, so
+          tags which are defined by code in that package should include a tab
+          description section at the beginning of the metadata file which looks
+          like '
             !!python/object:skdb.tag_hack
             tags:
             - "!your_data_type"
@@ -121,7 +121,7 @@ metadata:
         - license: package license. this license applies to all files in the
           package not otherwise labeled. if particular files in the package
           have a different license, it should be noted in the files section.
-        - licenses shall be a string consisting of one of the following:  
+        - licenses shall be a string consisting of one of the following:
             - a creative commons short license name ("CC-BY-SA-3.0") from the
               list of choices at http://creativecommons.org/licenses/ i
               strongly encourage you not to use any of the "non-commercial"
@@ -142,13 +142,16 @@ metadata:
           number must be incremented.        
         - description: a short (one or two paragraph) description of the
           project.
-        - classes: lists of data types the package makes use of, as a mapping with
-          the key corresponding to the name of the package which defines those data types.
+        - classes: lists of data types the package makes use of, as a mapping
+          with the key corresponding to the name of the package which defines
+          those data types.
           '    threads:
                - Thread'
-          in this case we need the package 'threads' to define the 'Thread' data type.
+          in this case we need the package 'threads' to define the 'Thread' data
+          type.
         - dependencies:
-            - software: a list of other packages this package needs in order to function
+            - software: a list of other packages this package needs in order to
+            function.
         - files: a list of files in the package
         
     optional:
@@ -157,9 +160,9 @@ metadata:
           current time after modifying any of the package contents. this is
           best accomplished with post-commit hooks.
         - dependencies:
-            - build: a tree of possible sets of processes and packages used in the
-              manufacturing of the artifact, not including the manufacture of
-              any components which are included from other packages. for a
+            - build: a tree of possible sets of processes and packages used in
+              the manufacturing of the artifact, not including the manufacture
+              of any components which are included from other packages. for a
               complex end product made from off the sheft components, this will
               be mostly assembly processes like press fit or fastening. the
               format of this will likely change.
