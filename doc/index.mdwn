@@ -1,0 +1,77 @@
+SKDB: Apt-get for Hardware
+============
+
+![gnusha](/skdb/images/gnusha.png)
+
+__SKDB is software/specifications for open source hardware packages.__
+
+git clone <a href="git://diyhpl.us/skdb.git">git://diyhpl.us/skdb.git</a><br />
+web repo: [http://diyhpl.us/cgit/skdb](http://diyhpl.us/cgit/skdb "skdb.git")<br />
+irc: irc.freenode.net ##hplusroadmap \([logs](http://gnusha.org/logs/ "##hplusroadmap logs"); [webchat](http://webchat.freenode.net/?channels=##hplusroadmap))<br />
+mailing list: [openmanufacturing@googlegroups.com](mailto:openmanufacturing@googlegroups.com "open manufacturing mailing list address")<br />
+mailing list archives: [http://groups.google.com/group/openmanufacturing](http://groups.google.com/group/openmanufacturing "open manufacturing mailing list")<br />
+
+# Explanation rhetoric #
+
+SKDB is a method for sharing hardware over the internet. By “hardware” we
+mean not just designs for circuit boards, but also biological constructs,
+scientific instruments, machine tools, nuts and bolts, raw materials, and how
+to make them.
+
+You don't need to reinvent the wheel every time you begin a new project.
+Someone out there has probably already done most or all of the work for
+whatever you are trying to do, and then released the plans on the internet.
+There are many common tools and parts involved in making things. If only we
+could just “get” everything automatically from the web, DIY manufacturing
+would be much easier. Essentially we want to do something like “apt-get” for
+Debian or “emerge” for Gentoo, the Linux software package managers. SKDB
+simplifies the process of searching for free designs, comparing part
+compatibility, and building lists of materials and components and where to
+get them. You could even say SKDB is “apt-get but for real stuff”.
+
+In SKDB, hardware is organized into packages. Packages are a standard and
+consistent way for programs to find data. Packages may contain CAD files, CAM
+parameters, computer-readable descriptions of product specifications,
+product-specific code, and bill of materials. For each part in a package
+there are a number of interface definitions, which describe how the part can
+connect with other parts, even parts from other packages. Each package also
+lists dependencies which have to be bought or built in order to successfully
+carry out a project. For example a drill press is required to make holes with
+a certain level of accuracy. SKDB downloads all of the dependencies
+automatically and compares them to your existing inventory, and generates
+instructions for your CNC machinery if you have any. 
+
+# Quick document links #
+
+* [Experimenal/draft skdb open source hardware package specification](http://diyhpl.us/cgit/skdb/plain/doc/package_spec.yaml "draft package spec")
+
+* [typical fablab equipment inventory](http://diyhpl.us/cgit/skdb/plain/doc/BOMs/comparison/fablab.yaml "fablab equipment BOM")
+
+* [typical techshop equipment inventory](http://diyhpl.us/cgit/skdb/plain/doc/BOMs/comparison/techshop.yaml "techshop equipment BOM")
+
+* [ultimate tool buying guide](http://diyhpl.us/cgit/skdb/plain/doc/BOMs/ultimate-tool-buying-guide.yaml "ultimate tool buying guide") (YAML)
+
+* [diybio lab equipment BOM](http://diyhpl.us/cgit/skdb/plain/doc/BOMs/diybio-equipment.yaml "diybio equipment")
+
+# Videos #
+## H+ Summit 2009 ##
+part 1: <a href="http://youtube.com/watch?v=-n39RK4inzg">http://youtube.com/watch?v=-n39RK4inzg</a><br />
+part 2: <a href="http://youtube.com/watch?v=3S9z6H_EFqQ">http://youtube.com/watch?v=3S9z6H\_EFqQ</a><br />
+part 3: <a href="http://youtube.com/watch?v=Edl6uFn3_g4">http://youtube.com/watch?v=Edl6uFn3\_g4</a><br />
+
+<center>
+<table>
+    <tr>
+        <td>
+            <object width="320" height="265"><param name="movie" value="http://www.youtube.com/v/-n39RK4inzg&hl=en_US&fs=1&rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/-n39RK4inzg&hl=en_US&fs=1&rel=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="320" height="265"></embed></object>
+        </td>
+        <td>
+            <object width="320" height="265"><param name="movie" value="http://www.youtube.com/v/3S9z6H_EFqQ&hl=en_US&fs=1&rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/3S9z6H_EFqQ&hl=en_US&fs=1&rel=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="320" height="265"></embed></object>
+        </td>
+        <td>
+            <object width="320" height="265"><param name="movie" value="http://www.youtube.com/v/Edl6uFn3_g4&hl=en_US&fs=1&rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/Edl6uFn3_g4&hl=en_US&fs=1&rel=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="320" height="265"></embed></object>
+        </td>
+    </tr>
+</table>
+</center>
+
