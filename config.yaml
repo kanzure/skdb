@@ -5,5 +5,5 @@ package_dir: ~/.skdb/packages/
 
 #where are packages available from the web?
 repositories:
-    - http://designfiles.org/packages/
+    - http://packages.gnusha.org/
 
