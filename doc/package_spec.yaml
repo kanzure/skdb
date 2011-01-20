@@ -81,7 +81,7 @@ data format:
 
     package names:
         - a package name must contain only upper and lower case letters, numbers,
-          and the underscore ("_") character.
+          and the dash ("-") character.
         
         - a package name must be unique by not being in use by another package
 
