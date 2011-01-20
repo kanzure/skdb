@@ -97,8 +97,9 @@ class TestUnits(unittest.TestCase):
         self.assertTrue(skdb.Unit('1') > 0.9)
 
 class TestScrew(unittest.TestCase):
-    import skdb.packages.screw.screw as screw
-    import skdb.packages.threads.threads as threads
+    screw = skdb.Package("screw").Screw
+    #import skdb.packages.screw.screw as screw
+    #import skdb.packages.threads.threads as threads
     def test_conversions(self):
             screw_package = skdb.Package("screw")
             screw1 = screw_package.parts[0]
