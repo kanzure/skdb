@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>SKDB: Open Source Hardware Package Specification 0.1</title>
+        <style type="text/css">
+            /*
+            :Author: David Goodger
+            :Contact: goodger@users.sourceforge.net
+            :Date: $Date: 2005-12-18 01:56:14 +0100 (Sun, 18 Dec 2005) $
+            :Revision: $Revision: 4224 $
+            :Copyright: This stylesheet has been placed in the public domain.
+            
+            Default cascading style sheet for the HTML output of Docutils.
+            
+            See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+            customize this style sheet.
+            */
+            
+            /* used to remove borders from tables and images */
+            .borderless, table.borderless td, table.borderless th {
+              border: 0 }
+            
+            table.borderless td, table.borderless th {
+              /* Override padding for "table.docutils td" with "! important".
+                 The right padding separates the table cells. */
+              padding: 0 0.5em 0 0 ! important }
+            
+            .first {
+              /* Override more specific margin styles with "! important". */
+              margin-top: 0 ! important }
+            
+            .last, .with-subtitle {
+              margin-bottom: 0 ! important }
+            
+            .hidden {
+              display: none }
+            
+            a.toc-backref {
+              text-decoration: none ;
+              color: black }
+            
+            blockquote.epigraph {
+              margin: 2em 5em ; }
+            
+            dl.docutils dd {
+              margin-bottom: 0.5em }
+            
+            /* Uncomment (and remove this text!) to get bold-faced definition list terms
+            dl.docutils dt {
+              font-weight: bold }
+            */
+            
+            div.abstract {
+              margin: 2em 5em }
+            
+            div.abstract p.topic-title {
+              font-weight: bold ;
+              text-align: center }
+            
+            div.admonition, div.attention, div.caution, div.danger, div.error,
+            div.hint, div.important, div.note, div.tip, div.warning {
+              margin: 2em ;
+              border: medium outset ;
+              padding: 1em }
+            
+            div.admonition p.admonition-title, div.hint p.admonition-title,
+            div.important p.admonition-title, div.note p.admonition-title,
+            div.tip p.admonition-title {
+              font-weight: bold ;
+              font-family: sans-serif }
+            
+            div.attention p.admonition-title, div.caution p.admonition-title,
+            div.danger p.admonition-title, div.error p.admonition-title,
+            div.warning p.admonition-title {
+              color: red ;
+              font-weight: bold ;
+              font-family: sans-serif }
+            
+            /* Uncomment (and remove this text!) to get reduced vertical space in
+               compound paragraphs.
+            div.compound .compound-first, div.compound .compound-middle {
+              margin-bottom: 0.5em }
+            
+            div.compound .compound-last, div.compound .compound-middle {
+              margin-top: 0.5em }
+            */
+            
+            div.dedication {
+              margin: 2em 5em ;
+              text-align: center ;
+              font-style: italic }
+            
+            div.dedication p.topic-title {
+              font-weight: bold ;
+              font-style: normal }
+            
+            div.figure {
+              margin-left: 2em ;
+              margin-right: 2em }
+            
+            div.footer, div.header {
+              clear: both;
+              font-size: smaller }
+            
+            /* lists */
+            li {
+                padding-bottom: 1em;
+               }
+            li li {
+                list-style-type: none;
+               }
+        </style>
+    </head>
+    <body>
+        <div align="center" class="align-center">
+            <h1 class="title">SKDB Open Source Hardware Package Specification (draft, v0.0)</h1>
+            <img alt="http://gnusha.org/skdb/images/gnusha.png" class="align-center" src="http://gnusha.org/skdb/images/gnusha.png" />
+        </div>
+
+        <div class="admonition">
+            <p class="first admonition-title">Introduction</p>
+            <p class="last">This specification describes a valid skdb package.</p>
+            <p class="last">SKDB is a packaging system for hardware projects, based upon the idea of automatically downloading all of the source information needed to produce a particular artifact in the physical world. "apt-get for hardware" refers to an analogy commonly employed to describe skdb or the utility of packages.</p>
+        </div> <!-- end admonition -->
+        <div class="admonition">
+            <p class="first admonition-title">Metadata</p>
+            <p>title: SKDB open source hardware specification</p>
+            <p>version: 0.0.0</p>
+            <p>maintainers:<br />
+              - Ben Lipkowitz &lt;<a href="mailto:fenn@users.sourceforge.net">fenn@users.sourceforge.net</a>&gt;<br />
+              - Bryan Bishop &lt;<a href="mailto:kanzure@gmail.com">kanzure@gmail.com</a>&gt;</p>
+            <p>urls:<br />
+              - <a href="http://gnusha.org/skdb/">http://gnusha.org/skdb/</a></p>
+            <p>copyright:<br />
+                &nbsp;&nbsp;Copyright 2011 ben lipkowitz. This document may be freely copied provided
+                it is not modified. If you wish to change the spec, please submit your
+                changes to the maintainer for inclusion.</p>
+            <p>todo:<br />
+                - bills of materials (BOMs)<br />
+                - CAD file formats<br />
+                - QR codes</p>
+        </div> <!-- end admonition -->
+
+        <h1>Introduction</h1>
+        <p class="last">This specification describes a valid skdb package.</p>
+        <p class="last">SKDB is a packaging system for hardware projects, based upon the idea of automatically downloading all of the source information needed to produce a particular artifact in the physical world. "apt-get for hardware" refers to an analogy commonly employed to describe skdb or the utility of packages.</p>
+
+        <h1>Definitions</h1>
+        <ul>
+            <li>source file: 
+            the preferred data format for modification. for example the python
+            script that generated an SVG file, or simply the SVG file if it was 
+            created manually in a drawing program. most commonly, CAD.</li>
+
+            <li>package:
+                a collection of source files sufficient to reproduce a particular
+                artifact or collection of artifacts in the real world</li>
+        
+            <li>artifact:
+                a physical device or substance created for a particular purpose, for
+                example a bolt, a laptop</li>
+        
+            <li>project:
+                people, institutions, and existing body of work created to further some
+                specific set of goals. in this context, the project is typically
+                upstream developers who created the data in the package.</li>
+            
+            <li>maintainer:
+                a software developer who ensures data and metadata completeness and
+                fidelity to original design intent, and compatibility between packages</li>
+            
+            <li>unit:
+                an invariant representation of a particular objective measurement of an
+                artifact or naturally occurring phenomenon, for example a meter or a
+                radian</li>
+            
+            <li>uncertainty:
+                the range of possible actual values for any given measurement, limited
+                by the precision and accuracy of the measuring equipment or
+                experimental setup</li>
+        
+            <li>ontology:
+                a particular way of describing things, their characteristics, and their
+                relationships. a good ontology is consistent and unambiguous, and are
+                often hierarchical with no circular definitions. there may exist many
+                possible ontologies for describing the same thing, for example a cat
+                may be considered as either a mammal, a domestic parasite, or a
+                portable hand warmer.</li>
+            
+            <li>dependency:
+                a reference to a required package necessary for the dependent package
+                to work</li>
+        </ul>
+
+        <h1>Data format</h1>        
+        <ul>
+            <li>package:
+                a package consists of a git repository containing at minimum a metadata
+                file. other source files such as cad files, generator scripts, and
+                source data are recommended.  generated files such as renderings,
+                stereolithography meshes, and toolpaths (g-code) may also be included,
+                but not without the source files and instructions to re-generate them.
+                </li>
+        
+            <li>package names:<br />
+                - a package name must contain only upper and lower case letters, numbers,
+                  and the dash ("-") character.
+                  <br /><br />
+                
+                - a package name must be unique by not being in use by another package
+                </li>
+        
+            <li>yaml files:<br />
+                - yaml files shall be written in valid yaml 1.2 format (see
+                  http://www.yaml.org/spec ). yaml data should generally be in fully
+                  expanded (indentation-based) flow style unless the folded (explicit
+                  delimiter json-style) flow style significantly improves readability.
+                  <br /><br />
+
+                - use a consistent style and ordering when making changes to yaml files
+                  so that diffs show only the relevant change. do not overwrite
+                  existing hand-written yaml files with computer generated yaml unless
+                  making significant changes to the structure of the data. if you have
+                  an overwhelming urge to reformat the file, do so in a separate commit
+                  without making any other changes to the data.
+                  <br /><br />
+
+                - do not use tab characters.
+                  <br /><br />
+
+                - use unix style line endings.
+                  <br /><br />
+
+                - try to stick to a maximum of 80 columns text width.
+                  <br /><br />
+
+                - when in doubt, use the same formatting style as the rest of the file.
+                  <br /><br />
+
+                - data in yaml files is intended to be loaded directly into objects in
+                  one step, with data descriptor tags causing the resulting object to be
+                  cast as one type or another. ideally there will be no post-processing
+                  required after loading the yaml file, given that all of the data types
+                  are defined in the context used to load the yaml file,which is
+                  normally python. data types may (and should) be defined in external
+                  source code files. however, one goal is to be able to process metadata
+                  files without downloading the complete contents of each package, so
+                  tags which are defined by code in that package should include a tab
+                  description section at the beginning of the metadata file which looks
+like '<pre>
+!!python/object:skdb.tag_hack
+tags:
+- "!your_data_type"
+- "!your_other_data_type"
+---
+</pre>'<br />
+                  this is likely to change when we find a better way to do it.
+                  </li>
+        </ul>
+        
+        <h1>Metadata</h1>
+        <ul>
+            <li>required:<br />
+                <ul>
+                    <li>- metadata files shall be named "metadata.yaml"</li>
+                    <li>- package data begins with the "!package" tag and has the following
+                          fields</li>
+                    <li>- maintainer: package maintainer name and contact info, in IETF RFC 2822
+                          name-addr format, like 'Bryan Bishop &lt;kanzure@gmail.com&gt;'</li>
+                    <li>- license: package license. this license applies to all files in the
+                          package not otherwise labeled. if particular files in the package
+                          have a different license, it should be noted in the files section.</li>
+                    <li>- licenses shall be a string consisting of one of the following:
+                        <ul>
+                            <li>- a creative commons short license name ("CC-BY-SA-3.0") from the
+                              list of choices at http://creativecommons.org/licenses/ i
+                              strongly encourage you not to use any of the "non-commercial"
+                              flavored licenses because of their ambiguity</li>
+                            <li>- a gnu short license name ("GPLv3") from
+                              <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a></li>
+                            <li>- "other" and include the text of the license in the file named
+                              "LICENSE"</li>
+                            <li>- if a license string ends with the "+" (plus) character, it will
+                              be taken to mean "or any later version of the same license".</li>
+                        </ul>
+                    </li>
+                    <li>- urls: a list of urls pointing to more information about the artifact</li>
+                    <li>- name: package name, which should be the same as the name of the git
+                        repository (sans ".git") and containing working directory.</li>
+                    <li>- created: date created in ISO 8601 "yyyy-mm-dd" date format
+                        ("hh:mm:ssZ" UTC time optional)</li>
+                    <li>- version: version number of the package, in major.minor.bugfix
+                          notation. after backwards-incompatible changes the major version
+                          number must be incremented.</li>
+                    <li>- short description: a concise single-line description of the project
+                          up to 140 characters in length.</li>
+                    <li>- description: a short (one or two paragraph) description of the
+                          project. the first line can be the value of 'short description'.</li>
+                    <li>- classes: lists of data types the package makes use of, as a mapping
+                      with the key corresponding to the name of the package which defines
+                      those data types.
+<pre>threads:
+   - Thread</pre>
+                      in this case we need the package 'threads' to define the 'Thread' data
+                      type.</li>
+                    <li>- dependencies:
+                        <ul>
+                            <li>- software: a list of other packages this package needs in order to
+                            function.</li>
+                        </ul>
+                    </li>
+                    <li>- files: a list of files in the package</li>
+                </ul>
+            </li>
+            <li>optional:
+                <ul>
+                    <li>- updated: date last modified in ISO 8601 date format, UTC time
+                      note that if this field exists, it is mandatory to set it to the
+                      current time after modifying any of the package contents. this is
+                      best accomplished with post-commit hooks.</li>
+                    <li>- dependencies:
+                        <ul>
+                        <li>- build: a tree of possible sets of processes and packages used in
+                          the manufacturing of the artifact, not including the manufacture
+                          of any components which are included from other packages. for a
+                          complex end product made from off the sheft components, this will
+                          be mostly assembly processes like press fit or fastening. the
+                          format of this will likely change.</li>
+                        <li>- use: a tree of possible sets of processes and packages required
+                          for using the artifact. more on this later.</li>
+                        </ul></li>
+                    <li>- template:
+                        if a package contains data for a family of parts, it is helpful to
+                        describe the general form of the interfaces for a given part. is it
+                        a mechanical part? an electrical connector? if the units match up
+                        properly, there is a chance that the part does what you want and it
+                        worth downloading for a look. to support this functionality, a
+                        template part with the same set of interfaces as any given part in
+                        the family is provided in the metadata file.
+                    </li>
+                </ul>
+            </li>
+            <li>external:
+                <ul>
+                    <li>- size: the size of the package (including the metadata file)</li>
+                    <li>- md5sum: the md5 sum of the package tarball</li>
+                    <li>- latest: the sha1 latest commit hash</li>
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>
