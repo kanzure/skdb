@@ -1,9 +1,8 @@
-SKDB: Apt-get for Hardware
+SKDB: apt-get for hardware
 ============
+<img src="/skdb/images/gnusha.png" style="float:right;" alt="gnusha the multiply talented cash cow">
 
-![gnusha](/skdb/images/gnusha.png)
-
-__SKDB is software/specifications for open source hardware packages.__
+__the social knowledge database of specifications for open source hardware packages.__
 
 git clone <a href="git://diyhpl.us/skdb.git">git://diyhpl.us/skdb.git</a><br />
 web repo: [http://diyhpl.us/cgit/skdb](http://diyhpl.us/cgit/skdb "skdb.git")<br />
@@ -11,7 +10,7 @@ irc: irc.freenode.net ##hplusroadmap \([logs](http://gnusha.org/logs/ "##hplusro
 mailing list: [openmanufacturing@googlegroups.com](mailto:openmanufacturing@googlegroups.com "open manufacturing mailing list address")<br />
 mailing list archives: [http://groups.google.com/group/openmanufacturing](http://groups.google.com/group/openmanufacturing "open manufacturing mailing list")<br />
 
-# Explanation rhetoric #
+# Overview #
 
 SKDB is a method for sharing hardware over the internet. By “hardware” we
 mean not just designs for circuit boards, but also biological constructs,
@@ -74,4 +73,3 @@ part 3: <a href="http://youtube.com/watch?v=Edl6uFn3_g4">http://youtube.com/watc
     </tr>
 </table>
 </center>
-
