@@ -1,0 +1,194 @@
+#reference equipment listing
+#from http://openwetware.org/index.php?title=Stanford_Biochemistry/equipment_list&action=edit&oldid=410937
+
+'''[[/Amsco Sterilizers| Amsco Sterilizers]]''', (B431) 
+
+Manufacturer/Model:  AMSCO/Steris 2321   Equip. Captain: Norma Malimban
+
+'''[[/Avanti Centrifuge| Avanti Centrifuge]]'''
+
+BeckmanJ-25 B464 Matt Footer    B477
+
+'''[[/Axon Scanner| Axon Scanner]]'''
+
+Molecular Devices   4000A   B435    Robert Pesich   N   B407
+
+'''[[/Centrifuge| Centrifuge]]'''
+
+Beckman J2-HS   B464    Matt Footer N   B477
+
+'''[[/Centrifuge| Centrifuge]]'''
+
+Beckman J2-HS   B414    Ben Moree   Y   B409
+
+'''[[/Centrifuge| Centrifuge]]'''   
+
+Beckman J2-MC   B414    Ben Moree   Y   B409
+
+'''[[/Circular Dichroism Spectrometer| Circular Dichroism Spectrometer]]''' 
+
+Aviv    62A DS  B448    Harbury Lab Y   B437
+
+'''[[/Controlled Env. Shaker Incubator| Controlled Env. Shaker Incubator]]'''
+
+New Brunswick Science   G-25    B428    Shirley Sutton  N   B405
+
+'''[[/Digital Photo Imaging System| Digital Photo Imaging System]]'''   
+
+Alpha Innotech  IS-1000 B454    Greg Fish   Y   B461
+
+'''[[/Emulsiflex| Emulsiflex]]'''   
+
+Avestin C5  B460    John King   Y   B457
+
+'''[[/Fermentor| Fermentor]]''' 
+
+New Brunswick   BIOFLO 110  B414    Aaron Straight  N   B409
+
+'''[[/French Pressure Cell Press| French Pressure Cell Press]]'''   
+
+American Inst. Co.  FA-073  B412    Jason Schwans   Y   B463
+
+'''[[/Gel Photo Imaging System| Gel Photo Imaging System]]'''   
+
+Alpha Inootech  2000    B412    Peter Wang  N   B401
+
+'''[[/Gene Pulser/Pulse Controller| Gene Pulser/Pulse Controller]]'''   
+
+Bio-Rad 1652076 B405    Shirley Sutton  N   B405
+
+'''[[/Genetic Analyzer| Genetic Analyzer]]'''   
+
+Perkin Elmer    3100    B462    Ann Kladwang    Y   B419
+
+'''[[/Genetic Analyzer/Sequence Detector|Genetic Analyzer/Sequence Detector]]'''    
+
+Illumina        B406    Dan Rierdan Y   B453
+
+'''[[/Glass Water Stills| Glass Water Stills]]'''   
+
+High Q  B414 & 462  B462    Shirley Sutton  N   B405
+
+'''[[/Glassware Washers (#1-3)| Glassware Washers (#1-3)]]'''   
+
+AMSCO/Steris    Hoplab 1021 B431    Norma Malimban  N   B431
+
+'''[[/Hetovac| Hetovac]]''' 
+
+Heto    VR1120240   B442    Harbury Lab N   B437
+
+'''[[/HPLC| HPLC]]'''   
+
+Perkin Elmer    LC295   B442    Max Greenfield  Y   B471
+
+'''[[/Hybrid/Mini Hybrid/Speed Vac/Trap| Hybrid/Mini Hybrid/Speed Vac/Trap]]''' 
+
+Robbins/HYB/Savant  310, H9300  B436    Harbury Lab N   B437
+
+'''[[/Laser Cutter| Laser Cutter]]'''   
+
+Epilog  Legend 36EXT    B464    Harbury Lab N   B437
+
+'''[[/Liquid Scintillation Counter| Liquid Scintillation Counter]]'''   
+
+Beckman LS5000 CE   B414    Max Greenfield  Y   B471
+
+'''[[/Lum. Spectrophotometer Flourimeter| Lum. Spectrophotometer Flourimeter]]'''   
+
+Aminco-Bowman   FA257   B442    Eliza Ruben Y   B451
+
+'''[[/Lyopholizer| Lyopholizer]]''' 
+
+Labonco B412    B412    Jason Schwans   Y   B463
+
+'''[[/MicroCentrifuges| MicroCentrifuges]]'''   
+
+Eppendorf   5415c   B460    Greg Fish   N   B461
+
+'''[[/Nanodrop PCR| Nanodrop PCR]]'''
+
+Manufacturer/Model: Nanodrop ND-1000    Robert Pesich   N   B407
+
+'''[[/Nanodrop Spectrophotometer| Nanodrop Spectrophotometer]]'''   
+
+Nanodrop    ND-1000 B437    Casey Krusemark N   B435
+
+'''[[/Refractometer| Refractometer]]''' 
+
+Milton Roy  LR45227 B455    John King   N   B457
+
+'''[[/Refrig. Centrifuge/Centrifuge #11| Refrig. Centrifuge/Centrifuge #11]]''' 
+
+Beckman J6 Series   B430    Shirley Sutton  N   B405
+
+'''[[/Refrigerated Condensation Trap (2)| Refrigerated Condensation Trap (2)]]'''   
+
+Savant  RT100A  B462    Tara Benz   Y   B471
+
+'''[[/Rfg. Superspeed Centrifuge| Rfg. Superspeed Centrifuge]]'''   
+
+Sorvall     RC-5B   B414    Mari Olsen  N   B407
+
+'''[[/Sequence Detector| Sequence Detector]]''' 
+
+Applied Biosystems  7900HT  B407    Robert Pesich   Y   B407
+
+'''[[/Sonicator| Sonicator]]''' 
+
+Branson none    B412    Straight Lab    N   B409
+
+'''[[/Spectrophotometer| Spectrophotometer]]''' 
+
+Uvikon  9310    B442    Jonathon Lassila    Y   B451
+
+'''[[/Spectrophotometer| Spectrophotometer]]''' 
+
+Beckman DU 640  B464    Fanny Sunden    Y   B463
+ 
+'''[[/Spectrophotometer| Spectrophotometer]]'''
+
+Perkin Elmer    LAMBDA 25   B442    Helen Wiersma   Y   B469
+
+'''[[/Spectrophotometer| Spectrophotometer]]''' 
+
+Perkin Elmer    LAMBDA 25   B462    Fanny Sunden    Y   B463
+
+'''[[/Speed Vac Concentrate (1)| Speed Vac Concentrate (1)]]''' 
+
+Savant      B414    Mari Olsen  Y   B407
+
+'''[[/Speed Vac Plus| Speed Vac Plus]]'''   
+
+Savant  SC 110A B414    Jason Schwans   Y   B463
+
+'''[[/Stacked Gel Dryers (2)| Stacked Gel Dryers (2)]]'''   
+
+Savant/Fisher   SGD 2000    B462    Rob Spitale Y   B477
+
+'''[[/Superspeed Centrifuge| Superspeed Centrifuge]]''' 
+
+Beckman J2-J21  B464    Matt Footer N   B477
+
+'''[[/TYPHOON Imager| TYPHOON Imager]]'''   
+
+Molecular Dynamics  8600    B464    Marcello Forconi    Y   B463
+
+'''[[/Ultracentrifuge #12/Optima TLX| Ultracentrifuge #12/Optima TLX]]'''   
+
+Beckman TL-100  B430    Mike Stern  Y   B411
+
+'''[[/Ultracentrifuge #2-6| Ultracentrifuge #2-6]]'''   
+
+Beckman L8 Series   B430    Dustin Hite Y   B407
+
+'''[[/Versadoc Imaging System| Versadoc Imaging System]]''' 
+
+Biorad      B418    Dan Klass   N   B439
+
+'''[[/Water Purification System| Water Purification System]]''' 
+
+Barnstead   D8991   B448    Matt Footer N   B477
+
+'''[[/X-ray Film Processor| X-ray Film Processor]]'''   
+
+Konica  SRX-101A    B452    Corey Meyer Y   B409
